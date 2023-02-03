@@ -14,6 +14,7 @@ Material:
   m_ValidKeywords:
   - DR_CEL_EXTRA_ON
   - DR_GRADIENT_ON
+  - DR_OUTLINE_ON
   - DR_SPECULAR_ON
   - _CELPRIMARYMODE_SINGLE
   - _TEXTUREBLENDINGMODE_MULTIPLY
@@ -28,9 +29,8 @@ Material:
   m_CustomRenderQueue: 2000
   stringTagMap:
     RenderType: Opaque
-  disabledShaderPasses:
-  - SRPDEFAULTUNLIT
-  m_LockedProperties: _Flatness
+  disabledShaderPasses: []
+  m_LockedProperties: _Flatness _OutlineDepthOffset
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -128,9 +128,9 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _OutlineDepthOffset: 0
-    - _OutlineEnabled: 0
+    - _OutlineEnabled: 1
     - _OutlineScale: 1
-    - _OutlineWidth: 1
+    - _OutlineWidth: 1.17
     - _OverrideLightmapDir: 0
     - _OverrideShadows: 1
     - _OverrideShadowsEnabled: 1
@@ -175,6 +175,6 @@ Material:
     - _FlatRimColor: {r: 0.4056604, g: 0.4056604, b: 0.4056604, a: 1}
     - _FlatSpecularColor: {r: 0.8584906, g: 0.14481832, b: 0.044544328, a: 1}
     - _LightmapDirection: {r: 0, g: 1, b: 0, a: 0}
-    - _OutlineColor: {r: 1, g: 1, b: 1, a: 1}
+    - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _UnityShadowColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
