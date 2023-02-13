@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Toon marble
+  m_Shader: {fileID: 4800000, guid: bee44b4a58655ee4cbff107302a3e131, type: 3}
+  m_Parent: {fileID: 2100000, guid: 96c941aa4be5035438e20bd7b06a6134, type: 2}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords:
+  - DR_OUTLINE_ON
+  - DR_SPECULAR_ON
+  - _CELPRIMARYMODE_SINGLE
+  - _TEXTUREBLENDINGMODE_MULTIPLY
+  - _UNITYSHADOWMODE_COLOR
+  - _UNITYSHADOW_OCCLUSION
+  m_InvalidKeywords:
+  - _FLAT_SHADOWS_ENABLED
+  - _FLAT_SPECULAR_ENABLED
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 2800000, guid: cd68e10e43b56b046ba4b795b72816fd, type: 3}
+        m_Scale: {x: 0.56, y: -0.11}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _CameraDistanceImpact: 0
+    - _CelExtraEnabled: 0
+    - _FlatSpecularEdgeSmoothness: 0.191
+    - _FlatSpecularSize: 0.347
+    - _LightContribution: 0.052
+    - _LightFalloffSize: 0
+    - _LightmapDirectionPitch: 31
+    - _LightmapDirectionYaw: 0
+    - _OutlineDepthOffset: 0
+    - _OutlineWidth: 1.21
+    - _OverrideLightmapDir: 0
+    - _RimEnabled: 0
+    - _SpecularEnabled: 1
+    - _TextureImpact: 0.805
+    m_Colors:
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _ColorDimExtra: {r: 0.9622642, g: 0.94864726, b: 0.94864726, a: 1}
+    - _LightmapDirection: {r: 0, g: 0.8571673, b: 0.5150381, a: 0}
+  m_BuildTextureStacks: []

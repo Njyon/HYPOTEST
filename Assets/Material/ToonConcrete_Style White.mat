@@ -13,7 +13,7 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - DR_CEL_EXTRA_ON
-  - DR_SPECULAR_ON
+  - DR_OUTLINE_ON
   - _CELPRIMARYMODE_SINGLE
   - _TEXTUREBLENDINGMODE_MULTIPLY
   - _UNITYSHADOWMODE_COLOR
@@ -27,8 +27,7 @@ Material:
   m_CustomRenderQueue: 2000
   stringTagMap:
     RenderType: Opaque
-  disabledShaderPasses:
-  - SRPDEFAULTUNLIT
+  disabledShaderPasses: []
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -107,7 +106,7 @@ Material:
     - _FlatSpecularSize: 0.392
     - _FlatSpecularSmoothness: 0.5
     - _Flatness: 0.37
-    - _FlatnessExtra: 0.686
+    - _FlatnessExtra: 0.588
     - _FlatnessSecondary: 1
     - _GlossMapScale: 1
     - _Glossiness: 0
@@ -127,9 +126,9 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _OutlineDepthOffset: 0
-    - _OutlineEnabled: 0
+    - _OutlineEnabled: 1
     - _OutlineScale: 1
-    - _OutlineWidth: 1
+    - _OutlineWidth: 1.21
     - _OverrideLightmapDir: 0
     - _OverrideShadows: 1
     - _OverrideShadowsEnabled: 1
@@ -139,13 +138,13 @@ Material:
     - _SecondaryColor: 1
     - _SecondaryColorEnabled: 1
     - _SelfShadingSize: 0.596
-    - _SelfShadingSizeExtra: 0.492
+    - _SelfShadingSizeExtra: 0.395
     - _ShadowEdgeSize: 0.071
-    - _ShadowEdgeSizeExtra: 0.301
+    - _ShadowEdgeSizeExtra: 0.31
     - _ShadowEdgeSmoothness: 0.071
     - _ShadowFalloff: 0.01
     - _SmoothnessTextureChannel: 0
-    - _SpecularEnabled: 1
+    - _SpecularEnabled: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
@@ -159,7 +158,7 @@ Material:
     - _VertexColorsEnabled: 0
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BaseColor: {r: 0.20000002, g: 0.20784315, b: 0.19607845, a: 1}
     - _Color: {r: 0, g: 0, b: 0, a: 1}
     - _ColorCelShadow: {r: 0.49056602, g: 0.34478462, b: 0.4476891, a: 1}
     - _ColorDim: {r: 0.4528302, g: 0.4528302, b: 0.4528302, a: 1}
@@ -174,6 +173,6 @@ Material:
     - _FlatRimColor: {r: 0.4056604, g: 0.4056604, b: 0.4056604, a: 1}
     - _FlatSpecularColor: {r: 0.5471698, g: 0.5471698, b: 0.5471698, a: 1}
     - _LightmapDirection: {r: 0, g: 1, b: 0, a: 0}
-    - _OutlineColor: {r: 1, g: 1, b: 1, a: 1}
+    - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _UnityShadowColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
