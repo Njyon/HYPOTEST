@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Rendering;
 
-public class ScreenSpaceOutlines : ScriptableRendererFeature
+public class MyScreenSpaceOutlines : ScriptableRendererFeature
 {
 
     [System.Serializable]
@@ -82,7 +82,7 @@ public class ScreenSpaceOutlines : ScriptableRendererFeature
             normals.Init("_SceneViewSpaceNormals");
             normalsMaterial = new Material(Shader.Find("Shader Graphs/ViewSpaceNormalsShader"));
 
-            occludersMaterial = new Material(Shader.Find("Unlit/Color"));
+            occludersMaterial = new Material(Shader.Find("Shader Graphs/OutlineOccluderShader"));
             occludersMaterial.SetColor("_Color", normalsTextureSettings.backgroundColor);
         }
 
