@@ -8,11 +8,14 @@ public abstract class ACameraState : IState<CameraStates>
 	public CameraStateMachine StateMachine { get { return stateMachine; } }
 	CameraController camController;
 	public CameraController CameraController { get { return camController; } }
+	GameCharacter gameCharacter;
+	public GameCharacter GameCharacter { get { return gameCharacter; } }
 
-	public ACameraState(CameraStateMachine stateMachine, CameraController camController)
+	public ACameraState(CameraStateMachine stateMachine, CameraController camController, GameCharacter gameCharacter)
 	{
 		this.stateMachine = stateMachine;
 		this.camController = camController;
+		this.gameCharacter = gameCharacter;
 	}
 
 	public abstract void EndState(CameraStates newState);

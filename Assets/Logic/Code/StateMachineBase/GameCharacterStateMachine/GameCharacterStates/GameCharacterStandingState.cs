@@ -9,7 +9,7 @@ public class GameCharacterStandingState : AGameCharacterState
 
 	public override void StartState(GameCharacterState oldState)
 	{
-
+		ResetJumps();
 	}
 
 	public override GameCharacterState GetStateType()
@@ -19,6 +19,9 @@ public class GameCharacterStandingState : AGameCharacterState
 
 	public override GameCharacterState UpdateState(float deltaTime, GameCharacterState newStateRequest)
 	{
+		if (!GameCharacter.IsGrounded)
+			return GameCharacterState.InAir;
+
 		if (GameCharacter.Veloctiy.magnitude > 0 || GameCharacter.GetMovementInputDir().magnitude > 0)
 			return GameCharacterState.Moving;
 

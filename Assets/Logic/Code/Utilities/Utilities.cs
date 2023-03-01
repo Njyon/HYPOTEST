@@ -4,26 +4,40 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+[Flags]
+public enum DebugAreas
+{
+    None = 0,
+    Movement = 1,
+    Combat = 2,
+    Animation = 4,
+    Camera = 8,
+    Misc = 16,
+}
+
 namespace Ultra {
     public class Utilities : Singelton<Utilities> {
         public List<string> onScreenList = new List<string>();
         public List<TimedMessage> onScreenListTimed = new List<TimedMessage>();
         public GUIStyle style = new GUIStyle();
+        public int debugLevel = 100;
+        public DebugAreas debugAreas = (DebugAreas)(-1);
 
 
-		private void Awake()
+		void Awake()
 		{
             style.fontSize = 30;
             style.wordWrap = true;
         }
 
-		private void Update()
+        void Update()
         {
 #if UNITY_EDITOR || DEVELOPMENT_BUILD 
             if (onScreenListTimed.Count > 0 && onScreenList.Count <= 0)
+			{
                 DebugLogOnScreen(StringColor.Red + "Debug Log:" + StringColor.EndColor);
+			}
 #endif
-
         }
 
         /// <summary>
@@ -55,9 +69,10 @@ namespace Ultra {
         /// Logs a string on the screen
         /// </summary>
         /// <param name="message">message that gets logged</param>
-        public void DebugLogOnScreen(string message)
+        public void DebugLogOnScreen(string message, int debugLevel = 100, DebugAreas debugArea = DebugAreas.Misc)
         {
-#if UNITY_EDITOR || DEVELOPMENT_BUILD 
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            if (debugLevel > this.debugLevel || (debugArea & this.debugAreas) != debugArea) return;
             onScreenList.Add(message);
 #endif
         }
@@ -66,10 +81,10 @@ namespace Ultra {
         /// </summary>
         /// <param name="message">message that gets logged</param>
         /// <param name="time"> hopw long the message gets logged </param>
-        public void DebugLogOnScreen(string message, float time)
+        public void DebugLogOnScreen(string message, float time, int debugLevel = 100, DebugAreas debugArea = DebugAreas.Misc)
         {
 #if UNITY_EDITOR|| DEVELOPMENT_BUILD
-            onScreenListTimed.Add(new TimedMessage(message, time));
+            onScreenListTimed.Add(new TimedMessage(message, time, debugLevel, debugArea));
 #endif
         }
         /// <summary>
@@ -86,6 +101,7 @@ namespace Ultra {
         }
 #if UNITY_EDITOR|| DEVELOPMENT_BUILD
         async void OnGUI() {
+            Update();
 			await new WaitForEndOfFrame();
             for (int i = 0; i < onScreenList.Count; i++) {
                 GUI.Label(new Rect(0, 0 + i * style.fontSize, 1000f, 1000f), onScreenList[i], style);
@@ -93,15 +109,18 @@ namespace Ultra {
             // List is every second tick cleaned, don't know why
             if (onScreenList.Count > 0) {
                 for (int i = 0; i < onScreenListTimed.Count; i++) {
-                    GUI.Label(new Rect(0, 0 + (onScreenList.Count + i) * style.fontSize, 1000f, 1000f), onScreenListTimed[i].Message, style);
-                    onScreenListTimed[i].Time -= Time.deltaTime;
-                    if (onScreenListTimed[i].Time <= 0) onScreenListTimed.RemoveAt(i);
+                    if (onScreenListTimed[i].DebugLevel <= this.debugLevel || (onScreenListTimed[i].DebugArea & this.debugAreas) == onScreenListTimed[i].DebugArea)
+					{
+                        GUI.Label(new Rect(0, 0 + (onScreenList.Count + i) * style.fontSize, 1000f, 1000f), onScreenListTimed[i].Message, style);
+                        onScreenListTimed[i].Time -= Time.deltaTime;
+                        if (onScreenListTimed[i].Time <= 0) onScreenListTimed.RemoveAt(i);
+                    }
                 }
             }
             onScreenList.Clear();
         }
 #endif
-        public bool IsNearlyEqual(float a, float b, float epsilon)
+        public static bool IsNearlyEqual(float a, float b, float epsilon)
 		{
             if (a >= b - epsilon && a <= b + epsilon)
             {
@@ -112,7 +131,7 @@ namespace Ultra {
                 return false;
             }
         }
-        public bool IsNearlyEqual(Vector3 a, Vector3 b, Vector3 epsilon)
+        public static bool IsNearlyEqual(Vector3 a, Vector3 b, Vector3 epsilon)
         {
             if (IsNearlyEqual(a.x, b.x, epsilon.x) && IsNearlyEqual(a.y, b.y, epsilon.y) && IsNearlyEqual(a.z, b.z, epsilon.z))
             {
@@ -123,7 +142,7 @@ namespace Ultra {
                 return false;
             }
         }
-        public bool IsNearlyEqual(Color a, Color b, Color epsilon)
+        public static bool IsNearlyEqual(Color a, Color b, Color epsilon)
 		{
             if (IsNearlyEqual(a.r, b.r, epsilon.r) && IsNearlyEqual(a.g, b.g, epsilon.g) && IsNearlyEqual(a.b, b.b, epsilon.b) && IsNearlyEqual(a.a, b.a, epsilon.a))
             {
@@ -134,7 +153,7 @@ namespace Ultra {
                 return false;
             }
         }
-        public float Remap (float value, float fromA, float toA, float fromB, float toB)
+        public static float Remap (float value, float fromA, float toA, float fromB, float toB)
 		{
             return (value - fromA) / (toA - fromA) * (toB - fromB) + fromB;
 		}
@@ -143,7 +162,7 @@ namespace Ultra {
         /// that lies in the outer and not the inner interval.
         /// </summary>
         /// <returns> NEED to check if float is NaN in case of not valid ranges </returns>
-        public float PickUniformlyFromSplitInterval(float outerLower, float outerUpper, float innerLower, float innerUpper)
+        public static float PickUniformlyFromSplitInterval(float outerLower, float outerUpper, float innerLower, float innerUpper)
         {
             float firstSectionLength = Mathf.Max(0.0f, innerLower - outerLower);
             float secondSectionLength = Mathf.Max(0.0f, outerUpper - innerUpper);
@@ -167,7 +186,7 @@ namespace Ultra {
         /// that lies in the outer and not the inner interval.
         /// </summary>
         /// <returns> NEED to check if int is int.MinValue in case of not valid ranges </returns>
-        public int PickUniformlyFromSplitInterval(int outerLower, int outerUpper, int innerLower, int innerUpper)
+        public static int PickUniformlyFromSplitInterval(int outerLower, int outerUpper, int innerLower, int innerUpper)
         {
             int firstSectionLength = Mathf.Max(0, innerLower - outerLower);
             int secondSectionLength = Mathf.Max(0, outerUpper - innerUpper);
@@ -195,8 +214,10 @@ namespace Ultra {
         /// <param name="color"> </param>
         /// <param name="duration"> </param>
         /// <param name="quality"> Define the quality of the wire sphere, from 1 to 10 </param>
-        public void DrawWireSphere(Vector3 center, float radius, Color color, float duration, int quality = 3)
+        public static void DrawWireSphere(Vector3 center, float radius, Color color, float duration, int debugLevel = 100, DebugAreas debugArea = DebugAreas.Misc, int quality = 3)
         {
+            if (debugLevel > Instance.debugLevel || (debugArea & Instance.debugAreas) != debugArea) return;
+
             quality = Mathf.Clamp(quality, 1, 10);
 
             int segments = quality << 2;
@@ -242,6 +263,43 @@ namespace Ultra {
                 .SelectMany(assembly => assembly.GetTypes())
                 .Where(type => type.IsSubclassOf(typeof(T)))
                 .Select(type => Activator.CreateInstance(type) as T);
+        }
+
+        public static void DrawArrow(Vector3 startPoint, Vector3 direction, float length, Color color, float time = 0f, int debugLevel = 100, DebugAreas debugArea = DebugAreas.Misc)
+        {
+            if (debugLevel > Instance.debugLevel || (debugArea & Instance.debugAreas) != debugArea) return;
+
+            if (IsNearlyEqual(length, 0, 0.001f)) length = 0.01f;
+            // Draw line
+            Debug.DrawRay(startPoint, direction * length, color, time);
+
+            // Draw arrowhead
+            Vector3 right = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 180 + 45, 0) * new Vector3(0, 0, 1);
+            Vector3 left = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 180 - 45, 0) * new Vector3(0, 0, 1);
+            Debug.DrawRay(startPoint + direction * length, right * 0.25f * length, color, time);
+            Debug.DrawRay(startPoint + direction * length, left * 0.25f * length, color, time);
+        }
+
+        public static Vector3[] CalculateTrijactoryPoints(int segments, float duration, Vector3 startPosition, Vector3 velocity, Vector3 gracity)
+		{
+			Vector3[] points = new Vector3[segments];
+            float timeStep = duration / segments;
+            Vector3 position = startPosition;
+            Vector3 internVel = velocity;
+            Vector3 gravity = gracity;
+
+            for (int i = 0; i < segments; i++)
+            {
+                float time = timeStep * i;
+                Vector3 displacement = internVel * time + 0.5f * gravity * time * time;
+                Vector3 newPosition = position + displacement;
+                Vector3 newVelocity = internVel + gravity * time;
+                internVel = newVelocity;
+                position = newPosition;
+                points[i] = position;
+            }
+
+            return points;
         }
     }
 }

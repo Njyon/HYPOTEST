@@ -11,10 +11,10 @@ public enum CameraStates
 
 public class CameraStateMachine : AStateMachineBase<CameraStates>
 {
-	CameraController comController;
+	CameraController camController;
 	protected override void Start()
 	{
-		comController = GetComponent<CameraController>();
+		camController = GetComponent<CameraController>();
 		base.Start();
 	}
 
@@ -59,8 +59,8 @@ public class CameraStateMachine : AStateMachineBase<CameraStates>
 	{
 		switch (stateType)
 		{
-			case CameraStates.Default: newState = new DefaultCameraState(this, comController); break;
-			case CameraStates.MultipleTargets: newState = new MultiTargetCamerState(this, comController); break;
+			case CameraStates.Default: newState = new DefaultCameraState(this, camController, camController.GameCharacter); break;
+			case CameraStates.MultipleTargets: newState = new MultiTargetCamerState(this, camController, camController.GameCharacter); break;
 			default:
 				newState = null;
 				return false;

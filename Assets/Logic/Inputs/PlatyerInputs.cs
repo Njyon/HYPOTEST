@@ -53,6 +53,42 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DebugLevelUp"",
+                    ""type"": ""Button"",
+                    ""id"": ""6ef7bf84-e454-4171-832b-629ad7cd5324"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DebugLevelDown"",
+                    ""type"": ""Button"",
+                    ""id"": ""eb641838-751c-49a2-ba4f-57ae34443c02"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""AllDebugAreasOn"",
+                    ""type"": ""Button"",
+                    ""id"": ""5e0df1cb-0f67-44c7-827d-14d41cb73055"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""AllDebugAreasOff"",
+                    ""type"": ""Button"",
+                    ""id"": ""53fd7822-da4e-40ca-b626-b0c6dd77bfbf"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -242,6 +278,50 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f22e2172-a57d-479f-884b-28e222fa58c6"",
+                    ""path"": ""<Keyboard>/numpad8"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""DebugLevelUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9be3b028-3d1e-4c6a-b09e-cc6dcfdf97b5"",
+                    ""path"": ""<Keyboard>/numpad2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""DebugLevelDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8bee3f5f-c7d8-4e43-8ca1-2afa8b2d4bcd"",
+                    ""path"": ""<Keyboard>/numpad6"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""AllDebugAreasOn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a5f4bba5-426a-437b-97a0-41a8e4c9c096"",
+                    ""path"": ""<Keyboard>/numpad4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""AllDebugAreasOff"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -281,6 +361,10 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         m_Default_VerticalInput = m_Default.FindAction("VerticalInput", throwIfNotFound: true);
         m_Default_HorizontalInput = m_Default.FindAction("HorizontalInput", throwIfNotFound: true);
         m_Default_Jump = m_Default.FindAction("Jump", throwIfNotFound: true);
+        m_Default_DebugLevelUp = m_Default.FindAction("DebugLevelUp", throwIfNotFound: true);
+        m_Default_DebugLevelDown = m_Default.FindAction("DebugLevelDown", throwIfNotFound: true);
+        m_Default_AllDebugAreasOn = m_Default.FindAction("AllDebugAreasOn", throwIfNotFound: true);
+        m_Default_AllDebugAreasOff = m_Default.FindAction("AllDebugAreasOff", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -343,6 +427,10 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     private readonly InputAction m_Default_VerticalInput;
     private readonly InputAction m_Default_HorizontalInput;
     private readonly InputAction m_Default_Jump;
+    private readonly InputAction m_Default_DebugLevelUp;
+    private readonly InputAction m_Default_DebugLevelDown;
+    private readonly InputAction m_Default_AllDebugAreasOn;
+    private readonly InputAction m_Default_AllDebugAreasOff;
     public struct DefaultActions
     {
         private @PlayerInputs m_Wrapper;
@@ -350,6 +438,10 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         public InputAction @VerticalInput => m_Wrapper.m_Default_VerticalInput;
         public InputAction @HorizontalInput => m_Wrapper.m_Default_HorizontalInput;
         public InputAction @Jump => m_Wrapper.m_Default_Jump;
+        public InputAction @DebugLevelUp => m_Wrapper.m_Default_DebugLevelUp;
+        public InputAction @DebugLevelDown => m_Wrapper.m_Default_DebugLevelDown;
+        public InputAction @AllDebugAreasOn => m_Wrapper.m_Default_AllDebugAreasOn;
+        public InputAction @AllDebugAreasOff => m_Wrapper.m_Default_AllDebugAreasOff;
         public InputActionMap Get() { return m_Wrapper.m_Default; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -368,6 +460,18 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @Jump.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnJump;
                 @Jump.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnJump;
                 @Jump.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnJump;
+                @DebugLevelUp.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnDebugLevelUp;
+                @DebugLevelUp.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnDebugLevelUp;
+                @DebugLevelUp.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnDebugLevelUp;
+                @DebugLevelDown.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnDebugLevelDown;
+                @DebugLevelDown.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnDebugLevelDown;
+                @DebugLevelDown.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnDebugLevelDown;
+                @AllDebugAreasOn.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnAllDebugAreasOn;
+                @AllDebugAreasOn.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnAllDebugAreasOn;
+                @AllDebugAreasOn.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnAllDebugAreasOn;
+                @AllDebugAreasOff.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnAllDebugAreasOff;
+                @AllDebugAreasOff.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnAllDebugAreasOff;
+                @AllDebugAreasOff.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnAllDebugAreasOff;
             }
             m_Wrapper.m_DefaultActionsCallbackInterface = instance;
             if (instance != null)
@@ -381,6 +485,18 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
+                @DebugLevelUp.started += instance.OnDebugLevelUp;
+                @DebugLevelUp.performed += instance.OnDebugLevelUp;
+                @DebugLevelUp.canceled += instance.OnDebugLevelUp;
+                @DebugLevelDown.started += instance.OnDebugLevelDown;
+                @DebugLevelDown.performed += instance.OnDebugLevelDown;
+                @DebugLevelDown.canceled += instance.OnDebugLevelDown;
+                @AllDebugAreasOn.started += instance.OnAllDebugAreasOn;
+                @AllDebugAreasOn.performed += instance.OnAllDebugAreasOn;
+                @AllDebugAreasOn.canceled += instance.OnAllDebugAreasOn;
+                @AllDebugAreasOff.started += instance.OnAllDebugAreasOff;
+                @AllDebugAreasOff.performed += instance.OnAllDebugAreasOff;
+                @AllDebugAreasOff.canceled += instance.OnAllDebugAreasOff;
             }
         }
     }
@@ -408,5 +524,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         void OnVerticalInput(InputAction.CallbackContext context);
         void OnHorizontalInput(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnDebugLevelUp(InputAction.CallbackContext context);
+        void OnDebugLevelDown(InputAction.CallbackContext context);
+        void OnAllDebugAreasOn(InputAction.CallbackContext context);
+        void OnAllDebugAreasOff(InputAction.CallbackContext context);
     }
 }

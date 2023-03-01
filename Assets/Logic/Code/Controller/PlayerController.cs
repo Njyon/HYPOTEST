@@ -7,14 +7,15 @@ public class PlayerController : ControllerBase
     [HideInInspector] public PlayerInputs playerInputs;
 	CameraController camController;
 	GameCharacter gameCharacter;
+	EventComponent eventComponent = new EventComponent();
 
 	public override void BeginPosses(GameObject pawn)
 	{
 		base.BeginPosses(pawn);
 
 		SetupDefaultPlayerInputs();
-		SetupCamera(pawn);
 		SetupGameCharacter(pawn);
+		SetupCamera(pawn);
 	}
 
 	private void SetupGameCharacter(GameObject pawn)
@@ -44,6 +45,10 @@ public class PlayerController : ControllerBase
 		playerInputs.Default.HorizontalInput.canceled += ctx => HorizontalInput(ctx.ReadValue<float>());
 		playerInputs.Default.VerticalInput.canceled += ctx => VerticalInput(ctx.ReadValue<float>());
 		playerInputs.Default.Jump.performed += ctx => Jump();
+		playerInputs.Default.DebugLevelUp.performed += ctx => DebugUp();
+		playerInputs.Default.DebugLevelDown.performed += ctx => DebugDown();
+		playerInputs.Default.AllDebugAreasOn.performed += ctx => AllDebugAreasOn();
+		playerInputs.Default.AllDebugAreasOff.performed += ctx => AlDebugAreasOff();
 	}
 
 	void HorizontalInput(float axis)
@@ -58,7 +63,30 @@ public class PlayerController : ControllerBase
 
 	void Jump()
 	{
+		if (gameCharacter == null) return;
+		eventComponent.AddEvent(new JumpEvent(gameCharacter));
+	}
 
+	void DebugUp()
+	{
+		Ultra.Utilities.Instance.debugLevel += 100;
+	}
+	void DebugDown()
+	{
+		Ultra.Utilities.Instance.debugLevel -= 100;
+	}
+	void AllDebugAreasOn()
+	{
+		Ultra.Utilities.Instance.debugAreas = (DebugAreas)(-1);
+	}
+	void AlDebugAreasOff()
+	{
+		Ultra.Utilities.Instance.debugAreas = 0;
+	}
+
+	private void Update()
+	{
+		eventComponent?.Update(Time.deltaTime);
 	}
 
 	private void OnDisable()

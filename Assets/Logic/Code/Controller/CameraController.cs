@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
+    GameCharacter gameCharacter;
     List<Transform> targets = new List<Transform>();
     [Header("Overall Values")]
     [SerializeField] Vector3 offset;
@@ -50,6 +51,7 @@ public class CameraController : MonoBehaviour
     public Vector2 ClampX { get { return clampX; } }
     public Vector2 ClampY { get { return clampY; } }
     public Vector3 CameraTargetPosition { get { return cameraTargetPosition; } set { cameraTargetPosition = value; } }
+    public GameCharacter GameCharacter { get { return gameCharacter; } }
 
     private void Start()
     {
@@ -58,6 +60,8 @@ public class CameraController : MonoBehaviour
 
     public void OnPosses(GameObject newTarget)
     {
+        gameCharacter = newTarget.GetComponent<GameCharacter>();
+
         targets.Add(newTarget.transform);
         transform.position = newTarget.transform.position + offset;
 

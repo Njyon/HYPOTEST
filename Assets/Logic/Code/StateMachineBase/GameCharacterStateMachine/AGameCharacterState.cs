@@ -22,4 +22,9 @@ public abstract class AGameCharacterState : IState<GameCharacterState>
 	public abstract void LateExecuteState(float deltaTime);
 	public abstract void StartState(GameCharacterState oldState);
 	public abstract GameCharacterState UpdateState(float deltaTime, GameCharacterState newStateRequest);
+
+	public void ResetJumps()
+	{
+		GameCharacter.CurrentJumpAmount = 0;
+	}
 }

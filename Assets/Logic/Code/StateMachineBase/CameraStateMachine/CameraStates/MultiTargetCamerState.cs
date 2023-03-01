@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MultiTargetCamerState : ACameraState
 {
-	public MultiTargetCamerState(CameraStateMachine stateMachine, CameraController cameraController) : base(stateMachine, cameraController)
+	public MultiTargetCamerState(CameraStateMachine stateMachine, CameraController cameraController, GameCharacter gameCharacter) : base(stateMachine, cameraController, gameCharacter)
 	{ }
 
 	public override void StartState(CameraStates oldState)

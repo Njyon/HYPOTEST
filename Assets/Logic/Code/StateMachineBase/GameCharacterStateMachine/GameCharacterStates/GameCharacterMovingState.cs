@@ -9,7 +9,7 @@ public class GameCharacterMovingState : AGameCharacterState
 
 	public override void StartState(GameCharacterState oldState)
 	{
-
+		ResetJumps();
 	}
 
 	public override GameCharacterState GetStateType()
@@ -19,6 +19,9 @@ public class GameCharacterMovingState : AGameCharacterState
 
 	public override GameCharacterState UpdateState(float deltaTime, GameCharacterState newStateRequest)
 	{
+		if (!GameCharacter.IsGrounded)
+			return GameCharacterState.InAir;
+
 		if (GameCharacter.Veloctiy.magnitude <= 0 && GameCharacter.GetMovementInputDir().magnitude <= 0)
 			return GameCharacterState.Standing;
 
@@ -30,12 +33,21 @@ public class GameCharacterMovingState : AGameCharacterState
 		Vector2 inputVector = GameCharacter.MovementInput;
 		inputVector.y = 0;
 
+		Ultra.Utilities.Instance.DebugLogOnScreen("InputVector: " + inputVector.ToString());
+
+		if (GameCharacter.PossibleGround != null)
+			inputVector = Vector3.ProjectOnPlane(inputVector, GameCharacter.PossibleGround.hit.normal);
+
+		Ultra.Utilities.Instance.DebugLogOnScreen("InputVector after Normal: " + inputVector.ToString());
+
 		float maxSpeed = GameCharacter.CharacterData.MaxMovementSpeed;
 		float acceleration = GameCharacter.CharacterData.Acceleration;
 
-		Vector3 velocity = GameCharacter.CharacterController.velocity;
+		Vector3 velocity = GameCharacter.MovementVelocity;
+		//velocity = new Vector3(velocity.x, 0f, 0f);
 		Vector3 input3D = new Vector3(inputVector.x, 0, 0);
-		Vector3 targetVelocity = input3D.normalized * maxSpeed;
+		Vector3 targetVelocity = inputVector.normalized * maxSpeed;
+		Ultra.Utilities.DrawArrow(GameCharacter.transform.position, targetVelocity, 10f, Color.green);
 
 		if (inputVector.magnitude > 0)
 		{
@@ -43,6 +55,9 @@ public class GameCharacterMovingState : AGameCharacterState
 			Vector3 deltaV = targetVelocity - velocity;
 			deltaV = Vector3.ClampMagnitude(deltaV, acceleration);
 			velocity += deltaV;
+
+			//velocity += targetVelocity * acceleration;
+			//velocity.x = Vector3.ClampMagnitude(velocity, maxSpeed).x;
 		}
 		else
 		{
@@ -53,7 +68,10 @@ public class GameCharacterMovingState : AGameCharacterState
 		}
 
 		// Anwenden der Geschwindigkeit
-		GameCharacter.MovementVelocity = velocity * Time.deltaTime;
+		velocity = new Vector3(velocity.x, velocity.y, GameCharacter.MovementVelocity.z);
+		velocity.y += Physics.gravity.y * Time.deltaTime;
+		Ultra.Utilities.DrawArrow(GameCharacter.transform.position, velocity, 10f, Color.magenta);
+		GameCharacter.MovementVelocity = velocity;
 	}
 
 	public override void FixedExecuteState(float deltaTime)
