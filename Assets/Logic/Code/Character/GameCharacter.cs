@@ -14,6 +14,8 @@ public class GameCharacter : MonoBehaviour
 	int currentJumpAmount = 0;
 	PredictedLandingPoint predictedLandingPoint;
 	bool isGrounded = false;
+	float maxWalkableSlopAngle;
+	float slopStrengh = 1;
 
 	public GameCharacterStateMachine StateMachine { get { return stateMachine; } }
 	public CharacterController CharacterController { get { return characterController; } }
@@ -24,7 +26,8 @@ public class GameCharacter : MonoBehaviour
 	public int CurrentJumpAmount { get { return currentJumpAmount; } set { currentJumpAmount = value; } }
 	public PredictedLandingPoint PossibleGround { get { return predictedLandingPoint; } set { predictedLandingPoint = value; } }
 	public bool IsGrounded { get { return isGrounded; } }
-
+	public float MaxWalkableSlopAngle { get { return maxWalkableSlopAngle; } }
+	public float SlopStrengh { get { return slopStrengh; } set { slopStrengh = value; } }
 
 	public void HorizontalMovementInput(float Haxis)
 	{
@@ -42,23 +45,22 @@ public class GameCharacter : MonoBehaviour
 	}
 	private void AddGravityOnMovementVelocity()
 	{
-		if (characterController.isGrounded && MovementVelocity.y <= 0f)
+		if (IsGrounded && MovementVelocity.y <= 0f)
 		{
-			var mV = MovementVelocity;
-			mV.y = 0f;
-			MovementVelocity = mV;
+			//var mV = MovementVelocity;
+			//mV.y = 0f;
+			//MovementVelocity = mV;
 		}
-		float yGravity = CalculateGravity();
-
-		MovementVelocity = new Vector3(MovementVelocity.x, MovementVelocity.y - yGravity, MovementVelocity.z);
+		else if (!IsGrounded)
+		{
+			float yGravity = CalculateGravity();
+			MovementVelocity = new Vector3(MovementVelocity.x, MovementVelocity.y - yGravity, MovementVelocity.z);
+		}
 	}
-
 	public float CalculateGravity()
 	{
-		//if (StateMachine.GetCurrentStateType() == GameCharacterState.Moving) return (CharacterData.MovmentGravity * Time.deltaTime) * 5;
-		return ((MovementVelocity.y > 0) ? (CharacterData.MovmentGravity * CharacterData.GravityMultiplier) : CharacterData.MovmentGravity) * Time.deltaTime;
+		return ((MovementVelocity.y > 0) ? CharacterData.MovmentGravity * CharacterData.GravityMultiplier : CharacterData.MovmentGravity) * Time.deltaTime;
 	}
-
 	Vector3 GetMovementVelocityWithoutGravity()
 	{
 		float yGravity = CalculateGravity();
@@ -81,6 +83,11 @@ public class GameCharacter : MonoBehaviour
 	{
 		return MovementVelocity * Time.deltaTime;
 	}
+	public float GetPossibleGroundAngle()
+	{
+		if (PossibleGround == null) return 0;
+		return Vector3.Angle(PossibleGround.hit.normal, Vector3.up);
+	}
 
 	private void Awake()
 	{
@@ -89,13 +96,52 @@ public class GameCharacter : MonoBehaviour
 		characterController = gameObject.GetComponent<CharacterController>();
 		if (!characterController) gameObject.AddComponent<CharacterController>();
 		stateMachine = gameObject.AddComponent<GameCharacterStateMachine>();
+
+		// Set Default Data
+		maxWalkableSlopAngle = CharacterController.slopeLimit;
+		/// Set sloplimit to max so we can use Slope strengh to walk over anything at first end slide when slop strengh hits 0
+		CharacterController.slopeLimit = 90f;
 	}
 
 	private void Update()
 	{
 		CalculateVelocity();
 		AddGravityOnMovementVelocity();
+		CheckIfCharacterIsGrounded();
+		MoveCharacter();
+		CalculateSlopLimit();
 
+		if (PossibleGround != null)
+		{
+			Ultra.Utilities.DrawWireSphere(PossibleGround.hit.point, 0.2f, Color.blue, 0.0f, 100, DebugAreas.Movement);
+		}
+		Ultra.Utilities.Instance.DebugLogOnScreen("CurrentCharacterState: " + StateMachine.GetCurrentStateType().ToString(), 0f, StringColor.Teal, 100, DebugAreas.Movement);
+		Ultra.Utilities.Instance.DebugLogOnScreen("Current Ground Angle: " + GetPossibleGroundAngle(), 0f, StringColor.Teal, 200, DebugAreas.Misc);
+	}
+
+	private void CalculateSlopLimit()
+	{
+		if (GetPossibleGroundAngle() > maxWalkableSlopAngle)
+		{
+			if (slopStrengh > 0)
+			{
+				slopStrengh = slopStrengh - Time.deltaTime * CharacterData.SlopStrenghDecrease;
+				if (slopStrengh < 0) slopStrengh = 0;
+			}
+		}
+		else
+		{
+			if (slopStrengh < 1)
+			{
+				slopStrengh = slopStrengh + Time.deltaTime * CharacterData.SlopStrenghIncrease;
+				if (slopStrengh > 1) slopStrengh = 1;
+			}
+		}
+		CharacterController.slopeLimit = Unity.Mathematics.math.remap(0, 1, maxWalkableSlopAngle, 90, slopStrengh);
+	}
+
+	private void CheckIfCharacterIsGrounded()
+	{
 		RaycastHit newHit;
 		Vector3 top = transform.position + Vector3.up * (CharacterController.height / 2f - characterController.radius);
 		Vector3 bottom = transform.position + Vector3.down * (CharacterController.height / 2f - characterController.radius);
@@ -109,20 +155,13 @@ public class GameCharacter : MonoBehaviour
 		{
 			isGrounded = false;
 		}
-
-		MoveCharacter();
-
-		if (PossibleGround != null)
-		{
-			Ultra.Utilities.DrawWireSphere(PossibleGround.hit.point, 0.2f, Color.blue, 0.0f, 100, DebugAreas.Movement);
-		}
 	}
 
 	private void MoveCharacter()
 	{
 		Vector3 movementVector = GetMovmentVelocityWithDeltaTime();
 		CollisionFlags falgs = CharacterController.Move(movementVector);
-		Ultra.Utilities.Instance.DebugLogOnScreen("MovementVelocity: " + MovementVelocity.ToString());
+		Ultra.Utilities.Instance.DebugLogOnScreen("MovementVelocity: " + MovementVelocity.ToString() + "MovementSpeed: " + MovementVelocity.magnitude);
 		Ultra.Utilities.DrawArrow(transform.position, movementVector.normalized, movementVector.magnitude * 50f, Color.red, 0f, 50, DebugAreas.Movement);
 		Vector3 moveDir = GetMovementVelocityWithoutGravity();
 		Ultra.Utilities.DrawArrow(transform.position, (moveDir.normalized.magnitude <= 0) ? transform.forward : moveDir.normalized, moveDir.magnitude * Time.deltaTime * 50f, Color.blue, 0f, 50, DebugAreas.Movement);

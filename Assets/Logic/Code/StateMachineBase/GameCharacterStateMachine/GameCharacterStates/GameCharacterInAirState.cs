@@ -7,22 +7,22 @@ public class GameCharacterInAirState : AGameCharacterState
 	public GameCharacterInAirState(GameCharacterStateMachine stateMachine, GameCharacter gameCharacter) : base(stateMachine, gameCharacter)
 	{ }
 
-	public override void StartState(GameCharacterState oldState)
+	public override void StartState(EGameCharacterState oldState)
 	{
 
 	}
 
-	public override GameCharacterState GetStateType()
+	public override EGameCharacterState GetStateType()
 	{
-		return GameCharacterState.InAir;
+		return EGameCharacterState.InAir;
 	}
 
-	public override GameCharacterState UpdateState(float deltaTime, GameCharacterState newStateRequest)
+	public override EGameCharacterState UpdateState(float deltaTime, EGameCharacterState newStateRequest)
 	{
 		if (GameCharacter.IsGrounded && GameCharacter.MovementVelocity.magnitude > 0)
-			return GameCharacterState.Moving;
+			return EGameCharacterState.Moving;
 		else if (GameCharacter.IsGrounded)
-			return GameCharacterState.Standing;
+			return EGameCharacterState.Standing;
 
 		return GetStateType();
 	}
@@ -54,9 +54,11 @@ public class GameCharacterInAirState : AGameCharacterState
 			Vector3 pointA = points[i - 1];
 			Vector3 pointB = points[i];
 			Ray ray = new Ray(pointA, pointB - pointA);
-			RaycastHit hit;
-			if (Physics.Raycast(ray, out hit, Vector3.Distance(pointA, pointB)))
+			RaycastHit[] hits = Physics.RaycastAll(ray, Vector3.Distance(pointA, pointB));
+			foreach(RaycastHit hit in hits)
 			{
+				// Ignore self hit
+				if (GameCharacter.gameObject == hit.collider.gameObject) continue;
 				didHit = true;
 				GameCharacter.PossibleGround = new PredictedLandingPoint(hit);
 				break;
@@ -70,8 +72,9 @@ public class GameCharacterInAirState : AGameCharacterState
 
 	}
 
-	public override void EndState(GameCharacterState newState)
+	public override void EndState(EGameCharacterState newState)
 	{
-		GameCharacter.PossibleGround = null;
+		Vector3 test = new Vector3(GameCharacter.MovementVelocity.x, 0f, GameCharacter.MovementVelocity.z);
+		GameCharacter.MovementVelocity = test;
 	}
 }

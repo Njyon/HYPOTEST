@@ -1,15 +1,18 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using UnityEngine;
 
-public enum CameraStates
+public enum ECameraStates
 {
 	Unknown,
 	Default,
-	MultipleTargets,
+	MultipleTarget,
 }
 
-public class CameraStateMachine : AStateMachineBase<CameraStates>
+public class CameraStateMachine : AStateMachineBase<ECameraStates>
 {
 	CameraController camController;
 	protected override void Start()
@@ -18,21 +21,21 @@ public class CameraStateMachine : AStateMachineBase<CameraStates>
 		base.Start();
 	}
 
-	public override bool CompareStateTypes(CameraStates A, CameraStates B)
+	public override bool CompareStateTypes(ECameraStates A, ECameraStates B)
 	{
 		return A == B;
 	}
 
-	public override IState<CameraStates> CreateUnknownStartState()
+	public override IState<ECameraStates> CreateUnknownStartState()
 	{
-		IState<CameraStates> unknownState = null;
-		CreateState(CameraStates.Unknown, out unknownState);
+		IState<ECameraStates> unknownState = null;
+		CreateState(ECameraStates.Unknown, out unknownState);
 		return unknownState;
 	}
 
-	public override CameraStates GetUnknownT()
+	public override ECameraStates GetUnknownT()
 	{
-		return CameraStates.Unknown;
+		return ECameraStates.Unknown;
 	}
 
 	public override void InitPreviousStatesWithUnknown()
@@ -43,28 +46,34 @@ public class CameraStateMachine : AStateMachineBase<CameraStates>
 		}
 	}
 
-	public override bool IsStateTypeUnknown(CameraStates stateType)
+	public override bool IsStateTypeUnknown(ECameraStates stateType)
 	{
-		return stateType == CameraStates.Unknown;
+		return stateType == ECameraStates.Unknown;
 	}
 
-	protected override IState<CameraStates> CreateDefaultState()
+	protected override IState<ECameraStates> CreateDefaultState()
 	{
-		IState<CameraStates> newState = null;
-		CreateState(CameraStates.Default, out newState);
+		IState<ECameraStates> newState = null;
+		CreateState(ECameraStates.Default, out newState);
 		return newState;
 	}
 
-	protected override bool CreateState(CameraStates stateType, out IState<CameraStates> newState)
+	protected override bool CreateState(ECameraStates stateType, out IState<ECameraStates> newState)
 	{
-		switch (stateType)
+		var stateTypes = Assembly.GetExecutingAssembly().GetTypes()
+			.Where(t => t.BaseType == typeof(ACameraState))
+			.ToList();
+
+		var stateClass = stateTypes.FirstOrDefault(t => t.Name == stateType.ToString() + "CameraState");
+
+		if (stateClass == null)
 		{
-			case CameraStates.Default: newState = new DefaultCameraState(this, camController, camController.GameCharacter); break;
-			case CameraStates.MultipleTargets: newState = new MultiTargetCamerState(this, camController, camController.GameCharacter); break;
-			default:
-				newState = null;
-				return false;
+			newState = null;
+			return false;
 		}
-		return true; 
+
+		newState = Activator.CreateInstance(stateClass, this, camController, camController.GameCharacter) as ACameraState;
+
+		return newState != null;
 	}
 }

@@ -7,19 +7,19 @@ public class MultiTargetCamerState : ACameraState
 	public MultiTargetCamerState(CameraStateMachine stateMachine, CameraController cameraController, GameCharacter gameCharacter) : base(stateMachine, cameraController, gameCharacter)
 	{ }
 
-	public override void StartState(CameraStates oldState)
+	public override void StartState(ECameraStates oldState)
 	{
 
 	}
 
-	public override CameraStates GetStateType()
+	public override ECameraStates GetStateType()
 	{
-		return CameraStates.MultipleTargets;
+		return ECameraStates.MultipleTarget;
 	}
 
-	public override CameraStates UpdateState(float deltaTime, CameraStates newStateRequest)
+	public override ECameraStates UpdateState(float deltaTime, ECameraStates newStateRequest)
 	{
-		if (CameraController.Targets.Count > 1) return CameraStates.Default;
+		if (CameraController.Targets.Count > 1) return ECameraStates.Default;
 
 		return GetStateType();
 	}
@@ -69,7 +69,7 @@ public class MultiTargetCamerState : ACameraState
 		CameraController.transform.LookAt(bounds.center);
 	}
 
-	public override void EndState(CameraStates newState)
+	public override void EndState(ECameraStates newState)
 	{
 
 	}

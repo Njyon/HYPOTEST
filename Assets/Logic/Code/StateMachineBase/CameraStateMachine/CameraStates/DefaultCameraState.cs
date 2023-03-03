@@ -8,19 +8,19 @@ public class DefaultCameraState : ACameraState
 	public DefaultCameraState(CameraStateMachine stateMachine, CameraController cameraController, GameCharacter gameCharacter) : base(stateMachine, cameraController, gameCharacter)
 	{ }
 
-	public override void StartState(CameraStates oldState)
+	public override void StartState(ECameraStates oldState)
 	{
 
 	}
 
-	public override CameraStates GetStateType()
+	public override ECameraStates GetStateType()
 	{
-		return CameraStates.Default;
+		return ECameraStates.Default;
 	}
 
-	public override CameraStates UpdateState(float deltaTime, CameraStates newStateRequest)
+	public override ECameraStates UpdateState(float deltaTime, ECameraStates newStateRequest)
 	{
-		if (CameraController.Targets.Count > 1) return CameraStates.MultipleTargets;
+		if (CameraController.Targets.Count > 1) return ECameraStates.MultipleTarget;
 
 		return GetStateType();
 	}
@@ -63,7 +63,7 @@ public class DefaultCameraState : ACameraState
 		CameraController.CameraTargetPosition = new Vector3(x, y, CameraController.CameraTargetPosition.z);
 	}
 
-	public override void EndState(CameraStates newState)
+	public override void EndState(ECameraStates newState)
 	{
 
 	}

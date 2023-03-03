@@ -7,23 +7,27 @@ public class GameCharacterStandingState : AGameCharacterState
 	public GameCharacterStandingState(GameCharacterStateMachine stateMachine, GameCharacter gameCharacter) : base(stateMachine, gameCharacter)
 	{ }
 
-	public override void StartState(GameCharacterState oldState)
+	public override void StartState(EGameCharacterState oldState)
 	{
 		ResetJumps();
+		SetSlopStrenghToZero(oldState);
 	}
 
-	public override GameCharacterState GetStateType()
+	public override EGameCharacterState GetStateType()
 	{
-		return GameCharacterState.Standing;
+		return EGameCharacterState.Standing;
 	}
 
-	public override GameCharacterState UpdateState(float deltaTime, GameCharacterState newStateRequest)
+	public override EGameCharacterState UpdateState(float deltaTime, EGameCharacterState newStateRequest)
 	{
 		if (!GameCharacter.IsGrounded)
-			return GameCharacterState.InAir;
+			return EGameCharacterState.InAir;
+
+		if (GameCharacter.GetPossibleGroundAngle() > GameCharacter.CharacterController.slopeLimit)
+			return EGameCharacterState.Sliding;
 
 		if (GameCharacter.Veloctiy.magnitude > 0 || GameCharacter.GetMovementInputDir().magnitude > 0)
-			return GameCharacterState.Moving;
+			return EGameCharacterState.Moving;
 
 		return GetStateType();
 	}
@@ -43,7 +47,7 @@ public class GameCharacterStandingState : AGameCharacterState
 
 	}
 
-	public override void EndState(GameCharacterState newState)
+	public override void EndState(EGameCharacterState newState)
 	{
 
 	}

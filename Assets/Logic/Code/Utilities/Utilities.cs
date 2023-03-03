@@ -35,7 +35,7 @@ namespace Ultra {
 #if UNITY_EDITOR || DEVELOPMENT_BUILD 
             if (onScreenListTimed.Count > 0 && onScreenList.Count <= 0)
 			{
-                DebugLogOnScreen(StringColor.Red + "Debug Log:" + StringColor.EndColor);
+                //DebugLogOnScreen(StringColor.Red + "Debug Log:" + StringColor.EndColor);
 			}
 #endif
         }
@@ -93,10 +93,10 @@ namespace Ultra {
         /// <param name="message">message that gets logged</param>
         /// <param name="time"> hopw long the message gets logged </param>
         /// <param name="color"> Color of the string (NEEDS TO BE STRINGCOLOR class) </param>
-        public void DebugLogOnScreen(string message, float time, string color)
+        public void DebugLogOnScreen(string message, float time, string color, int debugLevel = 100, DebugAreas debugArea = DebugAreas.Misc)
 		{
 #if UNITY_EDITOR|| DEVELOPMENT_BUILD
-            onScreenListTimed.Add(new TimedMessage(color + message + StringColor.EndColor, time));
+            onScreenListTimed.Add(new TimedMessage(color + message + StringColor.EndColor, time, debugLevel, debugArea));
 #endif
         }
 #if UNITY_EDITOR|| DEVELOPMENT_BUILD

@@ -13,6 +13,8 @@ public class CharacterData : MonoBehaviour
 	[SerializeField] float acceleration = 5f;
 	[SerializeField] float drag = 1f;
 	[SerializeField] float inAirControll = 1f;
+	[SerializeField] float slopStrenghIncrease = 1f;
+	[SerializeField] float slopStrenghDecrease = 1f;
 
 	[Header("JumpData")]
 	[SerializeField] int maxJumps = 3;
@@ -24,6 +26,8 @@ public class CharacterData : MonoBehaviour
 	public float Acceleration { get { return acceleration; } }	
 	public float Drag { get { return drag; } }	
 	public float InAirControll { get { return inAirControll; } }
+	public float SlopStrenghIncrease {  get { return slopStrenghIncrease; } }
+	public float SlopStrenghDecrease { get { return slopStrenghDecrease; } }
 
 	public int MaxJumps { get { return maxJumps; } }
 	public float JumpForce { get { return jumpForce; } }

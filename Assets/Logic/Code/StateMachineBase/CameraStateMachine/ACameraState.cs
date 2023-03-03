@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class ACameraState : IState<CameraStates>
+public abstract class ACameraState : IState<ECameraStates>
 {
 	CameraStateMachine stateMachine;
 	public CameraStateMachine StateMachine { get { return stateMachine; } }
@@ -18,11 +18,11 @@ public abstract class ACameraState : IState<CameraStates>
 		this.gameCharacter = gameCharacter;
 	}
 
-	public abstract void EndState(CameraStates newState);
+	public abstract void EndState(ECameraStates newState);
 	public abstract void ExecuteState(float deltaTime);
 	public abstract void FixedExecuteState(float deltaTime);
 	public abstract void LateExecuteState(float deltaTime);
-	public abstract CameraStates GetStateType();
-	public abstract void StartState(CameraStates oldState);
-	public abstract CameraStates UpdateState(float deltaTime, CameraStates newStateRequest);
+	public abstract ECameraStates GetStateType();
+	public abstract void StartState(ECameraStates oldState);
+	public abstract ECameraStates UpdateState(float deltaTime, ECameraStates newStateRequest);
 }
