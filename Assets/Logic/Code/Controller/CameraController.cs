@@ -11,7 +11,8 @@ public class CameraController : MonoBehaviour
     [SerializeField] float StateToStateInterpolationSpeed = 100f;
 
     [Header("DefaultValues")]
-    public float moveSpeed = 5f;
+    public float moveSpeedx = 5f;
+    public float moveSpeedy = 5f;
     public float lookAhead = 2f;
     public float speed = 5f;
     public Vector2 clampY = new Vector2(-5, 5);
@@ -31,6 +32,8 @@ public class CameraController : MonoBehaviour
     Vector3 prevTargetPos;
     Vector3 mainTargetVelocity;
     Vector3 cameraTargetPosition;
+    private Vector3 velocityVelx = Vector3.zero;
+    private Vector3 velocityVely = Vector3.zero;
 
 
     public List<Transform> Targets { get { return targets; } }
@@ -45,7 +48,8 @@ public class CameraController : MonoBehaviour
     public float MinZoom { get { return minZoom; } }
     public float SmoothTime { get { return smoothTime; } }
     public Vector3 MainTargetVelocity { get { return mainTargetVelocity; } }
-    public float MoveSpeed { get { return moveSpeed; } }
+    public float MoveSpeedx { get { return moveSpeedx; } }
+    public float MoveSpeedy { get { return moveSpeedy; } }
     public float LookAhead { get { return lookAhead; } }
     public float Speed { get { return speed; } }
     public Vector2 ClampX { get { return clampX; } }
@@ -84,6 +88,10 @@ public class CameraController : MonoBehaviour
     private void LateUpdate()
     {
         // TODO Probalby use smoothdamp here and use target position calculated in states
-        transform.position = cameraTargetPosition; //Vector3.Lerp(transform.position, cameraTargetPosition, StateToStateInterpolationSpeed * Time.deltaTime);
+        //transform.position = cameraTargetPosition; //Vector3.Lerp(transform.position, cameraTargetPosition, StateToStateInterpolationSpeed * Time.deltaTime);
+
+        Vector3 xPos = Vector3.SmoothDamp(transform.position, Vector3.ProjectOnPlane(cameraTargetPosition, Vector3.up) , ref velocityVelx, 1 / MoveSpeedx);
+        Vector3 yPos = Vector3.SmoothDamp(transform.position, Vector3.ProjectOnPlane(cameraTargetPosition, Vector3.right) , ref velocityVely, 1 / MoveSpeedy);
+        transform.position = new Vector3(xPos.x, yPos.y, xPos.z);
     }
 }

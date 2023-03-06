@@ -19,9 +19,9 @@ public class GameCharacterInAirState : AGameCharacterState
 
 	public override EGameCharacterState UpdateState(float deltaTime, EGameCharacterState newStateRequest)
 	{
-		if (GameCharacter.IsGrounded && GameCharacter.MovementVelocity.magnitude > 0)
+		if (GameCharacter.IsGrounded && GameCharacter.MovementVelocity.magnitude > 0 && GameCharacter.MovementVelocity.y <= 0)
 			return EGameCharacterState.Moving;
-		else if (GameCharacter.IsGrounded)
+		else if (GameCharacter.IsGrounded && GameCharacter.MovementVelocity.magnitude <= 0)
 			return EGameCharacterState.Standing;
 
 		return GetStateType();
@@ -74,7 +74,8 @@ public class GameCharacterInAirState : AGameCharacterState
 
 	public override void EndState(EGameCharacterState newState)
 	{
-		Vector3 test = new Vector3(GameCharacter.MovementVelocity.x, 0f, GameCharacter.MovementVelocity.z);
+		Vector3 test = new Vector3(GameCharacter.MovementVelocity.x, Physics.gravity.y / 2, GameCharacter.MovementVelocity.z);
 		GameCharacter.MovementVelocity = test;
+		GameCharacter.IsInJump = false;
 	}
 }

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class DefaultCameraState : ACameraState
 {
-	private Vector3 velocityVel = Vector3.zero;
 	public DefaultCameraState(CameraStateMachine stateMachine, CameraController cameraController, GameCharacter gameCharacter) : base(stateMachine, cameraController, gameCharacter)
 	{ }
 
@@ -46,16 +45,15 @@ public class DefaultCameraState : ACameraState
 
 		// Move the camera towards the target position and direction
 		Vector3 targetPosition = target.position + targetDirection;
-		Vector3 test = Vector3.SmoothDamp(CameraController.CameraTargetPosition, targetPosition, ref velocityVel, 1 / CameraController.MoveSpeed);
-		test.z = CameraController.CameraTargetPosition.z;
+		targetPosition.z = CameraController.CameraTargetPosition.z;
 
 		// Keep the camera within the bounds of the scene
 		float xMin = target.position.x + CameraController.ClampX.x;
 		float xMax = target.position.x + CameraController.ClampX.y;
-		float x = Mathf.Clamp(test.x, xMin, xMax);
+		float x = Mathf.Clamp(targetPosition.x, xMin, xMax);
 		float yMin = (GameCharacter.PossibleGround != null) ? GameCharacter.PossibleGround.hit.point.y + CameraController.Offset.y : target.position.y + CameraController.ClampY.x;
 		float yMax = target.position.y + CameraController.ClampX.y;
-		float y = Mathf.Clamp(test.y, yMin, yMax);
+		float y = Mathf.Clamp(targetPosition.y, yMin, yMax);
 
 		Ultra.Utilities.DrawWireSphere(new Vector3(CameraController.transform.position.x, yMin, CameraController.transform.position.z), 0.2f, Color.magenta, 0, 100, DebugAreas.Camera);
 		Ultra.Utilities.DrawWireSphere(new Vector3(CameraController.transform.position.x, y, CameraController.transform.position.z), 0.2f, Color.magenta, 0, 100, DebugAreas.Camera);

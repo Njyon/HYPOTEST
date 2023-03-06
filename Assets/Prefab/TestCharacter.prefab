@@ -132,7 +132,7 @@ CharacterController:
   m_Height: 2
   m_Radius: 0.5
   m_SlopeLimit: 45
-  m_StepOffset: 0.3
+  m_StepOffset: 0.5
   m_SkinWidth: 0.01
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
@@ -148,14 +148,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0edba4aa4cc89d49aaa4014ab9f92cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxMovementSpeed: 5
+  maxMovementSpeed: 8
   movmentGravity: 98.1
   acceleration: 0.5
   drag: 0.5
   inAirControll: 1
+  slopStrenghIncrease: 100
+  slopStrenghDecrease: 3
+  maxSlopAngle: 65
+  roationSpeed: 10
   maxJumps: 3
   jumpForce: 1.5
   gravityMultiplier: 0.5
+  maxSlidingSpeed: 10
+  slidingAcceleration: 1
 --- !u!1 &1424218907469262370
 GameObject:
   m_ObjectHideFlags: 0

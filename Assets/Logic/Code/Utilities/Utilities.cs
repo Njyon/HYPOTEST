@@ -268,8 +268,9 @@ namespace Ultra {
         public static void DrawArrow(Vector3 startPoint, Vector3 direction, float length, Color color, float time = 0f, int debugLevel = 100, DebugAreas debugArea = DebugAreas.Misc)
         {
             if (debugLevel > Instance.debugLevel || (debugArea & Instance.debugAreas) != debugArea) return;
+            if (direction == Vector3.zero) return;
 
-            if (IsNearlyEqual(length, 0, 0.001f)) length = 0.01f;
+            length = Math.Clamp(length, 0.1f, 999999f);
             // Draw line
             Debug.DrawRay(startPoint, direction * length, color, time);
 

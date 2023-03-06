@@ -16,6 +16,8 @@ public class GameCharacter : MonoBehaviour
 	bool isGrounded = false;
 	float maxWalkableSlopAngle;
 	float slopStrengh = 1;
+	bool isInJump = false;
+	Vector3 lastDir;
 
 	public GameCharacterStateMachine StateMachine { get { return stateMachine; } }
 	public CharacterController CharacterController { get { return characterController; } }
@@ -28,6 +30,19 @@ public class GameCharacter : MonoBehaviour
 	public bool IsGrounded { get { return isGrounded; } }
 	public float MaxWalkableSlopAngle { get { return maxWalkableSlopAngle; } }
 	public float SlopStrengh { get { return slopStrengh; } set { slopStrengh = value; } }
+	public bool IsInJump { get { return isInJump; } 
+		set 
+		{
+			if (value)
+			{
+				StopCoroutine(IsJumping());
+				StartCoroutine(IsJumping());
+			}
+			
+			isInJump = value;
+
+		} 
+	}
 
 	public void HorizontalMovementInput(float Haxis)
 	{
@@ -45,13 +60,7 @@ public class GameCharacter : MonoBehaviour
 	}
 	private void AddGravityOnMovementVelocity()
 	{
-		if (IsGrounded && MovementVelocity.y <= 0f)
-		{
-			//var mV = MovementVelocity;
-			//mV.y = 0f;
-			//MovementVelocity = mV;
-		}
-		else if (!IsGrounded)
+		if (StateMachine.GetCurrentStateType() == EGameCharacterState.InAir || !IsGrounded)
 		{
 			float yGravity = CalculateGravity();
 			MovementVelocity = new Vector3(MovementVelocity.x, MovementVelocity.y - yGravity, MovementVelocity.z);
@@ -99,6 +108,7 @@ public class GameCharacter : MonoBehaviour
 
 		// Set Default Data
 		maxWalkableSlopAngle = CharacterController.slopeLimit;
+		lastDir = transform.forward;
 		/// Set sloplimit to max so we can use Slope strengh to walk over anything at first end slide when slop strengh hits 0
 		CharacterController.slopeLimit = 90f;
 	}
@@ -110,6 +120,7 @@ public class GameCharacter : MonoBehaviour
 		CheckIfCharacterIsGrounded();
 		MoveCharacter();
 		CalculateSlopLimit();
+		RotateCharacterInVelocityDirection();
 
 		if (PossibleGround != null)
 		{
@@ -117,6 +128,13 @@ public class GameCharacter : MonoBehaviour
 		}
 		Ultra.Utilities.Instance.DebugLogOnScreen("CurrentCharacterState: " + StateMachine.GetCurrentStateType().ToString(), 0f, StringColor.Teal, 100, DebugAreas.Movement);
 		Ultra.Utilities.Instance.DebugLogOnScreen("Current Ground Angle: " + GetPossibleGroundAngle(), 0f, StringColor.Teal, 200, DebugAreas.Misc);
+	}
+
+	private void RotateCharacterInVelocityDirection()
+	{
+		if (MovementVelocity.normalized.x != 0) lastDir = new Vector3(0, 0, MovementVelocity.x);
+		Quaternion targetRot = Quaternion.LookRotation(lastDir.normalized, Vector3.up);
+		transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime * characterData.RoationSpeed);
 	}
 
 	private void CalculateSlopLimit()
@@ -181,6 +199,12 @@ public class GameCharacter : MonoBehaviour
 	{
 		
 	}
+
+	IEnumerator IsJumping()
+	{
+		yield return new WaitForSeconds(1f);
+		IsInJump = false;
+	}
 }
 
 public class PredictedLandingPoint
@@ -192,3 +216,5 @@ public class PredictedLandingPoint
 		this.hit = hit;
 	}	
 }
+
+

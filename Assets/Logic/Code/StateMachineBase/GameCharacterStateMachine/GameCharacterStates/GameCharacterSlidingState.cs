@@ -14,7 +14,7 @@ public class GameCharacterSlidingState : AGameCharacterState
 
 	public override EGameCharacterState UpdateState(float deltaTime, EGameCharacterState newStateRequest)
 	{
-		if (!GameCharacter.IsGrounded)
+		if (!GameCharacter.IsGrounded || GameCharacter.IsInJump)
 			return EGameCharacterState.InAir;
 
 		if (GameCharacter.GetPossibleGroundAngle() <= GameCharacter.CharacterController.slopeLimit)
@@ -37,8 +37,8 @@ public class GameCharacterSlidingState : AGameCharacterState
 	public override void ExecuteState(float deltaTime)
 	{
 		 //MaybeAir Speed?
-		float maxSpeed = GameCharacter.CharacterData.MaxMovementSpeed;
-		float acceleration = GameCharacter.CharacterData.Acceleration;
+		float maxSpeed = GameCharacter.CharacterData.MaxSlidingSpeed;
+		float acceleration = GameCharacter.CharacterData.SlidingAcceleration;
 		
 		Vector3 velocity = GameCharacter.MovementVelocity;
 		Vector3 inputDir = Vector3.down * GameCharacter.CharacterData.MovmentGravity * Time.deltaTime;
