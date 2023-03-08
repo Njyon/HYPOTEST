@@ -44,7 +44,7 @@ public class GameCharacterMovingState : AGameCharacterState
 		float acceleration = GameCharacter.CharacterData.Acceleration;
 
 		Vector3 velocity = GameCharacter.MovementVelocity;
-		Vector3 targetVelocity = inputVector.normalized * maxSpeed;
+		Vector3 targetVelocity = inputVector * maxSpeed;
 
 		if (inputVector.magnitude > 0 && !FutureInclineToHigh(velocity))
 		{

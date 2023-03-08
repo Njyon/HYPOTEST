@@ -133,6 +133,7 @@ public class GameCharacter : MonoBehaviour
 	private void RotateCharacterInVelocityDirection()
 	{
 		if (MovementVelocity.normalized.x != 0) lastDir = new Vector3(0, 0, MovementVelocity.x);
+		if (lastDir == Vector3.zero) return;
 		Quaternion targetRot = Quaternion.LookRotation(lastDir.normalized, Vector3.up);
 		transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime * characterData.RoationSpeed);
 	}
@@ -162,7 +163,9 @@ public class GameCharacter : MonoBehaviour
 	{
 		RaycastHit newHit;
 		Vector3 top = transform.position + Vector3.up * (CharacterController.height / 2f - characterController.radius);
+		top += characterController.center;
 		Vector3 bottom = transform.position + Vector3.down * (CharacterController.height / 2f - characterController.radius);
+		bottom += characterController.center;
 		//if (Physics.Raycast(transform.position, Vector3.down, out newHit, (CharacterController.height / 2) + CharacterController.skinWidth + 0.1f))
 		if (Physics.CapsuleCast(top, bottom, characterController.radius, Vector3.down, out newHit, 0.1f))
 		{
