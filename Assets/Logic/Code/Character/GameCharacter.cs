@@ -58,11 +58,9 @@ public class GameCharacter : MonoBehaviour
 	{
 		movementInput.y = Vaxis;
 	}
-	public Vector2 GetMovementInputDir()
+	public Vector2 GetHorizontalMovementInputDir()
 	{
-		Vector2 nomralizedInput = MovementInput;
-		nomralizedInput.Normalize();
-		return nomralizedInput;
+		return new Vector2(MovementInput.x, 0f);
 	}
 	private void AddGravityOnMovementVelocity()
 	{
@@ -149,6 +147,14 @@ public class GameCharacter : MonoBehaviour
 		if (lastDir == Vector3.zero) return;
 		Quaternion targetRot = Quaternion.LookRotation(lastDir.normalized, Vector3.up);
 		targetRot = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime * characterData.RoationSpeed);
+		Vector3 dir = transform.rotation * Vector3.forward;
+		Vector3 cross = Vector3.Cross(lastDir.normalized, dir);
+		float sign = Mathf.Sign(cross.y);
+		if (Ultra.Utilities.IsNearlyEqual(cross, Vector3.zero, 0.2f))
+		{
+			sign = 0f;
+		}
+		animController.RotationTrarget = sign;
 		//// Need to rotate Character
 		//targetRot.eulerAngles = new Vector3(targetRot.eulerAngles.x, targetRot.eulerAngles.y + 90, targetRot.eulerAngles.z);
 		transform.rotation = targetRot;

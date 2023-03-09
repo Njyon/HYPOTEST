@@ -34,6 +34,7 @@ public class CharacterData : MonoBehaviour
 	[SerializeField] float walkRunInterp = 1f;
 	[SerializeField] float strideInterp = 1f;
 	[SerializeField] float playbackInterp = 1f;
+	[SerializeField] float roationBlendInterp = 1f;
 
 	public float MaxMovementSpeed { get { return maxMovementSpeed; } }
 	public float MovmentGravity { get { return movmentGravity; } }
@@ -58,4 +59,5 @@ public class CharacterData : MonoBehaviour
 	public float WalkRunInterp { get { return walkRunInterp; } }
 	public float StrideInterp { get { return strideInterp; } }
 	public float PlaybackInterp { get { return playbackInterp; } }
+	public float RoationBlendInterp { get { return roationBlendInterp; } }
 }

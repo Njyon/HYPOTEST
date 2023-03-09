@@ -142,7 +142,18 @@ namespace Ultra {
                 return false;
             }
         }
-        public static bool IsNearlyEqual(Color a, Color b, Color epsilon)
+		public static bool IsNearlyEqual(Vector3 a, Vector3 b, float epsilon)
+		{
+			if (IsNearlyEqual(a.x, b.x, epsilon) && IsNearlyEqual(a.y, b.y, epsilon) && IsNearlyEqual(a.z, b.z, epsilon))
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		public static bool IsNearlyEqual(Color a, Color b, Color epsilon)
 		{
             if (IsNearlyEqual(a.r, b.r, epsilon.r) && IsNearlyEqual(a.g, b.g, epsilon.g) && IsNearlyEqual(a.b, b.b, epsilon.b) && IsNearlyEqual(a.a, b.a, epsilon.a))
             {

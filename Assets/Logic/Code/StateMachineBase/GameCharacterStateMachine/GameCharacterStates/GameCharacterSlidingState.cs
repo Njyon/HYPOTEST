@@ -19,10 +19,10 @@ public class GameCharacterSlidingState : AGameCharacterState
 
 		if (GameCharacter.GetPossibleGroundAngle() <= GameCharacter.CharacterController.slopeLimit)
 		{
-			if (GameCharacter.Veloctiy.magnitude > 0 || GameCharacter.GetMovementInputDir().magnitude > 0)
+			if (GameCharacter.Veloctiy.magnitude > 0 || GameCharacter.GetHorizontalMovementInputDir().magnitude > 0)
 				return EGameCharacterState.Moving;
 
-			if (GameCharacter.Veloctiy.magnitude <= 0 && GameCharacter.GetMovementInputDir().magnitude <= 0)
+			if (GameCharacter.Veloctiy.magnitude <= 0 && GameCharacter.GetHorizontalMovementInputDir().magnitude <= 0)
 				return EGameCharacterState.Standing;
 		}
 

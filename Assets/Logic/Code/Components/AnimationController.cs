@@ -10,7 +10,10 @@ public class AnimationController
 	int strideBlendID;
 	int standingPlayRateID;
 	int isGroundedID;
-	int IsMovingID;
+	int isMovingID;
+	int rotationBlendID;
+
+	int rotationLayerIndex;
 
 	float minMalkSpeed;
 	bool startWalkRunBlendInterp = true;
@@ -66,7 +69,21 @@ public class AnimationController
 			if (isMoving != value)
 			{
 				isMoving = value;
-				gameCharacter.Animator.SetBool(IsMovingID, isMoving);
+				gameCharacter.Animator.SetBool(isMovingID, isMoving);
+			}
+		}
+	}
+	float rotationTarget;
+	public float RotationTrarget { get { return rotationTarget; } set { rotationTarget = value; } }
+	float rotationBlend;
+	public float RotationBlend { 
+		get { return rotationBlend; }
+		private set {
+			if (rotationBlend != value)
+			{
+				if (Ultra.Utilities.IsNearlyEqual(value, 0, 0.001f)) value = 0;
+				rotationBlend = value;
+				gameCharacter.Animator.SetFloat(rotationBlendID, rotationBlend);
 			}
 		}
 	}
@@ -82,7 +99,9 @@ public class AnimationController
 		strideBlendID = Animator.StringToHash("StrideBlend");
 		standingPlayRateID = Animator.StringToHash("StandingPlayRate");
 		isGroundedID = Animator.StringToHash("IsGrounded");
-		IsMovingID = Animator.StringToHash("IsMoving");
+		isMovingID = Animator.StringToHash("IsMoving");
+		rotationBlendID = Animator.StringToHash("RotationBlend");
+		rotationLayerIndex = gameCharacter.Animator.GetLayerIndex("RotationLayer");
 
 		minMalkSpeed = gameCharacter.CharacterData.MaxMovementSpeed * gameCharacter.CharacterData.WalkFactor;
 	}
@@ -100,6 +119,17 @@ public class AnimationController
 				startWalkRunBlendInterp = true;
 				break;
 		}
+
+		// Rotation Blend
+		if (RotationBlend != RotationTrarget)
+		{
+			if (Mathf.Abs(RotationBlend) < Mathf.Abs(RotationTrarget)) RotationBlend = RotationTrarget;
+			else RotationBlend = Mathf.Lerp(RotationBlend, RotationTrarget, deltaTime * gameCharacter.CharacterData.RoationBlendInterp);
+		}
+
+		// Rotation Layer
+		if (RotationBlend != 0) gameCharacter.Animator.SetLayerWeight(rotationLayerIndex, 1);
+		else gameCharacter.Animator.SetLayerWeight(rotationLayerIndex, 0);
 	}
 
 	private void CalculateMovementValues()
