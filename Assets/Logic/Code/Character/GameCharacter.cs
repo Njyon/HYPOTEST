@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Transactions;
 using UnityEngine;
 
 public class GameCharacter : MonoBehaviour
@@ -7,6 +9,8 @@ public class GameCharacter : MonoBehaviour
 	GameCharacterStateMachine stateMachine;
 	CharacterController characterController;
 	CharacterData characterData;
+	Animator animator;
+	AnimationController animController;
 	Vector2 movementInput;
 	Vector3 postionLastFrame;
 	Vector3 veloctiy;
@@ -30,6 +34,8 @@ public class GameCharacter : MonoBehaviour
 	public bool IsGrounded { get { return isGrounded; } }
 	public float MaxWalkableSlopAngle { get { return maxWalkableSlopAngle; } }
 	public float SlopStrengh { get { return slopStrengh; } set { slopStrengh = value; } }
+	public Animator Animator { get { return animator; } }
+	public float MovementSpeed { get { return Veloctiy.magnitude; } }
 	public bool IsInJump { get { return isInJump; } 
 		set 
 		{
@@ -105,12 +111,17 @@ public class GameCharacter : MonoBehaviour
 		characterController = gameObject.GetComponent<CharacterController>();
 		if (!characterController) gameObject.AddComponent<CharacterController>();
 		stateMachine = gameObject.AddComponent<GameCharacterStateMachine>();
+		animator = gameObject.GetComponent<Animator>();
+		if (animator == null) Debug.LogError("GameObject: " + name + " Does not have an Animator Attached!");
+		animController = new AnimationController(this);
 
 		// Set Default Data
 		maxWalkableSlopAngle = CharacterController.slopeLimit;
-		lastDir = transform.forward;
+		lastDir = transform.right;
 		/// Set sloplimit to max so we can use Slope strengh to walk over anything at first end slide when slop strengh hits 0
 		CharacterController.slopeLimit = 90f;
+
+		animController.Start();
 	}
 
 	private void Update()
@@ -122,6 +133,8 @@ public class GameCharacter : MonoBehaviour
 		CalculateSlopLimit();
 		RotateCharacterInVelocityDirection();
 
+		animController.Update(Time.deltaTime);
+
 		if (PossibleGround != null)
 		{
 			Ultra.Utilities.DrawWireSphere(PossibleGround.hit.point, 0.2f, Color.blue, 0.0f, 100, DebugAreas.Movement);
@@ -132,10 +145,13 @@ public class GameCharacter : MonoBehaviour
 
 	private void RotateCharacterInVelocityDirection()
 	{
-		if (MovementVelocity.normalized.x != 0) lastDir = new Vector3(0, 0, MovementVelocity.x);
+		if (MovementVelocity.normalized.x != 0) lastDir = new Vector3(MovementVelocity.x, 0, 0);
 		if (lastDir == Vector3.zero) return;
 		Quaternion targetRot = Quaternion.LookRotation(lastDir.normalized, Vector3.up);
-		transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime * characterData.RoationSpeed);
+		targetRot = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime * characterData.RoationSpeed);
+		//// Need to rotate Character
+		//targetRot.eulerAngles = new Vector3(targetRot.eulerAngles.x, targetRot.eulerAngles.y + 90, targetRot.eulerAngles.z);
+		transform.rotation = targetRot;
 	}
 
 	private void CalculateSlopLimit()
@@ -191,6 +207,7 @@ public class GameCharacter : MonoBehaviour
 	private void LateUpdate()
 	{
 		KillZOffset();
+		animController.LateUpdate();
 	}
 
 	private void OnControllerColliderHit(ControllerColliderHit hit)

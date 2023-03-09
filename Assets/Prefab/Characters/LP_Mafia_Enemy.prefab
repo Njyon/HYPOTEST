@@ -2148,6 +2148,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7257977447643320848}
   - component: {fileID: 8374308746067899430}
+  - component: {fileID: 598259704}
   - component: {fileID: 7719989087559104007}
   - component: {fileID: 652704937090382189}
   m_Layer: 0
@@ -2197,6 +2198,26 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!95 &598259704
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8066602947404089514}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: fa9ceaef61da13947b215fb49ca030ff, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!143 &7719989087559104007
 CharacterController:
   m_ObjectHideFlags: 0
@@ -2249,6 +2270,76 @@ MonoBehaviour:
   gravityMultiplier: 0.5
   maxSlidingSpeed: 10
   slidingAcceleration: 1
+  strideBlendWalk:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.43177158
+      value: 0.43754524
+      inSlope: 2.8658528
+      outSlope: 2.8658528
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.06354551
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  strideBlendRun:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.41862273
+      value: 0.4108523
+      inSlope: 2.4042945
+      outSlope: 2.4042945
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.04747606
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  walkFactor: 0.2
+  walkRunInterp: 5
+  strideInterp: 5
+  playbackInterp: 5
 --- !u!1 &8509906739833173528
 GameObject:
   m_ObjectHideFlags: 0

@@ -302,5 +302,29 @@ namespace Ultra {
 
             return points;
         }
-    }
+
+		public static double SigmoidInterpolation(double startValue, double endValue, double t, double steepness = 1.0)
+		{
+			// Transform t to a value between 0 and 1
+			double normalizedT = Math.Max(0.0, Math.Min(1.0, t));
+
+			// Compute the sigmoid function with the given steepness
+			double sigmoid = 1.0 / (1.0 + Math.Exp(-steepness * (normalizedT - 0.5)));
+
+			// Interpolate between the start and end values using the sigmoid as a weight
+			return startValue + (endValue - startValue) * sigmoid;
+		}
+
+		public static float SigmoidInterpolation(float startValue, float endValue, float t, float steepness = 1.0f)
+		{
+			// Transform t to a value between 0 and 1
+			float normalizedT = Math.Max(0.0f, Math.Min(1.0f, t));
+
+			// Compute the sigmoid function with the given steepness
+			float sigmoid = 1.0f / (1.0f + (float)Math.Exp(-steepness * (normalizedT - 0.5f)));
+
+			// Interpolate between the start and end values using the sigmoid as a weight
+			return startValue + (endValue - startValue) * sigmoid;
+		}
+	}
 }

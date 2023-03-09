@@ -27,6 +27,14 @@ public class CharacterData : MonoBehaviour
 	[SerializeField] float maxSlidingSpeed = 10f;
 	[SerializeField] float slidingAcceleration = 5f;
 
+	[Header("AnimationData")]
+	[SerializeField] AnimationCurve strideBlendWalk;
+	[SerializeField] AnimationCurve strideBlendRun;
+	[SerializeField] float walkFactor = 0.2f;
+	[SerializeField] float walkRunInterp = 1f;
+	[SerializeField] float strideInterp = 1f;
+	[SerializeField] float playbackInterp = 1f;
+
 	public float MaxMovementSpeed { get { return maxMovementSpeed; } }
 	public float MovmentGravity { get { return movmentGravity; } }
 	public float Acceleration { get { return acceleration; } }	
@@ -43,4 +51,11 @@ public class CharacterData : MonoBehaviour
 
 	public float MaxSlidingSpeed { get { return maxSlidingSpeed; } }
 	public float SlidingAcceleration { get { return slidingAcceleration; } }
+
+	public AnimationCurve StrideBlendWalk { get { return strideBlendWalk; } }
+	public AnimationCurve StrideBlendRun { get { return strideBlendRun; } }
+	public float WalkFactor { get { return walkFactor; } }
+	public float WalkRunInterp { get { return walkRunInterp; } }
+	public float StrideInterp { get { return strideInterp; } }
+	public float PlaybackInterp { get { return playbackInterp; } }
 }
