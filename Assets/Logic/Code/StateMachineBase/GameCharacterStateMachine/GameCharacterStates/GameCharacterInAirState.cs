@@ -30,13 +30,13 @@ public class GameCharacterInAirState : AGameCharacterState
 	public override void ExecuteState(float deltaTime)
 	{
 		// MaybeAir Speed?
-		float maxSpeed = GameCharacter.CharacterData.MaxMovementSpeed;
+		float maxSpeed = GameCharacter.GameCharacterData.MaxMovementSpeed;
 
 		Vector3 velocity = GameCharacter.MovementVelocity;
 		Vector3 inputDir = new Vector3(GameCharacter.MovementInput.x, 0f, 0f);
 		Vector3 targetVelocity = inputDir.normalized * maxSpeed;
 		Vector3 velocityDiff = (targetVelocity - velocity);
-		Vector3 acceleration = Vector3.ClampMagnitude(velocityDiff, maxSpeed) * GameCharacter.CharacterData.InAirControll;
+		Vector3 acceleration = Vector3.ClampMagnitude(velocityDiff, maxSpeed) * GameCharacter.GameCharacterData.InAirControll;
 		velocity += acceleration;
 
 		// Anwenden der Geschwindigkeit

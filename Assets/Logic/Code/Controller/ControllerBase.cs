@@ -4,14 +4,17 @@ using UnityEngine;
 
 public abstract class ControllerBase : MonoBehaviour
 {
-	GameObject pawn;
+	protected GameObject pawn;
+	protected ScriptableCharacter characterData;
 
-	public virtual void BeginPosses(GameObject pawn)
+	public virtual void BeginPosses(GameObject pawn, ScriptableCharacter characterData)
 	{
 		this.pawn = pawn;
+		this.characterData = characterData;
 	}
 	public virtual void EndPosses()
 	{
-		this.pawn = null;
+		pawn = null;
+		characterData = null;
 	}
 }

@@ -9,9 +9,9 @@ public class PlayerController : ControllerBase
 	GameCharacter gameCharacter;
 	EventComponent eventComponent = new EventComponent();
 
-	public override void BeginPosses(GameObject pawn)
+	public override void BeginPosses(GameObject pawn, ScriptableCharacter characterData)
 	{
-		base.BeginPosses(pawn);
+		base.BeginPosses(pawn, characterData);
 
 		SetupDefaultPlayerInputs();
 		SetupGameCharacter(pawn);
@@ -21,6 +21,7 @@ public class PlayerController : ControllerBase
 	private void SetupGameCharacter(GameObject pawn)
 	{
 		gameCharacter = pawn.AddComponent<GameCharacter>();
+		gameCharacter.CharacterData = characterData;
 	}
 
 	private void SetupCamera(GameObject pawn)

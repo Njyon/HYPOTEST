@@ -40,8 +40,8 @@ public class GameCharacterMovingState : AGameCharacterState
 		if (GameCharacter.PossibleGround != null)
 			inputVector = Vector3.ProjectOnPlane(inputVector, GameCharacter.PossibleGround.hit.normal);
 
-		float maxSpeed = GameCharacter.CharacterData.MaxMovementSpeed;
-		float acceleration = GameCharacter.CharacterData.Acceleration;
+		float maxSpeed = GameCharacter.GameCharacterData.MaxMovementSpeed;
+		float acceleration = GameCharacter.GameCharacterData.Acceleration;
 
 		Vector3 velocity = GameCharacter.MovementVelocity;
 		Vector3 targetVelocity = inputVector * maxSpeed;
@@ -66,7 +66,7 @@ public class GameCharacterMovingState : AGameCharacterState
 			} 
 			else
 			{
-				float drag = GameCharacter.CharacterData.Drag;
+				float drag = GameCharacter.GameCharacterData.Drag;
 				float deceleration = drag;
 				velocity = Vector3.MoveTowards(velocity, Vector3.zero, deceleration);
 			}
@@ -96,7 +96,7 @@ public class GameCharacterMovingState : AGameCharacterState
 			RaycastHit secondHit;
 			if (Physics.Raycast(ray2, out secondHit, GameCharacter.CharacterController.height + 2f))
 			{
-				if (Vector3.Angle(firstHit.normal, Vector3.up) >= GameCharacter.CharacterData.MaxSlopAngle && Ultra.Utilities.IsNearlyEqual(Vector3.Angle(firstHit.normal, Vector3.up), Vector3.Angle(secondHit.normal, Vector3.up), 0.02f))
+				if (Vector3.Angle(firstHit.normal, Vector3.up) >= GameCharacter.GameCharacterData.MaxSlopAngle && Ultra.Utilities.IsNearlyEqual(Vector3.Angle(firstHit.normal, Vector3.up), Vector3.Angle(secondHit.normal, Vector3.up), 0.02f))
 				{
 					SetSlopStrenghToZero();
 					return true;
@@ -108,7 +108,7 @@ public class GameCharacterMovingState : AGameCharacterState
 			Debug.DrawRay(stepheightCheckOrigin, velDir * (GameCharacter.CharacterController.radius + 0.3f), Color.green);
 			if (Physics.Raycast(ray3, out thirdHit, GameCharacter.CharacterController.radius + 0.3f))
 			{
-				if (Vector3.Angle(firstHit.normal, Vector3.up) >= GameCharacter.CharacterData.MaxSlopAngle && Vector3.Angle(thirdHit.normal, Vector3.up) >= GameCharacter.CharacterData.MaxSlopAngle)
+				if (Vector3.Angle(firstHit.normal, Vector3.up) >= GameCharacter.GameCharacterData.MaxSlopAngle && Vector3.Angle(thirdHit.normal, Vector3.up) >= GameCharacter.GameCharacterData.MaxSlopAngle)
 				{
 					SetSlopStrenghToZero();
 					return true;

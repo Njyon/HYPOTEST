@@ -1,5 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
+using UnityEditor.Animations;
 using UnityEngine;
 
 public class AnimationController
@@ -12,6 +15,11 @@ public class AnimationController
 	int isGroundedID;
 	int isMovingID;
 	int rotationBlendID;
+	int fallingBlendID;
+	int jumpATriggerID;
+	int jumpBTriggerID;
+	int jumpStateAID;
+	int jumpStateBID;
 
 	int rotationLayerIndex;
 
@@ -87,6 +95,17 @@ public class AnimationController
 			}
 		}
 	}
+	float fallingBlend;
+	public float FallingBlend { 
+		get { return fallingBlend; } 
+		private set { 
+			if (fallingBlend != value)
+			{
+				fallingBlend = value;
+				gameCharacter.Animator.SetFloat(fallingBlendID, fallingBlend);
+			}
+		}
+	}
 
 	public AnimationController(GameCharacter character)
 	{
@@ -102,8 +121,13 @@ public class AnimationController
 		isMovingID = Animator.StringToHash("IsMoving");
 		rotationBlendID = Animator.StringToHash("RotationBlend");
 		rotationLayerIndex = gameCharacter.Animator.GetLayerIndex("RotationLayer");
+		fallingBlendID = Animator.StringToHash("FallingBlend");
+		jumpATriggerID = Animator.StringToHash("JumpA");
+		jumpBTriggerID = Animator.StringToHash("JumpB");
+		jumpStateAID = Animator.StringToHash("JumpStateA");
+		jumpStateBID = Animator.StringToHash("JumpStateB");
 
-		minMalkSpeed = gameCharacter.CharacterData.MaxMovementSpeed * gameCharacter.CharacterData.WalkFactor;
+		minMalkSpeed = gameCharacter.GameCharacterData.MaxMovementSpeed * gameCharacter.GameCharacterData.WalkFactor;
 	}
 
 	public void Update(float deltaTime)
@@ -113,6 +137,10 @@ public class AnimationController
 
 		switch (gameCharacter.StateMachine.GetCurrentStateType())
 		{
+			case EGameCharacterState.InAir:
+				startWalkRunBlendInterp = true;
+				CalculateFallingValues();
+				break;
 			case EGameCharacterState.Moving: CalculateMovementValues(); break;
 			default:
 				// Set True everytime when case not Moving (Remember for new Cases!!!)
@@ -124,7 +152,7 @@ public class AnimationController
 		if (RotationBlend != RotationTrarget)
 		{
 			if (Mathf.Abs(RotationBlend) < Mathf.Abs(RotationTrarget)) RotationBlend = RotationTrarget;
-			else RotationBlend = Mathf.Lerp(RotationBlend, RotationTrarget, deltaTime * gameCharacter.CharacterData.RoationBlendInterp);
+			else RotationBlend = Mathf.Lerp(RotationBlend, RotationTrarget, deltaTime * gameCharacter.GameCharacterData.RoationBlendInterp);
 		}
 
 		// Rotation Layer
@@ -132,31 +160,63 @@ public class AnimationController
 		else gameCharacter.Animator.SetLayerWeight(rotationLayerIndex, 0);
 	}
 
-	private void CalculateMovementValues()
+	void CalculateFallingValues()
+	{
+		FallingBlend = Unity.Mathematics.math.remap(0, gameCharacter.GameCharacterData.MaxFallingVelocityAnim, 0, 1, gameCharacter.Veloctiy.y);
+	}
+
+	void CalculateMovementValues()
 	{
 		bool dontInterp = startWalkRunBlendInterp;
 		if (startWalkRunBlendInterp) startWalkRunBlendInterp = !startWalkRunBlendInterp;
 
 		// Walk Run
 		float movementSpeed = gameCharacter.MovementSpeed;
-		float walkrunblendTarget = Unity.Mathematics.math.remap(minMalkSpeed, gameCharacter.CharacterData.MaxMovementSpeed, 0.2f, 1, movementSpeed);
-		WalkRunBlend = dontInterp ? walkrunblendTarget : Mathf.Lerp(WalkRunBlend, walkrunblendTarget, Time.deltaTime * gameCharacter.CharacterData.WalkRunInterp);
+		float walkrunblendTarget = Unity.Mathematics.math.remap(minMalkSpeed, gameCharacter.GameCharacterData.MaxMovementSpeed, 0.2f, 1, movementSpeed);
+		WalkRunBlend = dontInterp ? walkrunblendTarget : Mathf.Lerp(WalkRunBlend, walkrunblendTarget, Time.deltaTime * gameCharacter.GameCharacterData.WalkRunInterp);
 
 		// Stride
-		float walkStride = gameCharacter.CharacterData.StrideBlendWalk.Evaluate(Unity.Mathematics.math.remap(0, minMalkSpeed, 0.2f, 1, movementSpeed));
-		float runStride = gameCharacter.CharacterData.StrideBlendRun.Evaluate(Unity.Mathematics.math.remap(0, gameCharacter.CharacterData.MaxMovementSpeed, 0.2f, 1, movementSpeed));
+		float walkStride = gameCharacter.GameCharacterData.StrideBlendWalk.Evaluate(Unity.Mathematics.math.remap(0, minMalkSpeed, 0.2f, 1, movementSpeed));
+		float runStride = gameCharacter.GameCharacterData.StrideBlendRun.Evaluate(Unity.Mathematics.math.remap(0, gameCharacter.GameCharacterData.MaxMovementSpeed, 0.2f, 1, movementSpeed));
 		float strideTarget = Mathf.Lerp(walkStride, runStride, walkRunBlend);
-		StrideBlend = dontInterp ? strideTarget : Mathf.Lerp(StrideBlend, strideTarget, Time.deltaTime * gameCharacter.CharacterData.StrideInterp);
+		StrideBlend = dontInterp ? strideTarget : Mathf.Lerp(StrideBlend, strideTarget, Time.deltaTime * gameCharacter.GameCharacterData.StrideInterp);
 
 		// Movement PlaySpeed
 		float walkPlayRate = movementSpeed / minMalkSpeed;
-		float runPlayRate = movementSpeed / gameCharacter.CharacterData.MaxMovementSpeed;
+		float runPlayRate = movementSpeed / gameCharacter.GameCharacterData.MaxMovementSpeed;
 		float playbackSpeed = Mathf.Lerp(walkPlayRate, runPlayRate, WalkRunBlend);
 		playbackSpeed = playbackSpeed / StrideBlend;
 		playbackSpeed = playbackSpeed / gameCharacter.transform.localScale.z;
 		playbackSpeed = Mathf.Clamp(playbackSpeed, 0.1f, 3);
-		playbackSpeed = dontInterp ? playbackSpeed : Mathf.Lerp(StandingPlayRate, playbackSpeed, Time.deltaTime * gameCharacter.CharacterData.PlaybackInterp);
+		playbackSpeed = dontInterp ? playbackSpeed : Mathf.Lerp(StandingPlayRate, playbackSpeed, Time.deltaTime * gameCharacter.GameCharacterData.PlaybackInterp);
 		StandingPlayRate = playbackSpeed;
+	}
+
+	public void Jump()
+	{
+		AnimatorStateInfo animatorState = gameCharacter.Animator.GetCurrentAnimatorStateInfo(0);
+		bool isJumpStateA = false;
+		//bool isJumpStateB = false;
+
+		if (animatorState.shortNameHash == jumpStateAID) isJumpStateA = true;
+		//if (animatorState.shortNameHash == jumpStateBID) isJumpStateB = true;
+
+		int jumpIndex = gameCharacter.CurrentJumpAmount - 1;
+		if (gameCharacter.CharacterData.CharacterAnimationData.Jumps.Count <= 0) return;
+		jumpIndex = jumpIndex % gameCharacter.CharacterData.CharacterAnimationData.Jumps.Count;
+		AnimatorOverrideController overrideController = new AnimatorOverrideController(gameCharacter.Animator.runtimeAnimatorController);
+		if (isJumpStateA)
+		{
+			overrideController["Jump2 PlaceHolder"] = gameCharacter.CharacterData.CharacterAnimationData.Jumps[jumpIndex];
+			gameCharacter.Animator.SetTrigger(jumpBTriggerID);
+			
+		} else
+		{
+			overrideController["Jump1 PlaceHolder"] = gameCharacter.CharacterData.CharacterAnimationData.Jumps[jumpIndex];
+			gameCharacter.Animator.SetTrigger(jumpATriggerID);
+		}
+		gameCharacter.Animator.runtimeAnimatorController = overrideController;
+
 	}
 
 	public void LateUpdate()

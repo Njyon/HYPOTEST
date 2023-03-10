@@ -37,11 +37,11 @@ public class GameCharacterSlidingState : AGameCharacterState
 	public override void ExecuteState(float deltaTime)
 	{
 		 //MaybeAir Speed?
-		float maxSpeed = GameCharacter.CharacterData.MaxSlidingSpeed;
-		float acceleration = GameCharacter.CharacterData.SlidingAcceleration;
+		float maxSpeed = GameCharacter.GameCharacterData.MaxSlidingSpeed;
+		float acceleration = GameCharacter.GameCharacterData.SlidingAcceleration;
 		
 		Vector3 velocity = GameCharacter.MovementVelocity;
-		Vector3 inputDir = Vector3.down * GameCharacter.CharacterData.MovmentGravity * Time.deltaTime;
+		Vector3 inputDir = Vector3.down * GameCharacter.GameCharacterData.MovmentGravity * Time.deltaTime;
 		if (GameCharacter.PossibleGround != null) inputDir = Vector3.ProjectOnPlane(inputDir.normalized, GameCharacter.PossibleGround.hit.normal);
 
 		Vector3 targetVelocity = inputDir.normalized * maxSpeed;

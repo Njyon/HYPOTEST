@@ -8,9 +8,10 @@ public class GameCharacter : MonoBehaviour
 {
 	GameCharacterStateMachine stateMachine;
 	CharacterController characterController;
-	CharacterData characterData;
+	GameCharacterData gameCharacterData;
 	Animator animator;
 	AnimationController animController;
+	ScriptableCharacter characterData;
 	Vector2 movementInput;
 	Vector3 postionLastFrame;
 	Vector3 veloctiy;
@@ -27,7 +28,7 @@ public class GameCharacter : MonoBehaviour
 	public CharacterController CharacterController { get { return characterController; } }
 	public Vector2 MovementInput { get { return movementInput; } }
 	public Vector3 Veloctiy { get { return veloctiy; } }
-	public CharacterData CharacterData { get { return characterData; } }
+	public GameCharacterData GameCharacterData { get { return gameCharacterData; } }
 	public Vector3 MovementVelocity { get { return movementVelocity; } set { movementVelocity = value; } }
 	public int CurrentJumpAmount { get { return currentJumpAmount; } set { currentJumpAmount = value; } }
 	public PredictedLandingPoint PossibleGround { get { return predictedLandingPoint; } set { predictedLandingPoint = value; } }
@@ -36,6 +37,8 @@ public class GameCharacter : MonoBehaviour
 	public float SlopStrengh { get { return slopStrengh; } set { slopStrengh = value; } }
 	public Animator Animator { get { return animator; } }
 	public float MovementSpeed { get { return Veloctiy.magnitude; } }
+	public ScriptableCharacter CharacterData { get { return characterData; } set { characterData = value; } }
+	public AnimationController AnimController { get { return animController; } }
 	public bool IsInJump { get { return isInJump; } 
 		set 
 		{
@@ -72,7 +75,7 @@ public class GameCharacter : MonoBehaviour
 	}
 	public float CalculateGravity()
 	{
-		return ((MovementVelocity.y > 0) ? CharacterData.MovmentGravity * CharacterData.GravityMultiplier : CharacterData.MovmentGravity) * Time.deltaTime;
+		return ((MovementVelocity.y > 0) ? GameCharacterData.MovmentGravity * GameCharacterData.GravityMultiplier : GameCharacterData.MovmentGravity) * Time.deltaTime;
 	}
 	Vector3 GetMovementVelocityWithoutGravity()
 	{
@@ -104,8 +107,8 @@ public class GameCharacter : MonoBehaviour
 
 	private void Awake()
 	{
-		characterData = gameObject.GetComponent<CharacterData>();
-		if (!characterData) gameObject.AddComponent<CharacterData>();
+		gameCharacterData = gameObject.GetComponent<GameCharacterData>();
+		if (!gameCharacterData) gameObject.AddComponent<GameCharacterData>();
 		characterController = gameObject.GetComponent<CharacterController>();
 		if (!characterController) gameObject.AddComponent<CharacterController>();
 		stateMachine = gameObject.AddComponent<GameCharacterStateMachine>();
@@ -146,7 +149,7 @@ public class GameCharacter : MonoBehaviour
 		if (MovementVelocity.normalized.x != 0) lastDir = new Vector3(MovementVelocity.x, 0, 0);
 		if (lastDir == Vector3.zero) return;
 		Quaternion targetRot = Quaternion.LookRotation(lastDir.normalized, Vector3.up);
-		targetRot = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime * characterData.RoationSpeed);
+		targetRot = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime * gameCharacterData.RoationSpeed);
 		Vector3 dir = transform.rotation * Vector3.forward;
 		Vector3 cross = Vector3.Cross(lastDir.normalized, dir);
 		float sign = Mathf.Sign(cross.y);
@@ -166,7 +169,7 @@ public class GameCharacter : MonoBehaviour
 		{
 			if (slopStrengh > 0)
 			{
-				slopStrengh = slopStrengh - Time.deltaTime * CharacterData.SlopStrenghDecrease;
+				slopStrengh = slopStrengh - Time.deltaTime * GameCharacterData.SlopStrenghDecrease;
 				if (slopStrengh < 0) slopStrengh = 0;
 			}
 		}
@@ -174,7 +177,7 @@ public class GameCharacter : MonoBehaviour
 		{
 			if (slopStrengh < 1)
 			{
-				slopStrengh = slopStrengh + Time.deltaTime * CharacterData.SlopStrenghIncrease;
+				slopStrengh = slopStrengh + Time.deltaTime * GameCharacterData.SlopStrenghIncrease;
 				if (slopStrengh > 1) slopStrengh = 1;
 			}
 		}

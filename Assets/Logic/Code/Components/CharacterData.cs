@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 
 
-public class CharacterData : MonoBehaviour
+public class GameCharacterData : MonoBehaviour
 {
 	[Header("MovementData")]
 	[SerializeField] float maxMovementSpeed = 5f;
@@ -35,7 +35,8 @@ public class CharacterData : MonoBehaviour
 	[SerializeField] float strideInterp = 1f;
 	[SerializeField] float playbackInterp = 1f;
 	[SerializeField] float roationBlendInterp = 1f;
-
+	[SerializeField] float maxFallingVelocityAnim = 200f;
+ 
 	public float MaxMovementSpeed { get { return maxMovementSpeed; } }
 	public float MovmentGravity { get { return movmentGravity; } }
 	public float Acceleration { get { return acceleration; } }	
@@ -60,4 +61,5 @@ public class CharacterData : MonoBehaviour
 	public float StrideInterp { get { return strideInterp; } }
 	public float PlaybackInterp { get { return playbackInterp; } }
 	public float RoationBlendInterp { get { return roationBlendInterp; } }
+	public float MaxFallingVelocityAnim { get { return maxFallingVelocityAnim; } }
 }

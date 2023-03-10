@@ -33,7 +33,7 @@ public class CharacterSpawner : MonoBehaviour
 					Debug.LogError("Controller could not be created correctly. GameObject => " + controller.name);
 					return;
 				}
-				controllerBase.BeginPosses(characterToSpawn);
+				controllerBase.BeginPosses(characterToSpawn, spawnableCharacterData);
 				break;
 			}
 		}
