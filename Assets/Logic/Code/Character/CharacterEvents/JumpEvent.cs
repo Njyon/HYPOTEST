@@ -23,14 +23,4 @@ public class JumpEvent : CharacterEvent
 		gameCharacter.AnimController.Jump();
 		Ultra.Utilities.Instance.DebugLogOnScreen("JumpVel: " + jumpVelocity, 2f, 200, DebugAreas.Movement);
 	}
-
-	public override void StopEvent()
-	{
-
-	}
-
-	public override void Update(float deltaTime)
-	{
-
-	}
 }

@@ -1,17 +1,20 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Transactions;
 using UnityEngine;
 
 public class GameCharacter : MonoBehaviour
 {
 	GameCharacterStateMachine stateMachine;
+	GameCharacterPluginStateMachine pluginStateMachine;
 	CharacterController characterController;
 	GameCharacterData gameCharacterData;
 	Animator animator;
 	AnimationController animController;
 	ScriptableCharacter characterData;
+	CombatComponent combatComponent;
 	Vector2 movementInput;
 	Vector3 postionLastFrame;
 	Vector3 veloctiy;
@@ -39,6 +42,8 @@ public class GameCharacter : MonoBehaviour
 	public float MovementSpeed { get { return Veloctiy.magnitude; } }
 	public ScriptableCharacter CharacterData { get { return characterData; } set { characterData = value; } }
 	public AnimationController AnimController { get { return animController; } }
+	public CombatComponent CombatComponent { get { return combatComponent; } }
+	public GameCharacterPluginStateMachine PluginStateMachine { get { return pluginStateMachine; } }
 	public bool IsInJump { get { return isInJump; } 
 		set 
 		{
@@ -112,9 +117,11 @@ public class GameCharacter : MonoBehaviour
 		characterController = gameObject.GetComponent<CharacterController>();
 		if (!characterController) gameObject.AddComponent<CharacterController>();
 		stateMachine = gameObject.AddComponent<GameCharacterStateMachine>();
+		pluginStateMachine = gameObject.AddComponent<GameCharacterPluginStateMachine>();
 		animator = gameObject.GetComponent<Animator>();
 		if (animator == null) Debug.LogError("GameObject: " + name + " Does not have an Animator Attached!");
 		animController = new AnimationController(this);
+		combatComponent = new CombatComponent(this);
 
 		// Set Default Data
 		maxWalkableSlopAngle = CharacterController.slopeLimit;
@@ -123,6 +130,7 @@ public class GameCharacter : MonoBehaviour
 		CharacterController.slopeLimit = 90f;
 
 		animController.Start();
+		combatComponent.StartComponent();
 	}
 
 	private void Update()
@@ -130,6 +138,7 @@ public class GameCharacter : MonoBehaviour
 		CalculateVelocity();
 		AddGravityOnMovementVelocity();
 		CheckIfCharacterIsGrounded();
+		CombatComponent.UpdateComponent();
 		MoveCharacter();
 		CalculateSlopLimit();
 		RotateCharacterInVelocityDirection();
@@ -162,7 +171,6 @@ public class GameCharacter : MonoBehaviour
 		//targetRot.eulerAngles = new Vector3(targetRot.eulerAngles.x, targetRot.eulerAngles.y + 90, targetRot.eulerAngles.z);
 		transform.rotation = targetRot;
 	}
-
 	private void CalculateSlopLimit()
 	{
 		if (GetPossibleGroundAngle() > maxWalkableSlopAngle)
@@ -183,7 +191,6 @@ public class GameCharacter : MonoBehaviour
 		}
 		CharacterController.slopeLimit = Unity.Mathematics.math.remap(0, 1, maxWalkableSlopAngle, 90, slopStrengh);
 	}
-
 	private void CheckIfCharacterIsGrounded()
 	{
 		RaycastHit newHit;
@@ -202,7 +209,6 @@ public class GameCharacter : MonoBehaviour
 			isGrounded = false;
 		}
 	}
-
 	private void MoveCharacter()
 	{
 		Vector3 movementVector = GetMovmentVelocityWithDeltaTime();

@@ -1,0 +1,59 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class #SCRIPTNAME# : WeaponBase
+{
+    public #SCRIPTNAME#() { }
+	public #SCRIPTNAME#(GameCharacter gameCharacter, ScriptableWeapon weaponData) : base (gameCharacter, weaponData)
+	{ }
+
+    public override void EquipWeapon()
+    {
+    #NOTRIM#
+    }
+
+    public override void UnEquipWeapon()
+    {
+    #NOTRIM#
+    }
+
+    public override void UpdateWeapon(float deltaTime)
+    {
+    #NOTRIM#
+    }
+
+    public override void GroundAttack()   
+    {
+    #NOTRIM#
+    }
+    public override void GroundUpAttack()    
+    {
+    #NOTRIM#
+    }
+    public override void GroundDownAttack()  
+    {
+    #NOTRIM#
+    }
+    public override void GroundDirectionAttack()   
+    {
+    #NOTRIM#
+    }
+
+    public override void AirAttack()  
+    {
+    #NOTRIM#
+    }
+    public override void AirUpAttack()
+    {
+    #NOTRIM#
+    }
+    public override void AirDownAttack()  
+    {
+    #NOTRIM#
+    }
+    public override void AirDirectionAttack() 
+    {
+    #NOTRIM#
+    }
+}

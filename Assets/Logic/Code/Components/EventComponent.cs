@@ -16,8 +16,6 @@ public abstract class CharacterEvent
 
 	public abstract bool CanBeExecuted();
 	public abstract void StartEvent();
-	public abstract void Update(float deltaTime);
-	public abstract void StopEvent();
 }
 
 public class EventComponent
@@ -50,7 +48,6 @@ public class EventComponent
 			toBeEveluatedEvent.time -= deltaTime;
 			if (toBeEveluatedEvent.CanBeExecuted())
 			{
-				if (eveluatedEvent != null) eveluatedEvent.StopEvent();
 				eveluatedEvent = toBeEveluatedEvent;
 				eveluatedEvent.StartEvent();
 				toBeEveluatedEvent = null;
@@ -59,10 +56,6 @@ public class EventComponent
 			{
 				toBeEveluatedEvent = null;
 			}
-		}
-		if (eveluatedEvent != null)
-		{
-			eveluatedEvent.Update(deltaTime);
 		}
 	}
 }

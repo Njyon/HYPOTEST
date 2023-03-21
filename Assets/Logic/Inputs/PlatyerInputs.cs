@@ -89,6 +89,69 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""WeaponOne"",
+                    ""type"": ""Button"",
+                    ""id"": ""199f4509-d7b2-48ef-bfdf-62528b0ab23a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""WeaponTwo"",
+                    ""type"": ""Button"",
+                    ""id"": ""66ba1511-b1d3-4df6-b2a8-9e63d0cc59b3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""WeaponThree"",
+                    ""type"": ""Button"",
+                    ""id"": ""957c1801-1a81-475f-bccf-5a18660d369b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""WeaponFour"",
+                    ""type"": ""Button"",
+                    ""id"": ""c4585845-71c9-4f77-9e65-6fe5d5f927e2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""NextWeapon"",
+                    ""type"": ""Button"",
+                    ""id"": ""273b795b-c9c4-4c8e-8ade-a1ca5e2ecb95"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PreviousWeapon"",
+                    ""type"": ""Button"",
+                    ""id"": ""7315b547-ee8e-4f01-9636-37d9eb63a8c9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ScrollThrouhWeapos"",
+                    ""type"": ""Button"",
+                    ""id"": ""b696ed97-65f5-438a-8819-97285c6f7056"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -322,6 +385,149 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""action"": ""AllDebugAreasOff"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""88b5e357-0fd7-4ac2-bae2-4833ed1ae429"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""WeaponOne"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""92b0cd72-a379-4976-acbd-67cd0a1ef568"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""WeaponOne"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""65db29b2-5d64-40e5-b3a6-51be86527ef2"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""WeaponTwo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f948c498-01e0-47ec-a6d5-14da6b73f5bc"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""WeaponTwo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8d1d8797-27d1-4ed2-86e5-6f2665cfd820"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""WeaponThree"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e4d7e85b-5977-4f76-a544-59c5e841dcdb"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""WeaponThree"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""75871d57-3bca-47ae-9e1c-1094cf8049b9"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""WeaponFour"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bfc8eabb-f2bc-45c8-9c56-6f997a14609e"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""WeaponFour"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""68f0a0a4-7921-49ab-ae1f-de6cb75a131c"",
+                    ""path"": ""<Mouse>/backButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""NextWeapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""799a4d71-587d-4439-945b-3bd38ee83f49"",
+                    ""path"": ""<Mouse>/forwardButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""PreviousWeapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""MouseScroll"",
+                    ""id"": ""95550388-efcc-43b0-9bf2-a92106508280"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ScrollThrouhWeapos"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""aab813b9-93a3-4127-87b4-c28cada27d23"",
+                    ""path"": ""<Mouse>/scroll/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""ScrollThrouhWeapos"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""75ad7532-a21d-4df7-b117-433b1315be8c"",
+                    ""path"": ""<Mouse>/scroll/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""ScrollThrouhWeapos"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -365,6 +571,13 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         m_Default_DebugLevelDown = m_Default.FindAction("DebugLevelDown", throwIfNotFound: true);
         m_Default_AllDebugAreasOn = m_Default.FindAction("AllDebugAreasOn", throwIfNotFound: true);
         m_Default_AllDebugAreasOff = m_Default.FindAction("AllDebugAreasOff", throwIfNotFound: true);
+        m_Default_WeaponOne = m_Default.FindAction("WeaponOne", throwIfNotFound: true);
+        m_Default_WeaponTwo = m_Default.FindAction("WeaponTwo", throwIfNotFound: true);
+        m_Default_WeaponThree = m_Default.FindAction("WeaponThree", throwIfNotFound: true);
+        m_Default_WeaponFour = m_Default.FindAction("WeaponFour", throwIfNotFound: true);
+        m_Default_NextWeapon = m_Default.FindAction("NextWeapon", throwIfNotFound: true);
+        m_Default_PreviousWeapon = m_Default.FindAction("PreviousWeapon", throwIfNotFound: true);
+        m_Default_ScrollThrouhWeapos = m_Default.FindAction("ScrollThrouhWeapos", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -431,6 +644,13 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     private readonly InputAction m_Default_DebugLevelDown;
     private readonly InputAction m_Default_AllDebugAreasOn;
     private readonly InputAction m_Default_AllDebugAreasOff;
+    private readonly InputAction m_Default_WeaponOne;
+    private readonly InputAction m_Default_WeaponTwo;
+    private readonly InputAction m_Default_WeaponThree;
+    private readonly InputAction m_Default_WeaponFour;
+    private readonly InputAction m_Default_NextWeapon;
+    private readonly InputAction m_Default_PreviousWeapon;
+    private readonly InputAction m_Default_ScrollThrouhWeapos;
     public struct DefaultActions
     {
         private @PlayerInputs m_Wrapper;
@@ -442,6 +662,13 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         public InputAction @DebugLevelDown => m_Wrapper.m_Default_DebugLevelDown;
         public InputAction @AllDebugAreasOn => m_Wrapper.m_Default_AllDebugAreasOn;
         public InputAction @AllDebugAreasOff => m_Wrapper.m_Default_AllDebugAreasOff;
+        public InputAction @WeaponOne => m_Wrapper.m_Default_WeaponOne;
+        public InputAction @WeaponTwo => m_Wrapper.m_Default_WeaponTwo;
+        public InputAction @WeaponThree => m_Wrapper.m_Default_WeaponThree;
+        public InputAction @WeaponFour => m_Wrapper.m_Default_WeaponFour;
+        public InputAction @NextWeapon => m_Wrapper.m_Default_NextWeapon;
+        public InputAction @PreviousWeapon => m_Wrapper.m_Default_PreviousWeapon;
+        public InputAction @ScrollThrouhWeapos => m_Wrapper.m_Default_ScrollThrouhWeapos;
         public InputActionMap Get() { return m_Wrapper.m_Default; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -472,6 +699,27 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @AllDebugAreasOff.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnAllDebugAreasOff;
                 @AllDebugAreasOff.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnAllDebugAreasOff;
                 @AllDebugAreasOff.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnAllDebugAreasOff;
+                @WeaponOne.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnWeaponOne;
+                @WeaponOne.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnWeaponOne;
+                @WeaponOne.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnWeaponOne;
+                @WeaponTwo.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnWeaponTwo;
+                @WeaponTwo.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnWeaponTwo;
+                @WeaponTwo.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnWeaponTwo;
+                @WeaponThree.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnWeaponThree;
+                @WeaponThree.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnWeaponThree;
+                @WeaponThree.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnWeaponThree;
+                @WeaponFour.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnWeaponFour;
+                @WeaponFour.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnWeaponFour;
+                @WeaponFour.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnWeaponFour;
+                @NextWeapon.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnNextWeapon;
+                @NextWeapon.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnNextWeapon;
+                @NextWeapon.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnNextWeapon;
+                @PreviousWeapon.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnPreviousWeapon;
+                @PreviousWeapon.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnPreviousWeapon;
+                @PreviousWeapon.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnPreviousWeapon;
+                @ScrollThrouhWeapos.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnScrollThrouhWeapos;
+                @ScrollThrouhWeapos.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnScrollThrouhWeapos;
+                @ScrollThrouhWeapos.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnScrollThrouhWeapos;
             }
             m_Wrapper.m_DefaultActionsCallbackInterface = instance;
             if (instance != null)
@@ -497,6 +745,27 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @AllDebugAreasOff.started += instance.OnAllDebugAreasOff;
                 @AllDebugAreasOff.performed += instance.OnAllDebugAreasOff;
                 @AllDebugAreasOff.canceled += instance.OnAllDebugAreasOff;
+                @WeaponOne.started += instance.OnWeaponOne;
+                @WeaponOne.performed += instance.OnWeaponOne;
+                @WeaponOne.canceled += instance.OnWeaponOne;
+                @WeaponTwo.started += instance.OnWeaponTwo;
+                @WeaponTwo.performed += instance.OnWeaponTwo;
+                @WeaponTwo.canceled += instance.OnWeaponTwo;
+                @WeaponThree.started += instance.OnWeaponThree;
+                @WeaponThree.performed += instance.OnWeaponThree;
+                @WeaponThree.canceled += instance.OnWeaponThree;
+                @WeaponFour.started += instance.OnWeaponFour;
+                @WeaponFour.performed += instance.OnWeaponFour;
+                @WeaponFour.canceled += instance.OnWeaponFour;
+                @NextWeapon.started += instance.OnNextWeapon;
+                @NextWeapon.performed += instance.OnNextWeapon;
+                @NextWeapon.canceled += instance.OnNextWeapon;
+                @PreviousWeapon.started += instance.OnPreviousWeapon;
+                @PreviousWeapon.performed += instance.OnPreviousWeapon;
+                @PreviousWeapon.canceled += instance.OnPreviousWeapon;
+                @ScrollThrouhWeapos.started += instance.OnScrollThrouhWeapos;
+                @ScrollThrouhWeapos.performed += instance.OnScrollThrouhWeapos;
+                @ScrollThrouhWeapos.canceled += instance.OnScrollThrouhWeapos;
             }
         }
     }
@@ -528,5 +797,12 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         void OnDebugLevelDown(InputAction.CallbackContext context);
         void OnAllDebugAreasOn(InputAction.CallbackContext context);
         void OnAllDebugAreasOff(InputAction.CallbackContext context);
+        void OnWeaponOne(InputAction.CallbackContext context);
+        void OnWeaponTwo(InputAction.CallbackContext context);
+        void OnWeaponThree(InputAction.CallbackContext context);
+        void OnWeaponFour(InputAction.CallbackContext context);
+        void OnNextWeapon(InputAction.CallbackContext context);
+        void OnPreviousWeapon(InputAction.CallbackContext context);
+        void OnScrollThrouhWeapos(InputAction.CallbackContext context);
     }
 }

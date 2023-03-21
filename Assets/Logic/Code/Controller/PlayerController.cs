@@ -50,22 +50,57 @@ public class PlayerController : ControllerBase
 		playerInputs.Default.DebugLevelDown.performed += ctx => DebugDown();
 		playerInputs.Default.AllDebugAreasOn.performed += ctx => AllDebugAreasOn();
 		playerInputs.Default.AllDebugAreasOff.performed += ctx => AlDebugAreasOff();
+
+		playerInputs.Default.WeaponOne.performed += ctx => EquipWeaponOne();
+		playerInputs.Default.WeaponTwo.performed += ctx => EquipWeaponTwo();
+		playerInputs.Default.WeaponThree.performed += ctx => EquipWeaponThree();
+		playerInputs.Default.WeaponFour.performed += ctx => EquipWeaponFour();
+		playerInputs.Default.NextWeapon.performed += ctx => EquipNextWeapon();
+		playerInputs.Default.PreviousWeapon.performed += ctx => EquipPreviousWeapon();
+		playerInputs.Default.ScrollThrouhWeapos.performed += ctx => Scroll(ctx.ReadValue<float>());
 	}
 
 	void HorizontalInput(float axis)
 	{
 		gameCharacter?.HorizontalMovementInput(axis);
 	}
-
 	void VerticalInput(float axis)
 	{
 		gameCharacter?.VerticalMovmentInput(axis);
 	}
-
 	void Jump()
 	{
 		if (gameCharacter == null) return;
 		eventComponent.AddEvent(new JumpEvent(gameCharacter));
+	}
+	void EquipWeaponOne()
+	{
+		gameCharacter?.CombatComponent?.SwitchWeapon(0);
+	}
+	void EquipWeaponTwo()
+	{
+		gameCharacter?.CombatComponent?.SwitchWeapon(1);
+	}
+	void EquipWeaponThree()
+	{
+		gameCharacter?.CombatComponent?.SwitchWeapon(2);
+	}
+	void EquipWeaponFour()
+	{
+		gameCharacter?.CombatComponent?.SwitchWeapon(3);
+	}
+	void EquipNextWeapon()
+	{
+		gameCharacter?.CombatComponent?.NextWeapon();
+	}
+	void EquipPreviousWeapon()
+	{
+		gameCharacter?.CombatComponent?.PreviousWeapon();
+	}
+	void Scroll(float axis)
+	{
+		if (axis > 0) EquipNextWeapon();
+		else EquipPreviousWeapon();
 	}
 
 	void DebugUp()

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-
+using UnityEngine.UIElements;
 
 public class GameCharacterData : MonoBehaviour
 {
@@ -36,6 +36,9 @@ public class GameCharacterData : MonoBehaviour
 	[SerializeField] float playbackInterp = 1f;
 	[SerializeField] float roationBlendInterp = 1f;
 	[SerializeField] float maxFallingVelocityAnim = 200f;
+
+	[Header("WeaponDataTEST")]
+	[SerializeField] List<ScriptableWeapon> weapons;
  
 	public float MaxMovementSpeed { get { return maxMovementSpeed; } }
 	public float MovmentGravity { get { return movmentGravity; } }
@@ -62,4 +65,6 @@ public class GameCharacterData : MonoBehaviour
 	public float PlaybackInterp { get { return playbackInterp; } }
 	public float RoationBlendInterp { get { return roationBlendInterp; } }
 	public float MaxFallingVelocityAnim { get { return maxFallingVelocityAnim; } }
+
+	public List<ScriptableWeapon> Weapons { get { return weapons; } }
 }
