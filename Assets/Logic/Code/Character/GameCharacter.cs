@@ -11,6 +11,7 @@ public class GameCharacter : MonoBehaviour
 	GameCharacterPluginStateMachine pluginStateMachine;
 	CharacterController characterController;
 	GameCharacterData gameCharacterData;
+	EventComponent eventComponent;
 	Animator animator;
 	AnimationController animController;
 	ScriptableCharacter characterData;
@@ -44,6 +45,7 @@ public class GameCharacter : MonoBehaviour
 	public AnimationController AnimController { get { return animController; } }
 	public CombatComponent CombatComponent { get { return combatComponent; } }
 	public GameCharacterPluginStateMachine PluginStateMachine { get { return pluginStateMachine; } }
+	public EventComponent EventComponent { get { return eventComponent; } }
 	public bool IsInJump { get { return isInJump; } 
 		set 
 		{
@@ -112,14 +114,16 @@ public class GameCharacter : MonoBehaviour
 
 	private void Awake()
 	{
+		animator = gameObject.GetComponent<Animator>();
+		if (animator == null) Debug.LogError("GameObject: " + name + " Does not have an Animator Attached!");
+		eventComponent = new EventComponent();
 		gameCharacterData = gameObject.GetComponent<GameCharacterData>();
 		if (!gameCharacterData) gameObject.AddComponent<GameCharacterData>();
 		characterController = gameObject.GetComponent<CharacterController>();
 		if (!characterController) gameObject.AddComponent<CharacterController>();
 		stateMachine = gameObject.AddComponent<GameCharacterStateMachine>();
 		pluginStateMachine = gameObject.AddComponent<GameCharacterPluginStateMachine>();
-		animator = gameObject.GetComponent<Animator>();
-		if (animator == null) Debug.LogError("GameObject: " + name + " Does not have an Animator Attached!");
+		pluginStateMachine.Init(this);
 		animController = new AnimationController(this);
 		combatComponent = new CombatComponent(this);
 
@@ -135,6 +139,7 @@ public class GameCharacter : MonoBehaviour
 
 	private void Update()
 	{
+		EventComponent.Update(Time.deltaTime);
 		CalculateVelocity();
 		AddGravityOnMovementVelocity();
 		CheckIfCharacterIsGrounded();

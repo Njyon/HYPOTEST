@@ -7,7 +7,6 @@ public class PlayerController : ControllerBase
     [HideInInspector] public PlayerInputs playerInputs;
 	CameraController camController;
 	GameCharacter gameCharacter;
-	EventComponent eventComponent = new EventComponent();
 
 	public override void BeginPosses(GameObject pawn, ScriptableCharacter characterData)
 	{
@@ -70,32 +69,31 @@ public class PlayerController : ControllerBase
 	}
 	void Jump()
 	{
-		if (gameCharacter == null) return;
-		eventComponent.AddEvent(new JumpEvent(gameCharacter));
+		gameCharacter?.EventComponent.AddEvent(new JumpEvent(gameCharacter));
 	}
 	void EquipWeaponOne()
 	{
-		gameCharacter?.CombatComponent?.SwitchWeapon(0);
+		gameCharacter?.EventComponent.AddEvent(new WeaponSwitchEvent(gameCharacter, 0));
 	}
 	void EquipWeaponTwo()
 	{
-		gameCharacter?.CombatComponent?.SwitchWeapon(1);
+		gameCharacter?.EventComponent.AddEvent(new WeaponSwitchEvent(gameCharacter, 1));
 	}
 	void EquipWeaponThree()
 	{
-		gameCharacter?.CombatComponent?.SwitchWeapon(2);
+		gameCharacter?.EventComponent.AddEvent(new WeaponSwitchEvent(gameCharacter, 2));
 	}
 	void EquipWeaponFour()
 	{
-		gameCharacter?.CombatComponent?.SwitchWeapon(3);
+		gameCharacter?.EventComponent.AddEvent(new WeaponSwitchEvent(gameCharacter, 3));
 	}
 	void EquipNextWeapon()
 	{
-		gameCharacter?.CombatComponent?.NextWeapon();
+		gameCharacter?.EventComponent.AddEvent(new WeaponSwitchEvent(gameCharacter, 0, EWeaponSwitchType.NextWeapon));
 	}
 	void EquipPreviousWeapon()
 	{
-		gameCharacter?.CombatComponent?.PreviousWeapon();
+		gameCharacter?.EventComponent.AddEvent(new WeaponSwitchEvent(gameCharacter, 0, EWeaponSwitchType.PreviousWeapon));
 	}
 	void Scroll(float axis)
 	{
@@ -122,7 +120,7 @@ public class PlayerController : ControllerBase
 
 	private void Update()
 	{
-		eventComponent?.Update(Time.deltaTime);
+
 	}
 
 	private void OnDisable()

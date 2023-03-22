@@ -13,6 +13,11 @@ public class JumpEvent : CharacterEvent
 		return false;
 	}
 
+	public override EGameCharacterEvent GetGameCharacterEvenetType()
+	{
+		return EGameCharacterEvent.Jump;
+	}
+
 	public override void StartEvent()
 	{
 		var jumpVelocity = Mathf.Sqrt(-2 * -gameCharacter.GameCharacterData.MovmentGravity * gameCharacter.GameCharacterData.JumpForce);

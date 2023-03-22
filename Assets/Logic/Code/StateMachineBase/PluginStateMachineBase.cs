@@ -16,7 +16,7 @@ public abstract class PluginStateMachineBase<T> : MonoBehaviour
 	public delegate void OnPluginStateActivated(T activatedStateType);
 	public delegate void OnPluginStateDeactivated(T deactivatedStateType);
 
-	private void Start()
+	private void Awake()
 	{
 		dictionaryOfPluginStates = new Dictionary<T, IPluginState<T>>();
 	}
@@ -54,7 +54,7 @@ public abstract class PluginStateMachineBase<T> : MonoBehaviour
 	/// <returns> True if the State got successfully added </returns>
 	public bool AddPluginState(T stateType)
 	{
-		if (DictionaryOfPluginStates.ContainsKey(stateType))
+		if (DictionaryOfPluginStates == null || DictionaryOfPluginStates.ContainsKey(stateType))
 			return false;
 
 		IPluginState<T> newState;

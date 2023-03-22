@@ -37,8 +37,10 @@ public class GameCharacterData : MonoBehaviour
 	[SerializeField] float roationBlendInterp = 1f;
 	[SerializeField] float maxFallingVelocityAnim = 200f;
 
-	[Header("WeaponDataTEST")]
+	[Header("WeaponData")]
 	[SerializeField] List<ScriptableWeapon> weapons;
+	[SerializeField] Transform handRObjectPoint;
+	[SerializeField] Transform handLObjectPoint;
  
 	public float MaxMovementSpeed { get { return maxMovementSpeed; } }
 	public float MovmentGravity { get { return movmentGravity; } }
@@ -67,4 +69,6 @@ public class GameCharacterData : MonoBehaviour
 	public float MaxFallingVelocityAnim { get { return maxFallingVelocityAnim; } }
 
 	public List<ScriptableWeapon> Weapons { get { return weapons; } }
+	public Transform HandROnjectPoint { get { return handRObjectPoint; } }
+	public Transform HandLOnjectPoint { get { return handLObjectPoint; } }
 }

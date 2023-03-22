@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor.Animations;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class AnimationController
 {
 	GameCharacter gameCharacter;
+	AnimatorOverrideController overrideController;
 
 	int walkRunBlendID;
 	int strideBlendID;
@@ -18,24 +20,27 @@ public class AnimationController
 	int jumpATriggerID;
 	int jumpBTriggerID;
 	int jumpStateAID;
-	int jumpStateBID;
-	int upperBodyIsAID;
-	int lowerBodyIsAID;
-	int upperBodyLayerIndex;
-	int lowerBodyLayerIndex;
-	int upperBodyAStateID;
-	int upperBodyBStateID;
-	int lowerBodyAStateID;
-	int lowerBodyBStateID;
+	int layerAID;
+	int spineLayerIndex;
+	int legLayerIndex;
+	int headLayerIndex;
+	int armRLayerIndex;
+	int armLLayerIndex;
 
 	int rotationLayerIndex;
 
 	float minMalkSpeed;
 	bool startWalkRunBlendInterp = true;
-	float upperBodyInterpTarget;
-	float upperBodyInterpSpeed;
-	float lowerBodyInterpTarget;
-	float lowerBodyInterpSpeed;
+	float spineLayerInterpTarget;
+	float spineLayerInterpSpeed;
+	float legLayerInterpTarget;
+	float legLayerInterpSpeed;
+	float headLayerInterpTarget;
+	float headLayerInterpSpeed;
+	float armRLayerInterpTarget;
+	float armRLayerInterpSpeed;
+	float armLLayerInterpTarget;
+	float armLLayerInterpSpeed;
 
 	float walkRunBlend;
 	public float WalkRunBlend { 
@@ -117,50 +122,72 @@ public class AnimationController
 			}
 		}
 	}
-	bool upperBodyIsA;
+	bool layerA = true;
 	public bool UpperBodyIsA { 
-		get { return upperBodyIsA; } 
+		get { return layerA; } 
 		private set
 		{
-			if (upperBodyIsA != value)
+			if (layerA != value)
 			{
-				upperBodyIsA = value;
-				gameCharacter.Animator.SetBool(upperBodyIsAID, upperBodyIsA);
+				layerA = value;
+				gameCharacter.Animator.SetBool(layerAID, layerA);
 			}
 		}
 	}
-	bool lowerBodyIsA;
-	public bool LowerBodyIsA { 
-		get { return lowerBodyIsA; } 
+	public float SpineLayerWeight {
+		get { return gameCharacter.Animator.GetLayerWeight(spineLayerIndex); }
 		private set
 		{
-			if (lowerBodyIsA != value)
+			if (gameCharacter.Animator.GetLayerWeight(spineLayerIndex) != value)
 			{
-				lowerBodyIsA = value;
-				gameCharacter.Animator.SetBool(lowerBodyIsAID, lowerBodyIsA);
+				gameCharacter.Animator.SetLayerWeight(spineLayerIndex, value);
 			}
 		}
 	}
-	public float UpperBodyLayerWeight {
-		get { return gameCharacter.Animator.GetLayerWeight(upperBodyLayerIndex); }
+	public float LegLayerWeight {
+		get { return gameCharacter.Animator.GetLayerWeight(legLayerIndex); }
 		private set
 		{
-			if (gameCharacter.Animator.GetLayerWeight(upperBodyLayerIndex) != value)
+			if (gameCharacter.Animator.GetLayerWeight(legLayerIndex) != value)
 			{
-				gameCharacter.Animator.SetLayerWeight(upperBodyLayerIndex, value);
+				gameCharacter.Animator.SetLayerWeight(legLayerIndex, value);
 			}
 		}
 	}
-	public float LowerBodyLayerWeight {
-		get { return gameCharacter.Animator.GetLayerWeight(lowerBodyLayerIndex); }
+	public float HeadLayerWeight
+	{
+		get { return gameCharacter.Animator.GetLayerWeight(headLayerIndex); }
 		private set
 		{
-			if (gameCharacter.Animator.GetLayerWeight(lowerBodyLayerIndex) != value)
+			if (gameCharacter.Animator.GetLayerWeight(headLayerIndex) != value)
 			{
-				gameCharacter.Animator.SetLayerWeight(lowerBodyLayerIndex, value);
+				gameCharacter.Animator.SetLayerWeight(headLayerIndex, value);
 			}
 		}
 	}
+	public float ArmRLayerWeight
+	{
+		get { return gameCharacter.Animator.GetLayerWeight(armRLayerIndex); }
+		private set
+		{
+			if (gameCharacter.Animator.GetLayerWeight(armRLayerIndex) != value)
+			{
+				gameCharacter.Animator.SetLayerWeight(armRLayerIndex, value);
+			}
+		}
+	}
+	public float ArmLLayerWeight
+	{
+		get { return gameCharacter.Animator.GetLayerWeight(armLLayerIndex); }
+		private set
+		{
+			if (gameCharacter.Animator.GetLayerWeight(armLLayerIndex) != value)
+			{
+				gameCharacter.Animator.SetLayerWeight(armLLayerIndex, value);
+			}
+		}
+	}
+
 
 	public AnimationController(GameCharacter character)
 	{
@@ -180,15 +207,14 @@ public class AnimationController
 		jumpATriggerID = Animator.StringToHash("JumpA");
 		jumpBTriggerID = Animator.StringToHash("JumpB");
 		jumpStateAID = Animator.StringToHash("JumpStateA");
-		jumpStateBID = Animator.StringToHash("JumpStateB");
-		upperBodyIsAID = Animator.StringToHash("UpperBodyIsA");
-		lowerBodyIsAID = Animator.StringToHash("LowerBodyIsA");
-		upperBodyLayerIndex = gameCharacter.Animator.GetLayerIndex("UpperBodyLayer");
-		lowerBodyLayerIndex = gameCharacter.Animator.GetLayerIndex("LegLayer");
-		upperBodyAStateID = Animator.StringToHash("UpperBodyStateA");
-		upperBodyBStateID = Animator.StringToHash("UpperBodyStateB");
-		lowerBodyAStateID = Animator.StringToHash("LegLayerStateA");
-		lowerBodyBStateID = Animator.StringToHash("LegLayerStateB");
+		layerAID = Animator.StringToHash("LayerA");
+		spineLayerIndex = gameCharacter.Animator.GetLayerIndex("SpineLayer");
+		legLayerIndex = gameCharacter.Animator.GetLayerIndex("LegLayer");
+		headLayerIndex = gameCharacter.Animator.GetLayerIndex("HeadLayer");
+		armLLayerIndex = gameCharacter.Animator.GetLayerIndex("ArmLLayer");
+		armRLayerIndex = gameCharacter.Animator.GetLayerIndex("ArmRLayer");
+
+		overrideController = new AnimatorOverrideController(gameCharacter.Animator.runtimeAnimatorController);
 
 		minMalkSpeed = gameCharacter.GameCharacterData.MaxMovementSpeed * gameCharacter.GameCharacterData.WalkFactor;
 	}
@@ -212,8 +238,11 @@ public class AnimationController
 		}
 
 		RotationLayer(deltaTime);
-		UpperBodyLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(upperBodyLayerIndex), upperBodyInterpTarget, deltaTime * upperBodyInterpSpeed);
-		LowerBodyLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(lowerBodyLayerIndex), lowerBodyInterpTarget, deltaTime * lowerBodyInterpSpeed);
+		SpineLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(spineLayerIndex), spineLayerInterpTarget, deltaTime * spineLayerInterpSpeed);
+		LegLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(legLayerIndex), legLayerInterpTarget, deltaTime * legLayerInterpSpeed);
+		HeadLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(headLayerIndex), headLayerInterpTarget, deltaTime * headLayerInterpSpeed);
+		ArmRLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(armRLayerIndex), armRLayerInterpTarget, deltaTime * armRLayerInterpSpeed);
+		ArmLLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(armLLayerIndex), armLLayerInterpTarget, deltaTime * armLLayerInterpSpeed);
 	}
 
 	private void RotationLayer(float deltaTime)
@@ -274,19 +303,18 @@ public class AnimationController
 		int jumpIndex = gameCharacter.CurrentJumpAmount - 1;
 		if (gameCharacter.CharacterData.CharacterAnimationData.Jumps.Count <= 0) return;
 		jumpIndex = jumpIndex % gameCharacter.CharacterData.CharacterAnimationData.Jumps.Count;
-		AnimatorOverrideController overrideController = new AnimatorOverrideController(gameCharacter.Animator.runtimeAnimatorController);
 		if (isJumpStateA)
 		{
 			overrideController["Jump2 PlaceHolder"] = gameCharacter.CharacterData.CharacterAnimationData.Jumps[jumpIndex];
+			gameCharacter.Animator.runtimeAnimatorController = overrideController;
 			gameCharacter.Animator.SetTrigger(jumpBTriggerID);
 			
 		} else
 		{
 			overrideController["Jump1 PlaceHolder"] = gameCharacter.CharacterData.CharacterAnimationData.Jumps[jumpIndex];
+			gameCharacter.Animator.runtimeAnimatorController = overrideController;
 			gameCharacter.Animator.SetTrigger(jumpATriggerID);
 		}
-		gameCharacter.Animator.runtimeAnimatorController = overrideController;
-
 	}
     
 	public void LateUpdate()
@@ -294,57 +322,81 @@ public class AnimationController
 
 	}
 
-	public void InterpUpperBodyLayerWeight(float target, float speed = 5f)
+	public void InterpSpineLayerWeight(float target, float speed = 5f)
 	{
-		upperBodyInterpTarget = target;
-		upperBodyInterpSpeed = speed;
+		spineLayerInterpTarget = target;
+		spineLayerInterpSpeed = speed;
 	}
-	public void SetUpperBodyLayerWeight(float weight)
+	public void SetSpineLayerWeight(float weight)
 	{
-		upperBodyInterpTarget = weight;
-		UpperBodyLayerWeight = weight;
+		spineLayerInterpTarget = weight;
+		SpineLayerWeight = weight;
 	}
-	public void InterpLowerBodyLayerWeight(float target, float speed = 5f)
+	public void InterpLegLayerWeight(float target, float speed = 5f)
 	{
-		lowerBodyInterpTarget = target;
-		lowerBodyInterpSpeed = speed;
+		legLayerInterpTarget = target;
+		legLayerInterpSpeed = speed;
 	}
-	public void SetLowerBodyLayerWeight(float weight)
+	public void SetLegLayerWeight(float weight)
 	{
-		lowerBodyInterpTarget = weight;
-		LowerBodyLayerWeight = weight;
+		legLayerInterpTarget = weight;
+		LegLayerWeight = weight;
 	}
-	public void SetUpperBodyAnimClip(AnimationClip clip)
+	public void InterpHeadLayerWeight(float target, float speed = 5f)
 	{
-		AnimatorStateInfo animatorState = gameCharacter.Animator.GetCurrentAnimatorStateInfo(upperBodyLayerIndex);
-		bool isAState = false;
+		headLayerInterpTarget = target;
+		headLayerInterpSpeed = speed;
+	}
+	public void SetHeadLayerWeight(float weight)
+	{
+		headLayerInterpTarget = weight;
+		HeadLayerWeight = weight;
+	}
+	public void InterpArmRLayerWeight(float target, float speed = 5f)
+	{
+		armRLayerInterpTarget = target;
+		armRLayerInterpSpeed = speed;
+	}
+	public void SetArmRLayerWeight(float weight)
+	{
+		armRLayerInterpTarget = weight;
+		ArmRLayerWeight = weight;
+	}
+	public void InterpArmLLayerWeight(float target, float speed = 5f)
+	{
+		armLLayerInterpTarget = target;
+		armLLayerInterpSpeed = speed;
+	}
+	public void SetArmLLayerWeight(float weight)
+	{
+		armLLayerInterpTarget = weight;
+		ArmLLayerWeight = weight;
+	}
+	public void InterpUpperBodyWeight(float target, float speed = 5f)
+	{
+		InterpSpineLayerWeight(target, speed);
+		InterpHeadLayerWeight(target, speed);
+		InterpArmRLayerWeight(target, speed);
+		InterpArmLLayerWeight(target, speed);
+	}
+	public void SetUpperBodyWeight(float weight)
+	{
+		SetSpineLayerWeight(weight); 
+		SetHeadLayerWeight(weight);
+		SetArmLLayerWeight(weight);
+		SetArmRLayerWeight(weight);
+	}
 
-		if (animatorState.shortNameHash == upperBodyAStateID) isAState = true;
-		AnimatorOverrideController overrideController = new AnimatorOverrideController(gameCharacter.Animator.runtimeAnimatorController);
-		if (!isAState)
+	public void SetBodyLayerAnimClip(AnimationClip clip)
+	{
+		if (UpperBodyIsA)
 		{
-			overrideController["UpperBodyLayerPlaceHolderA"] = clip;
+			overrideController["BodyLayerB"] = clip;
 		}else
 		{
-			overrideController["UpperBodyLayerPlaceHolderB"] = clip;
+			overrideController["BodyLayerA"] = clip;
 		}
-		UpperBodyIsA = isAState;
-	}
-	public void SetLowerBodyAnimClip(AnimationClip clip)
-	{
-		AnimatorStateInfo animatorState = gameCharacter.Animator.GetCurrentAnimatorStateInfo(lowerBodyLayerIndex);
-		bool isAState = false;
-
-		if (animatorState.shortNameHash == lowerBodyAStateID) isAState = true;
-		AnimatorOverrideController overrideController = new AnimatorOverrideController(gameCharacter.Animator.runtimeAnimatorController);
-		if (!isAState)
-		{
-			overrideController["LegLayerPlaceHolderA"] = clip;
-		}
-		else
-		{
-			overrideController["LegLayerPlaceHolderB"] = clip;
-		}
-		LowerBodyIsA = isAState;
+		gameCharacter.Animator.runtimeAnimatorController = overrideController;
+		UpperBodyIsA = !UpperBodyIsA;
 	}
 }

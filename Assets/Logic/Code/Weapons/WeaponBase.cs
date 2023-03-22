@@ -6,9 +6,11 @@ public abstract class WeaponBase
 {
     GameCharacter gameCharacter;
     ScriptableWeapon weaponData;
+    GameObject spawnedWeapon;
 
     public GameCharacter GameCharacter { get { return gameCharacter; } }
     public ScriptableWeapon WeaponData { get { return weaponData; } }
+    public GameObject SpawnedWeapon { get { return spawnedWeapon; } }
 
     public WeaponBase() { }
     public WeaponBase(GameCharacter gameCharacter, ScriptableWeapon weaponData)
@@ -21,12 +23,32 @@ public abstract class WeaponBase
 	{
 		SetUpWeaponAnimationData();
 		GameCharacter.PluginStateMachine.AddPluginState(EPluginCharacterState.WeaponReady);
+        switch(weaponData.AnimationData.HandType)
+        {
+            case EWeaponHandType.RightHand:
+                if (weaponData.WeaponMeshData.WeaponMesh == null) break; 
+                spawnedWeapon = GameObject.Instantiate(WeaponData.WeaponMeshData.WeaponMesh, gameCharacter.GameCharacterData.HandROnjectPoint);
+                spawnedWeapon.transform.Translate(weaponData.WeaponMeshData.WeaponOffset, Space.Self);
+                spawnedWeapon.transform.rotation = Quaternion.Euler(spawnedWeapon.transform.rotation.eulerAngles + WeaponData.WeaponMeshData.WeaponRotationEuler);
+                spawnedWeapon.transform.localScale = WeaponData.WeaponMeshData.WeaponScale;
+                break;
+			case EWeaponHandType.LeftHand:
+				if (weaponData.WeaponMeshData.WeaponMesh == null) break; 
+				spawnedWeapon = GameObject.Instantiate(WeaponData.WeaponMeshData.WeaponMesh, gameCharacter.GameCharacterData.HandLOnjectPoint);
+				spawnedWeapon.transform.Translate(weaponData.WeaponMeshData.WeaponOffset, Space.Self);
+				spawnedWeapon.transform.rotation = Quaternion.Euler(spawnedWeapon.transform.rotation.eulerAngles + WeaponData.WeaponMeshData.WeaponRotationEuler);
+				spawnedWeapon.transform.localScale = WeaponData.WeaponMeshData.WeaponScale;
+				break;
+			default:
+                break;
+        }
 	}
 
 	public virtual void UnEquipWeapon()
 	{
 		GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.WeaponReady);
-	}
+        GameObject.Destroy(spawnedWeapon);
+    }
 
     public abstract void UpdateWeapon(float deltaTime);
 
@@ -42,7 +64,6 @@ public abstract class WeaponBase
 
 	void SetUpWeaponAnimationData()
 	{
-		gameCharacter.AnimController.SetUpperBodyAnimClip(weaponData.AnimationData.WeaponReadyPose);
-		gameCharacter.AnimController.SetLowerBodyAnimClip(weaponData.AnimationData.WeaponReadyPose);
+		gameCharacter.AnimController.SetBodyLayerAnimClip(weaponData.AnimationData.WeaponReadyPose);
 	}
 }

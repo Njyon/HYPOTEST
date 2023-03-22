@@ -10,19 +10,20 @@ public class GameCharacterWeaponReadyPluginState : AGameCharacterPluginState
 	public override void Active()
 	{
 		base.Active();
-		ScriptableWeaponAnimationData weaponAnimationData = GameCharacter.CombatComponent.CurrentWeapon.WeaponData.AnimationData;
-		GameCharacter.AnimController.InterpUpperBodyLayerWeight(weaponAnimationData.WeaponReadyWeight, weaponAnimationData.WeaponReadyInterpSpeed);
+		WeaponLayerBasedOnState(GameCharacter.StateMachine.GetCurrentStateType());
 	}
 
 	public override void AddState()
 	{
-
+		GameCharacter.StateMachine.onStateChanged += OnGameCharacterStateChange;
+		GameCharacter.EventComponent.onCharacterEventTriggered += CharacterEvent;
 	}
 
 	public override void Deactive()
 	{
 		base.Deactive();
-		GameCharacter.AnimController.InterpUpperBodyLayerWeight(0, GameCharacter.CombatComponent.CurrentWeapon.WeaponData.AnimationData.WeaponReadyInterpSpeed);
+		GameCharacter.AnimController.InterpSpineLayerWeight(0, GameCharacter.CombatComponent.CurrentWeapon.WeaponData.AnimationData.WeaponReadyInterpSpeed);
+		GameCharacter.AnimController.InterpLegLayerWeight(0, GameCharacter.CombatComponent.CurrentWeapon.WeaponData.AnimationData.WeaponReadyInterpSpeed);
 	}
 
 	public override void ExecuteState(float deltaTime)
@@ -37,11 +38,70 @@ public class GameCharacterWeaponReadyPluginState : AGameCharacterPluginState
 
 	public override void RemoveState()
 	{
-
+		GameCharacter.StateMachine.onStateChanged -= OnGameCharacterStateChange;
+		GameCharacter.EventComponent.onCharacterEventTriggered -= CharacterEvent;
 	}
 
 	public override bool WantsToBeActive()
 	{
 		return true;
+	}
+
+	void OnGameCharacterStateChange(IState<EGameCharacterState> newState, IState<EGameCharacterState> oldState)
+	{
+		WeaponLayerBasedOnState(newState.GetStateType());
+	}
+
+	private void WeaponLayerBasedOnState(EGameCharacterState newState)
+	{
+		switch (newState)
+		{
+			case EGameCharacterState.InAir:
+				GameCharacter.AnimController.InterpSpineLayerWeight(0, GameCharacter.CombatComponent.CurrentWeapon.WeaponData.AnimationData.WeaponReadyInterpSpeed);
+				GameCharacter.AnimController.InterpLegLayerWeight(0, GameCharacter.CombatComponent.CurrentWeapon.WeaponData.AnimationData.WeaponReadyInterpSpeed);
+				break;
+			case EGameCharacterState.Moving:
+			case EGameCharacterState.Sliding:
+				GameCharacter.AnimController.SetLegLayerWeight(0);
+				SetMovingWeaponUpperBodyLayer();
+				break;
+			default:
+				SetDefaultWeaponUpperBodyLayer();
+				SetDefaultWeaponLowerBodyLayer(); 
+				break;
+		}
+	}
+
+	void SetDefaultWeaponUpperBodyLayer()
+	{
+		ScriptableWeaponAnimationData weaponAnimationData = GameCharacter.CombatComponent.CurrentWeapon.WeaponData.AnimationData;
+		GameCharacter.AnimController.InterpUpperBodyWeight(weaponAnimationData.WeaponReadyWeight, weaponAnimationData.WeaponReadyInterpSpeed);
+	}
+
+	void SetDefaultWeaponLowerBodyLayer()
+	{
+		ScriptableWeaponAnimationData weaponAnimationData = GameCharacter.CombatComponent.CurrentWeapon.WeaponData.AnimationData;
+		GameCharacter.AnimController.InterpLegLayerWeight(weaponAnimationData.WeaponReadyWeight, weaponAnimationData.WeaponReadyInterpSpeed);
+	}
+
+	void SetMovingWeaponUpperBodyLayer()
+	{
+		ScriptableWeaponAnimationData weaponAnimationData = GameCharacter.CombatComponent.CurrentWeapon.WeaponData.AnimationData;
+		GameCharacter.AnimController.InterpSpineLayerWeight(weaponAnimationData.HeadSpineLayerMovingWeight, weaponAnimationData.WeaponReadyInterpSpeed);
+		GameCharacter.AnimController.InterpHeadLayerWeight(weaponAnimationData.HeadSpineLayerMovingWeight, weaponAnimationData.WeaponReadyInterpSpeed);
+		GameCharacter.AnimController.InterpArmRLayerWeight(weaponAnimationData.ArmRMovingWeight, weaponAnimationData.WeaponReadyInterpSpeed);
+		GameCharacter.AnimController.InterpArmLLayerWeight(weaponAnimationData.ArmLMovingWeight, weaponAnimationData.WeaponReadyInterpSpeed);
+	}
+
+	void CharacterEvent(EGameCharacterEvent type)
+	{
+		switch(type)
+		{
+			case EGameCharacterEvent.Jump: 
+				GameCharacter.AnimController.SetUpperBodyWeight(0);
+				GameCharacter.AnimController.SetLegLayerWeight(0);
+				break;
+			default: break;
+		}
 	}
 }

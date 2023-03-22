@@ -2,6 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum EGameCharacterEvent
+{
+	Jump,
+	WeaponSwitchEvent,
+}
+
 [SerializeField]
 public abstract class CharacterEvent
 {
@@ -14,6 +20,7 @@ public abstract class CharacterEvent
 		this.gameCharacter = gameCharacter;
 	}
 
+	public abstract EGameCharacterEvent GetGameCharacterEvenetType();
 	public abstract bool CanBeExecuted();
 	public abstract void StartEvent();
 }
@@ -28,6 +35,9 @@ public class EventComponent
 
 	public CharacterEvent ToBeEveluatedEvent { get { return toBeEveluatedEvent; } }
 	public CharacterEvent EveluatedEvent { get { return eveluatedEvent; } }
+
+	public delegate void OnCharacterEventTriggered(EGameCharacterEvent type);
+	public OnCharacterEventTriggered onCharacterEventTriggered;
 	
 
 	public EventComponent()
@@ -50,6 +60,7 @@ public class EventComponent
 			{
 				eveluatedEvent = toBeEveluatedEvent;
 				eveluatedEvent.StartEvent();
+				if (onCharacterEventTriggered != null) onCharacterEventTriggered(eveluatedEvent.GetGameCharacterEvenetType());
 				toBeEveluatedEvent = null;
 			}
 			else if (toBeEveluatedEvent.time <= 0)

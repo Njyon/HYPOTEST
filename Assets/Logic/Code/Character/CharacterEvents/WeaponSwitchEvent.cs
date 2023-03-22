@@ -2,12 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum EWeaponSwitchType
+{
+	Normal,
+	NextWeapon,
+	PreviousWeapon,
+}
+
 public class WeaponSwitchEvent : CharacterEvent
 {
 	int weaponIndex;
-	public WeaponSwitchEvent(GameCharacter gameCharacter, int weaponIndex, float time = 0.2F) : base(gameCharacter, time)
+	EWeaponSwitchType weaponSwitchType;
+	public WeaponSwitchEvent(GameCharacter gameCharacter, int weaponIndex, EWeaponSwitchType type = EWeaponSwitchType.Normal, float time = 0.2F) : base(gameCharacter, time)
 	{
 		this.weaponIndex = weaponIndex;
+		weaponSwitchType = type;
 	}
 
 	public override bool CanBeExecuted()
@@ -15,8 +24,24 @@ public class WeaponSwitchEvent : CharacterEvent
 		return true;
 	}
 
+	public override EGameCharacterEvent GetGameCharacterEvenetType()
+	{
+		return EGameCharacterEvent.WeaponSwitchEvent;
+	}
+
 	public override void StartEvent()
 	{
-
+		switch (weaponSwitchType)
+		{
+			case EWeaponSwitchType.NextWeapon:
+				gameCharacter?.CombatComponent?.NextWeapon();
+				break;
+				case EWeaponSwitchType.PreviousWeapon:
+				gameCharacter?.CombatComponent?.PreviousWeapon();
+				break;
+			default:
+				gameCharacter?.CombatComponent?.SwitchWeapon(weaponIndex);
+				break;
+		}
 	}
 }
