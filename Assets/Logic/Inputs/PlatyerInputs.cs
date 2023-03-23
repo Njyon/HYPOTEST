@@ -152,6 +152,15 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Attack"",
+                    ""type"": ""Button"",
+                    ""id"": ""2e62b461-2beb-4455-a316-8afc8efd29bb"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -528,6 +537,28 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""action"": ""ScrollThrouhWeapos"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""20c51a7b-5d36-42ac-a5b4-2c1b2c435d49"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d2a20418-0070-4ed1-b298-cb8e4f2a6b9b"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -578,6 +609,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         m_Default_NextWeapon = m_Default.FindAction("NextWeapon", throwIfNotFound: true);
         m_Default_PreviousWeapon = m_Default.FindAction("PreviousWeapon", throwIfNotFound: true);
         m_Default_ScrollThrouhWeapos = m_Default.FindAction("ScrollThrouhWeapos", throwIfNotFound: true);
+        m_Default_Attack = m_Default.FindAction("Attack", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -651,6 +683,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     private readonly InputAction m_Default_NextWeapon;
     private readonly InputAction m_Default_PreviousWeapon;
     private readonly InputAction m_Default_ScrollThrouhWeapos;
+    private readonly InputAction m_Default_Attack;
     public struct DefaultActions
     {
         private @PlayerInputs m_Wrapper;
@@ -669,6 +702,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         public InputAction @NextWeapon => m_Wrapper.m_Default_NextWeapon;
         public InputAction @PreviousWeapon => m_Wrapper.m_Default_PreviousWeapon;
         public InputAction @ScrollThrouhWeapos => m_Wrapper.m_Default_ScrollThrouhWeapos;
+        public InputAction @Attack => m_Wrapper.m_Default_Attack;
         public InputActionMap Get() { return m_Wrapper.m_Default; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -720,6 +754,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @ScrollThrouhWeapos.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnScrollThrouhWeapos;
                 @ScrollThrouhWeapos.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnScrollThrouhWeapos;
                 @ScrollThrouhWeapos.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnScrollThrouhWeapos;
+                @Attack.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnAttack;
+                @Attack.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnAttack;
+                @Attack.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnAttack;
             }
             m_Wrapper.m_DefaultActionsCallbackInterface = instance;
             if (instance != null)
@@ -766,6 +803,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @ScrollThrouhWeapos.started += instance.OnScrollThrouhWeapos;
                 @ScrollThrouhWeapos.performed += instance.OnScrollThrouhWeapos;
                 @ScrollThrouhWeapos.canceled += instance.OnScrollThrouhWeapos;
+                @Attack.started += instance.OnAttack;
+                @Attack.performed += instance.OnAttack;
+                @Attack.canceled += instance.OnAttack;
             }
         }
     }
@@ -804,5 +844,6 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         void OnNextWeapon(InputAction.CallbackContext context);
         void OnPreviousWeapon(InputAction.CallbackContext context);
         void OnScrollThrouhWeapos(InputAction.CallbackContext context);
+        void OnAttack(InputAction.CallbackContext context);
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
 using static UnityEditor.Experimental.GraphView.GraphView;
@@ -26,6 +27,9 @@ public class AnimationController
 	int headLayerIndex;
 	int armRLayerIndex;
 	int armLLayerIndex;
+	int inAttackIndex;
+	int attackAIndex;
+	int attackAStateIndex;
 
 	int rotationLayerIndex;
 
@@ -187,7 +191,28 @@ public class AnimationController
 			}
 		}
 	}
-
+	bool inAttack = false;
+	public bool InAttack { 
+		get { return inAttack; } 
+		set {
+			if (inAttack != value)
+			{
+				inAttack = value; 
+				gameCharacter.Animator.SetBool(inAttackIndex, inAttack);
+			}
+		} 
+	}
+	bool attackA = true;
+	public bool AttackA { 
+		get { return attackA; } 
+		set {
+			if (attackA != value) 
+			{ 
+				attackA = value;
+				gameCharacter.Animator.SetBool(attackAIndex, attackA);
+			}
+		}
+	}
 
 	public AnimationController(GameCharacter character)
 	{
@@ -213,6 +238,9 @@ public class AnimationController
 		headLayerIndex = gameCharacter.Animator.GetLayerIndex("HeadLayer");
 		armLLayerIndex = gameCharacter.Animator.GetLayerIndex("ArmLLayer");
 		armRLayerIndex = gameCharacter.Animator.GetLayerIndex("ArmRLayer");
+		inAttackIndex = Animator.StringToHash("InAttack");
+		attackAIndex = Animator.StringToHash("AttackA");
+		attackAStateIndex = Animator.StringToHash("AttackAState");
 
 		overrideController = new AnimatorOverrideController(gameCharacter.Animator.runtimeAnimatorController);
 
@@ -221,6 +249,8 @@ public class AnimationController
 
 	public void Update(float deltaTime)
 	{
+		float lol = gameCharacter.Animator.GetFloat("lol");
+		Ultra.Utilities.Instance.DebugLogOnScreen("Curve: " + lol);
 		if (gameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.Moving) IsMoving = true; else IsMoving = false;
 		if (gameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.InAir) IsGrounded = false; else IsGrounded = true;
 
@@ -317,6 +347,24 @@ public class AnimationController
 		}
 	}
     
+	public void Attack(AnimationClip attackClip)
+	{
+		AnimatorStateInfo animatorState = gameCharacter.Animator.GetCurrentAnimatorStateInfo(0);
+		bool isAttackAState = false;
+
+		if (animatorState.shortNameHash == attackAStateIndex) isAttackAState = true;
+		if (isAttackAState)
+		{
+			overrideController["AttackB"] = attackClip;
+		}else
+		{
+			overrideController["AttackA"] = attackClip;
+		}
+		gameCharacter.Animator.runtimeAnimatorController = overrideController;
+		AttackA = !isAttackAState;
+		inAttack = true;
+	}
+
 	public void LateUpdate()
 	{
 

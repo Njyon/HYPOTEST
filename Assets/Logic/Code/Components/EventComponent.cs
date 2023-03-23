@@ -6,6 +6,7 @@ public enum EGameCharacterEvent
 {
 	Jump,
 	WeaponSwitchEvent,
+	Attack,
 }
 
 [SerializeField]

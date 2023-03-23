@@ -57,6 +57,7 @@ public class PlayerController : ControllerBase
 		playerInputs.Default.NextWeapon.performed += ctx => EquipNextWeapon();
 		playerInputs.Default.PreviousWeapon.performed += ctx => EquipPreviousWeapon();
 		playerInputs.Default.ScrollThrouhWeapos.performed += ctx => Scroll(ctx.ReadValue<float>());
+		playerInputs.Default.Attack.performed += ctx => Attack();
 	}
 
 	void HorizontalInput(float axis)
@@ -69,36 +70,40 @@ public class PlayerController : ControllerBase
 	}
 	void Jump()
 	{
-		gameCharacter?.EventComponent.AddEvent(new JumpEvent(gameCharacter));
+		gameCharacter?.EventComponent?.AddEvent(new JumpEvent(gameCharacter));
 	}
 	void EquipWeaponOne()
 	{
-		gameCharacter?.EventComponent.AddEvent(new WeaponSwitchEvent(gameCharacter, 0));
+		gameCharacter?.EventComponent?.AddEvent(new WeaponSwitchEvent(gameCharacter, 0));
 	}
 	void EquipWeaponTwo()
 	{
-		gameCharacter?.EventComponent.AddEvent(new WeaponSwitchEvent(gameCharacter, 1));
+		gameCharacter?.EventComponent?.AddEvent(new WeaponSwitchEvent(gameCharacter, 1));
 	}
 	void EquipWeaponThree()
 	{
-		gameCharacter?.EventComponent.AddEvent(new WeaponSwitchEvent(gameCharacter, 2));
+		gameCharacter?.EventComponent?.AddEvent(new WeaponSwitchEvent(gameCharacter, 2));
 	}
 	void EquipWeaponFour()
 	{
-		gameCharacter?.EventComponent.AddEvent(new WeaponSwitchEvent(gameCharacter, 3));
+		gameCharacter?.EventComponent?.AddEvent(new WeaponSwitchEvent(gameCharacter, 3));
 	}
 	void EquipNextWeapon()
 	{
-		gameCharacter?.EventComponent.AddEvent(new WeaponSwitchEvent(gameCharacter, 0, EWeaponSwitchType.NextWeapon));
+		gameCharacter?.EventComponent?.AddEvent(new WeaponSwitchEvent(gameCharacter, 0, EWeaponSwitchType.NextWeapon));
 	}
 	void EquipPreviousWeapon()
 	{
-		gameCharacter?.EventComponent.AddEvent(new WeaponSwitchEvent(gameCharacter, 0, EWeaponSwitchType.PreviousWeapon));
+		gameCharacter?.EventComponent?.AddEvent(new WeaponSwitchEvent(gameCharacter, 0, EWeaponSwitchType.PreviousWeapon));
 	}
 	void Scroll(float axis)
 	{
 		if (axis > 0) EquipNextWeapon();
 		else EquipPreviousWeapon();
+	}
+	void Attack()
+	{
+
 	}
 
 	void DebugUp()
