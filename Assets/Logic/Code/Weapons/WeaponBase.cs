@@ -2,11 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum EExplicitAttackType
+{
+    Unknown,
+    GroundedDefaultAttack,
+    GroundedDirectionalAttack,
+    GroundedUpAttack,
+    GroundedDownAttack,
+    AirDefaultAttack,
+    AirDirectionalAttack,
+    AirUpAttack,
+    AirDownAttack,
+}
+
 public abstract class WeaponBase
 {
     GameCharacter gameCharacter;
     ScriptableWeapon weaponData;
     GameObject spawnedWeapon;
+	EExplicitAttackType lastAttackType;
+    int attackIndex;
 
     public GameCharacter GameCharacter { get { return gameCharacter; } }
     public ScriptableWeapon WeaponData { get { return weaponData; } }
@@ -52,18 +67,60 @@ public abstract class WeaponBase
 
     public abstract void UpdateWeapon(float deltaTime);
 
-    public abstract void GroundAttack();
-    public abstract void GroundUpAttack();
-    public abstract void GroundDownAttack();
-    public abstract void GroundDirectionAttack();
+    public virtual void GroundAttack()
+	{
+		BaseAttackLogic(EExplicitAttackType.GroundedDefaultAttack, ref WeaponData.AnimationData.GroundAttacks);
+	}
+	public virtual void GroundUpAttack()
+	{
+		BaseAttackLogic(EExplicitAttackType.GroundedUpAttack, ref WeaponData.AnimationData.GroundUpAttacks);
+	}
+    public virtual void GroundDownAttack()
+    {
+		BaseAttackLogic(EExplicitAttackType.GroundedDownAttack, ref WeaponData.AnimationData.GroundDownAttacks);
+	}
+    public virtual void GroundDirectionAttack()
+    {
+		BaseAttackLogic(EExplicitAttackType.GroundedDirectionalAttack, ref WeaponData.AnimationData.GroundDirectionAttacks);
+	}
 
-    public abstract void AirAttack();
-    public abstract void AirUpAttack();
-    public abstract void AirDownAttack();
-    public abstract void AirDirectionAttack();
+    public virtual void AirAttack()
+	{
+		BaseAttackLogic(EExplicitAttackType.AirDefaultAttack, ref WeaponData.AnimationData.AirAttacks);
+	}
+    public virtual void AirUpAttack()
+	{
+		BaseAttackLogic(EExplicitAttackType.AirUpAttack, ref WeaponData.AnimationData.AirUpAttacks);
+	}
+    public virtual void AirDownAttack()
+	{
+		BaseAttackLogic(EExplicitAttackType.AirDownAttack, ref WeaponData.AnimationData.AirDownAttacks);
+	}
+    public virtual void AirDirectionAttack()
+	{
+		BaseAttackLogic(EExplicitAttackType.AirDirectionalAttack, ref WeaponData.AnimationData.AirDirectionAttacks);
+	}
 
 	void SetUpWeaponAnimationData()
 	{
 		gameCharacter.AnimController.SetBodyLayerAnimClip(weaponData.AnimationData.WeaponReadyPose);
+	}
+
+	private void BaseAttackLogic(EExplicitAttackType explicitAttackType, ref List<AnimationClip> attackList)
+	{
+		if (lastAttackType != explicitAttackType)
+		{
+			attackIndex = 0;
+			lastAttackType = explicitAttackType;
+		}
+		else
+		{
+			attackIndex++;
+		}
+		if (attackList == null || attackList.Count <= 0) return;
+		attackIndex = attackIndex % attackList.Count;
+		gameCharacter.AnimController.Attack(attackList[attackIndex]);
+		gameCharacter.StateMachine.RequestStateChange(EGameCharacterState.Attack);
+		gameCharacter.CombatComponent.AttackTimer.Start(attackList[attackIndex].length);
 	}
 }

@@ -30,7 +30,7 @@ public class AnimationController
 	int inAttackIndex;
 	int attackAIndex;
 	int attackAStateIndex;
-
+	int secondaryMotionLayerIndex;
 	int rotationLayerIndex;
 
 	float minMalkSpeed;
@@ -45,6 +45,10 @@ public class AnimationController
 	float armRLayerInterpSpeed;
 	float armLLayerInterpTarget;
 	float armLLayerInterpSpeed;
+	float rotationLayerInterpTarget;
+	float rotationLayerInterpSpeed;
+	float secondaryMotionLayerInterpTarget;
+	float secondaryMotionLayerInterpSpeed;
 
 	float walkRunBlend;
 	public float WalkRunBlend { 
@@ -191,6 +195,28 @@ public class AnimationController
 			}
 		}
 	}
+	public float RotationLayerWeight
+	{
+		get { return gameCharacter.Animator.GetLayerWeight(rotationLayerIndex); }
+		private set
+		{
+			if (gameCharacter.Animator.GetLayerWeight(rotationLayerIndex) != value)
+			{
+				gameCharacter.Animator.SetLayerWeight (rotationLayerIndex, value);
+			}
+		}
+	}
+	public float SecondaryMotionLayerWeight
+	{
+		get { return gameCharacter.Animator.GetLayerWeight(secondaryMotionLayerIndex); }
+		private set
+		{
+			if (gameCharacter.Animator.GetLayerWeight(secondaryMotionLayerIndex) != value)
+			{
+				gameCharacter.Animator.SetLayerWeight(secondaryMotionLayerIndex, value);
+			}
+		}
+	}
 	bool inAttack = false;
 	public bool InAttack { 
 		get { return inAttack; } 
@@ -241,6 +267,7 @@ public class AnimationController
 		inAttackIndex = Animator.StringToHash("InAttack");
 		attackAIndex = Animator.StringToHash("AttackA");
 		attackAStateIndex = Animator.StringToHash("AttackAState");
+		secondaryMotionLayerIndex = gameCharacter.Animator.GetLayerIndex("SecondaryMotion");
 
 		overrideController = new AnimatorOverrideController(gameCharacter.Animator.runtimeAnimatorController);
 
@@ -249,8 +276,6 @@ public class AnimationController
 
 	public void Update(float deltaTime)
 	{
-		float lol = gameCharacter.Animator.GetFloat("lol");
-		Ultra.Utilities.Instance.DebugLogOnScreen("Curve: " + lol);
 		if (gameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.Moving) IsMoving = true; else IsMoving = false;
 		if (gameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.InAir) IsGrounded = false; else IsGrounded = true;
 
@@ -273,6 +298,8 @@ public class AnimationController
 		HeadLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(headLayerIndex), headLayerInterpTarget, deltaTime * headLayerInterpSpeed);
 		ArmRLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(armRLayerIndex), armRLayerInterpTarget, deltaTime * armRLayerInterpSpeed);
 		ArmLLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(armLLayerIndex), armLLayerInterpTarget, deltaTime * armLLayerInterpSpeed);
+		RotationLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(rotationLayerIndex), rotationLayerInterpTarget, deltaTime * rotationLayerInterpSpeed);
+		SecondaryMotionLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(secondaryMotionLayerIndex), secondaryMotionLayerInterpTarget, deltaTime * secondaryMotionLayerInterpSpeed);
 	}
 
 	private void RotationLayer(float deltaTime)
@@ -362,7 +389,6 @@ public class AnimationController
 		}
 		gameCharacter.Animator.runtimeAnimatorController = overrideController;
 		AttackA = !isAttackAState;
-		inAttack = true;
 	}
 
 	public void LateUpdate()
@@ -419,6 +445,26 @@ public class AnimationController
 	{
 		armLLayerInterpTarget = weight;
 		ArmLLayerWeight = weight;
+	}
+	public void InterpRotationLayerWeight(float target, float speed = 5f)
+	{
+		rotationLayerInterpTarget = target;
+		rotationLayerInterpSpeed = speed;
+	}
+	public void SetRotationLayerWeight(float weight)
+	{
+		rotationLayerInterpTarget = weight;
+		RotationLayerWeight = weight;
+	}
+	public void InterpSecondaryMotionLayerWeight(float target, float speed = 5f)
+	{
+		secondaryMotionLayerInterpTarget = target;
+		secondaryMotionLayerInterpSpeed = speed;
+	}
+	public void SetSecondaryMotionLayerWeight(float weight)
+	{
+		secondaryMotionLayerInterpTarget = weight;
+		SecondaryMotionLayerWeight = weight;
 	}
 	public void InterpUpperBodyWeight(float target, float speed = 5f)
 	{

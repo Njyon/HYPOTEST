@@ -103,7 +103,33 @@ public class PlayerController : ControllerBase
 	}
 	void Attack()
 	{
-
+		float directionTreshold = 0.5f;
+		Vector2 movementVector = gameCharacter.MovementInput;
+		bool hasDirection = Mathf.Abs(movementVector.x) > directionTreshold || Mathf.Abs(movementVector.y) > directionTreshold;
+		if (!hasDirection)
+		{
+			gameCharacter?.EventComponent?.AddEvent(new AttackEvent(gameCharacter, EAttackType.Default));
+			return;
+		}
+		bool isHorizontalInput = Mathf.Abs(movementVector.x) > Mathf.Abs(movementVector.y);
+		if (isHorizontalInput)
+		{
+			gameCharacter?.EventComponent?.AddEvent(new AttackEvent(gameCharacter, EAttackType.AttackHorizontal));
+			return;
+		}
+		else
+		{
+			if (movementVector.y > 0)
+			{
+				gameCharacter?.EventComponent?.AddEvent(new AttackEvent(gameCharacter, EAttackType.AttckUp));
+				return;
+			}
+			else
+			{
+				gameCharacter?.EventComponent?.AddEvent(new AttackEvent(gameCharacter, EAttackType.AttackDown));
+				return;
+			}
+		}
 	}
 
 	void DebugUp()

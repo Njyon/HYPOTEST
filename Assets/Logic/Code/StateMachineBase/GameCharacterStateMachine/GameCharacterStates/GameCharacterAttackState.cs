@@ -9,7 +9,9 @@ public class GameCharacterAttackState : AGameCharacterState
 
     public override void StartState(EGameCharacterState oldState)
 	{
-	
+		GameCharacter.AnimController.InAttack = true;
+		GameCharacter.AnimController.InterpRotationLayerWeight(0, 10f);
+		GameCharacter.AnimController.InterpSecondaryMotionLayerWeight(0, 10f);
 	}
 
 	public override EGameCharacterState GetStateType()
@@ -19,6 +21,12 @@ public class GameCharacterAttackState : AGameCharacterState
 
 	public override EGameCharacterState UpdateState(float deltaTime, EGameCharacterState newStateRequest)
 	{
+		switch (newStateRequest)
+		{
+			case EGameCharacterState.AttackRecovery: return EGameCharacterState.AttackRecovery;
+			default: break;
+		}
+
 		return GetStateType();
 	}
 

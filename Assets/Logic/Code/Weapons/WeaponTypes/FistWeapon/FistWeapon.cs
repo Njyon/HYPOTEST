@@ -25,35 +25,35 @@ public class FistWeapon : WeaponBase
 
     public override void GroundAttack()   
     {
-    
+        base.GroundAttack();
     }
     public override void GroundUpAttack()    
     {
-    
+        base.GroundUpAttack();
     }
     public override void GroundDownAttack()  
     {
-    
+        base.GroundDownAttack();
     }
     public override void GroundDirectionAttack()   
     {
-    
+        base.GroundDirectionAttack();
     }
 
     public override void AirAttack()  
     {
-    
+        base.AirAttack();
     }
     public override void AirUpAttack()
     {
-    
+        base.AirUpAttack();
     }
     public override void AirDownAttack()  
     {
-    
+        base.AirDownAttack();
     }
     public override void AirDirectionAttack() 
     {
-    
+        base.AirDirectionAttack();
     }
 }

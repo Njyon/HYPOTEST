@@ -13,7 +13,7 @@ public class WeaponSwitchEvent : CharacterEvent
 {
 	int weaponIndex;
 	EWeaponSwitchType weaponSwitchType;
-	public WeaponSwitchEvent(GameCharacter gameCharacter, int weaponIndex, EWeaponSwitchType type = EWeaponSwitchType.Normal, float time = 0.2F) : base(gameCharacter, time)
+	public WeaponSwitchEvent(GameCharacter gameCharacter, int weaponIndex, EWeaponSwitchType type = EWeaponSwitchType.Normal, float time = 0.1F) : base(gameCharacter, time)
 	{
 		this.weaponIndex = weaponIndex;
 		weaponSwitchType = type;

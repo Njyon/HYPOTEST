@@ -20,6 +20,12 @@ public class GameCharacterStandingState : AGameCharacterState
 
 	public override EGameCharacterState UpdateState(float deltaTime, EGameCharacterState newStateRequest)
 	{
+		switch (newStateRequest)
+		{
+			case EGameCharacterState.Attack: return EGameCharacterState.Attack;
+			default: break;
+		}
+
 		if (!GameCharacter.IsGrounded || GameCharacter.IsInJump)
 			return EGameCharacterState.InAir;
 

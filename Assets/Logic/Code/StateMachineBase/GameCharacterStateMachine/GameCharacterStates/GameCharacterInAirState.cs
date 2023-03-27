@@ -19,6 +19,12 @@ public class GameCharacterInAirState : AGameCharacterState
 
 	public override EGameCharacterState UpdateState(float deltaTime, EGameCharacterState newStateRequest)
 	{
+		switch (newStateRequest)
+		{
+			case EGameCharacterState.Attack: return EGameCharacterState.Attack;
+			default: break;
+		}
+
 		if (GameCharacter.IsGrounded && GameCharacter.MovementVelocity.magnitude > 0 && GameCharacter.MovementVelocity.y <= 0)
 			return EGameCharacterState.Moving;
 		else if (GameCharacter.IsGrounded && GameCharacter.MovementVelocity.magnitude <= 0)

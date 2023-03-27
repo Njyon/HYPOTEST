@@ -8,52 +8,52 @@ public class SwordWeapon : WeaponBase
 	public SwordWeapon(GameCharacter gameCharacter, ScriptableWeapon weaponData) : base (gameCharacter, weaponData)
 	{ }
 
-    public override void EquipWeapon()
-    {
-        base.EquipWeapon();
-	}
-
-    public override void UnEquipWeapon()
+	public override void EquipWeapon()
 	{
-        base.UnEquipWeapon();
+		base.EquipWeapon();
 	}
 
-    public override void UpdateWeapon(float deltaTime)
-    {
-    
-    }
+	public override void UnEquipWeapon()
+	{
+		base.UnEquipWeapon();
+	}
 
-    public override void GroundAttack()   
-    {
-    
-    }
-    public override void GroundUpAttack()    
-    {
-    
-    }
-    public override void GroundDownAttack()  
-    {
-    
-    }
-    public override void GroundDirectionAttack()   
-    {
-    
-    }
+	public override void UpdateWeapon(float deltaTime)
+	{
 
-    public override void AirAttack()  
-    {
-    
-    }
-    public override void AirUpAttack()
-    {
-    
-    }
-    public override void AirDownAttack()  
-    {
-    
-    }
-    public override void AirDirectionAttack() 
-    {
-    
-    }
+	}
+
+	public override void GroundAttack()
+	{
+		base.GroundAttack();
+	}
+	public override void GroundUpAttack()
+	{
+		base.GroundUpAttack();
+	}
+	public override void GroundDownAttack()
+	{
+		base.GroundDownAttack();
+	}
+	public override void GroundDirectionAttack()
+	{
+		base.GroundDirectionAttack();
+	}
+
+	public override void AirAttack()
+	{
+		base.AirAttack();
+	}
+	public override void AirUpAttack()
+	{
+		base.AirUpAttack();
+	}
+	public override void AirDownAttack()
+	{
+		base.AirDownAttack();
+	}
+	public override void AirDirectionAttack()
+	{
+		base.AirDirectionAttack();
+	}
 }

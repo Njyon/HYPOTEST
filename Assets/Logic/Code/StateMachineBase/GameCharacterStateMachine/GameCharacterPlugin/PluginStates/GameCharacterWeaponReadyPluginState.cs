@@ -24,6 +24,9 @@ public class GameCharacterWeaponReadyPluginState : AGameCharacterPluginState
 		base.Deactive();
 		GameCharacter.AnimController.InterpSpineLayerWeight(0, GameCharacter.CombatComponent.CurrentWeapon.WeaponData.AnimationData.WeaponReadyInterpSpeed);
 		GameCharacter.AnimController.InterpLegLayerWeight(0, GameCharacter.CombatComponent.CurrentWeapon.WeaponData.AnimationData.WeaponReadyInterpSpeed);
+		GameCharacter.AnimController.InterpHeadLayerWeight(0, GameCharacter.CombatComponent.CurrentWeapon.WeaponData.AnimationData.WeaponReadyInterpSpeed);
+		GameCharacter.AnimController.InterpArmRLayerWeight(0, GameCharacter.CombatComponent.CurrentWeapon.WeaponData.AnimationData.WeaponReadyInterpSpeed);
+		GameCharacter.AnimController.InterpArmLLayerWeight(0, GameCharacter.CombatComponent.CurrentWeapon.WeaponData.AnimationData.WeaponReadyInterpSpeed);
 	}
 
 	public override void ExecuteState(float deltaTime)
@@ -56,9 +59,20 @@ public class GameCharacterWeaponReadyPluginState : AGameCharacterPluginState
 	{
 		switch (newState)
 		{
+			case EGameCharacterState.Attack:
+			case EGameCharacterState.AttackRecovery:
+				GameCharacter.AnimController.InterpSpineLayerWeight(0, GameCharacter.CombatComponent.CurrentWeapon.WeaponData.AnimationData.WeaponReadyInterpSpeed * 2);
+				GameCharacter.AnimController.InterpLegLayerWeight(0, GameCharacter.CombatComponent.CurrentWeapon.WeaponData.AnimationData.WeaponReadyInterpSpeed * 2);
+				GameCharacter.AnimController.InterpHeadLayerWeight(0, GameCharacter.CombatComponent.CurrentWeapon.WeaponData.AnimationData.WeaponReadyInterpSpeed * 2);
+				GameCharacter.AnimController.InterpArmRLayerWeight(0, GameCharacter.CombatComponent.CurrentWeapon.WeaponData.AnimationData.WeaponReadyInterpSpeed * 2);
+				GameCharacter.AnimController.InterpArmLLayerWeight(0, GameCharacter.CombatComponent.CurrentWeapon.WeaponData.AnimationData.WeaponReadyInterpSpeed * 2);
+				break;
 			case EGameCharacterState.InAir:
 				GameCharacter.AnimController.InterpSpineLayerWeight(0, GameCharacter.CombatComponent.CurrentWeapon.WeaponData.AnimationData.WeaponReadyInterpSpeed);
 				GameCharacter.AnimController.InterpLegLayerWeight(0, GameCharacter.CombatComponent.CurrentWeapon.WeaponData.AnimationData.WeaponReadyInterpSpeed);
+				GameCharacter.AnimController.InterpHeadLayerWeight(0, GameCharacter.CombatComponent.CurrentWeapon.WeaponData.AnimationData.WeaponReadyInterpSpeed);
+				GameCharacter.AnimController.InterpArmRLayerWeight(0, GameCharacter.CombatComponent.CurrentWeapon.WeaponData.AnimationData.WeaponReadyInterpSpeed);
+				GameCharacter.AnimController.InterpArmLLayerWeight(0, GameCharacter.CombatComponent.CurrentWeapon.WeaponData.AnimationData.WeaponReadyInterpSpeed);
 				break;
 			case EGameCharacterState.Moving:
 			case EGameCharacterState.Sliding:

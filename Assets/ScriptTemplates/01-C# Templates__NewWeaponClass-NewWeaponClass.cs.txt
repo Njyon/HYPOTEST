@@ -10,13 +10,13 @@ public class #SCRIPTNAME# : WeaponBase
 
     public override void EquipWeapon()
     {
-    #NOTRIM#
+        base.EquipWeapon();
     }
 
     public override void UnEquipWeapon()
     {
-    #NOTRIM#
-    }
+        base.UnEquipWeapon();
+	}
 
     public override void UpdateWeapon(float deltaTime)
     {
@@ -25,35 +25,35 @@ public class #SCRIPTNAME# : WeaponBase
 
     public override void GroundAttack()   
     {
-    #NOTRIM#
+      	base.GroundAttack();
     }
     public override void GroundUpAttack()    
     {
-    #NOTRIM#
+        base.GroundUpAttack();
     }
     public override void GroundDownAttack()  
     {
-    #NOTRIM#
+        base.GroundDownAttack();
     }
     public override void GroundDirectionAttack()   
     {
-    #NOTRIM#
+        base.GroundDirectionAttack();
     }
 
     public override void AirAttack()  
     {
-    #NOTRIM#
+        base.AirAttack();
     }
     public override void AirUpAttack()
     {
-    #NOTRIM#
+        base.AirUpAttack();
     }
     public override void AirDownAttack()  
     {
-    #NOTRIM#
+        base.AirDownAttack();
     }
     public override void AirDirectionAttack() 
     {
-    #NOTRIM#
+        base.AirDirectionAttack();
     }
 }

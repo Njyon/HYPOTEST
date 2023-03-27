@@ -5,6 +5,14 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
+public enum EAttackType
+{
+	Default,
+	AttackHorizontal,
+	AttckUp,
+	AttackDown
+}
+
 public class CombatComponent
 {
 	public delegate void OnWeaponChanged(WeaponBase newWeapon, WeaponBase oldWeapon);
@@ -15,6 +23,9 @@ public class CombatComponent
 	WeaponBase currentWeapon;
 	int currentWeaponIndex;
 	int equipedWeaponAmount;
+	Ultra.Timer attackTimer;
+
+	public Ultra.Timer AttackTimer { get { return attackTimer; } }
 
 	public WeaponBase CurrentWeapon { 
 		get { return currentWeapon; } 
@@ -41,11 +52,12 @@ public class CombatComponent
 	public void StartComponent()
 	{
 		InitWeapons();
+		attackTimer = new Ultra.Timer(0f, true);
 	}
 
-	public void UpdateComponent() 
-	{ 
-	
+	public void UpdateComponent(float deltaTime) 
+	{
+		if (attackTimer != null) attackTimer.Update(deltaTime);
 	}
 
 	void InitWeapons()
@@ -93,5 +105,30 @@ public class CombatComponent
 		int index = currentWeaponIndex - 1;
 		if (index < 0) index = equipedWeaponAmount - 1;
 		SwitchWeapon(index);
+	}
+
+	public void Attack(EAttackType attackType)
+	{
+		if (gameCharacter.IsGrounded)
+		{
+			switch (attackType)
+			{
+				case EAttackType.Default: CurrentWeapon?.GroundAttack(); break;
+				case EAttackType.AttackHorizontal: CurrentWeapon?.GroundDirectionAttack(); break;
+				case EAttackType.AttckUp: CurrentWeapon?.GroundUpAttack(); break;
+				case EAttackType.AttackDown: CurrentWeapon?.GroundDownAttack(); break;
+				default: break;
+			}
+		}else
+		{
+			switch (attackType)
+			{
+				case EAttackType.Default: CurrentWeapon?.AirAttack(); break;
+				case EAttackType.AttackHorizontal: CurrentWeapon?.AirDirectionAttack(); break;
+				case EAttackType.AttckUp: CurrentWeapon?.AirUpAttack(); break;
+				case EAttackType.AttackDown: CurrentWeapon?.AirDownAttack(); break;
+				default: break;
+			}
+		}
 	}
 }

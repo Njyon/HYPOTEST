@@ -143,7 +143,7 @@ public class GameCharacter : MonoBehaviour
 		CalculateVelocity();
 		AddGravityOnMovementVelocity();
 		CheckIfCharacterIsGrounded();
-		CombatComponent.UpdateComponent();
+		CombatComponent.UpdateComponent(Time.deltaTime);
 		MoveCharacter();
 		CalculateSlopLimit();
 		RotateCharacterInVelocityDirection();
@@ -237,7 +237,20 @@ public class GameCharacter : MonoBehaviour
 
 	private void OnAnimatorMove()
 	{
-		
+		switch (StateMachine.GetCurrentStateType())
+		{
+			case EGameCharacterState.Attack:
+			case EGameCharacterState.AttackRecovery:
+				Vector3 rootmotionWithoutDeltaTime = Animator.deltaPosition * (1 / Time.deltaTime);
+				MovementVelocity = new Vector3(rootmotionWithoutDeltaTime.x, rootmotionWithoutDeltaTime.y, 0);
+				break;
+			default: break; 
+		}
+	}
+
+	public void AttackRecoveryEvent()
+	{
+		StateMachine?.RequestStateChange(EGameCharacterState.AttackRecovery);
 	}
 
 	IEnumerator IsJumping()

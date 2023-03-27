@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class JumpEvent : CharacterEvent
 {
-	public JumpEvent(GameCharacter gameCharacter, float time = 0.2F) : base(gameCharacter, time)
+	public JumpEvent(GameCharacter gameCharacter, float time = 0.1F) : base(gameCharacter, time)
 	{ }
 
 	public override bool CanBeExecuted()

@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class AttackEvent : CharacterEvent
 {
-	public AttackEvent(GameCharacter gameCharacter, float time = 0.2F) : base(gameCharacter, time)
-	{ }
+	EAttackType attackType;
+	public AttackEvent(GameCharacter gameCharacter, EAttackType attackType, float time = 0.1F) : base(gameCharacter, time)
+	{
+		this.attackType = attackType;
+	}
 
 	public override bool CanBeExecuted()
 	{
@@ -19,6 +22,6 @@ public class AttackEvent : CharacterEvent
 
 	public override void StartEvent()
 	{
-		gameCharacter?.StateMachine?.RequestStateChange(EGameCharacterState.Attack);
+		gameCharacter?.CombatComponent?.Attack(attackType);
 	}
 }

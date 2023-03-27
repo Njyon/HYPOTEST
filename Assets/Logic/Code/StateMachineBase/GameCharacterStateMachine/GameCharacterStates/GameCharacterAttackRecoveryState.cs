@@ -19,6 +19,24 @@ public class GameCharacterAttackRecoveryState : AGameCharacterState
 
 	public override EGameCharacterState UpdateState(float deltaTime, EGameCharacterState newStateRequest)
 	{
+		switch (newStateRequest)
+		{
+			case EGameCharacterState.Attack: return EGameCharacterState.Attack;
+			default: break;
+		}
+
+		if (!GameCharacter.IsGrounded || GameCharacter.IsInJump)
+			return EGameCharacterState.InAir;
+
+		if (GameCharacter.GetPossibleGroundAngle() > GameCharacter.CharacterController.slopeLimit)
+			return EGameCharacterState.Sliding;
+
+		if (GameCharacter.Veloctiy.magnitude > 0 || GameCharacter.GetHorizontalMovementInputDir().magnitude > 0)
+			return EGameCharacterState.Moving;
+
+		if (GameCharacter.CombatComponent.AttackTimer.IsFinished)
+			return EGameCharacterState.Standing;
+
 		return GetStateType();
 	}
 
@@ -39,6 +57,8 @@ public class GameCharacterAttackRecoveryState : AGameCharacterState
 
 	public override void EndState(EGameCharacterState newState)
 	{
-	
+		GameCharacter.AnimController.InAttack = false;
+		GameCharacter.AnimController.InterpRotationLayerWeight(1, 10f);
+		GameCharacter.AnimController.InterpSecondaryMotionLayerWeight(1, 10f);
 	}
 }
