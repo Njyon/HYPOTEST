@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public enum EWeaponHandType
 {
@@ -10,18 +12,52 @@ public enum EWeaponHandType
 	Both,
 }
 
+[Serializable]
+public class AttackAnimationData
+{
+	public AnimationClip clip;
+	public AttackAnimationHitDetectionData data;
+}
+
+public enum EHitDetectionType
+{
+	Mesh,
+	Sphere,
+	Box,
+	Capsul,
+}
+
+[Serializable]
+public class AttackAnimationHitDetectionData
+{
+	public bool showProperties = true;
+	public EHitDetectionType hitDetectionType;
+	public Mesh mesh = null;
+	public Vector3 offset = Vector3.zero;
+	public Vector3 scale = Vector3.one;
+	public float radius = 1f;
+	public Vector3 boxDimensions = Vector3.one;
+	public float capsulHeight = 1f;
+}
+
+[Serializable]
+public class testlol
+{
+	public AttackAnimationHitDetectionData data;
+}
+
 [CreateAssetMenu(fileName = "New WeaponAnimationData", menuName = "Assets/Weapons/WeaponAnimationData")]
 public class ScriptableWeaponAnimationData : ScriptableObject
 {
-	public List<AnimationClip> GroundAttacks;
-	public List<AnimationClip> GroundUpAttacks;
-	public List<AnimationClip> GroundDownAttacks;
-	public List<AnimationClip> GroundDirectionAttacks;
+	public List<AttackAnimationData> GroundAttacks;
+	public List<AttackAnimationData> GroundUpAttacks;
+	public List<AttackAnimationData> GroundDownAttacks;
+	public List<AttackAnimationData> GroundDirectionAttacks;
 
-	public List<AnimationClip> AirAttacks;
-	public List<AnimationClip> AirUpAttacks;
-	public List<AnimationClip> AirDownAttacks;
-	public List<AnimationClip> AirDirectionAttacks;
+	public List<AttackAnimationData> AirAttacks;
+	public List<AttackAnimationData> AirUpAttacks;
+	public List<AttackAnimationData> AirDownAttacks;
+	public List<AttackAnimationData> AirDirectionAttacks;
 
 	public EWeaponHandType HandType;
 	public AnimationClip WeaponReadyPose;

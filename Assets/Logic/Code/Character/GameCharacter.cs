@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Transactions;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameCharacter : MonoBehaviour
@@ -27,6 +28,7 @@ public class GameCharacter : MonoBehaviour
 	float slopStrengh = 1;
 	bool isInJump = false;
 	Vector3 lastDir;
+	Vector3 rootmotionVector;
 
 	public GameCharacterStateMachine StateMachine { get { return stateMachine; } }
 	public CharacterController CharacterController { get { return characterController; } }
@@ -46,6 +48,7 @@ public class GameCharacter : MonoBehaviour
 	public CombatComponent CombatComponent { get { return combatComponent; } }
 	public GameCharacterPluginStateMachine PluginStateMachine { get { return pluginStateMachine; } }
 	public EventComponent EventComponent { get { return eventComponent; } }
+	public Vector3 RootmotionVector { get { return rootmotionVector; } }
 	public bool IsInJump { get { return isInJump; } 
 		set 
 		{
@@ -57,6 +60,12 @@ public class GameCharacter : MonoBehaviour
 			
 			isInJump = value;
 
+		} 
+	}
+	public Vector3 CharacterCenter { 
+		get 
+		{
+			return transform.position + Vector3.up * (CharacterController.height / 2);
 		} 
 	}
 
@@ -76,6 +85,7 @@ public class GameCharacter : MonoBehaviour
 	{
 		if (StateMachine.GetCurrentStateType() == EGameCharacterState.InAir || !IsGrounded)
 		{
+			if (StateMachine.GetCurrentStateType() == EGameCharacterState.Attack) return;
 			float yGravity = CalculateGravity();
 			MovementVelocity = new Vector3(MovementVelocity.x, MovementVelocity.y - yGravity, MovementVelocity.z);
 		}
@@ -237,15 +247,17 @@ public class GameCharacter : MonoBehaviour
 
 	private void OnAnimatorMove()
 	{
-		switch (StateMachine.GetCurrentStateType())
-		{
-			case EGameCharacterState.Attack:
-			case EGameCharacterState.AttackRecovery:
-				Vector3 rootmotionWithoutDeltaTime = Animator.deltaPosition * (1 / Time.deltaTime);
-				MovementVelocity = new Vector3(rootmotionWithoutDeltaTime.x, rootmotionWithoutDeltaTime.y, 0);
-				break;
-			default: break; 
-		}
+		rootmotionVector = Animator.deltaPosition * (1 / Time.deltaTime);
+	}
+
+	public void HitDetectionEventStart()
+	{
+		CombatComponent?.CurrentWeapon?.HitDetectionStart();
+	}
+
+	public void HitDetectionEventEnd()
+	{
+		CombatComponent?.CurrentWeapon?.HitDetectionEnd();
 	}
 
 	public void AttackRecoveryEvent()
@@ -255,7 +267,7 @@ public class GameCharacter : MonoBehaviour
 
 	IEnumerator IsJumping()
 	{
-		yield return new WaitForSeconds(1f);
+		yield return new WaitForSeconds(0.2f);
 		IsInJump = false;
 	}
 }

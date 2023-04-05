@@ -31,7 +31,7 @@ public class GameCharacterAttackRecoveryState : AGameCharacterState
 		if (GameCharacter.GetPossibleGroundAngle() > GameCharacter.CharacterController.slopeLimit)
 			return EGameCharacterState.Sliding;
 
-		if (GameCharacter.Veloctiy.magnitude > 0 || GameCharacter.GetHorizontalMovementInputDir().magnitude > 0)
+		if (GameCharacter.GetHorizontalMovementInputDir().magnitude > 0)
 			return EGameCharacterState.Moving;
 
 		if (GameCharacter.CombatComponent.AttackTimer.IsFinished)
@@ -58,7 +58,6 @@ public class GameCharacterAttackRecoveryState : AGameCharacterState
 	public override void EndState(EGameCharacterState newState)
 	{
 		GameCharacter.AnimController.InAttack = false;
-		GameCharacter.AnimController.InterpRotationLayerWeight(1, 10f);
 		GameCharacter.AnimController.InterpSecondaryMotionLayerWeight(1, 10f);
 	}
 }

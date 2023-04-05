@@ -9,6 +9,11 @@ public class JumpEvent : CharacterEvent
 
 	public override bool CanBeExecuted()
 	{
+		switch (gameCharacter.StateMachine.GetCurrentStateType())
+		{
+			case EGameCharacterState.Attack: return false;
+			default: break;
+		}
 		if (gameCharacter.CurrentJumpAmount < gameCharacter.GameCharacterData.MaxJumps) return true;
 		return false;
 	}

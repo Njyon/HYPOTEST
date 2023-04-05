@@ -15,6 +15,7 @@ public class CameraController : MonoBehaviour
     public float moveSpeedy = 5f;
     public float lookAhead = 2f;
     public float speed = 5f;
+    public float damping = 0.01f;
     public Vector2 clampY = new Vector2(-5, 5);
     public Vector2 clampX = new Vector2(-5, 5);
 
@@ -52,6 +53,7 @@ public class CameraController : MonoBehaviour
     public float MoveSpeedy { get { return moveSpeedy; } }
     public float LookAhead { get { return lookAhead; } }
     public float Speed { get { return speed; } }
+    public float Damping { get { return damping; } }
     public Vector2 ClampX { get { return clampX; } }
     public Vector2 ClampY { get { return clampY; } }
     public Vector3 CameraTargetPosition { get { return cameraTargetPosition; } set { cameraTargetPosition = value; } }

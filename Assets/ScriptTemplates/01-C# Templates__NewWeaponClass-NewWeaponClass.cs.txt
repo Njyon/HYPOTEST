@@ -20,7 +20,7 @@ public class #SCRIPTNAME# : WeaponBase
 
     public override void UpdateWeapon(float deltaTime)
     {
-    #NOTRIM#
+        base.UpdateWeapon(deltaTime);
     }
 
     public override void GroundAttack()   

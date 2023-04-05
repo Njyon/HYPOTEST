@@ -45,8 +45,6 @@ public class AnimationController
 	float armRLayerInterpSpeed;
 	float armLLayerInterpTarget;
 	float armLLayerInterpSpeed;
-	float rotationLayerInterpTarget;
-	float rotationLayerInterpSpeed;
 	float secondaryMotionLayerInterpTarget;
 	float secondaryMotionLayerInterpSpeed;
 
@@ -195,17 +193,6 @@ public class AnimationController
 			}
 		}
 	}
-	public float RotationLayerWeight
-	{
-		get { return gameCharacter.Animator.GetLayerWeight(rotationLayerIndex); }
-		private set
-		{
-			if (gameCharacter.Animator.GetLayerWeight(rotationLayerIndex) != value)
-			{
-				gameCharacter.Animator.SetLayerWeight (rotationLayerIndex, value);
-			}
-		}
-	}
 	public float SecondaryMotionLayerWeight
 	{
 		get { return gameCharacter.Animator.GetLayerWeight(secondaryMotionLayerIndex); }
@@ -298,7 +285,6 @@ public class AnimationController
 		HeadLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(headLayerIndex), headLayerInterpTarget, deltaTime * headLayerInterpSpeed);
 		ArmRLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(armRLayerIndex), armRLayerInterpTarget, deltaTime * armRLayerInterpSpeed);
 		ArmLLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(armLLayerIndex), armLLayerInterpTarget, deltaTime * armLLayerInterpSpeed);
-		RotationLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(rotationLayerIndex), rotationLayerInterpTarget, deltaTime * rotationLayerInterpSpeed);
 		SecondaryMotionLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(secondaryMotionLayerIndex), secondaryMotionLayerInterpTarget, deltaTime * secondaryMotionLayerInterpSpeed);
 	}
 
@@ -445,16 +431,6 @@ public class AnimationController
 	{
 		armLLayerInterpTarget = weight;
 		ArmLLayerWeight = weight;
-	}
-	public void InterpRotationLayerWeight(float target, float speed = 5f)
-	{
-		rotationLayerInterpTarget = target;
-		rotationLayerInterpSpeed = speed;
-	}
-	public void SetRotationLayerWeight(float weight)
-	{
-		rotationLayerInterpTarget = weight;
-		RotationLayerWeight = weight;
 	}
 	public void InterpSecondaryMotionLayerWeight(float target, float speed = 5f)
 	{

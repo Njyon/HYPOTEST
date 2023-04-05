@@ -80,8 +80,15 @@ public class GameCharacterInAirState : AGameCharacterState
 
 	public override void EndState(EGameCharacterState newState)
 	{
-		Vector3 test = new Vector3(GameCharacter.MovementVelocity.x, Physics.gravity.y / 2, GameCharacter.MovementVelocity.z);
-		GameCharacter.MovementVelocity = test;
+		switch (newState)
+		{
+			case EGameCharacterState.Attack: break;
+			default:
+				Vector3 test = new Vector3(GameCharacter.MovementVelocity.x, Physics.gravity.y / 2, GameCharacter.MovementVelocity.z);
+				GameCharacter.MovementVelocity = test; 
+				break;	
+		}
+	
 		GameCharacter.IsInJump = false;
 	}
 }

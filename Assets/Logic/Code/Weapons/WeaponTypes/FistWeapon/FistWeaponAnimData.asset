@@ -13,11 +13,40 @@ MonoBehaviour:
   m_Name: FistWeaponAnimData
   m_EditorClassIdentifier: 
   GroundAttacks:
-  - {fileID: -1283617849781794479, guid: 09b0eca1ad790ad418fcdcb1d591515f, type: 3}
-  GroundUpAttacks: []
+  - clip: {fileID: -1283617849781794479, guid: 09b0eca1ad790ad418fcdcb1d591515f, type: 3}
+    data:
+      showProperties: 1
+      hitDetectionType: 1
+      mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+      offset: {x: 0, y: 1, z: 1}
+      scale: {x: 1, y: 1, z: 1}
+      radius: 0.5
+      boxDimensions: {x: 1, y: 1, z: 1}
+      capsulHeight: 2
+  GroundUpAttacks:
+  - clip: {fileID: -1511537027194615298, guid: cb676680cb3657a4fa28a2fc509e76b6, type: 3}
+    data:
+      showProperties: 0
+      hitDetectionType: 1
+      mesh: {fileID: 0}
+      offset: {x: 0, y: 0, z: 1}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 1
+      boxDimensions: {x: 0, y: 0, z: 0}
+      capsulHeight: 0
   GroundDownAttacks: []
   GroundDirectionAttacks: []
-  AirAttacks: []
+  AirAttacks:
+  - clip: {fileID: -1283617849781794479, guid: 09b0eca1ad790ad418fcdcb1d591515f, type: 3}
+    data:
+      showProperties: 1
+      hitDetectionType: 1
+      mesh: {fileID: 0}
+      offset: {x: 0, y: 0, z: 1}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 1
+      boxDimensions: {x: 0, y: 0, z: 0}
+      capsulHeight: 0
   AirUpAttacks: []
   AirDownAttacks: []
   AirDirectionAttacks: []

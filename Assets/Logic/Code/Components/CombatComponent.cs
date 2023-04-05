@@ -58,6 +58,7 @@ public class CombatComponent
 	public void UpdateComponent(float deltaTime) 
 	{
 		if (attackTimer != null) attackTimer.Update(deltaTime);
+		if (CurrentWeapon != null) CurrentWeapon.UpdateWeapon(deltaTime);
 	}
 
 	void InitWeapons()

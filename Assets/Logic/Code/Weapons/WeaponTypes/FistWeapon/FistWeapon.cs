@@ -20,7 +20,7 @@ public class FistWeapon : WeaponBase
 
     public override void UpdateWeapon(float deltaTime)
     {
-    
+        base.UpdateWeapon(deltaTime);
     }
 
     public override void GroundAttack()   

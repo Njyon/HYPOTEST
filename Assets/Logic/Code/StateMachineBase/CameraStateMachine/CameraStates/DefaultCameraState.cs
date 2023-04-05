@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class DefaultCameraState : ACameraState
 {
+	Vector3 camerVel;
 	public DefaultCameraState(CameraStateMachine stateMachine, CameraController cameraController, GameCharacter gameCharacter) : base(stateMachine, cameraController, gameCharacter)
 	{ }
 
 	public override void StartState(ECameraStates oldState)
 	{
-
+		camerVel = Vector3.zero;
 	}
 
 	public override ECameraStates GetStateType()
@@ -44,7 +45,7 @@ public class DefaultCameraState : ACameraState
 		Vector3 targetDirection = CameraController.MainTargetVelocity * (CameraController.LookAhead * CameraController.Speed);
 
 		// Move the camera towards the target position and direction
-		Vector3 targetPosition = target.position + targetDirection;
+		Vector3 targetPosition =  Vector3.SmoothDamp(CameraController.Camera.transform.position, target.position + targetDirection, ref camerVel, CameraController.Damping) ;
 		targetPosition.z = CameraController.CameraTargetPosition.z;
 
 		// Keep the camera within the bounds of the scene
