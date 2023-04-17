@@ -36,8 +36,8 @@ public abstract class AGameCharacterState : IState<EGameCharacterState>
 		switch (oldState)
 		{
 			case EGameCharacterState.InAir:
-				if (GameCharacter.GetPossibleGroundAngle() > GameCharacter.MaxWalkableSlopAngle)
-					GameCharacter.SlopStrengh = 0;
+				if (GameCharacter.MovementComponent.GetPossibleGroundAngle() > GameCharacter.MovementComponent.MaxWalkableSlopAngle)
+					GameCharacter.MovementComponent.SlopStrengh = 0;
 				break;
 			default: break;
 		}

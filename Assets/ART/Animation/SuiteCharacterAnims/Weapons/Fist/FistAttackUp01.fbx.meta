@@ -55,7 +55,50 @@ ModelImporter:
       heightFromFeet: 0
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
+      curves:
+      - name: UpMovement
+        curve:
+          serializedVersion: 2
+          curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0.00038862228
+            inSlope: -0.000578353
+            outSlope: -0.000578353
+            tangentMode: 34
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0.33333334
+          - serializedVersion: 3
+            time: 0.33999255
+            value: 0.00019198656
+            inSlope: -0.0000023838622
+            outSlope: 1.5307697
+            tangentMode: 1
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0.09013685
+          - serializedVersion: 3
+            time: 0.76675135
+            value: 1.0047841
+            inSlope: 0.060719132
+            outSlope: -0.03281708
+            tangentMode: 1
+            weightedMode: 0
+            inWeight: 0.09387716
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: -0.020510761
+            outSlope: -0.020510761
+            tangentMode: 34
+            weightedMode: 0
+            inWeight: 0.33333334
+            outWeight: 0
+          preInfinity: 2
+          postInfinity: 2
+          rotationOrder: 4
       events:
       - time: 0.7679426
         functionName: AttackRecoveryEvent

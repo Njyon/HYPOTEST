@@ -17,6 +17,7 @@ public class AttackAnimationData
 {
 	public AnimationClip clip;
 	public AttackAnimationHitDetectionData data;
+	public float maxVerticalMovement;
 }
 
 public enum EHitDetectionType

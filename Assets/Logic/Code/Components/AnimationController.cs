@@ -32,6 +32,7 @@ public class AnimationController
 	int attackAStateIndex;
 	int secondaryMotionLayerIndex;
 	int rotationLayerIndex;
+	int upMovementCurveIndex;
 
 	float minMalkSpeed;
 	bool startWalkRunBlendInterp = true;
@@ -227,6 +228,8 @@ public class AnimationController
 		}
 	}
 
+	public float GetUpMovementCurve { get { return gameCharacter.Animator.GetFloat(upMovementCurveIndex); } }
+
 	public AnimationController(GameCharacter character)
 	{
 		gameCharacter = character;
@@ -255,6 +258,7 @@ public class AnimationController
 		attackAIndex = Animator.StringToHash("AttackA");
 		attackAStateIndex = Animator.StringToHash("AttackAState");
 		secondaryMotionLayerIndex = gameCharacter.Animator.GetLayerIndex("SecondaryMotion");
+		upMovementCurveIndex = Animator.StringToHash("UpMovement");
 
 		overrideController = new AnimatorOverrideController(gameCharacter.Animator.runtimeAnimatorController);
 
@@ -304,7 +308,7 @@ public class AnimationController
 
 	void CalculateFallingValues()
 	{
-		FallingBlend = Unity.Mathematics.math.remap(0, gameCharacter.GameCharacterData.MaxFallingVelocityAnim, 0, 1, gameCharacter.Veloctiy.y);
+		FallingBlend = Unity.Mathematics.math.remap(0, gameCharacter.GameCharacterData.MaxFallingVelocityAnim, 0, 1, gameCharacter.MovementComponent.Veloctiy.y);
 	}
 
 	void CalculateMovementValues()
@@ -313,7 +317,7 @@ public class AnimationController
 		if (startWalkRunBlendInterp) startWalkRunBlendInterp = !startWalkRunBlendInterp;
 
 		// Walk Run
-		float movementSpeed = gameCharacter.MovementSpeed;
+		float movementSpeed = gameCharacter.MovementComponent.MovementSpeed;
 		float walkrunblendTarget = Unity.Mathematics.math.remap(minMalkSpeed, gameCharacter.GameCharacterData.MaxMovementSpeed, 0.2f, 1, movementSpeed);
 		WalkRunBlend = dontInterp ? walkrunblendTarget : Mathf.Lerp(WalkRunBlend, walkrunblendTarget, Time.deltaTime * gameCharacter.GameCharacterData.WalkRunInterp);
 

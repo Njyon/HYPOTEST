@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 [Flags]
@@ -109,13 +110,15 @@ namespace Ultra {
 			}
 			// List is every second tick cleaned, don't know why
 			if (onScreenList.Count > 0) {
+				int j = 0;
 				for (int i = 0; i < onScreenListTimed.Count; i++) {
-					if (onScreenListTimed[i].DebugLevel <= this.debugLevel || (onScreenListTimed[i].DebugArea & this.debugAreas) == onScreenListTimed[i].DebugArea)
+					if (onScreenListTimed[i].DebugLevel <= this.debugLevel && (onScreenListTimed[i].DebugArea & this.debugAreas) == onScreenListTimed[i].DebugArea)
 					{
-						GUI.Label(new Rect(0, 0 + (onScreenList.Count + i) * style.fontSize, 1000f, 1000f), onScreenListTimed[i].Message, style);
-						onScreenListTimed[i].Time -= Time.deltaTime;
-						if (onScreenListTimed[i].Time <= 0) onScreenListTimed.RemoveAt(i);
+						j++;	
+						GUI.Label(new Rect(0, 0 + (onScreenList.Count + j) * style.fontSize, 1000f, 1000f), onScreenListTimed[i].Message, style);
 					}
+					onScreenListTimed[i].Time -= Time.deltaTime;
+					if (onScreenListTimed[i].Time <= 0) onScreenListTimed.RemoveAt(i);
 				}
 			}
 			onScreenList.Clear();
@@ -339,8 +342,10 @@ namespace Ultra {
 			return startValue + (endValue - startValue) * sigmoid;
 		}
 
-		public static void DrawCapsule(Vector3 position, Quaternion orientation, float height, float radius, Color color, bool drawFromBase = true)
+		public static void DrawCapsule(Vector3 position, Quaternion orientation, float height, float radius, Color color, int debugLevel = 100, DebugAreas debugArea = DebugAreas.Misc, bool drawFromBase = false)
 		{
+			if (debugLevel > Instance.debugLevel || (debugArea & Instance.debugAreas) != debugArea) return;
+
 			// Clamp the radius to a half of the capsule's height
 			radius = Mathf.Clamp(radius, 0, height / 2);
 			Vector3 localUp = orientation * Vector3.up;
@@ -603,9 +608,20 @@ namespace Ultra {
 		}
 		public static Collider[] OverlapCapsule(Vector3 position, float capsulHeight, float radius)
 		{
-			Vector3 point1 = position + Vector3.up * (capsulHeight / 4);
-			Vector3 point2 = position + Vector3.down * (capsulHeight / 4);
+			Vector3 point1 = GetCapsuleSphere(position, capsulHeight, radius);
+			Vector3 point2 = GetCapsuleSphere(position, -capsulHeight, radius);
 			return Physics.OverlapCapsule(point1, point2, radius);
+		}
+		public static Vector3 GetCapsuleSphere(Vector3 position, float hightDirection, float radius) {
+			Vector3 value = position + Vector3.up * ((hightDirection / 2) - Math.Sign(hightDirection) * radius);
+			return value;
+		}
+		public static bool CapsulCast(Vector3 capsulCenter, float capsulHeight, float radius, Vector3 direction, out RaycastHit hit, Color debugColor, int debugLevel = 100, DebugAreas debugAreas = DebugAreas.Misc) {
+			DrawCapsule(capsulCenter, Quaternion.identity, capsulHeight, radius, debugColor.WithAlpha(0.2f), debugLevel, debugAreas);
+			bool value = Physics.CapsuleCast(GetCapsuleSphere(capsulCenter, capsulHeight, radius), GetCapsuleSphere(capsulCenter, -capsulHeight, radius), radius, direction, out hit, direction.magnitude);
+			if (value) DrawArrow(capsulCenter, hit.point - capsulCenter, Vector3.Distance(capsulCenter, hit.point), debugColor, 0, debugLevel, debugAreas); 
+			else DrawCapsule(capsulCenter + direction, Quaternion.identity, capsulHeight, radius, debugColor.WithAlpha(0.5f), debugLevel, debugAreas);
+			return value;
 		}
 	}
 }

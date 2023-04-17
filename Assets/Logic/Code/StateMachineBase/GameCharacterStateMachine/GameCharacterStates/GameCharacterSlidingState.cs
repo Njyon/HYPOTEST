@@ -14,15 +14,15 @@ public class GameCharacterSlidingState : AGameCharacterState
 
 	public override EGameCharacterState UpdateState(float deltaTime, EGameCharacterState newStateRequest)
 	{
-		if (!GameCharacter.IsGrounded || GameCharacter.IsInJump)
+		if (!GameCharacter.MovementComponent.IsGrounded || GameCharacter.IsInJump)
 			return EGameCharacterState.InAir;
 
-		if (GameCharacter.GetPossibleGroundAngle() <= GameCharacter.CharacterController.slopeLimit)
+		if (GameCharacter.MovementComponent.GetPossibleGroundAngle() <= GameCharacter.MovementComponent.SlopeLimit)
 		{
-			if (GameCharacter.Veloctiy.magnitude > 0 || GameCharacter.GetHorizontalMovementInputDir().magnitude > 0)
+			if (GameCharacter.MovementComponent.Veloctiy.magnitude > 0 || GameCharacter.GetHorizontalMovementInputDir().magnitude > 0)
 				return EGameCharacterState.Moving;
 
-			if (GameCharacter.Veloctiy.magnitude <= 0 && GameCharacter.GetHorizontalMovementInputDir().magnitude <= 0)
+			if (GameCharacter.MovementComponent.Veloctiy.magnitude <= 0 && GameCharacter.GetHorizontalMovementInputDir().magnitude <= 0)
 				return EGameCharacterState.Standing;
 		}
 
@@ -40,9 +40,9 @@ public class GameCharacterSlidingState : AGameCharacterState
 		float maxSpeed = GameCharacter.GameCharacterData.MaxSlidingSpeed;
 		float acceleration = GameCharacter.GameCharacterData.SlidingAcceleration;
 		
-		Vector3 velocity = GameCharacter.MovementVelocity;
+		Vector3 velocity = GameCharacter.MovementComponent.MovementVelocity;
 		Vector3 inputDir = Vector3.down * GameCharacter.GameCharacterData.MovmentGravity * Time.deltaTime;
-		if (GameCharacter.PossibleGround != null) inputDir = Vector3.ProjectOnPlane(inputDir.normalized, GameCharacter.PossibleGround.hit.normal);
+		if (GameCharacter.MovementComponent.PossibleGround != null) inputDir = Vector3.ProjectOnPlane(inputDir.normalized, GameCharacter.MovementComponent.PossibleGround.hit.normal);
 
 		Vector3 targetVelocity = inputDir.normalized * maxSpeed;
 		Vector3 deltaV = targetVelocity - velocity;
@@ -53,8 +53,8 @@ public class GameCharacterSlidingState : AGameCharacterState
 		velocity += deltaV;
 		
 		// Anwenden der Geschwindigkeit
-		velocity = new Vector3(velocity.x, velocity.y, GameCharacter.MovementVelocity.z);
-		GameCharacter.MovementVelocity = velocity;
+		velocity = new Vector3(velocity.x, velocity.y, GameCharacter.MovementComponent.MovementVelocity.z);
+		GameCharacter.MovementComponent.MovementVelocity = velocity;
 	}
 
 	public override void FixedExecuteState(float deltaTime)

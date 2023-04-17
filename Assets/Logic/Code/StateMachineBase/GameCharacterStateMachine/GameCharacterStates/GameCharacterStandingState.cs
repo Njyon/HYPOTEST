@@ -26,13 +26,13 @@ public class GameCharacterStandingState : AGameCharacterState
 			default: break;
 		}
 
-		if (!GameCharacter.IsGrounded || GameCharacter.IsInJump)
+		if (!GameCharacter.MovementComponent.IsGrounded || GameCharacter.IsInJump)
 			return EGameCharacterState.InAir;
 
-		if (GameCharacter.GetPossibleGroundAngle() > GameCharacter.CharacterController.slopeLimit)
+		if (GameCharacter.MovementComponent.GetPossibleGroundAngle() > GameCharacter.MovementComponent.SlopeLimit)
 			return EGameCharacterState.Sliding;
 
-		if (GameCharacter.Veloctiy.magnitude > 0 || GameCharacter.GetHorizontalMovementInputDir().magnitude > 0)
+		if (GameCharacter.MovementComponent.Veloctiy.magnitude > 0 || GameCharacter.GetHorizontalMovementInputDir().magnitude > 0)
 			return EGameCharacterState.Moving;
 
 		return GetStateType();

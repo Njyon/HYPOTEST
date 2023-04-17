@@ -26,13 +26,13 @@ public class GameCharacterMovingState : AGameCharacterState
 			default: break;
 		}
 
-		if (!GameCharacter.IsGrounded || GameCharacter.IsInJump)
+		if (!GameCharacter.MovementComponent.IsGrounded || GameCharacter.IsInJump)
 			return EGameCharacterState.InAir;
 
-		if (GameCharacter.GetPossibleGroundAngle() > GameCharacter.CharacterController.slopeLimit)
+		if (GameCharacter.MovementComponent.GetPossibleGroundAngle() > GameCharacter.MovementComponent.SlopeLimit)
 			return EGameCharacterState.Sliding;
 
-		if (GameCharacter.Veloctiy.magnitude <= 0 && GameCharacter.GetHorizontalMovementInputDir().magnitude <= 0)
+		if (GameCharacter.MovementComponent.Veloctiy.magnitude <= 0 && GameCharacter.GetHorizontalMovementInputDir().magnitude <= 0)
 			return EGameCharacterState.Standing;
 
 		return GetStateType();
@@ -43,13 +43,13 @@ public class GameCharacterMovingState : AGameCharacterState
 		Vector2 inputVector = GameCharacter.MovementInput;
 		inputVector.y = 0;
 
-		if (GameCharacter.PossibleGround != null)
-			inputVector = Vector3.ProjectOnPlane(inputVector, GameCharacter.PossibleGround.hit.normal);
+		if (GameCharacter.MovementComponent.PossibleGround != null)
+			inputVector = Vector3.ProjectOnPlane(inputVector, GameCharacter.MovementComponent.PossibleGround.hit.normal);
 
 		float maxSpeed = GameCharacter.GameCharacterData.MaxMovementSpeed;
 		float acceleration = GameCharacter.GameCharacterData.Acceleration;
 
-		Vector3 velocity = GameCharacter.MovementVelocity;
+		Vector3 velocity = GameCharacter.MovementComponent.MovementVelocity;
 		Vector3 targetVelocity = inputVector * maxSpeed;
 
 		if (inputVector.magnitude > 0 && !FutureInclineToHigh(velocity))
@@ -79,28 +79,28 @@ public class GameCharacterMovingState : AGameCharacterState
 		}
 
 		// Anwenden der Geschwindigkeit
-		velocity = new Vector3(velocity.x, velocity.y, GameCharacter.MovementVelocity.z);
-		GameCharacter.MovementVelocity = velocity;
+		velocity = new Vector3(velocity.x, velocity.y, GameCharacter.MovementComponent.MovementVelocity.z);
+		GameCharacter.MovementComponent.MovementVelocity = velocity;
 	}
 
 	private bool FutureInclineToHigh(Vector3 velocity)
 	{
 		// calculate Ray height
-		Vector3 rayOrigin = GameCharacter.transform.position + Vector3.up * (GameCharacter.CharacterController.height + 1);
+		Vector3 rayOrigin = GameCharacter.transform.position + Vector3.up * (GameCharacter.MovementComponent.Height + 1);
 		Vector3 velDir = new Vector3(velocity.x, 0, 0).normalized;
 		// calculate Ray forwad position
 		rayOrigin = rayOrigin + velDir * 0.6f;
-		Debug.DrawRay(rayOrigin, Vector3.down * (GameCharacter.CharacterController.height + 2f), Color.red);
+		Debug.DrawRay(rayOrigin, Vector3.down * (GameCharacter.MovementComponent.Height + 2f), Color.red);
 		Ray ray = new Ray(rayOrigin, Vector3.down);
 		RaycastHit firstHit;
-		if (Physics.Raycast(ray, out firstHit, GameCharacter.CharacterController.height + 2f))
+		if (Physics.Raycast(ray, out firstHit, GameCharacter.MovementComponent.Height + 2f))
 		{
 			rayOrigin = rayOrigin + Vector3.up * 0.5f;
 			rayOrigin = rayOrigin + velDir * 0.2f;
-			Debug.DrawRay(rayOrigin, Vector3.down * (GameCharacter.CharacterController.height + 2f), Color.blue);
+			Debug.DrawRay(rayOrigin, Vector3.down * (GameCharacter.MovementComponent.Height + 2f), Color.blue);
 			Ray ray2 = new Ray(rayOrigin, Vector3.down);
 			RaycastHit secondHit;
-			if (Physics.Raycast(ray2, out secondHit, GameCharacter.CharacterController.height + 2f))
+			if (Physics.Raycast(ray2, out secondHit, GameCharacter.MovementComponent.Height + 2f))
 			{
 				if (Vector3.Angle(firstHit.normal, Vector3.up) >= GameCharacter.GameCharacterData.MaxSlopAngle && Ultra.Utilities.IsNearlyEqual(Vector3.Angle(firstHit.normal, Vector3.up), Vector3.Angle(secondHit.normal, Vector3.up), 0.02f))
 				{
@@ -108,11 +108,11 @@ public class GameCharacterMovingState : AGameCharacterState
 					return true;
 				}
 			}
-			Vector3 stepheightCheckOrigin = GameCharacter.PossibleGround.hit.point + Vector3.up * (GameCharacter.CharacterController.stepOffset + 0.001f);
+			Vector3 stepheightCheckOrigin = GameCharacter.MovementComponent.PossibleGround.hit.point + Vector3.up * (GameCharacter.MovementComponent.StepHeight + 0.001f);
 			Ray ray3 = new Ray(stepheightCheckOrigin, velDir);
 			RaycastHit thirdHit;
-			Debug.DrawRay(stepheightCheckOrigin, velDir * (GameCharacter.CharacterController.radius + 0.3f), Color.green);
-			if (Physics.Raycast(ray3, out thirdHit, GameCharacter.CharacterController.radius + 0.3f))
+			Debug.DrawRay(stepheightCheckOrigin, velDir * (GameCharacter.MovementComponent.Radius + 0.3f), Color.green);
+			if (Physics.Raycast(ray3, out thirdHit, GameCharacter.MovementComponent.Radius + 0.3f))
 			{
 				if (Vector3.Angle(firstHit.normal, Vector3.up) >= GameCharacter.GameCharacterData.MaxSlopAngle && Vector3.Angle(thirdHit.normal, Vector3.up) >= GameCharacter.GameCharacterData.MaxSlopAngle)
 				{
@@ -132,7 +132,7 @@ public class GameCharacterMovingState : AGameCharacterState
 
 	private void SetSlopStrenghToZero()
 	{
-		GameCharacter.SlopStrengh = 0f;
+		GameCharacter.MovementComponent.SlopStrengh = 0f;
 	}
 
 	public override void FixedExecuteState(float deltaTime)

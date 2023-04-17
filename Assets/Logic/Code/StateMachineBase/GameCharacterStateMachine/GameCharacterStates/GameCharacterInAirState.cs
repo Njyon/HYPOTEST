@@ -25,9 +25,9 @@ public class GameCharacterInAirState : AGameCharacterState
 			default: break;
 		}
 
-		if (GameCharacter.IsGrounded && GameCharacter.MovementVelocity.magnitude > 0 && GameCharacter.MovementVelocity.y <= 0)
+		if (GameCharacter.MovementComponent.IsGrounded && GameCharacter.MovementComponent.MovementVelocity.magnitude > 0 && GameCharacter.MovementComponent.MovementVelocity.y <= 0)
 			return EGameCharacterState.Moving;
-		else if (GameCharacter.IsGrounded && GameCharacter.MovementVelocity.magnitude <= 0)
+		else if (GameCharacter.MovementComponent.IsGrounded && GameCharacter.MovementComponent.MovementVelocity.magnitude <= 0)
 			return EGameCharacterState.Standing;
 
 		return GetStateType();
@@ -38,7 +38,7 @@ public class GameCharacterInAirState : AGameCharacterState
 		// MaybeAir Speed?
 		float maxSpeed = GameCharacter.GameCharacterData.MaxMovementSpeed;
 
-		Vector3 velocity = GameCharacter.MovementVelocity;
+		Vector3 velocity = GameCharacter.MovementComponent.MovementVelocity;
 		Vector3 inputDir = new Vector3(GameCharacter.MovementInput.x, 0f, 0f);
 		Vector3 targetVelocity = inputDir.normalized * maxSpeed;
 		Vector3 velocityDiff = (targetVelocity - velocity);
@@ -46,13 +46,13 @@ public class GameCharacterInAirState : AGameCharacterState
 		velocity += acceleration;
 
 		// Anwenden der Geschwindigkeit
-		velocity = new Vector3(velocity.x, GameCharacter.MovementVelocity.y, GameCharacter.MovementVelocity.z);
-		GameCharacter.MovementVelocity = velocity;
+		velocity = new Vector3(velocity.x, GameCharacter.MovementComponent.MovementVelocity.y, GameCharacter.MovementComponent.MovementVelocity.z);
+		GameCharacter.MovementComponent.MovementVelocity = velocity;
 	}
 
 	public override void FixedExecuteState(float deltaTime)
 	{
-		Vector3[] points = Ultra.Utilities.CalculateTrijactoryPoints(5, 0.3f, GameCharacter.transform.position, GameCharacter.MovementVelocity, Physics.gravity * 7);
+		Vector3[] points = Ultra.Utilities.CalculateTrijactoryPoints(5, 0.3f, GameCharacter.transform.position, GameCharacter.MovementComponent.MovementVelocity, Physics.gravity * 7);
 		bool didHit = false;
 		for (int i = 1; i < points.Length; i++)
 		{
@@ -66,11 +66,11 @@ public class GameCharacterInAirState : AGameCharacterState
 				// Ignore self hit
 				if (GameCharacter.gameObject == hit.collider.gameObject) continue;
 				didHit = true;
-				GameCharacter.PossibleGround = new PredictedLandingPoint(hit);
+				GameCharacter.MovementComponent.PossibleGround = new PredictedLandingPoint(hit);
 				break;
 			}
 		}
-		if (!didHit) GameCharacter.PossibleGround = null;
+		if (!didHit) GameCharacter.MovementComponent.PossibleGround = null;
 	}
 
 	public override void LateExecuteState(float deltaTime)
@@ -84,8 +84,8 @@ public class GameCharacterInAirState : AGameCharacterState
 		{
 			case EGameCharacterState.Attack: break;
 			default:
-				Vector3 test = new Vector3(GameCharacter.MovementVelocity.x, Physics.gravity.y / 2, GameCharacter.MovementVelocity.z);
-				GameCharacter.MovementVelocity = test; 
+				Vector3 test = new Vector3(GameCharacter.MovementComponent.MovementVelocity.x, Physics.gravity.y / 2, GameCharacter.MovementComponent.MovementVelocity.z);
+				GameCharacter.MovementComponent.MovementVelocity = test; 
 				break;	
 		}
 	

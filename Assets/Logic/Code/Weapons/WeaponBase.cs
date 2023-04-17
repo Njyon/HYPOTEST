@@ -35,6 +35,7 @@ public abstract class WeaponBase
     public ScriptableWeapon WeaponData { get { return weaponData; } }
     public GameObject SpawnedWeapon { get { return spawnedWeapon; } }
 	public bool IsHitDetecting { get { return ishitDetecting; } }
+	public AttackAnimationData LastAttack { get { return lastAttack; } }
 
     public WeaponBase() { }
     public WeaponBase(GameCharacter gameCharacter, ScriptableWeapon weaponData)
@@ -125,7 +126,7 @@ public abstract class WeaponBase
 				break;
 			case EHitDetectionType.Box:
 				{
-					hitDetectionGameObject.transform.position = gameCharacter.CharacterCenter;
+					hitDetectionGameObject.transform.position = gameCharacter.MovementComponent.CharacterCenter;
 					hitDetectionGameObject.transform.Translate(lastAttack.data.offset);
 					Collider[] colliders = Physics.OverlapBox(hitDetectionGameObject.transform.position, lastAttack.data.boxDimensions / 2);
 					foreach (Collider collider in colliders)
@@ -138,21 +139,21 @@ public abstract class WeaponBase
 				break;
 			case EHitDetectionType.Capsul:
 				{
-					hitDetectionGameObject.transform.position = gameCharacter.CharacterCenter;
+					hitDetectionGameObject.transform.position = gameCharacter.MovementComponent.CharacterCenter;
 					hitDetectionGameObject.transform.Translate(lastAttack.data.offset);
 					Collider[] colliders = Ultra.Utilities.OverlapCapsule(hitDetectionGameObject.transform.position, lastAttack.data.capsulHeight, lastAttack.data.radius);
 					foreach (Collider collider in colliders)
 					{
 						WeaponColliderEnter(collider);
 					}
-					Ultra.Utilities.DrawCapsule(hitDetectionGameObject.transform.position, Quaternion.identity,lastAttack.data.capsulHeight, lastAttack.data.radius, Color.red, false);
+					Ultra.Utilities.DrawCapsule(hitDetectionGameObject.transform.position, Quaternion.identity,lastAttack.data.capsulHeight, lastAttack.data.radius, Color.red);
 					//Ultra.Utilities.DrawWireCapsule(hitDetectionGameObject.transform.position, Quaternion.identity, lastAttack.data.radius, lastAttack.data.capsulHeight, Color.red, 200);
 					//Gizmos.DrawCube(hitDetectionGameObject.transform.position, Vector3.one);
 				}
 				break;
 			default:
 				{
-					hitDetectionGameObject.transform.position = gameCharacter.CharacterCenter;
+					hitDetectionGameObject.transform.position = gameCharacter.MovementComponent.CharacterCenter;
 					hitDetectionGameObject.transform.Translate(lastAttack.data.offset);
 					Collider[] colliders = Physics.OverlapSphere(hitDetectionGameObject.transform.position, lastAttack.data.radius);
 					foreach (Collider collider in colliders)

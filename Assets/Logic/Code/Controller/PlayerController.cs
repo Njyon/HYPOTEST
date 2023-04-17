@@ -21,6 +21,8 @@ public class PlayerController : ControllerBase
 	{
 		gameCharacter = pawn.AddComponent<GameCharacter>();
 		gameCharacter.CharacterData = characterData;
+		GameCharacterMovementComponent movementComponent = pawn.GetComponent<GameCharacterMovementComponent>();
+		if (movementComponent != null) movementComponent.SetupGameCharacter(gameCharacter);
 	}
 
 	private void SetupCamera(GameObject pawn)

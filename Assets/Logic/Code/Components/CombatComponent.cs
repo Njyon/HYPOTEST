@@ -110,7 +110,7 @@ public class CombatComponent
 
 	public void Attack(EAttackType attackType)
 	{
-		if (gameCharacter.IsGrounded)
+		if (gameCharacter.MovementComponent.IsGrounded)
 		{
 			switch (attackType)
 			{

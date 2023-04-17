@@ -26,7 +26,7 @@ public class JumpEvent : CharacterEvent
 	public override void StartEvent()
 	{
 		var jumpVelocity = Mathf.Sqrt(-2 * -gameCharacter.GameCharacterData.MovmentGravity * gameCharacter.GameCharacterData.JumpForce);
-		gameCharacter.MovementVelocity = new Vector3(gameCharacter.MovementVelocity.x, jumpVelocity, gameCharacter.MovementVelocity.z);
+		gameCharacter.MovementComponent.MovementVelocity = new Vector3(gameCharacter.MovementComponent.MovementVelocity.x, jumpVelocity, gameCharacter.MovementComponent.MovementVelocity.z);
 		gameCharacter.CurrentJumpAmount++;
 		gameCharacter.IsInJump = true;
 		if (gameCharacter.StateMachine.GetCurrentStateType() != EGameCharacterState.InAir) gameCharacter.StateMachine.ForceStateChange(EGameCharacterState.InAir, true);
