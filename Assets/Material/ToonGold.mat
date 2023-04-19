@@ -17,7 +17,7 @@ Material:
   - DR_SPECULAR_ON
   - _CELPRIMARYMODE_SINGLE
   - _TEXTUREBLENDINGMODE_MULTIPLY
-  - _UNITYSHADOWMODE_COLOR
+  - _UNITYSHADOWMODE_MULTIPLY
   - _UNITYSHADOW_OCCLUSION
   m_InvalidKeywords:
   - _FLAT_SHADOWS_ENABLED
@@ -119,10 +119,10 @@ Material:
     - _GradientEnd: 0.55
     - _GradientSize: 13.11
     - _GradientStart: 1.17
-    - _LightContribution: 0.5
-    - _LightFalloffSize: 0.0001
-    - _LightmapDirectionPitch: 0
-    - _LightmapDirectionYaw: 0
+    - _LightContribution: 1
+    - _LightFalloffSize: 0
+    - _LightmapDirectionPitch: 140
+    - _LightmapDirectionYaw: 47
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
@@ -138,8 +138,8 @@ Material:
     - _RimEnabled: 0
     - _SecondaryColor: 1
     - _SecondaryColorEnabled: 1
-    - _SelfShadingSize: 0.542
-    - _SelfShadingSizeExtra: 0.492
+    - _SelfShadingSize: 0.827
+    - _SelfShadingSizeExtra: 0.582
     - _ShadowEdgeSize: 0.16
     - _ShadowEdgeSizeExtra: 0.251
     - _ShadowEdgeSmoothness: 0.071
@@ -150,11 +150,11 @@ Material:
     - _SrcBlend: 1
     - _Surface: 0
     - _TextureBlendingMode: 0
-    - _TextureImpact: 0.156
+    - _TextureImpact: 0
     - _UVSec: 0
-    - _UnityShadowMode: 2
+    - _UnityShadowMode: 1
     - _UnityShadowOcclusion: 1
-    - _UnityShadowPower: 0.392
+    - _UnityShadowPower: 1
     - _UnityShadowSharpness: 1
     - _VertexColorsEnabled: 0
     - _ZWrite: 1
@@ -173,7 +173,7 @@ Material:
     - _EmissionColor: {r: 6.5126715, g: 6.5126715, b: 6.5126715, a: 1}
     - _FlatRimColor: {r: 0.4056604, g: 0.4056604, b: 0.4056604, a: 1}
     - _FlatSpecularColor: {r: 0.8584906, g: 0.14481832, b: 0.044544328, a: 1}
-    - _LightmapDirection: {r: 0, g: 1, b: 0, a: 0}
+    - _LightmapDirection: {r: 0.4701051, g: -0.76604444, b: 0.43838012, a: 0}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _UnityShadowColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
