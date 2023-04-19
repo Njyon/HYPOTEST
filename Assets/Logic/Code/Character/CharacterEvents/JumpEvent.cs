@@ -28,7 +28,7 @@ public class JumpEvent : CharacterEvent
 		var jumpVelocity = Mathf.Sqrt(-2 * -gameCharacter.GameCharacterData.MovmentGravity * gameCharacter.GameCharacterData.JumpForce);
 		gameCharacter.MovementComponent.MovementVelocity = new Vector3(gameCharacter.MovementComponent.MovementVelocity.x, jumpVelocity, gameCharacter.MovementComponent.MovementVelocity.z);
 		gameCharacter.CurrentJumpAmount++;
-		gameCharacter.IsInJump = true;
+		gameCharacter.MovementComponent.IsInJump = true;
 		if (gameCharacter.StateMachine.GetCurrentStateType() != EGameCharacterState.InAir) gameCharacter.StateMachine.ForceStateChange(EGameCharacterState.InAir, true);
 		gameCharacter.AnimController.Jump();
 		Ultra.Utilities.Instance.DebugLogOnScreen("JumpVel: " + jumpVelocity, 2f, 200, DebugAreas.Movement);

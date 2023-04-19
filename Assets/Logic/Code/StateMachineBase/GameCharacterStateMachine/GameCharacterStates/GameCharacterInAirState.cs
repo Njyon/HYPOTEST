@@ -25,7 +25,7 @@ public class GameCharacterInAirState : AGameCharacterState
 			default: break;
 		}
 
-		if (GameCharacter.MovementComponent.IsGrounded && GameCharacter.MovementComponent.MovementVelocity.magnitude > 0 && GameCharacter.MovementComponent.MovementVelocity.y <= 0)
+		if (GameCharacter.MovementComponent.IsGrounded && GameCharacter.MovementComponent.MovementVelocity.magnitude > 0)
 			return EGameCharacterState.Moving;
 		else if (GameCharacter.MovementComponent.IsGrounded && GameCharacter.MovementComponent.MovementVelocity.magnitude <= 0)
 			return EGameCharacterState.Standing;
@@ -89,6 +89,6 @@ public class GameCharacterInAirState : AGameCharacterState
 				break;	
 		}
 	
-		GameCharacter.IsInJump = false;
+		GameCharacter.MovementComponent.IsInJump = false;
 	}
 }

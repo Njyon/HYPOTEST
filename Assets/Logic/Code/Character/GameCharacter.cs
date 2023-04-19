@@ -17,9 +17,9 @@ public class GameCharacter : MonoBehaviour
 	ScriptableCharacter characterData;
 	CombatComponent combatComponent;
 	GameCharacterMovementComponent movementComponent;
+	Rigidbody rigidbody;
 	Vector2 movementInput;
 	int currentJumpAmount = 0;
-	bool isInJump = false;
 	Vector3 lastDir;
 
 	public GameCharacterStateMachine StateMachine { get { return stateMachine; } }
@@ -33,18 +33,8 @@ public class GameCharacter : MonoBehaviour
 	public GameCharacterPluginStateMachine PluginStateMachine { get { return pluginStateMachine; } }
 	public EventComponent EventComponent { get { return eventComponent; } }
 	public GameCharacterMovementComponent MovementComponent { get { return movementComponent; } }
-	public bool IsInJump { get { return isInJump; } 
-		set 
-		{
-			if (value)
-			{
-				StopCoroutine(IsJumping());
-				StartCoroutine(IsJumping());
-			}
-			isInJump = value;
+	public Rigidbody Rigidbody { get { return rigidbody; } }
 
-		} 
-	}
 
 	public void HorizontalMovementInput(float Haxis)
 	{
@@ -60,16 +50,18 @@ public class GameCharacter : MonoBehaviour
 	}
 	private void KillZOffset()
 	{
-		Vector3 pos = transform.position;
-		/// Kill Z so character is always on Z 0
-		pos.z = 0;
-		transform.position = pos;
+		//Vector3 pos = transform.position;
+		///// Kill Z so character is always on Z 0
+		//pos.z = 0;
+		//transform.position = pos;
 	}
 
 	private void Awake()
 	{
 		animator = gameObject.GetComponent<Animator>();
 		if (animator == null) Debug.LogError("GameObject: " + name + " Does not have an Animator Attached!");
+		rigidbody = gameObject.GetComponent<Rigidbody>();
+		if (rigidbody == null) Debug.LogError("GameObject: " + name + " Does not have an Rigibody Attached!");
 		movementComponent = gameObject.GetComponent<GameCharacterMovementComponent>();
 		if (movementComponent == null) Debug.LogError("GameObject: " + name + " Does not have an GameCharacterMovementComponent Attached!");
 		eventComponent = new EventComponent();
@@ -153,11 +145,5 @@ public class GameCharacter : MonoBehaviour
 	public void AttackRecoveryEvent()
 	{
 		StateMachine?.RequestStateChange(EGameCharacterState.AttackRecovery);
-	}
-
-	IEnumerator IsJumping()
-	{
-		yield return new WaitForSeconds(0.2f);
-		IsInJump = false;
 	}
 }

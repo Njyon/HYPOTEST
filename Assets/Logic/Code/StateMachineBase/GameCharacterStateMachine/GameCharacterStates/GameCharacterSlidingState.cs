@@ -14,7 +14,7 @@ public class GameCharacterSlidingState : AGameCharacterState
 
 	public override EGameCharacterState UpdateState(float deltaTime, EGameCharacterState newStateRequest)
 	{
-		if (!GameCharacter.MovementComponent.IsGrounded || GameCharacter.IsInJump)
+		if (!GameCharacter.MovementComponent.IsGrounded || GameCharacter.MovementComponent.IsInJump)
 			return EGameCharacterState.InAir;
 
 		if (GameCharacter.MovementComponent.GetPossibleGroundAngle() <= GameCharacter.MovementComponent.SlopeLimit)
