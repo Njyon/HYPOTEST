@@ -30,7 +30,7 @@ public class GameCharacterStandingState : AGameCharacterState
 			return EGameCharacterState.InAir;
 
 		if (GameCharacter.MovementComponent.GetPossibleGroundAngle() > GameCharacter.MovementComponent.SlopeLimit)
-			return EGameCharacterState.Sliding;
+			return EGameCharacterState.InAir;
 
 		if (GameCharacter.MovementComponent.Veloctiy.magnitude > 0 || GameCharacter.GetHorizontalMovementInputDir().magnitude > 0)
 			return EGameCharacterState.Moving;

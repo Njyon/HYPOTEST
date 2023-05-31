@@ -10,14 +10,14 @@ public class GameCharacterMovementComponent : MonoBehaviour
 {
 	[SerializeField] float stepHight;
 	[SerializeField] float maxWalkableSlopAngle;
-	PredictedLandingPoint predictedLandingPoint;
+	NullableHit predictedLandingPoint;
+	NullableHit rayCastGroundHit;
 	CharacterController unityMovementController;
 	bool isGrounded = false;
 	Vector3 postionLastFrame;
 	Vector3 veloctiy;
 	Vector3 movementVelocity;
 	GameCharacter gameCharacter;
-	float slopStrengh = 1;
 	Vector3 rootmotionVector;
 	bool isInJump = false;
 
@@ -25,12 +25,12 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	public CapsuleCollider CapsuleCollider { get { return capsuleCollider; } }
 	public float StepHeight { get { return stepHight; } }
 	public Vector3 CharacterCenter { get { return transform.position + capsuleCollider.center; } }
-	public PredictedLandingPoint PossibleGround { get { return predictedLandingPoint; } set { predictedLandingPoint = value; } }
+	public NullableHit PossibleGround { get { return predictedLandingPoint; } set { predictedLandingPoint = value; } }
+	public NullableHit RayCastGroundHit { get { return rayCastGroundHit; } set { rayCastGroundHit = value; } }
 	public bool IsGrounded { get { return isGrounded && !IsInJump; } }
 	public Vector3 MovementVelocity { get { return movementVelocity; } set { movementVelocity = value; } }
 	public Vector3 Veloctiy { get { return veloctiy; } }
 	public float MovementSpeed { get { return Veloctiy.magnitude; } }
-	public float SlopStrengh { get { return slopStrengh; } set { slopStrengh = value; } }
 	public float MaxWalkableSlopAngle { get { return maxWalkableSlopAngle; } }
 	public Vector3 RootmotionVector { get { return rootmotionVector; } }
 	public float Height { get { return capsuleCollider.height; } }
@@ -60,8 +60,8 @@ public class GameCharacterMovementComponent : MonoBehaviour
 		unityMovementController.height = capsuleCollider.height;
 		unityMovementController.radius = capsuleCollider.radius;
 		unityMovementController.center = capsuleCollider.center;
-		/// Set sloplimit to max so we can use Slope strengh to walk over anything at first end slide when slop strengh hits 0
-		unityMovementController.slopeLimit = 90f;
+		unityMovementController.slopeLimit = maxWalkableSlopAngle;
+		unityMovementController.stepOffset = stepHight;
 	}
 
 	void Update()
@@ -92,14 +92,22 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	{
 		if (moveRequestVector.magnitude < 0.01f && gameCharacter.MovementInput.magnitude < 0.01f) return;
 
-		if (!IsInJump && gameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.Moving)
-		{
-			Vector3 groundMovement = moveRequestVector + Vector3.down * StepHeight;
-			unityMovementController.Move(groundMovement);
-		}else
-		{
-			unityMovementController.Move(moveRequestVector);
-		}
+		//if (!IsInJump && gameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.Moving)
+		//{
+		//	unityMovementController.Move(moveRequestVector);
+		//	RaycastHit checkForGroundBelowHit;
+		//	if (Ultra.Utilities.CapsulCast(CharacterCenter, CapsuleCollider.height, CapsuleCollider.radius, Vector3.down * StepHeight, out checkForGroundBelowHit, Color.cyan, 200, DebugAreas.Movement))
+		//	{
+		//		Vector3 groundMovement = Vector3.down * StepHeight;
+		//		unityMovementController.Move(groundMovement);
+		//	}
+		//}
+			
+		unityMovementController.Move(moveRequestVector);
+		Vector3 noZVector = new Vector3(transform.position.x, transform.position.y, 0);
+		Vector3 noZDirection = noZVector - transform.position;	
+		unityMovementController.Move(noZDirection);
+	
 
 		return;
 
@@ -251,14 +259,18 @@ public class GameCharacterMovementComponent : MonoBehaviour
 
 	public void CheckIfCharacterIsGrounded()
 	{
-		RaycastHit newHit;
-		if (IsGroundedCheck(CharacterCenter, out newHit))
+		RaycastHit groundHitCapsul;
+		RaycastHit groundHitRayCast;
+		if (IsGroundedCheck(CharacterCenter, out groundHitCapsul))
 		{
-			Vector3 castOrigin = new Vector3(newHit.point.x, newHit.point.y + 1f, newHit.point.z);
-			if (Physics.Raycast(castOrigin, newHit.point - castOrigin, out newHit, Vector3.Distance(castOrigin, newHit.point) + 0.1f))
-				PossibleGround = new PredictedLandingPoint(newHit);
+			Vector3 castOrigin = new Vector3(groundHitCapsul.point.x, groundHitCapsul.point.y + 1f, groundHitCapsul.point.z);
+			if (Physics.Raycast(castOrigin, groundHitCapsul.point - castOrigin, out groundHitRayCast, Vector3.Distance(castOrigin, groundHitCapsul.point) + 0.1f))
+				RayCastGroundHit = new NullableHit(groundHitRayCast);
+			else
+				RayCastGroundHit = null;
 			isGrounded = true;
-			if (MovementVelocity.y < 0) MovementVelocity = new Vector3(MovementVelocity.x, 0f, MovementVelocity.z);
+			PossibleGround = new NullableHit(groundHitCapsul);
+			//if (MovementVelocity.y < 0) MovementVelocity = new Vector3(MovementVelocity.x, 0f, MovementVelocity.z);
 		}
 		else
 		{
@@ -266,7 +278,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 		}
 	}
 
-	private bool IsGroundedCheck(Vector3 center, out RaycastHit newHit)
+	public bool IsGroundedCheck(Vector3 center, out RaycastHit newHit)
 	{
 		return Ultra.Utilities.CapsulCast(center, capsuleCollider.height, capsuleCollider.radius, Vector3.down * (0.1f + minDistance), out newHit, Color.cyan.WithAlpha(0.35f), 100, DebugAreas.Movement);
 	}
@@ -277,32 +289,12 @@ public class GameCharacterMovementComponent : MonoBehaviour
 		return new Vector3(MovementVelocity.x, MovementVelocity.y + yGravity, MovementVelocity.z);
 	}
 
-	public void CalculateSlopLimit()
-	{
-		if (GetPossibleGroundAngle() > maxWalkableSlopAngle)
-		{
-			if (slopStrengh > 0)
-			{
-				slopStrengh = slopStrengh - Time.deltaTime * gameCharacter.GameCharacterData.SlopStrenghDecrease;
-				if (slopStrengh < 0) slopStrengh = 0;
-			}
-		}
-		else
-		{
-			if (slopStrengh < 1)
-			{
-				slopStrengh = slopStrengh + Time.deltaTime * gameCharacter.GameCharacterData.SlopStrenghIncrease;
-				if (slopStrengh > 1) slopStrengh = 1;
-			}
-		}
-		SlopeLimit = Unity.Mathematics.math.remap(0, 1, maxWalkableSlopAngle, 90, slopStrengh);
-	}
-
 	public void MoveCharacter()
 	{
 		Vector3 movementVector = GetMovmentVelocityWithDeltaTime();
 		RequestMove(movementVector);
-		Ultra.Utilities.Instance.DebugLogOnScreen("MovementVelocity: " + MovementVelocity.ToString() + "MovementSpeed: " + MovementVelocity.magnitude);
+		Ultra.Utilities.Instance.DebugLogOnScreen("MovementVelocity: " + MovementVelocity.ToString() + " MovementSpeed: " + MovementVelocity.magnitude);
+		Ultra.Utilities.Instance.DebugLogOnScreen(StringColor.Lime + "Velocity: " + Veloctiy.ToString() + " VelocityMagnitude: " + Veloctiy.magnitude + StringColor.EndColor);
 		Ultra.Utilities.DrawArrow(transform.position, movementVector.normalized, movementVector.magnitude * 50f, Color.red, 0f, 50, DebugAreas.Movement);
 		Vector3 moveDir = GetMovementVelocityWithoutGravity();
 		Ultra.Utilities.DrawArrow(transform.position, (moveDir.normalized.magnitude <= 0) ? transform.forward : moveDir.normalized, moveDir.magnitude * Time.deltaTime * 50f, Color.blue, 0f, 50, DebugAreas.Movement);
@@ -340,11 +332,11 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	}
 }
 
-public class PredictedLandingPoint
+public class NullableHit
 {
 	public RaycastHit hit;
 
-	public PredictedLandingPoint(RaycastHit hit)
+	public NullableHit(RaycastHit hit)
 	{
 		this.hit = hit;
 	}

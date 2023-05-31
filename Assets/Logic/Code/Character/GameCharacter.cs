@@ -82,13 +82,13 @@ public class GameCharacter : MonoBehaviour
 
 	private void Update()
 	{
+		//movementInput.x = 1;
 		EventComponent.Update(Time.deltaTime);
 		MovementComponent.CalculateVelocity();
 		MovementComponent.AddGravityOnMovementVelocity();
 		MovementComponent.CheckIfCharacterIsGrounded();
 		CombatComponent.UpdateComponent(Time.deltaTime);
 		MovementComponent.MoveCharacter();
-		MovementComponent.CalculateSlopLimit();
 		RotateCharacterInVelocityDirection();
 
 		animController.Update(Time.deltaTime);

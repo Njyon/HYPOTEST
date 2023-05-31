@@ -28,8 +28,8 @@ public class GameCharacterAttackRecoveryState : AGameCharacterState
 		if (!GameCharacter.MovementComponent.IsGrounded || GameCharacter.MovementComponent.IsInJump)
 			return EGameCharacterState.InAir;
 
-		if (GameCharacter.MovementComponent.GetPossibleGroundAngle() > GameCharacter.MovementComponent.SlopeLimit)
-			return EGameCharacterState.Sliding;
+		//if (GameCharacter.MovementComponent.GetPossibleGroundAngle() > GameCharacter.MovementComponent.SlopeLimit)
+		//	return EGameCharacterState.Sliding;
 
 		if (GameCharacter.GetHorizontalMovementInputDir().magnitude > 0)
 			return EGameCharacterState.Moving;

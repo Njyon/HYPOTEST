@@ -25,16 +25,22 @@ public class GameCharacterInAirState : AGameCharacterState
 			default: break;
 		}
 
-		if (GameCharacter.MovementComponent.IsGrounded && GameCharacter.MovementComponent.MovementVelocity.magnitude > 0)
-			return EGameCharacterState.Moving;
-		else if (GameCharacter.MovementComponent.IsGrounded && GameCharacter.MovementComponent.MovementVelocity.magnitude <= 0)
-			return EGameCharacterState.Standing;
+		if (GameCharacter.MovementComponent.GetPossibleGroundAngle() < GameCharacter.MovementComponent.SlopeLimit)
+		{
+			if (GameCharacter.MovementComponent.IsGrounded && GameCharacter.MovementComponent.MovementVelocity.magnitude > 0)
+				return EGameCharacterState.Moving;
+			else if (GameCharacter.MovementComponent.IsGrounded && GameCharacter.MovementComponent.MovementVelocity.magnitude <= 0)
+				return EGameCharacterState.Standing;
+		}
 
 		return GetStateType();
 	}
 
 	public override void ExecuteState(float deltaTime)
 	{
+		RaycastHit hit;
+		bool groundBelowCharacter = GameCharacter.MovementComponent.IsGroundedCheck(GameCharacter.MovementComponent.CharacterCenter, out hit);
+
 		// MaybeAir Speed?
 		float maxSpeed = GameCharacter.GameCharacterData.MaxMovementSpeed;
 
@@ -44,6 +50,7 @@ public class GameCharacterInAirState : AGameCharacterState
 		Vector3 velocityDiff = (targetVelocity - velocity);
 		Vector3 acceleration = Vector3.ClampMagnitude(velocityDiff, maxSpeed) * GameCharacter.GameCharacterData.InAirControll;
 		velocity += acceleration;
+		if (groundBelowCharacter) velocity = Vector3.ProjectOnPlane(velocity, GameCharacter.MovementComponent.PossibleGround.hit.normal);
 
 		// Anwenden der Geschwindigkeit
 		velocity = new Vector3(velocity.x, GameCharacter.MovementComponent.MovementVelocity.y, GameCharacter.MovementComponent.MovementVelocity.z);
@@ -66,7 +73,7 @@ public class GameCharacterInAirState : AGameCharacterState
 				// Ignore self hit
 				if (GameCharacter.gameObject == hit.collider.gameObject) continue;
 				didHit = true;
-				GameCharacter.MovementComponent.PossibleGround = new PredictedLandingPoint(hit);
+				GameCharacter.MovementComponent.PossibleGround = new NullableHit(hit);
 				break;
 			}
 		}

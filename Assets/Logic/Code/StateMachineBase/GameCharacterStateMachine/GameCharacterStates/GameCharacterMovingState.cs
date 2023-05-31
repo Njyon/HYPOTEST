@@ -30,7 +30,7 @@ public class GameCharacterMovingState : AGameCharacterState
 			return EGameCharacterState.InAir;
 
 		if (GameCharacter.MovementComponent.GetPossibleGroundAngle() > GameCharacter.MovementComponent.SlopeLimit)
-			return EGameCharacterState.Sliding;
+			return EGameCharacterState.InAir;
 
 		if (GameCharacter.MovementComponent.Veloctiy.magnitude <= 0 && GameCharacter.GetHorizontalMovementInputDir().magnitude <= 0)
 			return EGameCharacterState.Standing;
@@ -44,13 +44,16 @@ public class GameCharacterMovingState : AGameCharacterState
 		inputVector.y = 0;
 
 		if (GameCharacter.MovementComponent.IsGrounded)
-			inputVector = Vector3.ProjectOnPlane(inputVector, GameCharacter.MovementComponent.PossibleGround.hit.normal);
+		{
+			Vector2 newInputVector = Vector3.ProjectOnPlane(inputVector, GameCharacter.MovementComponent.RayCastGroundHit != null ? GameCharacter.MovementComponent.RayCastGroundHit.hit.normal : GameCharacter.MovementComponent.PossibleGround.hit.normal);
+			if (Mathf.Abs(newInputVector.normalized.x) > 0.1f) inputVector = newInputVector;
+		}
 
 		float maxSpeed = GameCharacter.GameCharacterData.MaxMovementSpeed;
 		float acceleration = GameCharacter.GameCharacterData.Acceleration;
 
 		Vector3 velocity = GameCharacter.MovementComponent.MovementVelocity;
-		Vector3 targetVelocity = inputVector * maxSpeed;
+		Vector3 targetVelocity = inputVector.normalized * maxSpeed;
 
 		if (inputVector.magnitude > 0 /*&& !FutureInclineToHigh(velocity)*/)
 		{
@@ -60,6 +63,7 @@ public class GameCharacterMovingState : AGameCharacterState
 			Ultra.Utilities.DrawArrow(GameCharacter.transform.position, deltaV, 10, Color.black, 0f, 200, DebugAreas.Movement);
 			Ultra.Utilities.DrawArrow(GameCharacter.transform.position, targetVelocity, 10, Color.green, 0f, 200, DebugAreas.Movement);
 			velocity += deltaV;
+			velocity = targetVelocity.normalized * velocity.magnitude;
 			Ultra.Utilities.DrawArrow(GameCharacter.transform.position, velocity, 10, Color.white, 0f, 200, DebugAreas.Movement);
 		}
 		else
@@ -103,7 +107,6 @@ public class GameCharacterMovingState : AGameCharacterState
 			{
 				if (Vector3.Angle(firstHit.normal, Vector3.up) >= GameCharacter.GameCharacterData.MaxSlopAngle && Ultra.Utilities.IsNearlyEqual(Vector3.Angle(firstHit.normal, Vector3.up), Vector3.Angle(secondHit.normal, Vector3.up), 0.02f))
 				{
-					SetSlopStrenghToZero();
 					return true;
 				}
 			}
@@ -115,13 +118,11 @@ public class GameCharacterMovingState : AGameCharacterState
 			{
 				if (Vector3.Angle(firstHit.normal, Vector3.up) >= GameCharacter.GameCharacterData.MaxSlopAngle && Vector3.Angle(thirdHit.normal, Vector3.up) >= GameCharacter.GameCharacterData.MaxSlopAngle)
 				{
-					SetSlopStrenghToZero();
 					return true;
 				}
 				Ultra.Utilities.Instance.DebugLogOnScreen(Vector3.Distance(firstHit.point, thirdHit.point).ToString(), 10f);
 				if (firstHit.point.y < thirdHit.point.y && Vector3.Distance(firstHit.point, thirdHit.point) > 0.9f)
 				{
-					SetSlopStrenghToZero();
 					return true;
 				}
 			}
@@ -129,10 +130,6 @@ public class GameCharacterMovingState : AGameCharacterState
 		return false;
 	}
 
-	private void SetSlopStrenghToZero()
-	{
-		GameCharacter.MovementComponent.SlopStrengh = 0f;
-	}
 
 	public override void FixedExecuteState(float deltaTime)
 	{
