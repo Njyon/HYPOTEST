@@ -21,6 +21,7 @@ public abstract class WeaponBase
     GameCharacter gameCharacter;
     ScriptableWeapon weaponData;
     GameObject spawnedWeapon;
+	EExplicitAttackType currentAttackType;
 	EExplicitAttackType lastAttackType;
     int attackIndex;
 	bool ishitDetecting = false;
@@ -29,19 +30,21 @@ public abstract class WeaponBase
 	ColliderHitScript hitDetectionColliderScript;
 	MeshFilter hitDetectionMeshFilter;
 	MeshRenderer hitDetectionMeshRenderer;
-	AttackAnimationData lastAttack;
+	AttackAnimationData currentAttack;
+	protected List<GameObject> hitObjects;
 
 	public GameCharacter GameCharacter { get { return gameCharacter; } }
     public ScriptableWeapon WeaponData { get { return weaponData; } }
     public GameObject SpawnedWeapon { get { return spawnedWeapon; } }
 	public bool IsHitDetecting { get { return ishitDetecting; } }
-	public AttackAnimationData LastAttack { get { return lastAttack; } }
+	public AttackAnimationData LastAttack { get { return currentAttack; } }
 
     public WeaponBase() { }
     public WeaponBase(GameCharacter gameCharacter, ScriptableWeapon weaponData)
     {
         this.gameCharacter = gameCharacter;
         this.weaponData = weaponData;
+		hitObjects = new List<GameObject>();
     }
 
     public virtual void EquipWeapon()
@@ -50,6 +53,7 @@ public abstract class WeaponBase
 		GameCharacter.PluginStateMachine.AddPluginState(EPluginCharacterState.WeaponReady);
 		SpawnVisualWeaponMesh();
 		SetUpHitDetectionMeshLogic();
+		gameCharacter.StateMachine.onStateChanged += OnGameCharacterStateChange;
 	}
 
 	private void SpawnVisualWeaponMesh()
@@ -117,9 +121,9 @@ public abstract class WeaponBase
 	private void HitDetection()
 	{
 		if (!ishitDetecting) return;
-		if (lastAttack == null) return;
+		if (currentAttack == null) return;
 
-		switch (lastAttack.data.hitDetectionType)
+		switch (currentAttack.data.hitDetectionType)
 		{
 			case EHitDetectionType.Mesh:
 				// We Dont need to do anything here because the hitDetectionObject does the job
@@ -127,26 +131,26 @@ public abstract class WeaponBase
 			case EHitDetectionType.Box:
 				{
 					hitDetectionGameObject.transform.position = gameCharacter.MovementComponent.CharacterCenter;
-					hitDetectionGameObject.transform.Translate(lastAttack.data.offset);
-					Collider[] colliders = Physics.OverlapBox(hitDetectionGameObject.transform.position, lastAttack.data.boxDimensions / 2);
+					hitDetectionGameObject.transform.Translate(currentAttack.data.offset);
+					Collider[] colliders = Physics.OverlapBox(hitDetectionGameObject.transform.position, currentAttack.data.boxDimensions / 2);
 					foreach (Collider collider in colliders)
 					{
 						WeaponColliderEnter(collider);
 					}
 					//Ultra.Utilities.DrawBox(hitDetectionGameObject.transform.position, Quaternion.identity, lastAttack.data.boxDimensions, Color.red, 200);
-					Ultra.Utilities.DrawBox(hitDetectionGameObject.transform.position, Quaternion.identity, lastAttack.data.boxDimensions, Color.red);
+					Ultra.Utilities.DrawBox(hitDetectionGameObject.transform.position, Quaternion.identity, currentAttack.data.boxDimensions, Color.red);
 				}
 				break;
 			case EHitDetectionType.Capsul:
 				{
 					hitDetectionGameObject.transform.position = gameCharacter.MovementComponent.CharacterCenter;
-					hitDetectionGameObject.transform.Translate(lastAttack.data.offset);
-					Collider[] colliders = Ultra.Utilities.OverlapCapsule(hitDetectionGameObject.transform.position, lastAttack.data.capsulHeight, lastAttack.data.radius);
+					hitDetectionGameObject.transform.Translate(currentAttack.data.offset);
+					Collider[] colliders = Ultra.Utilities.OverlapCapsule(hitDetectionGameObject.transform.position, currentAttack.data.capsulHeight, currentAttack.data.radius);
 					foreach (Collider collider in colliders)
 					{
 						WeaponColliderEnter(collider);
 					}
-					Ultra.Utilities.DrawCapsule(hitDetectionGameObject.transform.position, Quaternion.identity,lastAttack.data.capsulHeight, lastAttack.data.radius, Color.red);
+					Ultra.Utilities.DrawCapsule(hitDetectionGameObject.transform.position, Quaternion.identity,currentAttack.data.capsulHeight, currentAttack.data.radius, Color.red);
 					//Ultra.Utilities.DrawWireCapsule(hitDetectionGameObject.transform.position, Quaternion.identity, lastAttack.data.radius, lastAttack.data.capsulHeight, Color.red, 200);
 					//Gizmos.DrawCube(hitDetectionGameObject.transform.position, Vector3.one);
 				}
@@ -154,13 +158,13 @@ public abstract class WeaponBase
 			default:
 				{
 					hitDetectionGameObject.transform.position = gameCharacter.MovementComponent.CharacterCenter;
-					hitDetectionGameObject.transform.Translate(lastAttack.data.offset);
-					Collider[] colliders = Physics.OverlapSphere(hitDetectionGameObject.transform.position, lastAttack.data.radius);
+					hitDetectionGameObject.transform.Translate(currentAttack.data.offset);
+					Collider[] colliders = Physics.OverlapSphere(hitDetectionGameObject.transform.position, currentAttack.data.radius);
 					foreach (Collider collider in colliders)
 					{
 						WeaponColliderEnter(collider);
 					}
-					Ultra.Utilities.DrawWireSphere(hitDetectionGameObject.transform.position, lastAttack.data.radius, Color.red, 0f, 100);
+					Ultra.Utilities.DrawWireSphere(hitDetectionGameObject.transform.position, currentAttack.data.radius, Color.red, 0f, 100);
 				}
 				break;
 		}
@@ -213,10 +217,10 @@ public abstract class WeaponBase
 
 	private void BaseAttackLogic(EExplicitAttackType explicitAttackType, ref List<AttackAnimationData> attackList)
 	{
-		if (lastAttackType != explicitAttackType)
+		if (currentAttackType != explicitAttackType)
 		{
 			attackIndex = 0;
-			lastAttackType = explicitAttackType;
+			currentAttackType = explicitAttackType;
 		}
 		else
 		{
@@ -224,28 +228,28 @@ public abstract class WeaponBase
 		}
 		if (attackList == null || attackList.Count <= 0) return;
 		attackIndex = attackIndex % attackList.Count;
-		lastAttack = attackList[attackIndex];
-		gameCharacter.AnimController.Attack(lastAttack.clip);
+		currentAttack = attackList[attackIndex];
+		gameCharacter.AnimController.Attack(currentAttack.clip);
 		gameCharacter.StateMachine.RequestStateChange(EGameCharacterState.Attack);
-		gameCharacter.CombatComponent.AttackTimer.Start(lastAttack.clip.length);
+		gameCharacter.CombatComponent.AttackTimer.Start(currentAttack.clip.length);
 	}
 
 	public virtual void HitDetectionStart()
 	{
-		if (lastAttack == null) return;
+		if (currentAttack == null) return;
 
 		ishitDetecting = true;
-		switch (lastAttack.data.hitDetectionType)
+		switch (currentAttack.data.hitDetectionType)
 		{
 			case EHitDetectionType.Mesh:
-				hitDetectionMeshCollider.sharedMesh = lastAttack.data.mesh;
+				hitDetectionMeshCollider.sharedMesh = currentAttack.data.mesh;
 				Vector3 localpos;
 				Quaternion localrot;
 				hitDetectionGameObject.transform.GetLocalPositionAndRotation(out localpos, out localrot);
 				hitDetectionGameObject.transform.Translate(localpos * -1, Space.Self);
-				hitDetectionGameObject.transform.Translate(lastAttack.data.offset, Space.Self);
-				hitDetectionMeshFilter.mesh = lastAttack.data.mesh;
-				hitDetectionMeshFilter.sharedMesh = lastAttack.data.mesh;
+				hitDetectionGameObject.transform.Translate(currentAttack.data.offset, Space.Self);
+				hitDetectionMeshFilter.mesh = currentAttack.data.mesh;
+				hitDetectionMeshFilter.sharedMesh = currentAttack.data.mesh;
 #if UNITY_EDITOR
 				if (Ultra.Utilities.Instance.debugLevel >= 100) hitDetectionMeshRenderer.enabled = true;
 #endif
@@ -269,7 +273,7 @@ public abstract class WeaponBase
 	public virtual void HitDetectionEnd() 
 	{
 		ishitDetecting = false;
-		switch(lastAttack.data.hitDetectionType)
+		switch(currentAttack.data.hitDetectionType)
 		{
 			case EHitDetectionType.Mesh: hitDetectionMeshRenderer.enabled = false; break;
 				default: break;
@@ -281,12 +285,41 @@ public abstract class WeaponBase
 		if (!IsHitDetecting) return;
 		if (other.gameObject == gameCharacter.gameObject) return;
 
-		Ultra.Utilities.Instance.DebugLogOnScreen(StringColor.Red + "Hit Object: " + other.gameObject.name + StringColor.EndColor, (lastAttack.data.hitDetectionType == EHitDetectionType.Mesh) ? 1f : 0f);
+		if (hitObjects.Contains(other.gameObject)) return;
+		hitObjects.Add(other.gameObject);
+
+		if (gameCharacter.IsPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen(StringColor.Red + "Hit Object: " + other.gameObject.name + StringColor.EndColor, (currentAttack.data.hitDetectionType == EHitDetectionType.Mesh) ? 1f : 0f);
+		switch (currentAttackType)
+		{
+			case EExplicitAttackType.GroundedDefaultAttack: break;
+			case EExplicitAttackType.GroundedDirectionalAttack: break;
+			case EExplicitAttackType.GroundedDownAttack: break;
+			case EExplicitAttackType.GroundedUpAttack: break;
+			case EExplicitAttackType.AirDefaultAttack: break;
+			case EExplicitAttackType.AirDirectionalAttack: break;
+			case EExplicitAttackType.AirDownAttack: break;
+			case EExplicitAttackType.AirUpAttack: break;
+			default: break;
+		}
 	}
 
 	protected virtual void WeaponColliderExit(Collider other)
 	{
 		if (!IsHitDetecting) return;
 
+	}
+
+	void OnGameCharacterStateChange(IState<EGameCharacterState> newState, IState<EGameCharacterState> oldState)
+	{
+		if (oldState?.GetStateType() == EGameCharacterState.Attack)
+		{
+			hitObjects.Clear();
+		}
+
+		if (newState?.GetStateType() != EGameCharacterState.Attack && oldState?.GetStateType() == EGameCharacterState.AttackRecovery)
+		{
+			lastAttackType = currentAttackType;
+			currentAttackType = EExplicitAttackType.Unknown;
+		}
 	}
 }

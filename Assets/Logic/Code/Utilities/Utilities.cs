@@ -617,10 +617,14 @@ namespace Ultra {
 			return value;
 		}
 		public static bool CapsulCast(Vector3 capsulCenter, float capsulHeight, float radius, Vector3 direction, out RaycastHit hit, Color debugColor, int debugLevel = 100, DebugAreas debugAreas = DebugAreas.Misc) {
-			DrawCapsule(capsulCenter, Quaternion.identity, capsulHeight, radius, debugColor.WithAlpha(0.2f), debugLevel, debugAreas);
+			// IF Application is Playing check is needed to be able to use the funtion out of playmodus
+			if (Application.isPlaying) DrawCapsule(capsulCenter, Quaternion.identity, capsulHeight, radius, debugColor.WithAlpha(0.2f), debugLevel, debugAreas);
 			bool value = Physics.CapsuleCast(GetCapsuleSphere(capsulCenter, capsulHeight, radius), GetCapsuleSphere(capsulCenter, -capsulHeight, radius), radius, direction, out hit, direction.magnitude);
-			if (value) DrawArrow(capsulCenter, hit.point - capsulCenter, Vector3.Distance(capsulCenter, hit.point), debugColor, 0, debugLevel, debugAreas); 
-			else DrawCapsule(capsulCenter + direction, Quaternion.identity, capsulHeight, radius, debugColor.WithAlpha(0.5f), debugLevel, debugAreas);
+			if (Application.isPlaying) 
+			{
+				if (value) DrawArrow(capsulCenter, hit.point - capsulCenter, Vector3.Distance(capsulCenter, hit.point), debugColor, 0, debugLevel, debugAreas);
+				else DrawCapsule(capsulCenter + direction, Quaternion.identity, capsulHeight, radius, debugColor.WithAlpha(0.5f), debugLevel, debugAreas);
+			}
 			return value;
 		}
 	}

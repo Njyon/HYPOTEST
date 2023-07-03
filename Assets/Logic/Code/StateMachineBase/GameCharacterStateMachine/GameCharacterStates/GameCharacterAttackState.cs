@@ -46,6 +46,10 @@ public class GameCharacterAttackState : AGameCharacterState
 		float yPosFromAnimCurveDelta = yPosFromAnimCurve - currentYPosAnimCurve;
 		currentYPosAnimCurve = yPosFromAnimCurve;
 
+		// FIX LOWFramerate Scenarios
+		float deltaTimeScale = 1f / Time.deltaTime;
+		yPosFromAnimCurveDelta *= deltaTimeScale;
+
 		lerpTimeY += deltaTime * GameCharacter.GameCharacterData.AirToZeroVelYInAttackSpeed;
 		lerpTimeX += deltaTime * GameCharacter.GameCharacterData.AirToZeroVelXInAttackSpeed;
 		float yMotion = GameCharacter.MovementComponent.RootmotionVector.y + Mathf.Lerp(initYVelocity, 0, lerpTimeY) + yPosFromAnimCurveDelta;

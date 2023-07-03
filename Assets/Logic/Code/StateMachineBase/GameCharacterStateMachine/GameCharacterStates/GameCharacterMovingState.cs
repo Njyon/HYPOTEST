@@ -120,7 +120,7 @@ public class GameCharacterMovingState : AGameCharacterState
 				{
 					return true;
 				}
-				Ultra.Utilities.Instance.DebugLogOnScreen(Vector3.Distance(firstHit.point, thirdHit.point).ToString(), 10f);
+				if (GameCharacter.IsPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen(Vector3.Distance(firstHit.point, thirdHit.point).ToString(), 10f);
 				if (firstHit.point.y < thirdHit.point.y && Vector3.Distance(firstHit.point, thirdHit.point) > 0.9f)
 				{
 					return true;

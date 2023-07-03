@@ -161,6 +161,15 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ForceFrameRate"",
+                    ""type"": ""Button"",
+                    ""id"": ""931e8e96-b16e-41f3-9822-a02b879dc33c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -559,6 +568,17 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""action"": ""Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""98369a80-8706-499d-ae6c-d61b8e65a890"",
+                    ""path"": ""<Keyboard>/numpad7"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""ForceFrameRate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -610,6 +630,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         m_Default_PreviousWeapon = m_Default.FindAction("PreviousWeapon", throwIfNotFound: true);
         m_Default_ScrollThrouhWeapos = m_Default.FindAction("ScrollThrouhWeapos", throwIfNotFound: true);
         m_Default_Attack = m_Default.FindAction("Attack", throwIfNotFound: true);
+        m_Default_ForceFrameRate = m_Default.FindAction("ForceFrameRate", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -684,6 +705,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     private readonly InputAction m_Default_PreviousWeapon;
     private readonly InputAction m_Default_ScrollThrouhWeapos;
     private readonly InputAction m_Default_Attack;
+    private readonly InputAction m_Default_ForceFrameRate;
     public struct DefaultActions
     {
         private @PlayerInputs m_Wrapper;
@@ -703,6 +725,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         public InputAction @PreviousWeapon => m_Wrapper.m_Default_PreviousWeapon;
         public InputAction @ScrollThrouhWeapos => m_Wrapper.m_Default_ScrollThrouhWeapos;
         public InputAction @Attack => m_Wrapper.m_Default_Attack;
+        public InputAction @ForceFrameRate => m_Wrapper.m_Default_ForceFrameRate;
         public InputActionMap Get() { return m_Wrapper.m_Default; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -757,6 +780,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @Attack.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnAttack;
                 @Attack.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnAttack;
                 @Attack.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnAttack;
+                @ForceFrameRate.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnForceFrameRate;
+                @ForceFrameRate.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnForceFrameRate;
+                @ForceFrameRate.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnForceFrameRate;
             }
             m_Wrapper.m_DefaultActionsCallbackInterface = instance;
             if (instance != null)
@@ -806,6 +832,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @Attack.started += instance.OnAttack;
                 @Attack.performed += instance.OnAttack;
                 @Attack.canceled += instance.OnAttack;
+                @ForceFrameRate.started += instance.OnForceFrameRate;
+                @ForceFrameRate.performed += instance.OnForceFrameRate;
+                @ForceFrameRate.canceled += instance.OnForceFrameRate;
             }
         }
     }
@@ -845,5 +874,6 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         void OnPreviousWeapon(InputAction.CallbackContext context);
         void OnScrollThrouhWeapos(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
+        void OnForceFrameRate(InputAction.CallbackContext context);
     }
 }

@@ -8,8 +8,9 @@ using System.Linq;
 
 public class GameCharacterMovementComponent : MonoBehaviour
 {
-	[SerializeField] float stepHight;
-	[SerializeField] float maxWalkableSlopAngle;
+	[SerializeField] float stepHight = 0.5f;
+	[SerializeField] float maxWalkableSlopAngle = 45f;
+	[SerializeField] float headBounceValue = -2f;
 	NullableHit predictedLandingPoint;
 	NullableHit rayCastGroundHit;
 	CharacterController unityMovementController;
@@ -62,6 +63,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 		unityMovementController.center = capsuleCollider.center;
 		unityMovementController.slopeLimit = maxWalkableSlopAngle;
 		unityMovementController.stepOffset = stepHight;
+		unityMovementController.skinWidth = 0.01f;
 	}
 
 	void Update()
@@ -75,7 +77,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 		//	gameCharacter.Rigidbody.isKinematic = true;
 		//	gameCharacter.Rigidbody.collisionDetectionMode = CollisionDetectionMode.Discrete;
 		//}
-		Ultra.Utilities.Instance.DebugLogOnScreen(StringColor.Lime + "Is Grounded = " + isGrounded.ToString() + StringColor.EndColor);
+		if (gameCharacter.IsPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen(StringColor.Lime + "Is Grounded = " + isGrounded.ToString() + StringColor.EndColor);
 	}
 
 	private void OnAnimatorMove()
@@ -90,7 +92,8 @@ public class GameCharacterMovementComponent : MonoBehaviour
 
 	void RequestMove(Vector3 moveRequestVector)
 	{
-		if (moveRequestVector.magnitude < 0.01f && gameCharacter.MovementInput.magnitude < 0.01f) return;
+
+		if (moveRequestVector.magnitude < 0.0001f && gameCharacter.MovementInput.magnitude < 0.0001f) return;
 
 		//if (!IsInJump && gameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.Moving)
 		//{
@@ -102,8 +105,14 @@ public class GameCharacterMovementComponent : MonoBehaviour
 		//		unityMovementController.Move(groundMovement);
 		//	}
 		//}
-			
-		unityMovementController.Move(moveRequestVector);
+
+
+		CollisionFlags collisionFlag = unityMovementController.Move(moveRequestVector);
+		// Remove Velocity in Y Axis when hit roof
+		if ((collisionFlag & CollisionFlags.Above) != 0)
+		{
+			MovementVelocity = new Vector3(MovementVelocity.x, headBounceValue, MovementVelocity.y);
+		}
 		Vector3 noZVector = new Vector3(transform.position.x, transform.position.y, 0);
 		Vector3 noZDirection = noZVector - transform.position;	
 		unityMovementController.Move(noZDirection);
@@ -122,7 +131,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 		RaycastHit setpHightHit;
 		if (gameCharacter.MovementInput.magnitude > 0.01f && Ultra.Utilities.CapsulCast(requestedPositionWithStepHight, capsuleCollider.height, capsuleCollider.radius, Vector3.down * stepHight, out setpHightHit, Color.red, 100, DebugAreas.Movement))
 		{
-			Ultra.Utilities.Instance.DebugLogOnScreen(StringColor.Red + "StepHeigtHit" + StringColor.EndColor);
+			if (gameCharacter.IsPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen(StringColor.Red + "StepHeigtHit" + StringColor.EndColor);
 			Vector3 currentPosWithYDelta = CapsulCenterFromEnds(moveRequestVector, setpHightHit, Vector3.up);
 			capsulCenter = MoveCapsul(moveRequestVector, currentPosWithYDelta);
 		
@@ -130,7 +139,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 		}
 		else
 		{
-			Ultra.Utilities.Instance.DebugLogOnScreen(StringColor.Green + "StepHeigtNoHit" + StringColor.EndColor);
+			if (gameCharacter.IsPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen(StringColor.Green + "StepHeigtNoHit" + StringColor.EndColor);
 			capsulCenter = MoveCapsul(moveRequestVector, capsulCenter);
 			Ultra.Utilities.DrawCapsule(capsulCenter, Quaternion.identity, capsuleCollider.height, capsuleCollider.radius, Color.green);
 			RaycastHit stepDownHit;
@@ -138,18 +147,18 @@ public class GameCharacterMovementComponent : MonoBehaviour
 			{
 				if (Ultra.Utilities.CapsulCast(capsulCenter, capsuleCollider.height, capsuleCollider.radius, Vector3.down * stepHight, out stepDownHit, Color.green, 100, DebugAreas.Movement))
 				{
-					Ultra.Utilities.Instance.DebugLogOnScreen(StringColor.Red + "StepDownHit" + StringColor.EndColor);
+					if (gameCharacter.IsPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen(StringColor.Red + "StepDownHit" + StringColor.EndColor);
 					// ConvertHitPoint into center
 					capsulCenter = CapsulCenterFromEnds(moveRequestVector, stepDownHit, Vector3.up);
 					Ultra.Utilities.DrawCapsule(capsulCenter, Quaternion.identity, capsuleCollider.height, capsuleCollider.radius, Color.green.WithAlpha(0.5f), 100, DebugAreas.Movement);
 				}
 				else
 				{
-					Ultra.Utilities.Instance.DebugLogOnScreen(StringColor.Green + "StepDownNoHit" + StringColor.EndColor);
+					if (gameCharacter.IsPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen(StringColor.Green + "StepDownNoHit" + StringColor.EndColor);
 				}
 			}else
 			{
-				Ultra.Utilities.Instance.DebugLogOnScreen(StringColor.Green + "StepDownNoHit" + StringColor.EndColor);
+				if (gameCharacter.IsPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen(StringColor.Green + "StepDownNoHit" + StringColor.EndColor);
 			}
 
 			MoveTransfowm(currentPos, capsulCenter);
@@ -180,7 +189,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 		RaycastHit capsuleMoveHit;
 		if (Ultra.Utilities.CapsulCast(capsulCenter, capsuleCollider.height, capsuleCollider.radius, moveRequestVector, out capsuleMoveHit, Color.blue, 100, DebugAreas.Movement))
 		{
-			Ultra.Utilities.Instance.DebugLogOnScreen(StringColor.Red + "MoveCapsulHit" + StringColor.EndColor);
+			if (gameCharacter.IsPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen(StringColor.Red + "MoveCapsulHit" + StringColor.EndColor);
 
 			Vector3 newCenter = Vector3.zero;
 			float hitDot = Vector3.Dot(Vector3.up, capsuleMoveHit.normal.normalized);
@@ -232,7 +241,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 		}
 		else
 		{
-			Ultra.Utilities.Instance.DebugLogOnScreen(StringColor.Green + "MoveCapsulNoHit" + StringColor.EndColor);
+			if (gameCharacter.IsPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen(StringColor.Green + "MoveCapsulNoHit" + StringColor.EndColor);
 			capsulCenter += moveRequestVector;
 		}
 
@@ -293,8 +302,8 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	{
 		Vector3 movementVector = GetMovmentVelocityWithDeltaTime();
 		RequestMove(movementVector);
-		Ultra.Utilities.Instance.DebugLogOnScreen("MovementVelocity: " + MovementVelocity.ToString() + " MovementSpeed: " + MovementVelocity.magnitude);
-		Ultra.Utilities.Instance.DebugLogOnScreen(StringColor.Lime + "Velocity: " + Veloctiy.ToString() + " VelocityMagnitude: " + Veloctiy.magnitude + StringColor.EndColor);
+		if (gameCharacter.IsPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen("MovementVelocity: " + MovementVelocity.ToString() + " MovementSpeed: " + MovementVelocity.magnitude);
+		if (gameCharacter.IsPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen(StringColor.Lime + "Velocity: " + Veloctiy.ToString() + " VelocityMagnitude: " + Veloctiy.magnitude + StringColor.EndColor);
 		Ultra.Utilities.DrawArrow(transform.position, movementVector.normalized, movementVector.magnitude * 50f, Color.red, 0f, 50, DebugAreas.Movement);
 		Vector3 moveDir = GetMovementVelocityWithoutGravity();
 		Ultra.Utilities.DrawArrow(transform.position, (moveDir.normalized.magnitude <= 0) ? transform.forward : moveDir.normalized, moveDir.magnitude * Time.deltaTime * 50f, Color.blue, 0f, 50, DebugAreas.Movement);

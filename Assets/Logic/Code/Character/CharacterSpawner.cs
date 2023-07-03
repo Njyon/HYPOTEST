@@ -9,8 +9,22 @@ public class CharacterSpawner : MonoBehaviour
 	// only for inspector override
 	[HideInInspector] public ScriptableCharacter spawnableCharacterData;
 	[HideInInspector] public int index = 0;
+	[SerializeField] bool autoSpawn = true;
 
 	void Start()
+	{
+		if (autoSpawn)
+		{
+			Spawn();
+		}
+		else
+		{
+			characterToSpawn = transform.GetChild(0).gameObject;
+			Destroy(characterToSpawn);
+		}
+	}
+
+	public void Spawn()
 	{
 		SpawnCharacterIntoWorld();
 		SpawnController();
@@ -64,16 +78,12 @@ public class CharacterSpawner : MonoBehaviour
 	{
 		if (transform.childCount <= 0) return;
 		GameObject go = transform.GetChild(0).gameObject;
-		CharacterController characterController = go.GetComponent<CharacterController>();
 		CapsuleCollider capsuleCollider = go.GetComponent<CapsuleCollider>();
-		if (!characterController && !capsuleCollider) return;
-		Vector3 p1 = transform.position + (characterController ? characterController.center + Vector3.up : capsuleCollider.center + Vector3.up) * (characterController ? -characterController.height : -capsuleCollider.height) * 0.5F;
-		Vector3 p2 = p1 + Vector3.up * (characterController ? characterController.height : capsuleCollider.height);
-		float capsulLenght = Vector3.Distance(p1, p2);
+		if (!capsuleCollider) return;
 		RaycastHit hit;
-		if (Physics.CapsuleCast(p1, p2, (characterController ? characterController.radius : capsuleCollider.radius), Vector3.down, out hit, 100000))
+		if (Ultra.Utilities.CapsulCast(go.transform.position + capsuleCollider.center, capsuleCollider.height, capsuleCollider.radius, Vector3.down * 100000, out hit, Color.red, 100))
 		{
-			transform.position = hit.point + Vector3.up * ((characterController ? characterController.height : capsuleCollider.height) / 2f);
+			transform.position = hit.point + (Vector3.up * (capsuleCollider.height / 2f) - capsuleCollider.center);
 		}
 	}
 

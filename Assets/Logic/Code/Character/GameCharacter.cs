@@ -21,6 +21,7 @@ public class GameCharacter : MonoBehaviour
 	Vector2 movementInput;
 	int currentJumpAmount = 0;
 	Vector3 lastDir;
+	bool isPlayerCharacter = false;
 
 	public GameCharacterStateMachine StateMachine { get { return stateMachine; } }
 	public Vector2 MovementInput { get { return movementInput; } }
@@ -34,6 +35,7 @@ public class GameCharacter : MonoBehaviour
 	public EventComponent EventComponent { get { return eventComponent; } }
 	public GameCharacterMovementComponent MovementComponent { get { return movementComponent; } }
 	public Rigidbody Rigidbody { get { return rigidbody; } }
+	public bool IsPlayerCharacter { get {  return isPlayerCharacter; } set { isPlayerCharacter = value; } }
 
 
 	public void HorizontalMovementInput(float Haxis)
@@ -97,8 +99,8 @@ public class GameCharacter : MonoBehaviour
 		{
 			Ultra.Utilities.DrawWireSphere(MovementComponent.PossibleGround.hit.point, 0.2f, Color.blue, 0.0f, 100, DebugAreas.Movement);
 		}
-		Ultra.Utilities.Instance.DebugLogOnScreen("CurrentCharacterState: " + StateMachine.GetCurrentStateType().ToString(), 0f, StringColor.Teal, 100, DebugAreas.Movement);
-		Ultra.Utilities.Instance.DebugLogOnScreen("Current Ground Angle: " + MovementComponent.GetPossibleGroundAngle(), 0f, StringColor.Teal, 200, DebugAreas.Misc);
+		if (IsPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen("CurrentCharacterState: " + StateMachine.GetCurrentStateType().ToString(), 0f, StringColor.Teal, 100, DebugAreas.Movement);
+		if (IsPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen("Current Ground Angle: " + MovementComponent.GetPossibleGroundAngle(), 0f, StringColor.Teal, 200, DebugAreas.Misc);
 	}
 
 	private void RotateCharacterInVelocityDirection()

@@ -8,6 +8,9 @@ public class PlayerController : ControllerBase
 	CameraController camController;
 	GameCharacter gameCharacter;
 
+	//DebugStuff
+	bool bForcedFrameRate = false;
+
 	public override void BeginPosses(GameObject pawn, ScriptableCharacter characterData)
 	{
 		base.BeginPosses(pawn, characterData);
@@ -21,6 +24,7 @@ public class PlayerController : ControllerBase
 	{
 		gameCharacter = pawn.AddComponent<GameCharacter>();
 		gameCharacter.CharacterData = characterData;
+		gameCharacter.IsPlayerCharacter = true;
 		GameCharacterMovementComponent movementComponent = pawn.GetComponent<GameCharacterMovementComponent>();
 		if (movementComponent != null) movementComponent.SetupGameCharacter(gameCharacter);
 	}
@@ -60,6 +64,7 @@ public class PlayerController : ControllerBase
 		playerInputs.Default.PreviousWeapon.performed += ctx => EquipPreviousWeapon();
 		playerInputs.Default.ScrollThrouhWeapos.performed += ctx => Scroll(ctx.ReadValue<float>());
 		playerInputs.Default.Attack.performed += ctx => Attack();
+		playerInputs.Default.ForceFrameRate.performed += ctx => ForceFrameRate();
 	}
 
 	void HorizontalInput(float axis)
@@ -170,5 +175,17 @@ public class PlayerController : ControllerBase
 	{
 		if (playerInputs != null) playerInputs.Disable();
 		playerInputs = null;
+	}
+
+	private void ForceFrameRate()
+	{
+		if (bForcedFrameRate) {
+			Application.targetFrameRate = - 999;
+			bForcedFrameRate = false;
+		}else
+		{
+			Application.targetFrameRate = 10;
+			bForcedFrameRate = true;
+		}
 	}
 }

@@ -174,8 +174,8 @@ GameObject:
   - component: {fileID: 908844803112668898}
   - component: {fileID: 6520351742125692056}
   - component: {fileID: 4013374949778559185}
-  - component: {fileID: 1589054092}
   - component: {fileID: 5714995504984779052}
+  - component: {fileID: 1589054092}
   - component: {fileID: 106072147179493096}
   m_Layer: 0
   m_Name: SiuteEnemy
@@ -244,21 +244,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &1589054092
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 564934730417296472}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90239b8c4e1cad9478066c1cb47508b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  stepHight: 0.5
-  maxWalkableSlopAngle: 45
-  minWidthToGround: 0.01
 --- !u!54 &5714995504984779052
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -286,6 +271,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1589054092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 564934730417296472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90239b8c4e1cad9478066c1cb47508b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stepHight: 0.5
+  maxWalkableSlopAngle: 45
+  headBounceValue: -2
 --- !u!114 &106072147179493096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -299,7 +299,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxMovementSpeed: 8
-  movmentGravity: 0
+  movmentGravity: 92
   acceleration: 0.5
   drag: 0.5
   inAirControll: 1
