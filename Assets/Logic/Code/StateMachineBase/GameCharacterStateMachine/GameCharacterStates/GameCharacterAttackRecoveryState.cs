@@ -22,16 +22,14 @@ public class GameCharacterAttackRecoveryState : AGameCharacterState
 		switch (newStateRequest)
 		{
 			case EGameCharacterState.Attack: return EGameCharacterState.Attack;
+			case EGameCharacterState.HookedToCharacter: return EGameCharacterState.HookedToCharacter;
 			default: break;
 		}
 
-		if (!GameCharacter.MovementComponent.IsGrounded || GameCharacter.MovementComponent.IsInJump)
+		if (GameCharacter.CheckIfCharacterIsInAir())
 			return EGameCharacterState.InAir;
 
-		//if (GameCharacter.MovementComponent.GetPossibleGroundAngle() > GameCharacter.MovementComponent.SlopeLimit)
-		//	return EGameCharacterState.Sliding;
-
-		if (GameCharacter.GetHorizontalMovementInputDir().magnitude > 0)
+		if (GameCharacter.CheckIfCharacterIsMoving())
 			return EGameCharacterState.Moving;
 
 		if (GameCharacter.CombatComponent.AttackTimer.IsFinished)

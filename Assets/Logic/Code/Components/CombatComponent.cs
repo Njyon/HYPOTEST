@@ -24,8 +24,10 @@ public class CombatComponent
 	int currentWeaponIndex;
 	int equipedWeaponAmount;
 	Ultra.Timer attackTimer;
+	GameCharacter hookedToCharacter;
 
 	public Ultra.Timer AttackTimer { get { return attackTimer; } }
+	public GameCharacter HookedToCharacter { get { return hookedToCharacter; } set { hookedToCharacter = value; } }
 
 	public WeaponBase CurrentWeapon { 
 		get { return currentWeapon; } 

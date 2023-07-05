@@ -33,6 +33,7 @@ public class GameCharacterAttackState : AGameCharacterState
 		switch (newStateRequest)
 		{
  			case EGameCharacterState.AttackRecovery: return EGameCharacterState.AttackRecovery;
+			case EGameCharacterState.HookedToCharacter: return EGameCharacterState.HookedToCharacter;
 			default: break;
 		}
 

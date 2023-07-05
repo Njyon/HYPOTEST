@@ -23,16 +23,17 @@ public class GameCharacterStandingState : AGameCharacterState
 		switch (newStateRequest)
 		{
 			case EGameCharacterState.Attack: return EGameCharacterState.Attack;
+			case EGameCharacterState.HookedToCharacter: return EGameCharacterState.HookedToCharacter;
 			default: break;
 		}
 
-		if (!GameCharacter.MovementComponent.IsGrounded || GameCharacter.MovementComponent.IsInJump)
+		if (GameCharacter.CheckIfCharacterIsInAir())
 			return EGameCharacterState.InAir;
 
-		if (GameCharacter.MovementComponent.GetPossibleGroundAngle() > GameCharacter.MovementComponent.SlopeLimit)
+		if (GameCharacter.CheckIfCharacterIsOnSteepGround())
 			return EGameCharacterState.InAir;
 
-		if (GameCharacter.MovementComponent.Veloctiy.magnitude > 0 || GameCharacter.GetHorizontalMovementInputDir().magnitude > 0)
+		if (GameCharacter.CheckIfCharacterIsMoving())
 			return EGameCharacterState.Moving;
 
 		return GetStateType();

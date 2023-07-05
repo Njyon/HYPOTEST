@@ -22,14 +22,15 @@ public class GameCharacterInAirState : AGameCharacterState
 		switch (newStateRequest)
 		{
 			case EGameCharacterState.Attack: return EGameCharacterState.Attack;
+			case EGameCharacterState.HookedToCharacter: return EGameCharacterState.HookedToCharacter;
 			default: break;
 		}
 
 		if (GameCharacter.MovementComponent.GetPossibleGroundAngle() < GameCharacter.MovementComponent.SlopeLimit)
 		{
-			if (GameCharacter.MovementComponent.IsGrounded && GameCharacter.MovementComponent.MovementVelocity.magnitude > 0)
+			if (GameCharacter.MovementComponent.IsGrounded && GameCharacter.CheckIfCharacterIsMoving())
 				return EGameCharacterState.Moving;
-			else if (GameCharacter.MovementComponent.IsGrounded && GameCharacter.MovementComponent.MovementVelocity.magnitude <= 0)
+			else if (GameCharacter.MovementComponent.IsGrounded && GameCharacter.CheckIfCharacterIsStanding())
 				return EGameCharacterState.Standing;
 		}
 

@@ -9,7 +9,8 @@ public class GameCharacterHookedToCharacterState : AGameCharacterState
 
     public override void StartState(EGameCharacterState oldState)
 	{
-		
+		if (GameCharacter.CombatComponent.HookedToCharacter == null) GameCharacter.RequestBestCharacterState();
+		GameCharacter.MovementComponent.MovementVelocity = GameCharacter.CombatComponent.HookedToCharacter.MovementComponent.MovementVelocity;
 	}
 
 	public override EGameCharacterState GetStateType()
@@ -24,7 +25,8 @@ public class GameCharacterHookedToCharacterState : AGameCharacterState
 
 	public override void ExecuteState(float deltaTime)
 	{
-	
+		if (GameCharacter.CombatComponent.HookedToCharacter == null) GameCharacter.RequestBestCharacterState();
+		GameCharacter.MovementComponent.MovementVelocity = GameCharacter.CombatComponent.HookedToCharacter.MovementComponent.MovementVelocity;
 	}
 	
 	public override void FixedExecuteState(float deltaTime)

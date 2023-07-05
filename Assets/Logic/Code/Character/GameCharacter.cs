@@ -6,7 +6,7 @@ using System.Transactions;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class GameCharacter : MonoBehaviour
+public class GameCharacter : MonoBehaviour , IDamage
 {
 	GameCharacterStateMachine stateMachine;
 	GameCharacterPluginStateMachine pluginStateMachine;
@@ -147,5 +147,57 @@ public class GameCharacter : MonoBehaviour
 	public void AttackRecoveryEvent()
 	{
 		StateMachine?.RequestStateChange(EGameCharacterState.AttackRecovery);
+	}
+
+	public void DoDamage(GameCharacter damageInitiator, float damage)
+	{
+		Ultra.Utilities.Instance.DebugLogOnScreen(name + " got Damaged by: " + damageInitiator.name + ", Damage = " + damage, 2f);
+	}
+
+	public bool CheckIfCharacterIsInAir()
+	{
+		return !MovementComponent.IsGrounded || MovementComponent.IsInJump;
+	}
+
+	public bool CheckIfCharacterIsOnSteepGround()
+	{
+		return MovementComponent.GetPossibleGroundAngle() > MovementComponent.SlopeLimit;
+	}
+
+	public bool CheckIfCharacterIsMoving()
+	{
+		return MovementComponent.Veloctiy.magnitude > 0 || GetHorizontalMovementInputDir().magnitude > 0;
+	}
+
+	public bool CheckIfCharacterIsStanding()
+	{
+		return MovementComponent.Veloctiy.magnitude <= 0 && GetHorizontalMovementInputDir().magnitude <= 0;
+	}
+
+	public void RequestBestCharacterState()
+	{
+		if (CheckIfCharacterIsInAir())
+		{
+			StateMachine.RequestStateChange(EGameCharacterState.InAir);
+			return;
+		}
+
+		if (CheckIfCharacterIsOnSteepGround())
+		{
+			StateMachine.RequestStateChange(EGameCharacterState.InAir);
+			return;
+		}
+
+		if (CheckIfCharacterIsMoving())
+		{
+			StateMachine.RequestStateChange(EGameCharacterState.Moving);
+			return;
+		}
+
+		if (CheckIfCharacterIsStanding())
+		{
+			StateMachine.RequestStateChange(EGameCharacterState.Standing);
+			return;
+		}
 	}
 }

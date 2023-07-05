@@ -210,9 +210,59 @@ public abstract class WeaponBase
 		else AirAttack();
 	}
 
+	public virtual void GroundAttackHit(GameObject hitObj)
+	{
+
+	}
+
+	public virtual void GroundUpAttackHit(GameObject hitObj)
+	{
+
+	}
+
+	public virtual void GroundDownAttackHit(GameObject hitObj)
+	{
+
+	}
+
+	public virtual void GroundDirectionAttackHit(GameObject hitObj)
+	{
+
+	}
+
+	public virtual void AirAttackHit(GameObject hitObj)
+	{
+
+	}
+
+	public virtual void AirUpAttackHit(GameObject hitObj)
+	{
+
+	}
+
+	public virtual void AirDownAttackHit(GameObject hitObj)
+	{
+
+	}
+
+	public virtual void AirDirectionAttackHit(GameObject hitObj)
+	{
+
+	}
+
+	public virtual void AttackEnd()
+	{
+
+	}
+
 	void SetUpWeaponAnimationData()
 	{
 		gameCharacter.AnimController.SetBodyLayerAnimClip(weaponData.AnimationData.WeaponReadyPose);
+	}
+
+	protected IDamage GetDamageInterface(GameObject obj)
+	{
+		return obj.GetComponent<IDamage>();
 	}
 
 	private void BaseAttackLogic(EExplicitAttackType explicitAttackType, ref List<AttackAnimationData> attackList)
@@ -278,6 +328,7 @@ public abstract class WeaponBase
 			case EHitDetectionType.Mesh: hitDetectionMeshRenderer.enabled = false; break;
 				default: break;
 		}
+		AttackEnd();
 	}
 
 	protected virtual void WeaponColliderEnter(Collider other)
@@ -291,14 +342,14 @@ public abstract class WeaponBase
 		if (gameCharacter.IsPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen(StringColor.Red + "Hit Object: " + other.gameObject.name + StringColor.EndColor, (currentAttack.data.hitDetectionType == EHitDetectionType.Mesh) ? 1f : 0f);
 		switch (currentAttackType)
 		{
-			case EExplicitAttackType.GroundedDefaultAttack: break;
-			case EExplicitAttackType.GroundedDirectionalAttack: break;
-			case EExplicitAttackType.GroundedDownAttack: break;
-			case EExplicitAttackType.GroundedUpAttack: break;
-			case EExplicitAttackType.AirDefaultAttack: break;
-			case EExplicitAttackType.AirDirectionalAttack: break;
-			case EExplicitAttackType.AirDownAttack: break;
-			case EExplicitAttackType.AirUpAttack: break;
+			case EExplicitAttackType.GroundedDefaultAttack: GroundAttackHit(other.gameObject); break;
+			case EExplicitAttackType.GroundedDirectionalAttack: GroundDirectionAttackHit(other.gameObject); break;
+			case EExplicitAttackType.GroundedDownAttack: GroundDownAttackHit(other.gameObject); break;
+			case EExplicitAttackType.GroundedUpAttack: GroundUpAttackHit(other.gameObject); break;
+			case EExplicitAttackType.AirDefaultAttack: AirAttackHit(other.gameObject); break;
+			case EExplicitAttackType.AirDirectionalAttack: AirDirectionAttackHit(other.gameObject); break;
+			case EExplicitAttackType.AirDownAttack: AirDownAttackHit(other.gameObject); break;
+			case EExplicitAttackType.AirUpAttack: AirUpAttackHit(other.gameObject); break;
 			default: break;
 		}
 	}
