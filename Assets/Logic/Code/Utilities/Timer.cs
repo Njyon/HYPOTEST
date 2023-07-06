@@ -5,6 +5,15 @@ namespace Ultra
 {
 	public class Timer
 	{
+
+		public Timer()
+		{
+			this.time = 0;
+			isPaused = true;
+			currentTime = 0;
+			isFinished = false;
+		}
+
 		public Timer(float time, bool startPaused)
 		{
 			this.time = time;
@@ -39,6 +48,7 @@ namespace Ultra
 			}
 		}
 		public bool IsFinished { get { return isFinished; } }
+		public bool IsRunning { get { return !isPaused && !isFinished; } }
 
 		public void Start(float time)
 		{
@@ -55,16 +65,21 @@ namespace Ultra
 			currentTime = 0;
 		}
 
+		public void AddTime(float value)
+		{
+			this.time += value;
+		}
+
 		public void Update(float deltaTime)
 		{
 			if (isPaused || isFinished) return;
 
-			if (currentTime > time)
+			if (time > currentTime)
 			{
 				currentTime += deltaTime;
 				if (onTimerUpdated != null) onTimerUpdated(deltaTime);
 			}
-			else if (currentTime <= time)
+			else if (time <= currentTime)
 			{
 				isFinished = true;
 				if (onTimerFinished != null) onTimerFinished();

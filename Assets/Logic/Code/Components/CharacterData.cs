@@ -43,6 +43,9 @@ public class GameCharacterData : MonoBehaviour
 	[SerializeField] Transform handLObjectPoint;
 	[SerializeField] float airToZeroVelYInAttackSpeed = 5f;
 	[SerializeField] float airToZeroVelXInAttackSpeed = 5f;
+
+	[Header("Health")]
+	[SerializeField] float health = 100f;
  
 	public float MaxMovementSpeed { get { return maxMovementSpeed; } }
 	public float MovmentGravity { get { return movmentGravity; } }
@@ -75,4 +78,6 @@ public class GameCharacterData : MonoBehaviour
 	public Transform HandLOnjectPoint { get { return handLObjectPoint; } }
 	public float AirToZeroVelYInAttackSpeed { get { return airToZeroVelYInAttackSpeed; } }
 	public float AirToZeroVelXInAttackSpeed { get { return airToZeroVelXInAttackSpeed; } }
+
+	public float Health { get { return health; } }
 }

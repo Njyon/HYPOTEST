@@ -22,6 +22,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 	int currentJumpAmount = 0;
 	Vector3 lastDir;
 	bool isPlayerCharacter = false;
+	RecourceBase health;
 
 	public GameCharacterStateMachine StateMachine { get { return stateMachine; } }
 	public Vector2 MovementInput { get { return movementInput; } }
@@ -36,7 +37,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 	public GameCharacterMovementComponent MovementComponent { get { return movementComponent; } }
 	public Rigidbody Rigidbody { get { return rigidbody; } }
 	public bool IsPlayerCharacter { get {  return isPlayerCharacter; } set { isPlayerCharacter = value; } }
-
+	public RecourceBase Health { get { return health; } }
 
 	public void HorizontalMovementInput(float Haxis)
 	{
@@ -80,6 +81,17 @@ public class GameCharacter : MonoBehaviour , IDamage
 
 		animController.Start();
 		combatComponent.StartComponent();
+
+		health = new RecourceBase(gameCharacterData.Health, gameCharacterData.Health);
+		health.onCurrentValueChange += OnHealthValueChanged;
+	}
+
+	void OnDestroy()
+	{
+		if (health != null)
+		{
+			health.onCurrentValueChange -= OnHealthValueChanged;
+		}
 	}
 
 	private void Update()
@@ -94,6 +106,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 		RotateCharacterInVelocityDirection();
 
 		animController.Update(Time.deltaTime);
+		if (Health != null) Health.Update(Time.deltaTime);
 
 		if (MovementComponent.PossibleGround != null)
 		{
@@ -151,7 +164,8 @@ public class GameCharacter : MonoBehaviour , IDamage
 
 	public void DoDamage(GameCharacter damageInitiator, float damage)
 	{
-		Ultra.Utilities.Instance.DebugLogOnScreen(name + " got Damaged by: " + damageInitiator.name + ", Damage = " + damage, 2f);
+		Ultra.Utilities.Instance.DebugLogOnScreen(name + " got Damaged by: " + damageInitiator.name + ", Damage = " + damage, 2f, StringColor.Red, 200, DebugAreas.Combat);
+		Health.AddCurrentValue(-damage);
 	}
 
 	public bool CheckIfCharacterIsInAir()
@@ -198,6 +212,15 @@ public class GameCharacter : MonoBehaviour , IDamage
 		{
 			StateMachine.RequestStateChange(EGameCharacterState.Standing);
 			return;
+		}
+	}
+
+	void OnHealthValueChanged(float newHealthAmount, float oldHealthAmount)
+	{
+		if (newHealthAmount <= 0)
+		{
+			// Character Dead
+			Ultra.Utilities.Instance.DebugLogOnScreen(name + " Is Dead", 2f, StringColor.White, 200, DebugAreas.Combat);
 		}
 	}
 }
