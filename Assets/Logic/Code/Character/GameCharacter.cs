@@ -24,6 +24,9 @@ public class GameCharacter : MonoBehaviour , IDamage
 	bool isPlayerCharacter = false;
 	RecourceBase health;
 
+	bool isInitialized = false;
+	public bool IsInitialized { get { return isInitialized; } }
+
 	public GameCharacterStateMachine StateMachine { get { return stateMachine; } }
 	public Vector2 MovementInput { get { return movementInput; } }
 	public GameCharacterData GameCharacterData { get { return gameCharacterData; } }
@@ -59,12 +62,17 @@ public class GameCharacter : MonoBehaviour , IDamage
 		//transform.position = pos;
 	}
 
-	private void Awake()
+	void Awake()
 	{
 		animator = gameObject.GetComponent<Animator>();
 		if (animator == null) Debug.LogError("GameObject: " + name + " Does not have an Animator Attached!");
 		rigidbody = gameObject.GetComponent<Rigidbody>();
 		if (rigidbody == null) Debug.LogError("GameObject: " + name + " Does not have an Rigibody Attached!");
+	}
+
+	public void CustomAwake()
+	{
+	
 		movementComponent = gameObject.GetComponent<GameCharacterMovementComponent>();
 		if (movementComponent == null) Debug.LogError("GameObject: " + name + " Does not have an GameCharacterMovementComponent Attached!");
 		eventComponent = new EventComponent();
@@ -84,6 +92,8 @@ public class GameCharacter : MonoBehaviour , IDamage
 
 		health = new RecourceBase(gameCharacterData.Health, gameCharacterData.Health);
 		health.onCurrentValueChange += OnHealthValueChanged;
+
+		isInitialized = true;
 	}
 
 	void OnDestroy()
@@ -96,6 +106,8 @@ public class GameCharacter : MonoBehaviour , IDamage
 
 	private void Update()
 	{
+		if (!isInitialized) return;
+
 		//movementInput.x = 1;
 		EventComponent.Update(Time.deltaTime);
 		MovementComponent.CalculateVelocity();
@@ -138,8 +150,9 @@ public class GameCharacter : MonoBehaviour , IDamage
 
 	private void LateUpdate()
 	{
+		if (!isInitialized) return;
 		KillZOffset();
-		animController.LateUpdate();
+		if (animController != null) animController.LateUpdate();
 	}
 
 	private void OnControllerColliderHit(ControllerColliderHit hit)

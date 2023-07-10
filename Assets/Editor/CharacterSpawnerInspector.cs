@@ -15,17 +15,7 @@ public class CharacterSpawnerInspector : Editor
 	{
 		CharacterSpawner spawner = (CharacterSpawner)target;
 
-		string[] guids = AssetDatabase.FindAssets("t:" + typeof(ScriptableCharacter).Name);
-		foreach (string guid in guids)
-		{
-			string path = AssetDatabase.GUIDToAssetPath(guid);
-			ScriptableCharacter data = AssetDatabase.LoadAssetAtPath<ScriptableCharacter>(path);
-
-			if (data != null)
-			{
-				dataList.Add(data);
-			}
-		}
+		dataList = Ultra.HypoUttilies.GetAllCharacters();
 
 		for (int i = 0; i < dataList.Count; i++)
 		{

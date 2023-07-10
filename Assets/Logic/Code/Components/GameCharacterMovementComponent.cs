@@ -82,7 +82,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 
 	private void OnAnimatorMove()
 	{
-		rootmotionVector = gameCharacter.Animator.deltaPosition * (1 / Time.deltaTime);
+		if (gameCharacter.Animator != null) rootmotionVector = gameCharacter.Animator.deltaPosition * (1 / Time.deltaTime);
 	}
 
 	public void SetupGameCharacter(GameCharacter character)

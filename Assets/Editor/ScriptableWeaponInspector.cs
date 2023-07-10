@@ -1,7 +1,9 @@
+using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 [CustomEditor(typeof(ScriptableWeapon))]
@@ -14,7 +16,6 @@ public class ScriptableWeaponInspector : Editor
 	{
 		base.OnInspectorGUI();
 		ScriptableWeapon weaponData = (ScriptableWeapon)target;
-
 		WeaponBase[] controllers = Ultra.Utilities.GetAll<WeaponBase>().ToArray();
 		if (weaponData.WeaponClassName != null)
 		{

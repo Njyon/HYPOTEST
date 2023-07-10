@@ -1,14 +1,36 @@
 using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEngine.UIElements;
+using UnityEngine.TextCore.Text;
 
-[CustomPropertyDrawer(typeof(SerializableDictionary<,>))]
-public class IntStringDictionaryDrawer : PropertyDrawer
+[CustomPropertyDrawer(typeof(SerializableCharacterDictionary<,>))]
+public class CharacterDictionaryDrawer : PropertyDrawer
 {
     private const float buttonWidth = 18f;
+    string[] characterNameArray;
+	private bool isInitialized = false;
 
-    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+	void HeavyShit()
+	{
+		List<ScriptableCharacter> characters = Ultra.HypoUttilies.GetAllCharacters();
+		characterNameArray = new string[characters.Count + 1];
+        characterNameArray[0] = "Unknown";
+		for (int i = 0; i  < characters.Count; i++)
+		{
+			characterNameArray[i + 1] = characters[i].Name;
+		}
+	}
+
+	public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
+        if (!isInitialized)
+        {
+            isInitialized = true;
+            HeavyShit();
+        }
+
         EditorGUI.BeginProperty(position, label, property);
 
         position = EditorGUI.PrefixLabel(position, GUIUtility.GetControlID(FocusType.Passive), label);
@@ -20,14 +42,35 @@ public class IntStringDictionaryDrawer : PropertyDrawer
         float widthSize = position.width / 3;
         float offsetSize = 2;
 
-        for (int i = 0; i < keysProperty.arraySize; i++)
+		List<string> stringList = new List<string>(keysProperty.arraySize);
+		for (int i = 0; i < keysProperty.arraySize; i++)
+		{
+			SerializedProperty elementProperty = keysProperty.GetArrayElementAtIndex(i);
+			string stringValue = elementProperty.stringValue;
+			stringList.Add(stringValue);
+		}
+
+        int[] indexe = new int[keysProperty.arraySize];
+
+		for (int i = 0; i < keysProperty.arraySize; i++)
         {
-            Rect pos1 = new Rect(position.x, position.y, widthSize - offsetSize, position.height * (i + 1));
+		    for (int j = 0; j < characterNameArray.Length; j++)
+            {
+                if (stringList[i] == characterNameArray[j]) indexe[i] = j;
+            }
+
+			Rect pos1 = new Rect(position.x, position.y, widthSize - offsetSize, position.height * (i + 1));
             Rect pos2 = new Rect(position.x + widthSize * 1, position.y, widthSize - offsetSize, position.height * (i + 1));
             Rect pos3 = new Rect(position.x + widthSize * 2, position.y, widthSize, position.height * (i + 1));
 
             Rect keyPosition = new Rect(position.x, position.y + (i * EditorGUIUtility.singleLineHeight), position.width - 100f, EditorGUIUtility.singleLineHeight);
-            EditorGUI.PropertyField(keyPosition, keysProperty.GetArrayElementAtIndex(i), GUIContent.none);
+            int index = EditorGUI.Popup(keyPosition, indexe[i], characterNameArray);
+            if (index != indexe[i])
+            {
+				SerializedProperty name = keysProperty.GetArrayElementAtIndex(i);
+                name.stringValue = characterNameArray[index];
+				indexe[i] = index;
+            }
 
             Rect valuePosition = new Rect(position.x + keyPosition.width + EditorGUIUtility.standardVerticalSpacing, keyPosition.y, position.width - keyPosition.width - buttonWidth, EditorGUIUtility.singleLineHeight);
             EditorGUI.PropertyField(valuePosition, valuesProperty.GetArrayElementAtIndex(i), GUIContent.none);

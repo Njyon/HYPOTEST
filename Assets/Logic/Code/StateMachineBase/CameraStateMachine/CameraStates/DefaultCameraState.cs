@@ -37,6 +37,8 @@ public class DefaultCameraState : ACameraState
 
 	public override void LateExecuteState(float deltaTime)
 	{
+		if (!GameCharacter.IsInitialized) return;
+
 		if (CameraController.Targets.Count <= 0) return;
 		Transform target = CameraController.Targets[0];
 		if (!target) return;

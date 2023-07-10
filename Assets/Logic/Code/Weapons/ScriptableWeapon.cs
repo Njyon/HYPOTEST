@@ -6,7 +6,7 @@ using UnityEngine;
 public class ScriptableWeapon : ScriptableObject
 {
 	public string WeaponName = "new Weapon";
-	public ScriptableWeaponAnimationData AnimationData;
+	public SerializableCharacterDictionary<string, ScriptableWeaponAnimationData> AnimationData;
 	[HideInInspector] public string WeaponClassName;
 	[HideInInspector] public WeaponBase Weapon;
 	public ScriptableWeaponMeshData WeaponMeshData;

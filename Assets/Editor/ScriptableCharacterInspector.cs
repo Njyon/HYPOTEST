@@ -15,6 +15,7 @@ public class ScriptableCharacterInspector : Editor
 		base.OnInspectorGUI();
 		ScriptableCharacter characterData = (ScriptableCharacter)target;
 
+
 		ControllerBase[] controllers = Ultra.Utilities.GetAll<ControllerBase>().ToArray();
 		if (characterData.ControllerName != null)
 		{

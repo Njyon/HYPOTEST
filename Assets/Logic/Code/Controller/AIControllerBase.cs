@@ -17,6 +17,7 @@ public class AIControllerBase : ControllerBase
 	{
 		gameCharacter = pawn.AddComponent<GameCharacter>();
 		gameCharacter.CharacterData = characterData;
+		gameCharacter.CustomAwake();
 		GameCharacterMovementComponent movementComponent = pawn.GetComponent<GameCharacterMovementComponent>();
 		if (movementComponent != null) movementComponent.SetupGameCharacter(gameCharacter);
 	}

@@ -25,6 +25,7 @@ public class PlayerController : ControllerBase
 		gameCharacter = pawn.AddComponent<GameCharacter>();
 		gameCharacter.CharacterData = characterData;
 		gameCharacter.IsPlayerCharacter = true;
+		gameCharacter.CustomAwake();
 		GameCharacterMovementComponent movementComponent = pawn.GetComponent<GameCharacterMovementComponent>();
 		if (movementComponent != null) movementComponent.SetupGameCharacter(gameCharacter);
 	}
