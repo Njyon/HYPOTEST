@@ -9,7 +9,12 @@ public class GameCharacterHookedToCharacterState : AGameCharacterState
 
     public override void StartState(EGameCharacterState oldState)
 	{
-		if (GameCharacter.CombatComponent.HookedToCharacter == null) GameCharacter.RequestBestCharacterState();
+		if (ShouldLeaveState())
+		{
+			GameCharacter.RequestBestCharacterState();
+			return;
+		}
+
 		GameCharacter.MovementComponent.MovementVelocity = GameCharacter.CombatComponent.HookedToCharacter.MovementComponent.MovementVelocity;
 	}
 
@@ -25,7 +30,12 @@ public class GameCharacterHookedToCharacterState : AGameCharacterState
 
 	public override void ExecuteState(float deltaTime)
 	{
-		if (GameCharacter.CombatComponent.HookedToCharacter == null) GameCharacter.RequestBestCharacterState();
+		if (ShouldLeaveState())
+		{
+			GameCharacter.RequestBestCharacterState();
+			return;
+		}
+
 		GameCharacter.MovementComponent.MovementVelocity = GameCharacter.CombatComponent.HookedToCharacter.MovementComponent.MovementVelocity;
 	}
 	
@@ -42,5 +52,11 @@ public class GameCharacterHookedToCharacterState : AGameCharacterState
 	public override void EndState(EGameCharacterState newState)
 	{
 	
+	}
+
+	bool ShouldLeaveState()
+	{
+		if (GameCharacter == null || GameCharacter.CombatComponent == null || GameCharacter.CombatComponent.HookedToCharacter  == null|| GameCharacter.CombatComponent.HookedToCharacter.MovementComponent == null) return true;
+		return false;
 	}
 }

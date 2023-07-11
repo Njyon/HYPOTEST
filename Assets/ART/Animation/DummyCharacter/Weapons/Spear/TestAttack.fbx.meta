@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 30e43eb0a3983a447888d8ff5bebb77d
+guid: 1967e7f6c8e1a8144a2108203dcfdccb
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -33,9 +33,9 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: DummyFistAttackUp01
-      takeName: DummyFistAttackUp01
-      internalID: 710647662889926410
+      name: TestAttack
+      takeName: TestAttack
+      internalID: -3370798643531354144
       firstFrame: 0
       lastFrame: 30
       wrapMode: 0
@@ -51,70 +51,13 @@ ModelImporter:
       loopBlendPositionXZ: 0
       keepOriginalOrientation: 0
       keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 1
+      keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves:
-      - name: UpMovement
-        curve:
-          serializedVersion: 2
-          curve:
-          - serializedVersion: 3
-            time: -0.001052767
-            value: 0
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 0.34748873
-            value: 0
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0.33333334
-            outWeight: 0.33333334
-          - serializedVersion: 3
-            time: 0.77687657
-            value: 0.9972178
-            inSlope: 0
-            outSlope: 0
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0.33333334
-            outWeight: 0.33333334
-          - serializedVersion: 3
-            time: 1.0001881
-            value: 1.001817
-            inSlope: -0.035877086
-            outSlope: -0.035877086
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0.1564313
-            outWeight: 0.33333334
-          preInfinity: 3
-          postInfinity: 3
-          rotationOrder: 4
+      curves: []
       events:
-      - time: 0.34008098
-        functionName: HitDetectionEventStart
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.51417005
-        functionName: HitDetectionEventEnd
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.79352224
+      - time: 1
         functionName: AttackRecoveryEvent
         data: 
         objectReferenceParameter: {instanceID: 0}
@@ -149,7 +92,7 @@ ModelImporter:
     skinWeightsMode: 0
     maxBonesPerVertex: 4
     minBoneWeight: 0.001
-    optimizeBones: 1
+    optimizeBones: 0
     meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
@@ -187,12 +130,11 @@ ModelImporter:
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
-  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 0bdc7e647731b2d43b569a3788183e51,
-    type: 3}
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
-  avatarSetup: 2
+  avatarSetup: 0
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   importBlendShapeDeformPercent: 1
   remapMaterialsIfMaterialImportModeIsNone: 0

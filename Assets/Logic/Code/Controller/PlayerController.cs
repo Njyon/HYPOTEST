@@ -66,6 +66,7 @@ public class PlayerController : ControllerBase
 		playerInputs.Default.ScrollThrouhWeapos.performed += ctx => Scroll(ctx.ReadValue<float>());
 		playerInputs.Default.Attack.performed += ctx => Attack();
 		playerInputs.Default.ForceFrameRate.performed += ctx => ForceFrameRate();
+		playerInputs.Default.DebugPauseGame.performed += ctx => DebugPauseGame();
 	}
 
 	void HorizontalInput(float axis)
@@ -188,5 +189,10 @@ public class PlayerController : ControllerBase
 			Application.targetFrameRate = 10;
 			bForcedFrameRate = true;
 		}
+	}
+
+	void DebugPauseGame()
+	{
+		Debug.Break();
 	}
 }

@@ -130,6 +130,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 
 	private void RotateCharacterInVelocityDirection()
 	{
+		if (StateMachine.GetCurrentStateType() == EGameCharacterState.Attack || StateMachine.GetCurrentStateType() == EGameCharacterState.AttackRecovery) return;
 		if (MovementComponent.MovementVelocity.normalized.x != 0) lastDir = new Vector3(MovementComponent.MovementVelocity.x, 0, 0);
 		if (lastDir == Vector3.zero) return;
 		Quaternion targetRot = Quaternion.LookRotation(lastDir.normalized, Vector3.up);

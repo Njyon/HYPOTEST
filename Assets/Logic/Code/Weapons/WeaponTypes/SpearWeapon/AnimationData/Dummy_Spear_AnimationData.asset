@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8104bde8e4c1a2e42b58f845296f6b18, type: 3}
+  m_Name: Dummy_Spear_AnimationData
+  m_EditorClassIdentifier: 
+  GroundAttacks:
+  - clip: {fileID: 5446760504791220212, guid: 7bd7469fb56902d4d9ab774d078eebec, type: 3}
+    data:
+      showProperties: 0
+      hitDetectionType: 0
+      mesh: {fileID: 0}
+      offset: {x: 0, y: 0, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 0
+      boxDimensions: {x: 0, y: 0, z: 0}
+      capsulHeight: 0
+    maxVerticalMovement: 0
+  GroundUpAttacks: []
+  GroundDownAttacks: []
+  GroundDirectionAttacks: []
+  AirAttacks: []
+  AirUpAttacks: []
+  AirDownAttacks: []
+  AirDirectionAttacks: []
+  HandType: 1
+  WeaponReadyPose: {fileID: 0}
+  WeaponReadyWeight: 1
+  WeaponReadyInterpSpeed: 5
+  HeadSpineLayerMovingWeight: 0.5
+  ArmRMovingWeight: 0.5
+  ArmLMovingWeight: 0.5

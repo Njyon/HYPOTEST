@@ -170,6 +170,15 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DebugPauseGame"",
+                    ""type"": ""Button"",
+                    ""id"": ""01b5c09f-314c-44cc-9f82-0d96fe169df0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -579,6 +588,17 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""action"": ""ForceFrameRate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""137237de-4f33-4574-b5bf-700b588231bf"",
+                    ""path"": ""<Keyboard>/numpad4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""DebugPauseGame"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -631,6 +651,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         m_Default_ScrollThrouhWeapos = m_Default.FindAction("ScrollThrouhWeapos", throwIfNotFound: true);
         m_Default_Attack = m_Default.FindAction("Attack", throwIfNotFound: true);
         m_Default_ForceFrameRate = m_Default.FindAction("ForceFrameRate", throwIfNotFound: true);
+        m_Default_DebugPauseGame = m_Default.FindAction("DebugPauseGame", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -706,6 +727,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     private readonly InputAction m_Default_ScrollThrouhWeapos;
     private readonly InputAction m_Default_Attack;
     private readonly InputAction m_Default_ForceFrameRate;
+    private readonly InputAction m_Default_DebugPauseGame;
     public struct DefaultActions
     {
         private @PlayerInputs m_Wrapper;
@@ -726,6 +748,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         public InputAction @ScrollThrouhWeapos => m_Wrapper.m_Default_ScrollThrouhWeapos;
         public InputAction @Attack => m_Wrapper.m_Default_Attack;
         public InputAction @ForceFrameRate => m_Wrapper.m_Default_ForceFrameRate;
+        public InputAction @DebugPauseGame => m_Wrapper.m_Default_DebugPauseGame;
         public InputActionMap Get() { return m_Wrapper.m_Default; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -783,6 +806,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @ForceFrameRate.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnForceFrameRate;
                 @ForceFrameRate.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnForceFrameRate;
                 @ForceFrameRate.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnForceFrameRate;
+                @DebugPauseGame.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnDebugPauseGame;
+                @DebugPauseGame.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnDebugPauseGame;
+                @DebugPauseGame.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnDebugPauseGame;
             }
             m_Wrapper.m_DefaultActionsCallbackInterface = instance;
             if (instance != null)
@@ -835,6 +861,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @ForceFrameRate.started += instance.OnForceFrameRate;
                 @ForceFrameRate.performed += instance.OnForceFrameRate;
                 @ForceFrameRate.canceled += instance.OnForceFrameRate;
+                @DebugPauseGame.started += instance.OnDebugPauseGame;
+                @DebugPauseGame.performed += instance.OnDebugPauseGame;
+                @DebugPauseGame.canceled += instance.OnDebugPauseGame;
             }
         }
     }
@@ -875,5 +904,6 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         void OnScrollThrouhWeapos(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
         void OnForceFrameRate(InputAction.CallbackContext context);
+        void OnDebugPauseGame(InputAction.CallbackContext context);
     }
 }

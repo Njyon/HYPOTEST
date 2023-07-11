@@ -148,6 +148,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "DebugPauseGame",
+                    "type": "Button",
+                    "id": "01b5c09f-314c-44cc-9f82-0d96fe169df0",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -555,6 +564,17 @@
                     "processors": "",
                     "groups": "Keyboard and Mouse",
                     "action": "ForceFrameRate",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "137237de-4f33-4574-b5bf-700b588231bf",
+                    "path": "<Keyboard>/numpad4",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard and Mouse",
+                    "action": "DebugPauseGame",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
