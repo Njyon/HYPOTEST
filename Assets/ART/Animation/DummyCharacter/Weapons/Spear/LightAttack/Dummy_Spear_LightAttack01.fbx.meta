@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 87ea848280149ed45a8c9f1820916bca
+guid: afd96ec23de19da449a787bfacdb1774
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -33,11 +33,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: DummyFistAttack01
-      takeName: DummyFistAttack01
-      internalID: 142498828493875608
+      name: Dummy_Spear_LightAttack01
+      takeName: Dummy_Spear_LightAttack01
+      internalID: 5606674929409065460
       firstFrame: 0
-      lastFrame: 21
+      lastFrame: 28
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -57,21 +57,7 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.4331984
-        functionName: HitDetectionEventStart
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.631579
-        functionName: HitDetectionEventEnd
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.7935223
+      - time: 0.43589744
         functionName: AttackRecoveryEvent
         data: 
         objectReferenceParameter: {instanceID: 0}
@@ -140,7 +126,7 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     globalScale: 1
-    rootMotionBoneName: 
+    rootMotionBoneName: root
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1

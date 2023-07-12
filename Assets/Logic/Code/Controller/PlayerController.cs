@@ -67,6 +67,7 @@ public class PlayerController : ControllerBase
 		playerInputs.Default.Attack.performed += ctx => Attack();
 		playerInputs.Default.ForceFrameRate.performed += ctx => ForceFrameRate();
 		playerInputs.Default.DebugPauseGame.performed += ctx => DebugPauseGame();
+		playerInputs.Default.DebugSlomo.performed += ctx => DebugSlomo();
 	}
 
 	void HorizontalInput(float axis)
@@ -194,5 +195,17 @@ public class PlayerController : ControllerBase
 	void DebugPauseGame()
 	{
 		Debug.Break();
+	}
+
+	void DebugSlomo()
+	{
+		if (Time.timeScale >= 1)
+		{
+			Time.timeScale = 0.2f;
+		}
+		else
+		{
+			Time.timeScale = 1f;
+		}
 	}
 }

@@ -23,6 +23,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 	Vector3 lastDir;
 	bool isPlayerCharacter = false;
 	RecourceBase health;
+	Quaternion rotationTarget;
 
 	bool isInitialized = false;
 	public bool IsInitialized { get { return isInitialized; } }
@@ -41,6 +42,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 	public Rigidbody Rigidbody { get { return rigidbody; } }
 	public bool IsPlayerCharacter { get {  return isPlayerCharacter; } set { isPlayerCharacter = value; } }
 	public RecourceBase Health { get { return health; } }
+	public Quaternion RotationTarget { get { return rotationTarget; } }
 
 	public void HorizontalMovementInput(float Haxis)
 	{
@@ -131,10 +133,11 @@ public class GameCharacter : MonoBehaviour , IDamage
 	private void RotateCharacterInVelocityDirection()
 	{
 		if (StateMachine.GetCurrentStateType() == EGameCharacterState.Attack || StateMachine.GetCurrentStateType() == EGameCharacterState.AttackRecovery) return;
+
 		if (MovementComponent.MovementVelocity.normalized.x != 0) lastDir = new Vector3(MovementComponent.MovementVelocity.x, 0, 0);
 		if (lastDir == Vector3.zero) return;
-		Quaternion targetRot = Quaternion.LookRotation(lastDir.normalized, Vector3.up);
-		targetRot = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime * gameCharacterData.RoationSpeed);
+		rotationTarget = Quaternion.LookRotation(lastDir.normalized, Vector3.up);
+		Quaternion targetRot = Quaternion.Slerp(transform.rotation, rotationTarget, Time.deltaTime * gameCharacterData.RoationSpeed);
 		Vector3 dir = transform.rotation * Vector3.forward;
 		Vector3 cross = Vector3.Cross(lastDir.normalized, dir);
 		float sign = Mathf.Sign(cross.y);
@@ -142,10 +145,10 @@ public class GameCharacter : MonoBehaviour , IDamage
 		{
 			sign = 0f;
 		}
-		animController.RotationTrarget = sign;
-		//// Need to rotate Character
-		//targetRot.eulerAngles = new Vector3(targetRot.eulerAngles.x, targetRot.eulerAngles.y + 90, targetRot.eulerAngles.z);
+		// invert sign because of lerping rotation
+		animController.RotationTrarget = sign *-1;
 		transform.rotation = targetRot;
+		//Ultra.Utilities.DrawArrow(transform.position, targetRot * Vector3.forward, 10, Color.green);
 	}
 	
 

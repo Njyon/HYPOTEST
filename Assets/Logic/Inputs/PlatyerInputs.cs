@@ -179,6 +179,15 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DebugSlomo"",
+                    ""type"": ""Button"",
+                    ""id"": ""316fa243-aadf-49fb-af96-bf8ce35d5e3e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -599,6 +608,17 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""action"": ""DebugPauseGame"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""64ca9f9f-8980-4ba9-a6ae-7fc2d12d8f22"",
+                    ""path"": ""<Keyboard>/numpad1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DebugSlomo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -652,6 +672,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         m_Default_Attack = m_Default.FindAction("Attack", throwIfNotFound: true);
         m_Default_ForceFrameRate = m_Default.FindAction("ForceFrameRate", throwIfNotFound: true);
         m_Default_DebugPauseGame = m_Default.FindAction("DebugPauseGame", throwIfNotFound: true);
+        m_Default_DebugSlomo = m_Default.FindAction("DebugSlomo", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -728,6 +749,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     private readonly InputAction m_Default_Attack;
     private readonly InputAction m_Default_ForceFrameRate;
     private readonly InputAction m_Default_DebugPauseGame;
+    private readonly InputAction m_Default_DebugSlomo;
     public struct DefaultActions
     {
         private @PlayerInputs m_Wrapper;
@@ -749,6 +771,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         public InputAction @Attack => m_Wrapper.m_Default_Attack;
         public InputAction @ForceFrameRate => m_Wrapper.m_Default_ForceFrameRate;
         public InputAction @DebugPauseGame => m_Wrapper.m_Default_DebugPauseGame;
+        public InputAction @DebugSlomo => m_Wrapper.m_Default_DebugSlomo;
         public InputActionMap Get() { return m_Wrapper.m_Default; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -809,6 +832,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @DebugPauseGame.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnDebugPauseGame;
                 @DebugPauseGame.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnDebugPauseGame;
                 @DebugPauseGame.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnDebugPauseGame;
+                @DebugSlomo.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnDebugSlomo;
+                @DebugSlomo.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnDebugSlomo;
+                @DebugSlomo.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnDebugSlomo;
             }
             m_Wrapper.m_DefaultActionsCallbackInterface = instance;
             if (instance != null)
@@ -864,6 +890,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @DebugPauseGame.started += instance.OnDebugPauseGame;
                 @DebugPauseGame.performed += instance.OnDebugPauseGame;
                 @DebugPauseGame.canceled += instance.OnDebugPauseGame;
+                @DebugSlomo.started += instance.OnDebugSlomo;
+                @DebugSlomo.performed += instance.OnDebugSlomo;
+                @DebugSlomo.canceled += instance.OnDebugSlomo;
             }
         }
     }
@@ -905,5 +934,6 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         void OnAttack(InputAction.CallbackContext context);
         void OnForceFrameRate(InputAction.CallbackContext context);
         void OnDebugPauseGame(InputAction.CallbackContext context);
+        void OnDebugSlomo(InputAction.CallbackContext context);
     }
 }

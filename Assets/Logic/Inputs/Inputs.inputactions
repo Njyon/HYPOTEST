@@ -157,6 +157,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "DebugSlomo",
+                    "type": "Button",
+                    "id": "316fa243-aadf-49fb-af96-bf8ce35d5e3e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -575,6 +584,17 @@
                     "processors": "",
                     "groups": "Keyboard and Mouse",
                     "action": "DebugPauseGame",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "64ca9f9f-8980-4ba9-a6ae-7fc2d12d8f22",
+                    "path": "<Keyboard>/numpad1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DebugSlomo",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

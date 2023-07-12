@@ -21,6 +21,9 @@ public class GameCharacterAttackState : AGameCharacterState
 		initXVelocity = GameCharacter.MovementComponent.MovementVelocity.x;
 		lerpTimeY = 0;
 		lerpTimeX = 0;
+
+		GameCharacter.AnimController.RotationTrarget = 0f;
+		GameCharacter.transform.rotation = GameCharacter.RotationTarget;
 	}
 
 	public override EGameCharacterState GetStateType()

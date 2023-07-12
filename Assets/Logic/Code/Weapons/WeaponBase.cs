@@ -71,8 +71,13 @@ public abstract class WeaponBase
 					spawnedWeapon = GameObject.Instantiate(WeaponData.WeaponMeshData.WeaponMesh, gameCharacter.transform);
 					spawnedWeaponBones = spawnedWeapon.transform.GetChild(0).gameObject;
 					spawnedWeapon.transform.GetChild(0).transform.parent = gameCharacter.GameCharacterData.HandROnjectPoint;
+					spawnedWeaponBones.transform.position = Vector3.zero;
+					spawnedWeaponBones.transform.rotation = Quaternion.identity;
+					spawnedWeaponBones.transform.localScale = Vector3.one;
+					spawnedWeaponBones.transform.localPosition = Vector3.zero;
+					spawnedWeaponBones.transform.localRotation = Quaternion.identity;
 					spawnedWeaponBones.transform.Translate(WeaponData.WeaponMeshData.WeaponOffset, Space.Self);
-					spawnedWeaponBones.transform.rotation = Quaternion.Euler(spawnedWeapon.transform.rotation.eulerAngles + WeaponData.WeaponMeshData.WeaponRotationEuler);
+					spawnedWeaponBones.transform.localRotation = Quaternion.Euler(WeaponData.WeaponMeshData.WeaponRotationEuler);
 					spawnedWeaponBones.transform.localScale = WeaponData.WeaponMeshData.WeaponScale;
 					break;
 				case EWeaponHandType.LeftHand:
@@ -80,8 +85,13 @@ public abstract class WeaponBase
 					spawnedWeapon = GameObject.Instantiate(WeaponData.WeaponMeshData.WeaponMesh, gameCharacter.transform);
 					spawnedWeaponBones = spawnedWeapon.transform.GetChild(0).gameObject;
 					spawnedWeapon.transform.GetChild(0).transform.parent = gameCharacter.GameCharacterData.HandLOnjectPoint;
+					spawnedWeaponBones.transform.position = Vector3.zero;
+					spawnedWeaponBones.transform.rotation = Quaternion.identity;
+					spawnedWeaponBones.transform.localScale = Vector3.one;
+					spawnedWeaponBones.transform.localPosition = Vector3.zero;
+					spawnedWeaponBones.transform.localRotation = Quaternion.identity;
 					spawnedWeaponBones.transform.Translate(WeaponData.WeaponMeshData.WeaponOffset, Space.Self);
-					spawnedWeaponBones.transform.rotation = Quaternion.Euler(spawnedWeapon.transform.rotation.eulerAngles + WeaponData.WeaponMeshData.WeaponRotationEuler);
+					spawnedWeaponBones.transform.localRotation = Quaternion.Euler(WeaponData.WeaponMeshData.WeaponRotationEuler);
 					spawnedWeaponBones.transform.localScale = WeaponData.WeaponMeshData.WeaponScale;
 					break;
 				default:

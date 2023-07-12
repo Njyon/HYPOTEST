@@ -6,21 +6,21 @@ AvatarMask:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SiuteEnemySpine
-  m_Mask: 00000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  m_Name: AM_Dummy_RightArm
+  m_Mask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
   m_Elements:
   - m_Path: 
     m_Weight: 1
-  - m_Path: Enemy.001
+  - m_Path: RetopoFlow
     m_Weight: 0
   - m_Path: root
     m_Weight: 0
   - m_Path: root/root.x
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: root/root.x/spine_01.x
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: root/root.x/spine_01.x/spine_02.x
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: root/root.x/spine_01.x/spine_02.x/neck.x
     m_Weight: 0
   - m_Path: root/root.x/spine_01.x/spine_02.x/neck.x/head.x
@@ -75,56 +75,60 @@ AvatarMask:
     m_Weight: 0
   - m_Path: root/root.x/spine_01.x/spine_02.x/shoulder.l/arm_stretch.l/forearm_stretch.l/hand.l/thumb1.l/thumb2.l/thumb3.l
     m_Weight: 0
+  - m_Path: root/root.x/spine_01.x/spine_02.x/shoulder.l/arm_stretch.l/forearm_stretch.l/hand.l/weapon.l
+    m_Weight: 0
   - m_Path: root/root.x/spine_01.x/spine_02.x/shoulder.r
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: root/root.x/spine_01.x/spine_02.x/shoulder.r/arm_stretch.r
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: root/root.x/spine_01.x/spine_02.x/shoulder.r/arm_stretch.r/arm_twist.r
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: root/root.x/spine_01.x/spine_02.x/shoulder.r/arm_stretch.r/forearm_stretch.r
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: root/root.x/spine_01.x/spine_02.x/shoulder.r/arm_stretch.r/forearm_stretch.r/forearm_twist.r
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: root/root.x/spine_01.x/spine_02.x/shoulder.r/arm_stretch.r/forearm_stretch.r/hand.r
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: root/root.x/spine_01.x/spine_02.x/shoulder.r/arm_stretch.r/forearm_stretch.r/hand.r/index1_base.r
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: root/root.x/spine_01.x/spine_02.x/shoulder.r/arm_stretch.r/forearm_stretch.r/hand.r/index1_base.r/index1.r
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: root/root.x/spine_01.x/spine_02.x/shoulder.r/arm_stretch.r/forearm_stretch.r/hand.r/index1_base.r/index1.r/index2.r
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: root/root.x/spine_01.x/spine_02.x/shoulder.r/arm_stretch.r/forearm_stretch.r/hand.r/index1_base.r/index1.r/index2.r/index3.r
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: root/root.x/spine_01.x/spine_02.x/shoulder.r/arm_stretch.r/forearm_stretch.r/hand.r/middle1_base.r
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: root/root.x/spine_01.x/spine_02.x/shoulder.r/arm_stretch.r/forearm_stretch.r/hand.r/middle1_base.r/middle1.r
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: root/root.x/spine_01.x/spine_02.x/shoulder.r/arm_stretch.r/forearm_stretch.r/hand.r/middle1_base.r/middle1.r/middle2.r
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: root/root.x/spine_01.x/spine_02.x/shoulder.r/arm_stretch.r/forearm_stretch.r/hand.r/middle1_base.r/middle1.r/middle2.r/middle3.r
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: root/root.x/spine_01.x/spine_02.x/shoulder.r/arm_stretch.r/forearm_stretch.r/hand.r/pinky1_base.r
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: root/root.x/spine_01.x/spine_02.x/shoulder.r/arm_stretch.r/forearm_stretch.r/hand.r/pinky1_base.r/pinky1.r
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: root/root.x/spine_01.x/spine_02.x/shoulder.r/arm_stretch.r/forearm_stretch.r/hand.r/pinky1_base.r/pinky1.r/pinky2.r
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: root/root.x/spine_01.x/spine_02.x/shoulder.r/arm_stretch.r/forearm_stretch.r/hand.r/pinky1_base.r/pinky1.r/pinky2.r/pinky3.r
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: root/root.x/spine_01.x/spine_02.x/shoulder.r/arm_stretch.r/forearm_stretch.r/hand.r/ring1_base.r
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: root/root.x/spine_01.x/spine_02.x/shoulder.r/arm_stretch.r/forearm_stretch.r/hand.r/ring1_base.r/ring1.r
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: root/root.x/spine_01.x/spine_02.x/shoulder.r/arm_stretch.r/forearm_stretch.r/hand.r/ring1_base.r/ring1.r/ring2.r
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: root/root.x/spine_01.x/spine_02.x/shoulder.r/arm_stretch.r/forearm_stretch.r/hand.r/ring1_base.r/ring1.r/ring2.r/ring3.r
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: root/root.x/spine_01.x/spine_02.x/shoulder.r/arm_stretch.r/forearm_stretch.r/hand.r/thumb1.r
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: root/root.x/spine_01.x/spine_02.x/shoulder.r/arm_stretch.r/forearm_stretch.r/hand.r/thumb1.r/thumb2.r
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: root/root.x/spine_01.x/spine_02.x/shoulder.r/arm_stretch.r/forearm_stretch.r/hand.r/thumb1.r/thumb2.r/thumb3.r
-    m_Weight: 0
+    m_Weight: 1
+  - m_Path: root/root.x/spine_01.x/spine_02.x/shoulder.r/arm_stretch.r/forearm_stretch.r/hand.r/weapon.r
+    m_Weight: 1
   - m_Path: root/root.x/thigh_stretch.l
     m_Weight: 0
   - m_Path: root/root.x/thigh_stretch.l/leg_stretch.l

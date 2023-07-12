@@ -13,7 +13,18 @@ MonoBehaviour:
   m_Name: Dummy_Spear_AnimationData
   m_EditorClassIdentifier: 
   GroundAttacks:
-  - clip: {fileID: 5446760504791220212, guid: 7bd7469fb56902d4d9ab774d078eebec, type: 3}
+  - clip: {fileID: 5606674929409065460, guid: afd96ec23de19da449a787bfacdb1774, type: 3}
+    data:
+      showProperties: 0
+      hitDetectionType: 0
+      mesh: {fileID: 0}
+      offset: {x: 0, y: 0, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 0
+      boxDimensions: {x: 0, y: 0, z: 0}
+      capsulHeight: 0
+    maxVerticalMovement: 0
+  - clip: {fileID: 2351724731093860723, guid: 28dd5d5335320ac4085c5d9f28a9e245, type: 3}
     data:
       showProperties: 0
       hitDetectionType: 0
@@ -32,9 +43,10 @@ MonoBehaviour:
   AirDownAttacks: []
   AirDirectionAttacks: []
   HandType: 1
-  WeaponReadyPose: {fileID: 0}
+  WeaponReadyPose: {fileID: 9024664212335238305, guid: 0419692c88be76944971e9c9958d3ee5,
+    type: 3}
   WeaponReadyWeight: 1
   WeaponReadyInterpSpeed: 5
-  HeadSpineLayerMovingWeight: 0.5
-  ArmRMovingWeight: 0.5
-  ArmLMovingWeight: 0.5
+  HeadSpineLayerMovingWeight: 0.4
+  ArmRMovingWeight: 0.71
+  ArmLMovingWeight: 0.163
