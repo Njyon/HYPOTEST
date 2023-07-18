@@ -50,6 +50,7 @@ public class EventComponent
 	public void AddEvent(CharacterEvent newEvent)
 	{
 		toBeEveluatedEvent = newEvent;
+		//Ultra.Utilities.Instance.DebugLogOnScreen("New Event Added! " + newEvent.time.ToString(), 2f, StringColor.Lightblue, 100, DebugAreas.Combat);
 	}
 
 	public void Update(float deltaTime)
@@ -66,6 +67,8 @@ public class EventComponent
 			}
 			else if (toBeEveluatedEvent.time <= 0)
 			{
+
+				//Ultra.Utilities.Instance.DebugLogOnScreen("RequestGone! " + ToBeEveluatedEvent.GetType().Name, 2f, StringColor.Lightblue, 100, DebugAreas.Combat);
 				toBeEveluatedEvent = null;
 			}
 		}

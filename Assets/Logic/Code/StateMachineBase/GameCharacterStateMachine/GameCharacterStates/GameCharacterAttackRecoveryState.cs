@@ -26,10 +26,10 @@ public class GameCharacterAttackRecoveryState : AGameCharacterState
 			default: break;
 		}
 
-		if (GameCharacter.CheckIfCharacterIsInAir())
+		if (GameCharacter.MovementComponent.IsInJump)
 			return EGameCharacterState.InAir;
 
-		if (GameCharacter.CheckIfCharacterIsMoving())
+		if (GameCharacter.GetHorizontalMovementInputDir().magnitude > 0)
 			return EGameCharacterState.Moving;
 
 		if (GameCharacter.CombatComponent.AttackTimer.IsFinished)

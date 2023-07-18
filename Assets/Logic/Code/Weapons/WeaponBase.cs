@@ -40,6 +40,8 @@ public abstract class WeaponBase
     public GameObject SpawnedWeaponBones { get { return spawnedWeaponBones; } }
 	public bool IsHitDetecting { get { return ishitDetecting; } }
 	public AttackAnimationData LastAttack { get { return currentAttack; } }
+	public EExplicitAttackType CurrentAttackType { get { return currentAttackType; } }
+	public EExplicitAttackType LastAttackType { get { return lastAttackType; } }
 
     public WeaponBase() { }
     public WeaponBase(GameCharacter gameCharacter, ScriptableWeapon weaponData)

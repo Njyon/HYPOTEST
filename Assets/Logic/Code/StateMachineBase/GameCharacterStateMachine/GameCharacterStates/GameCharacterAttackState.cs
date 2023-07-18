@@ -10,6 +10,7 @@ public class GameCharacterAttackState : AGameCharacterState
 	float lerpTimeY;
 	float lerpTimeX;
 	float currentYPosAnimCurve;
+	Quaternion newDir;
 	public GameCharacterAttackState(GameCharacterStateMachine stateMachine, GameCharacter gameCharacter) : base (stateMachine, gameCharacter)
 	{ }
 
@@ -23,7 +24,14 @@ public class GameCharacterAttackState : AGameCharacterState
 		lerpTimeX = 0;
 
 		GameCharacter.AnimController.RotationTrarget = 0f;
-		GameCharacter.transform.rotation = GameCharacter.RotationTarget;
+		if (GameCharacter.MovementInput.x != 0)
+		{
+			Vector3 currentDir = new Vector3(GameCharacter.MovementInput.x, 0, 0);
+			newDir = Quaternion.LookRotation(currentDir.normalized, Vector3.up);
+		}else
+		{
+			newDir = GameCharacter.RotationTarget;
+		}
 	}
 
 	public override EGameCharacterState GetStateType()
@@ -45,6 +53,8 @@ public class GameCharacterAttackState : AGameCharacterState
 
 	public override void ExecuteState(float deltaTime)
 	{
+		RotateCharacter();
+
 		float yPosCurve = GameCharacter.AnimController.GetUpMovementCurve;
 		float yPosFromAnimCurve = math.remap(0, 1, 0, GameCharacter.CombatComponent.CurrentWeapon.LastAttack.maxVerticalMovement, yPosCurve);
 		float yPosFromAnimCurveDelta = yPosFromAnimCurve - currentYPosAnimCurve;
@@ -59,9 +69,23 @@ public class GameCharacterAttackState : AGameCharacterState
 		float yMotion = GameCharacter.MovementComponent.RootmotionVector.y + Mathf.Lerp(initYVelocity, 0, lerpTimeY) + yPosFromAnimCurveDelta;
 		float xMotion = GameCharacter.MovementComponent.RootmotionVector.x + Mathf.Lerp(initXVelocity, 0, lerpTimeX);
 		Vector3 rootmotionVector = new Vector3(xMotion, yMotion, 0);
+
+		// Move Along Ground
+		if (GameCharacter.MovementComponent.IsGrounded)
+		{
+			Vector2 newInputVector = Vector3.ProjectOnPlane(rootmotionVector, GameCharacter.MovementComponent.RayCastGroundHit != null ? GameCharacter.MovementComponent.RayCastGroundHit.hit.normal : GameCharacter.MovementComponent.PossibleGround.hit.normal);
+			if (Mathf.Abs(newInputVector.normalized.x) > 0.1f) rootmotionVector = newInputVector;
+		}
+
 		GameCharacter.MovementComponent.MovementVelocity = rootmotionVector;
 	}
-	
+
+	private void RotateCharacter()
+	{
+		Quaternion targetRot = Quaternion.Slerp(GameCharacter.transform.rotation, newDir, Time.deltaTime * GameCharacter.GameCharacterData.RoationSpeed);
+		GameCharacter.transform.rotation = targetRot;
+	}
+
 	public override void FixedExecuteState(float deltaTime)
 	{
 	
@@ -74,6 +98,6 @@ public class GameCharacterAttackState : AGameCharacterState
 
 	public override void EndState(EGameCharacterState newState)
 	{
-	
+		GameCharacter.transform.rotation = newDir;
 	}
 }

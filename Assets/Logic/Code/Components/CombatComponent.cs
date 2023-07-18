@@ -110,9 +110,22 @@ public class CombatComponent
 		SwitchWeapon(index);
 	}
 
+	public bool CurrentAttackIsGroundType()
+	{
+		if (CurrentWeapon == null) return false;
+		switch (CurrentWeapon.CurrentAttackType)
+		{
+			case EExplicitAttackType.GroundedDefaultAttack: return true;
+			case EExplicitAttackType.GroundedUpAttack: return true;
+			case EExplicitAttackType.GroundedDirectionalAttack: return true;
+			case EExplicitAttackType.GroundedDownAttack: return true;
+			default: return false;
+		}
+	}
+
 	public void Attack(EAttackType attackType)
 	{
-		if (gameCharacter.MovementComponent.IsGrounded)
+		if (gameCharacter.MovementComponent.IsGrounded || CurrentAttackIsGroundType())
 		{
 			switch (attackType)
 			{
