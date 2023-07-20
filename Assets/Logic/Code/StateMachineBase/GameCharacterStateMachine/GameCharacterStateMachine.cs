@@ -15,6 +15,8 @@ public enum EGameCharacterState
 	Attack = 6,
 	AttackRecovery = 7,
 	HookedToCharacter = 8,
+	PullCharacterOnHorizontalLevel = 9,
+	Freez = 10,
 }
 
 public class GameCharacterStateMachine : AStateMachineBase<EGameCharacterState>

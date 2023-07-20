@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameCharacterHookedToCharacterState : AGameCharacterState
@@ -24,7 +25,13 @@ public class GameCharacterHookedToCharacterState : AGameCharacterState
 	}
 
 	public override EGameCharacterState UpdateState(float deltaTime, EGameCharacterState newStateRequest)
-	{
+	{ 
+		switch (newStateRequest)
+		{
+			case EGameCharacterState.PullCharacterOnHorizontalLevel: return EGameCharacterState.PullCharacterOnHorizontalLevel;
+			case EGameCharacterState.Freez: return EGameCharacterState.Freez;
+			default: break;
+		}
 		return GetStateType();
 	}
 
@@ -32,7 +39,7 @@ public class GameCharacterHookedToCharacterState : AGameCharacterState
 	{
 		if (ShouldLeaveState())
 		{
-			GameCharacter.RequestBestCharacterState();
+			GameCharacter.StateMachine.RequestStateChange(EGameCharacterState.Freez);
 			return;
 		}
 

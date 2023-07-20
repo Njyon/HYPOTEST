@@ -45,6 +45,7 @@ public class GameCharacterAttackState : AGameCharacterState
 		{
  			case EGameCharacterState.AttackRecovery: return EGameCharacterState.AttackRecovery;
 			case EGameCharacterState.HookedToCharacter: return EGameCharacterState.HookedToCharacter;
+			case EGameCharacterState.PullCharacterOnHorizontalLevel: return EGameCharacterState.PullCharacterOnHorizontalLevel;
 			default: break;
 		}
 

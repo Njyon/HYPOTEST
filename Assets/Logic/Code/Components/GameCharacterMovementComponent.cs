@@ -8,6 +8,9 @@ using System.Linq;
 
 public class GameCharacterMovementComponent : MonoBehaviour
 {
+	public delegate void OnMoveCollisionFlag(CollisionFlags collisionFlag);
+	public OnMoveCollisionFlag onMoveCollisionFlag;
+
 	[SerializeField] float stepHight = 0.5f;
 	[SerializeField] float maxWalkableSlopAngle = 45f;
 	[SerializeField] float headBounceValue = -2f;
@@ -38,6 +41,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	public float Radius { get { return capsuleCollider.radius; } }
 	public float SlopeLimit { get { return unityMovementController.slopeLimit; } set { unityMovementController.slopeLimit = value; } }
 	public CharacterController UnityMovementController { get { return unityMovementController; } }
+	public float HeadBounceValue { get { return headBounceValue; } }
 	public bool IsInJump
 	{
 		get { return isInJump; }
@@ -113,14 +117,13 @@ public class GameCharacterMovementComponent : MonoBehaviour
 
 
 		CollisionFlags collisionFlag = unityMovementController.Move(moveRequestVector);
-		// Remove Velocity in Y Axis when hit roof
-		if ((collisionFlag & CollisionFlags.Above) != 0)
-		{
-			MovementVelocity = new Vector3(MovementVelocity.x, headBounceValue, MovementVelocity.y);
-		}
+		if (onMoveCollisionFlag != null) onMoveCollisionFlag(collisionFlag);
+
+		MovementVelocity = new Vector3(MovementVelocity.x, MovementVelocity.y, 0);
+
 		Vector3 noZVector = new Vector3(transform.position.x, transform.position.y, 0);
 		Vector3 noZDirection = noZVector - transform.position;	
-		unityMovementController.Move(noZDirection);
+		if (noZDirection.magnitude > 0.0001f) unityMovementController.Move(noZDirection);
 	
 
 		return;
@@ -317,7 +320,13 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	{
 		if (gameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.InAir || !IsGrounded)
 		{
-			if (gameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.Attack) return;
+			switch (gameCharacter.StateMachine.GetCurrentStateType())
+			{
+				case EGameCharacterState.Attack: case EGameCharacterState.PullCharacterOnHorizontalLevel:
+				case EGameCharacterState.HookedToCharacter:
+					return;
+				default: break;
+			}
 			float yGravity = CalculateGravity();
 			MovementVelocity = new Vector3(MovementVelocity.x, MovementVelocity.y - yGravity, MovementVelocity.z);
 		}

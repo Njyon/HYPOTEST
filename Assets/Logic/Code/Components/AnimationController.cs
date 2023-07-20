@@ -33,6 +33,8 @@ public class AnimationController
 	int secondaryMotionLayerIndex;
 	int rotationLayerIndex;
 	int upMovementCurveIndex;
+	int hitTriggerIndex;
+	int hitLayerIndex;
 
 	float minMalkSpeed;
 	bool startWalkRunBlendInterp = true;
@@ -205,6 +207,17 @@ public class AnimationController
 			}
 		}
 	}
+	public float HitLayerWeight
+	{
+		get { return gameCharacter.Animator.GetLayerWeight(hitLayerIndex); }
+		private set
+		{
+			if (gameCharacter.Animator.GetLayerWeight(hitLayerIndex) != value)
+			{
+				gameCharacter.Animator.SetLayerWeight(hitLayerIndex, value);
+			}
+		}
+	}
 	bool inAttack = false;
 	public bool InAttack { 
 		get { return inAttack; } 
@@ -259,6 +272,8 @@ public class AnimationController
 		attackAStateIndex = Animator.StringToHash("AttackAState");
 		secondaryMotionLayerIndex = gameCharacter.Animator.GetLayerIndex("SecondaryMotion");
 		upMovementCurveIndex = Animator.StringToHash("UpMovement");
+		hitTriggerIndex = Animator.StringToHash("HitTrigger");
+		hitLayerIndex = gameCharacter.Animator.GetLayerIndex("HitLayer");
 
 		overrideController = new AnimatorOverrideController(gameCharacter.Animator.runtimeAnimatorController);
 
@@ -472,5 +487,10 @@ public class AnimationController
 		}
 		gameCharacter.Animator.runtimeAnimatorController = overrideController;
 		UpperBodyIsA = !UpperBodyIsA;
+	}
+
+	public void TriggerAdditiveHit()
+	{
+		gameCharacter.Animator.SetTrigger(hitTriggerIndex);
 	}
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GameCharacterMovementComponent;
 
 public class GameCharacterInAirState : AGameCharacterState
 {
@@ -9,7 +10,7 @@ public class GameCharacterInAirState : AGameCharacterState
 
 	public override void StartState(EGameCharacterState oldState)
 	{
-
+		GameCharacter.MovementComponent.onMoveCollisionFlag += OnMoveCollisionFlag;
 	}
 
 	public override EGameCharacterState GetStateType()
@@ -23,6 +24,7 @@ public class GameCharacterInAirState : AGameCharacterState
 		{
 			case EGameCharacterState.Attack: return EGameCharacterState.Attack;
 			case EGameCharacterState.HookedToCharacter: return EGameCharacterState.HookedToCharacter;
+			case EGameCharacterState.PullCharacterOnHorizontalLevel: return EGameCharacterState.PullCharacterOnHorizontalLevel;
 			default: break;
 		}
 
@@ -88,6 +90,7 @@ public class GameCharacterInAirState : AGameCharacterState
 
 	public override void EndState(EGameCharacterState newState)
 	{
+		GameCharacter.MovementComponent.onMoveCollisionFlag -= OnMoveCollisionFlag;
 		switch (newState)
 		{
 			case EGameCharacterState.Attack: break;
@@ -98,5 +101,15 @@ public class GameCharacterInAirState : AGameCharacterState
 		}
 	
 		GameCharacter.MovementComponent.IsInJump = false;
+	}
+
+
+	void OnMoveCollisionFlag(CollisionFlags collisionFlag)
+	{
+		// Remove Velocity in Y Axis when hit roof
+		if ((collisionFlag & CollisionFlags.Above) != 0)
+		{
+			GameCharacter.MovementComponent.MovementVelocity = new Vector3(GameCharacter.MovementComponent.MovementVelocity.x, GameCharacter.MovementComponent.HeadBounceValue, GameCharacter.MovementComponent.MovementVelocity.y);
+		}
 	}
 }

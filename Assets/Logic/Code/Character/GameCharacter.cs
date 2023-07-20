@@ -24,6 +24,8 @@ public class GameCharacter : MonoBehaviour , IDamage
 	bool isPlayerCharacter = false;
 	RecourceBase health;
 	Quaternion rotationTarget;
+	Ultra.Timer freezTimer;
+	float freezTime = 1f;
 
 	bool isInitialized = false;
 	public bool IsInitialized { get { return isInitialized; } }
@@ -43,6 +45,8 @@ public class GameCharacter : MonoBehaviour , IDamage
 	public bool IsPlayerCharacter { get {  return isPlayerCharacter; } set { isPlayerCharacter = value; } }
 	public RecourceBase Health { get { return health; } }
 	public Quaternion RotationTarget { get { return rotationTarget; } }
+	public Ultra.Timer FreezTimer { get { return freezTimer; } }
+	public float FreezTime { get { return freezTime; } }	
 
 	public void HorizontalMovementInput(float Haxis)
 	{
@@ -70,6 +74,8 @@ public class GameCharacter : MonoBehaviour , IDamage
 		if (animator == null) Debug.LogError("GameObject: " + name + " Does not have an Animator Attached!");
 		rigidbody = gameObject.GetComponent<Rigidbody>();
 		if (rigidbody == null) Debug.LogError("GameObject: " + name + " Does not have an Rigibody Attached!");
+
+		freezTimer = new Ultra.Timer(freezTime, true);
 	}
 
 	public void CustomAwake()
@@ -109,6 +115,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 	private void Update()
 	{
 		if (!isInitialized) return;
+		freezTimer.Update(Time.deltaTime);
 
 		//movementInput.x = 1;
 		EventComponent.Update(Time.deltaTime);
@@ -183,6 +190,8 @@ public class GameCharacter : MonoBehaviour , IDamage
 	{
 		Ultra.Utilities.Instance.DebugLogOnScreen(name + " got Damaged by: " + damageInitiator.name + ", Damage = " + damage, 2f, StringColor.Red, 200, DebugAreas.Combat);
 		Health.AddCurrentValue(-damage);
+		if (StateMachine.GetCurrentStateType() == EGameCharacterState.Freez || StateMachine.GetCurrentStateType() == EGameCharacterState.InAir) freezTimer.Start(freezTime);
+		animController.TriggerAdditiveHit();
 	}
 
 	public bool CheckIfCharacterIsInAir()
