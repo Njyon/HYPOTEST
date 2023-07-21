@@ -190,7 +190,11 @@ public class GameCharacter : MonoBehaviour , IDamage
 	{
 		Ultra.Utilities.Instance.DebugLogOnScreen(name + " got Damaged by: " + damageInitiator.name + ", Damage = " + damage, 2f, StringColor.Red, 200, DebugAreas.Combat);
 		Health.AddCurrentValue(-damage);
-		if (StateMachine.GetCurrentStateType() == EGameCharacterState.Freez || StateMachine.GetCurrentStateType() == EGameCharacterState.InAir) freezTimer.Start(freezTime);
+		if (StateMachine.GetCurrentStateType() == EGameCharacterState.Freez || StateMachine.GetCurrentStateType() == EGameCharacterState.InAir)
+		{
+			freezTimer.Start(freezTime);
+			AnimController.FreezA = !AnimController.FreezA;
+		}
 		animController.TriggerAdditiveHit();
 	}
 

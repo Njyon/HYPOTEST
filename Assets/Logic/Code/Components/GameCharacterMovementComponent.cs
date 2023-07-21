@@ -323,7 +323,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 			switch (gameCharacter.StateMachine.GetCurrentStateType())
 			{
 				case EGameCharacterState.Attack: case EGameCharacterState.PullCharacterOnHorizontalLevel:
-				case EGameCharacterState.HookedToCharacter:
+				case EGameCharacterState.HookedToCharacter: case EGameCharacterState.Freez:
 					return;
 				default: break;
 			}

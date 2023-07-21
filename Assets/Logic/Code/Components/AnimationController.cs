@@ -35,6 +35,8 @@ public class AnimationController
 	int upMovementCurveIndex;
 	int hitTriggerIndex;
 	int hitLayerIndex;
+	int inFreezIndex;
+	int freezAIndex;
 
 	float minMalkSpeed;
 	bool startWalkRunBlendInterp = true;
@@ -240,6 +242,32 @@ public class AnimationController
 			}
 		}
 	}
+	bool inFreez = false;
+	public bool InFreez
+	{
+		get { return inFreez; }
+		set
+		{
+			if (inFreez != value)
+			{
+				inFreez = value;
+				gameCharacter.Animator.SetBool(inFreezIndex, inFreez);
+			}
+		}
+	}
+	bool freezA = true;
+	public bool FreezA
+	{
+		get { return freezA; }
+		set
+		{
+			if (freezA != value)
+			{
+				freezA = value;
+				gameCharacter.Animator.SetBool(freezAIndex, freezA);
+			}
+		}
+	}
 
 	public float GetUpMovementCurve { get { return gameCharacter.Animator.GetFloat(upMovementCurveIndex); } }
 
@@ -274,6 +302,8 @@ public class AnimationController
 		upMovementCurveIndex = Animator.StringToHash("UpMovement");
 		hitTriggerIndex = Animator.StringToHash("HitTrigger");
 		hitLayerIndex = gameCharacter.Animator.GetLayerIndex("HitLayer");
+		inFreezIndex = Animator.StringToHash("InFreez");
+		freezAIndex = Animator.StringToHash("FreezA");
 
 		overrideController = new AnimatorOverrideController(gameCharacter.Animator.runtimeAnimatorController);
 

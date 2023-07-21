@@ -72,7 +72,11 @@ public class SpearWeapon : WeaponBase
 		GameCharacter enemyCharacter = hitObj.GetComponent<GameCharacter>();
 		if (enemyCharacter == null) return;
 		if (enemyCharacter.CombatComponent != null) enemyCharacter.CombatComponent.HookedToCharacter = GameCharacter;
-		if (enemyCharacter.StateMachine != null) enemyCharacter.StateMachine.RequestStateChange(EGameCharacterState.PullCharacterOnHorizontalLevel);
+		if (enemyCharacter.StateMachine != null && (enemyCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.InAir || enemyCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.Freez)) {
+			enemyCharacter.StateMachine.RequestStateChange(EGameCharacterState.Freez);
+			float downforce = -Mathf.Sqrt(2 * enemyCharacter.GameCharacterData.MovmentGravity * 4f);
+			enemyCharacter.MovementComponent.MovementVelocity = new Vector3(enemyCharacter.MovementComponent.MovementVelocity.x, downforce, enemyCharacter.MovementComponent.MovementVelocity.z);
+		}
 	}
 
 	public override void GroundDownAttackHit(GameObject hitObj)

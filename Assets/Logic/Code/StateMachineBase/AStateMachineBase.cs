@@ -94,7 +94,12 @@ public abstract class AStateMachineBase<T> : MonoBehaviour
 			}
 		}
 
-		T newStateType = CurrentState.UpdateState(Time.deltaTime, NewestStateChangeRequestState); 
+		T newStateType = GetUnknownT();
+		if (forceNextState) 
+			newStateType = NewestStateChangeRequestState;
+		else 
+			newStateType = CurrentState.UpdateState(Time.deltaTime, NewestStateChangeRequestState); 
+
 		if ((!CompareStateTypes(newStateType, CurrentState.GetStateType()) || forceNextState) && !IsStateTypeUnknown(newStateType))
 		{
 			forceNextState = false;

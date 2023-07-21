@@ -1,3 +1,4 @@
+using EasyButtons;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -83,5 +84,14 @@ public class GameCharacterStateMachine : AStateMachineBase<EGameCharacterState>
 		newState = Activator.CreateInstance(stateClass, this, gameCharacter) as AGameCharacterState;
 
 		return newState != null;
+	}
+
+	[Button("FreezState")]
+	async private void RequestFreezState()
+	{
+		RequestStateChange(EGameCharacterState.Freez, true);
+		await new WaitForSeconds(0.5f);
+		gameCharacter.FreezTimer.Start(10000f);
+		gameCharacter.transform.position = new Vector3(gameCharacter.transform.position.x, gameCharacter.transform.position.y + 1, gameCharacter.transform.position.z);
 	}
 }
