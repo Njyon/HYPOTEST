@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime.Collections;
 using UnityEditor;
 using UnityEngine;
 
@@ -304,11 +305,6 @@ public abstract class WeaponBase
 
 	}
 
-	public virtual void AttackEnd()
-	{
-
-	}
-
 	void SetUpWeaponAnimationData()
 	{
 		if (weaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) gameCharacter.AnimController.SetBodyLayerAnimClip(weaponData.AnimationData[GameCharacter.CharacterData.Name].WeaponReadyPose);
@@ -319,9 +315,9 @@ public abstract class WeaponBase
 		return obj.GetComponent<IDamage>();
 	}
 
-	private void BaseAttackLogic(EExplicitAttackType explicitAttackType, ref List<AttackAnimationData> attackList)
+	void GetAnimation(EExplicitAttackType explicitAttackType, ref List<AttackAnimationData> attackList, bool updatedIndex = true)
 	{
-		if (currentAttackType != explicitAttackType)
+		if (currentAttackType != explicitAttackType || !updatedIndex)
 		{
 			attackIndex = 0;
 			currentAttackType = explicitAttackType;
@@ -333,9 +329,51 @@ public abstract class WeaponBase
 		if (attackList == null || attackList.Count <= 0) return;
 		attackIndex = attackIndex % attackList.Count;
 		currentAttack = attackList[attackIndex];
+	}
+
+	protected void BaseAttackLogic(EExplicitAttackType explicitAttackType, ref List<AttackAnimationData> attackList)
+	{
+		GetAnimation(explicitAttackType, ref attackList);
+		if (currentAttack.clip == null)
+		{
+			Ultra.Utilities.Instance.DebugLogOnScreen("AttackClip was null!", 5f, StringColor.Red, 100, DebugAreas.Combat);
+			Debug.Log(Ultra.Utilities.Instance.DebugErrorString("WeaponBase", "BaseAttackLogic", "AttackClip was null!"));
+			return;
+		}
 		gameCharacter.AnimController.Attack(currentAttack.clip);
 		gameCharacter.StateMachine.RequestStateChange(EGameCharacterState.Attack);
 		gameCharacter.CombatComponent.AttackTimer.Start(currentAttack.clip.length);
+	}
+
+	protected void HoldAttackAfterAttack(EExplicitAttackType explicitAttackType, ref List<AttackAnimationData> attackList)
+	{
+		GetAnimation(explicitAttackType, ref attackList, false);
+		if (currentAttack.holdAnimation == null)
+		{
+			Ultra.Utilities.Instance.DebugLogOnScreen("HoldAnimation was null!", 5f, StringColor.Red, 100, DebugAreas.Combat);
+			Debug.Log(Ultra.Utilities.Instance.DebugErrorString("WeaponBase", "HoldAttackAfterAttack", "HoldAnimation was null!"));
+			return;
+		}
+
+		gameCharacter.AnimController.SetHoldAttack(currentAttack.holdAnimation);
+		gameCharacter.CombatComponent.AttackTimer.IsPaused = true;
+
+		gameCharacter.AnimController.HoldAttack = true;
+	}
+
+	protected void TriggerAttack(EExplicitAttackType explicitAttackType, ref List<AttackAnimationData> attackList)
+	{
+		GetAnimation(explicitAttackType, ref attackList, false);
+		if (currentAttack.holdAnimation == null)
+		{
+			Ultra.Utilities.Instance.DebugLogOnScreen("TriggerAnimation was null!", 5f, StringColor.Red, 100, DebugAreas.Combat);
+			Debug.Log(Ultra.Utilities.Instance.DebugErrorString("WeaponBase", "TriggerAttack", "TriggerAnimation was null!"));
+			return;
+		}
+		gameCharacter.AnimController.SetTriggerAttack(currentAttack.triggerAnimation);
+		gameCharacter.CombatComponent.AttackTimer.Start(currentAttack.triggerAnimation.length);
+
+		gameCharacter.AnimController.TriggerAttack = true;
 	}
 
 	public virtual void HitDetectionStart()
@@ -363,6 +401,7 @@ public abstract class WeaponBase
 			default:
 				break;
 		}
+		AttackPhaseStart();
 	}
 
 	async void InitialMeshColliderCheck()
@@ -382,7 +421,7 @@ public abstract class WeaponBase
 			case EHitDetectionType.Mesh: hitDetectionMeshRenderer.enabled = false; break;
 				default: break;
 		}
-		AttackEnd();
+		AttackPhaseEnd();
 	}
 
 	protected virtual void WeaponColliderEnter(Collider other)
@@ -416,15 +455,46 @@ public abstract class WeaponBase
 
 	void OnGameCharacterStateChange(IState<EGameCharacterState> newState, IState<EGameCharacterState> oldState)
 	{
-		if (oldState?.GetStateType() == EGameCharacterState.Attack)
-		{
-			hitObjects.Clear();
-		}
 
 		if (newState?.GetStateType() != EGameCharacterState.Attack && oldState?.GetStateType() == EGameCharacterState.AttackRecovery)
 		{
 			lastAttackType = currentAttackType;
 			currentAttackType = EExplicitAttackType.Unknown;
 		}
+	}
+
+	public virtual void StartAttackStateLogic()
+	{
+
+	}
+
+	public virtual void PreAttackStateLogic(float deltaTime)
+	{
+
+	}
+
+	public virtual void PostAttackStateLogic(float deltaTime)
+	{
+
+	}
+
+	public virtual void EndAttackStateLogic()
+	{
+		hitObjects.Clear();
+	}
+
+	public virtual void AttackPhaseStart()
+	{
+
+	}
+
+	public virtual void AttackPhaseEnd()
+	{
+
+	}
+
+	public virtual void AttackRecoveryEnd()
+	{
+
 	}
 }

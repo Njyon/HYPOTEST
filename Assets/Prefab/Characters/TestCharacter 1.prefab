@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: -5421960771505329886}
   - component: {fileID: 8612787545580640725}
   - component: {fileID: 4873042141303511841}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: TestCharacter 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -125,6 +125,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stepHight: 0.5
   maxWalkableSlopAngle: 45
+  headBounceValue: -2
 --- !u!54 &-5421960771505329886
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -277,3 +278,4 @@ MonoBehaviour:
   handLObjectPoint: {fileID: 0}
   airToZeroVelYInAttackSpeed: 5
   airToZeroVelXInAttackSpeed: 5
+  health: 100

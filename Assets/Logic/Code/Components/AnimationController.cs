@@ -37,6 +37,8 @@ public class AnimationController
 	int hitLayerIndex;
 	int inFreezIndex;
 	int freezAIndex;
+	int holdAttackIndex;
+	int triggerAttackIndex;
 
 	float minMalkSpeed;
 	bool startWalkRunBlendInterp = true;
@@ -268,6 +270,32 @@ public class AnimationController
 			}
 		}
 	}
+	bool holdAttack = false;
+	public bool HoldAttack
+	{
+		get { return holdAttack; }
+		set
+		{
+			if (holdAttack != value)
+			{
+				holdAttack = value;
+				gameCharacter.Animator.SetBool(holdAttackIndex, holdAttack);
+			}
+		}
+	}
+	bool triggerAttack = false;
+	public bool TriggerAttack
+	{
+		get { return triggerAttack; }
+		set
+		{
+			if (triggerAttack != value)
+			{
+				triggerAttack = value;
+				gameCharacter.Animator.SetBool(triggerAttackIndex, triggerAttack);
+			}
+		}
+	}
 
 	public float GetUpMovementCurve { get { return gameCharacter.Animator.GetFloat(upMovementCurveIndex); } }
 
@@ -304,6 +332,8 @@ public class AnimationController
 		hitLayerIndex = gameCharacter.Animator.GetLayerIndex("HitLayer");
 		inFreezIndex = Animator.StringToHash("InFreez");
 		freezAIndex = Animator.StringToHash("FreezA");
+		holdAttackIndex = Animator.StringToHash("HoldAttack");
+		triggerAttackIndex = Animator.StringToHash("TriggerAttack");
 
 		overrideController = new AnimatorOverrideController(gameCharacter.Animator.runtimeAnimatorController);
 
@@ -424,6 +454,18 @@ public class AnimationController
 		}
 		gameCharacter.Animator.runtimeAnimatorController = overrideController;
 		AttackA = !isAttackAState;
+	}
+
+	public void SetHoldAttack(AnimationClip holdClip)
+	{
+		overrideController["Hold"] = holdClip;
+		gameCharacter.Animator.runtimeAnimatorController = overrideController;
+	}
+
+	public void SetTriggerAttack(AnimationClip triggerClip)
+	{
+		overrideController["Trigger"] = triggerClip;
+		gameCharacter.Animator.runtimeAnimatorController = overrideController;
 	}
 
 	public void LateUpdate()

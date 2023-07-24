@@ -26,6 +26,8 @@ public class GameCharacter : MonoBehaviour , IDamage
 	Quaternion rotationTarget;
 	Ultra.Timer freezTimer;
 	float freezTime = 1f;
+	float characterRadiusTarget;
+	float characterHeightTarget;
 
 	bool isInitialized = false;
 	public bool IsInitialized { get { return isInitialized; } }
@@ -47,6 +49,16 @@ public class GameCharacter : MonoBehaviour , IDamage
 	public Quaternion RotationTarget { get { return rotationTarget; } }
 	public Ultra.Timer FreezTimer { get { return freezTimer; } }
 	public float FreezTime { get { return freezTime; } }	
+	public float CharacterRadiusTarget
+	{
+		get { return characterRadiusTarget; }
+		set { characterRadiusTarget = value; }
+	}
+	public float CharacterHeightTarget
+	{
+		get { return characterHeightTarget; }
+		set { characterHeightTarget = value; }
+	}
 
 	public void HorizontalMovementInput(float Haxis)
 	{
@@ -80,7 +92,6 @@ public class GameCharacter : MonoBehaviour , IDamage
 
 	public void CustomAwake()
 	{
-	
 		movementComponent = gameObject.GetComponent<GameCharacterMovementComponent>();
 		if (movementComponent == null) Debug.LogError("GameObject: " + name + " Does not have an GameCharacterMovementComponent Attached!");
 		eventComponent = new EventComponent();

@@ -57,6 +57,9 @@ public class GameCharacterAttackRecoveryState : AGameCharacterState
 	public override void EndState(EGameCharacterState newState)
 	{
 		GameCharacter.AnimController.InAttack = false;
+		GameCharacter.AnimController.HoldAttack = false;
+		GameCharacter.AnimController.TriggerAttack = false;
 		GameCharacter.AnimController.InterpSecondaryMotionLayerWeight(1, 10f);
+		GameCharacter.CombatComponent.CurrentWeapon.AttackRecoveryEnd();
 	}
 }

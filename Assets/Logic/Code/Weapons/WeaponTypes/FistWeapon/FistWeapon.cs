@@ -117,7 +117,7 @@ public class FistWeapon : WeaponBase
 		damageInterface.DoDamage(GameCharacter, 10);
 	}
 
-	public override void AttackEnd()
+	public override void EndAttackStateLogic()
 	{
 		foreach (GameObject go in hitObjects)
 		{
@@ -126,5 +126,7 @@ public class FistWeapon : WeaponBase
 			if (character == null) continue;
 			character.CombatComponent.HookedToCharacter = null;
 		}
+
+		base.EndAttackStateLogic();
 	}
 }

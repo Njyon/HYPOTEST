@@ -14,6 +14,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	[SerializeField] float stepHight = 0.5f;
 	[SerializeField] float maxWalkableSlopAngle = 45f;
 	[SerializeField] float headBounceValue = -2f;
+	[SerializeField] float capsulInterpolationSpeed = 5f;
 	NullableHit predictedLandingPoint;
 	NullableHit rayCastGroundHit;
 	CharacterController unityMovementController;
@@ -24,6 +25,11 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	GameCharacter gameCharacter;
 	Vector3 rootmotionVector;
 	bool isInJump = false;
+	LayerMask defaultLayerMask;
+	LayerMask moveThroughCharacterLayerMask;
+	int characterLayerIndex;
+	float characterDefaultRadius;
+	float characterDefaultHeight;
 
 	CapsuleCollider capsuleCollider;
 	public CapsuleCollider CapsuleCollider { get { return capsuleCollider; } }
@@ -68,19 +74,32 @@ public class GameCharacterMovementComponent : MonoBehaviour
 		unityMovementController.slopeLimit = maxWalkableSlopAngle;
 		unityMovementController.stepOffset = stepHight;
 		unityMovementController.skinWidth = 0.01f;
+
+		characterLayerIndex = LayerMask.NameToLayer("Character");
+		defaultLayerMask = unityMovementController.excludeLayers;
+		moveThroughCharacterLayerMask = ExcludeLayerIsMask(defaultLayerMask, characterLayerIndex);
+	
+		characterDefaultRadius = capsuleCollider.radius;
+		characterDefaultHeight = capsuleCollider.height;
 	}
 
 	void Update()
 	{
-		//if (Ultra.Utilities.OverlapCapsule(CharacterCenter, capsuleCollider.height, capsuleCollider.radius).Where(collider => collider.gameObject != gameCharacter.gameObject).ToList().Count > 0)
-		//{
-		//	gameCharacter.Rigidbody.isKinematic = false;
-		//	gameCharacter.Rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
-		//}else
-		//{
-		//	gameCharacter.Rigidbody.isKinematic = true;
-		//	gameCharacter.Rigidbody.collisionDetectionMode = CollisionDetectionMode.Discrete;
-		//}
+		if (gameCharacter == null) return;
+		/// Interpolate Character Capsul
+		if (!Ultra.Utilities.IsNearlyEqual(capsuleCollider.radius, gameCharacter.CharacterRadiusTarget, 0.001f) || !Ultra.Utilities.IsNearlyEqual(unityMovementController.radius, gameCharacter.CharacterRadiusTarget, 0.001f))
+		{
+			float value = Mathf.Lerp(capsuleCollider.radius, gameCharacter.CharacterRadiusTarget, Time.deltaTime * capsulInterpolationSpeed);
+			capsuleCollider.radius = value;
+			unityMovementController.radius = value;
+		}
+		if (!Ultra.Utilities.IsNearlyEqual(capsuleCollider.height, gameCharacter.CharacterHeightTarget, 0.001f) || !Ultra.Utilities.IsNearlyEqual(unityMovementController.height, gameCharacter.CharacterHeightTarget, 0.001f))
+		{
+			float value = Mathf.Lerp(capsuleCollider.height, gameCharacter.CharacterHeightTarget, Time.deltaTime * capsulInterpolationSpeed);
+			capsuleCollider.height = value;
+			unityMovementController.height = value;
+		}
+
 		if (gameCharacter.IsPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen(StringColor.Lime + "Is Grounded = " + isGrounded.ToString() + StringColor.EndColor);
 	}
 
@@ -97,6 +116,8 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	public void SetupGameCharacter(GameCharacter character)
 	{
 		gameCharacter = character;
+		gameCharacter.CharacterRadiusTarget = capsuleCollider.radius;
+		gameCharacter.CharacterHeightTarget = capsuleCollider.height;
 	}
 
 	void RequestMove(Vector3 moveRequestVector)
@@ -348,6 +369,39 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	{
 		return MovementVelocity * Time.deltaTime;
 	}
+
+	private LayerMask ExcludeLayerIsMask(LayerMask mask, int layer)
+	{
+		int excludeLayers = mask.value;
+
+		// Überprüfe, ob die Layer-ID bereits im excludeLayer-Array enthalten ist
+		if ((excludeLayers & (1 << layer)) == 0)
+		{
+			// Füge die Layer-ID zum excludeLayer-Array hinzu
+			excludeLayers |= (1 << layer);
+			mask = (LayerMask)excludeLayers;
+		}
+		return mask;
+	}
+
+	public void SetLayerToDefault()
+	{
+		gameCharacter.Rigidbody.excludeLayers = defaultLayerMask;
+		unityMovementController.excludeLayers = defaultLayerMask;
+	}
+
+	public void MoveThroughCharacterLayer()
+	{
+		gameCharacter.Rigidbody.excludeLayers = moveThroughCharacterLayerMask;
+		unityMovementController.excludeLayers = moveThroughCharacterLayerMask;
+	}
+
+	public void ResetCharacterCapsulToDefault()
+	{
+		gameCharacter.CharacterRadiusTarget = characterDefaultRadius;
+		gameCharacter.CharacterHeightTarget = characterDefaultHeight;
+	}
+
 	IEnumerator IsJumping()
 	{
 		yield return new WaitForSeconds(0.2f);

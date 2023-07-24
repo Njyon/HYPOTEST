@@ -17,6 +17,8 @@ public class AttackAnimationData
 {
 	public AnimationClip clip;
 	public AttackAnimationHitDetectionData data;
+	public AnimationClip holdAnimation;
+	public AnimationClip triggerAnimation;
 	public float maxVerticalMovement;
 }
 

@@ -53,7 +53,7 @@ public class GameCharacterInAirState : AGameCharacterState
 		Vector3 velocityDiff = (targetVelocity - velocity);
 		Vector3 acceleration = Vector3.ClampMagnitude(velocityDiff, maxSpeed) * GameCharacter.GameCharacterData.InAirControll;
 		velocity += acceleration;
-		if (groundBelowCharacter) velocity = Vector3.ProjectOnPlane(velocity, GameCharacter.MovementComponent.PossibleGround.hit.normal);
+		if (groundBelowCharacter && GameCharacter.MovementComponent.PossibleGround != null) velocity = Vector3.ProjectOnPlane(velocity, GameCharacter.MovementComponent.PossibleGround.hit.normal);
 
 		// Anwenden der Geschwindigkeit
 		velocity = new Vector3(velocity.x, GameCharacter.MovementComponent.MovementVelocity.y, GameCharacter.MovementComponent.MovementVelocity.z);

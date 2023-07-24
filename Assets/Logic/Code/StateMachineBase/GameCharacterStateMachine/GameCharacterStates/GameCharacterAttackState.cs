@@ -32,6 +32,7 @@ public class GameCharacterAttackState : AGameCharacterState
 		{
 			newDir = GameCharacter.RotationTarget;
 		}
+		GameCharacter.CombatComponent.CurrentWeapon.StartAttackStateLogic();
 	}
 
 	public override EGameCharacterState GetStateType()
@@ -54,6 +55,7 @@ public class GameCharacterAttackState : AGameCharacterState
 
 	public override void ExecuteState(float deltaTime)
 	{
+		GameCharacter.CombatComponent.CurrentWeapon.PreAttackStateLogic(deltaTime);
 		RotateCharacter();
 
 		float yPosCurve = GameCharacter.AnimController.GetUpMovementCurve;
@@ -79,6 +81,7 @@ public class GameCharacterAttackState : AGameCharacterState
 		}
 
 		GameCharacter.MovementComponent.MovementVelocity = rootmotionVector;
+		GameCharacter.CombatComponent.CurrentWeapon.PostAttackStateLogic(deltaTime);
 	}
 
 	private void RotateCharacter()
@@ -100,5 +103,6 @@ public class GameCharacterAttackState : AGameCharacterState
 	public override void EndState(EGameCharacterState newState)
 	{
 		GameCharacter.transform.rotation = newDir;
+		GameCharacter.CombatComponent.CurrentWeapon.EndAttackStateLogic();
 	}
 }

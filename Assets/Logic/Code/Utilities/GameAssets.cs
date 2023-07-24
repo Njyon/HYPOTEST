@@ -20,4 +20,5 @@ public class GameAssets : MonoBehaviour
 
     // List of Objects below
     public Material debugMaterial;
+    public GameObject ThrowSpear;
 }
