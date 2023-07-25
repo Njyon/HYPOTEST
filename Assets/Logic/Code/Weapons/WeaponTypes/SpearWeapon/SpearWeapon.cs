@@ -117,7 +117,7 @@ public class SpearWeapon : WeaponBase
 		if (damageInterface == null) return;
 		damageInterface.DoDamage(GameCharacter, 10);
 		GameCharacter enemyCharacter = hitObj.GetComponent<GameCharacter>();
-		if (enemyCharacter == null || enemyCharacter.StateMachine != null || enemyCharacter.CombatComponent != null) return;
+		if (enemyCharacter == null || enemyCharacter.StateMachine == null || enemyCharacter.CombatComponent == null) return;
 		if (enemyCharacter.StateMachine.CanSwitchToStateOrIsState(EGameCharacterState.PullCharacterOnHorizontalLevel))
 		{
 			enemyCharacter.CombatComponent.HookedToCharacter = GameCharacter;
@@ -239,11 +239,11 @@ public class SpearWeapon : WeaponBase
 	{
 		SpawnedWeapon.SetActive(false);
 		GameObject throwSpear = GameObject.Instantiate(GameAssets.Instance.ThrowSpear);
-		throwSpear.transform.position = SpawnedWeaponBones.transform.position;
+		throwSpear.transform.position =  new Vector3(SpawnedWeaponBones.transform.position.x, SpawnedWeaponBones.transform.position.y, 0);
 		throwSpear.transform.rotation = Quaternion.LookRotation(GameCharacter.transform.forward.normalized, Vector3.up);
 		throwSpear.transform.eulerAngles = new Vector3(throwSpear.transform.eulerAngles.x, throwSpear.transform.eulerAngles.y, 90f);
-
-		throwSpear.GetComponent<WeaponProjectile>().Direction = GameCharacter.transform.forward;
+		WeaponProjectile weaponProjectile = throwSpear.GetComponent<WeaponProjectile>();
+		weaponProjectile.Initialize(GameCharacter, GameCharacter.transform.forward, 10f);
 
 		thrownSpears.Add(throwSpear);
 	}

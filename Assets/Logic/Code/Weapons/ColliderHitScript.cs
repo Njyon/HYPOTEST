@@ -12,7 +12,6 @@ public class ColliderHitScript : MonoBehaviour
 	List<Collider> overlappingColliders = new List<Collider>();
 	public List<Collider> OverlappingColliders { get { return overlappingColliders; } }
 
-
 	private void OnTriggerEnter(Collider other)
 	{
 		overlappingColliders.Add(other);
