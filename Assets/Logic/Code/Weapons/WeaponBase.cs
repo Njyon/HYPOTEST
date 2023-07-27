@@ -497,4 +497,9 @@ public abstract class WeaponBase
 	{
 
 	}
+
+	public virtual void DefensiveAction()
+	{
+
+	}
 }

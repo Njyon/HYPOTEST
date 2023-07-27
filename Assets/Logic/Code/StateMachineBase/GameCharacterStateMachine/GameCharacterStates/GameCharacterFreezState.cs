@@ -37,7 +37,8 @@ public class GameCharacterFreezState : AGameCharacterState
 		if (addDrag)
 		{
 			Vector3 velocity = GameCharacter.MovementComponent.MovementVelocity;
-			float drag = 4f;
+			Ultra.Utilities.Instance.DebugLogOnScreen("Velocity: " + velocity.ToString(), 0f, StringColor.Brown, 100, DebugAreas.Combat);
+			float drag = 40f;
 			velocity = Vector3.MoveTowards(velocity, Vector3.zero, drag);
 			GameCharacter.MovementComponent.MovementVelocity = velocity;
 		}

@@ -81,15 +81,6 @@ public class SpearWeapon : WeaponBase
 		IDamage damageInterface = GetDamageInterface(hitObj);
 		if (damageInterface == null) return;
 		damageInterface.DoDamage(GameCharacter, 10);
-		GameCharacter enemyCharacter = hitObj.GetComponent<GameCharacter>();
-		if (enemyCharacter == null || enemyCharacter.StateMachine != null || enemyCharacter.CombatComponent != null) return;
-		if (enemyCharacter.StateMachine.CanSwitchToStateOrIsState(EGameCharacterState.Freez)) 
-		{ 
-			enemyCharacter.CombatComponent.HookedToCharacter = GameCharacter;
-			enemyCharacter.StateMachine.RequestStateChange(EGameCharacterState.Freez);
-			float downforce = -Mathf.Sqrt(2 * enemyCharacter.GameCharacterData.MovmentGravity * 4f);
-			enemyCharacter.MovementComponent.MovementVelocity = new Vector3(enemyCharacter.MovementComponent.MovementVelocity.x, downforce, enemyCharacter.MovementComponent.MovementVelocity.z);
-		}
 	}
 
 	public override void GroundDownAttackHit(GameObject hitObj)
@@ -97,6 +88,20 @@ public class SpearWeapon : WeaponBase
 		IDamage damageInterface = GetDamageInterface(hitObj);
 		if (damageInterface == null) return;
 		damageInterface.DoDamage(GameCharacter, 10);
+		GameCharacter enemyCharacter = hitObj.GetComponent<GameCharacter>();
+		if (enemyCharacter == null || enemyCharacter.StateMachine == null || enemyCharacter.CombatComponent == null) return;
+		if (enemyCharacter.StateMachine.CanSwitchToStateOrIsState(EGameCharacterState.Freez))
+		{
+			enemyCharacter.CombatComponent.HookedToCharacter = GameCharacter;
+			if (enemyCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.Freez)
+				enemyCharacter.AddFreezTime();
+			else
+				enemyCharacter.StateMachine.RequestStateChange(EGameCharacterState.Freez);
+			float downforce = -Mathf.Sqrt(2 * enemyCharacter.GameCharacterData.MovmentGravity * 4f);
+			if (enemyCharacter.MovementComponent.MovementVelocity.y < 0) 
+				downforce -= Mathf.Abs(enemyCharacter.MovementComponent.MovementVelocity.y); // Abs because its easier than Minus - Minus math :D
+			enemyCharacter.MovementComponent.MovementVelocity = new Vector3(enemyCharacter.MovementComponent.MovementVelocity.x, downforce, enemyCharacter.MovementComponent.MovementVelocity.z);
+		}
 	}
 
 	public override void GroundDirectionAttackHit(GameObject hitObj)
@@ -130,7 +135,7 @@ public class SpearWeapon : WeaponBase
 		IDamage damageInterface = GetDamageInterface(hitObj);
 		if (damageInterface == null) return;
 		GameCharacter enemyCharacter = hitObj.GetComponent<GameCharacter>();
-		if (enemyCharacter == null || enemyCharacter.StateMachine != null || enemyCharacter.CombatComponent != null) return;
+		if (enemyCharacter == null || enemyCharacter.StateMachine == null || enemyCharacter.CombatComponent == null) return;
 		if (enemyCharacter.StateMachine.CanSwitchToStateOrIsState(EGameCharacterState.HookedToCharacter))
 		{
 			enemyCharacter.CombatComponent.HookedToCharacter = GameCharacter;
@@ -246,5 +251,11 @@ public class SpearWeapon : WeaponBase
 		weaponProjectile.Initialize(GameCharacter, GameCharacter.transform.forward, 10f);
 
 		thrownSpears.Add(throwSpear);
+	}
+
+	public override void DefensiveAction()
+	{
+		base.DefensiveAction();
+
 	}
 }

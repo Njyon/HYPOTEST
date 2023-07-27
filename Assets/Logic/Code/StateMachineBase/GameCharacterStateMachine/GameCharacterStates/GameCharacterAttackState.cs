@@ -47,6 +47,7 @@ public class GameCharacterAttackState : AGameCharacterState
  			case EGameCharacterState.AttackRecovery: return EGameCharacterState.AttackRecovery;
 			case EGameCharacterState.HookedToCharacter: return EGameCharacterState.HookedToCharacter;
 			case EGameCharacterState.PullCharacterOnHorizontalLevel: return EGameCharacterState.PullCharacterOnHorizontalLevel;
+			case EGameCharacterState.Freez: return EGameCharacterState.Freez;
 			default: break;
 		}
 
@@ -59,13 +60,18 @@ public class GameCharacterAttackState : AGameCharacterState
 		RotateCharacter();
 
 		float yPosCurve = GameCharacter.AnimController.GetUpMovementCurve;
-		float yPosFromAnimCurve = math.remap(0, 1, 0, GameCharacter.CombatComponent.CurrentWeapon.LastAttack.maxVerticalMovement, yPosCurve);
-		float yPosFromAnimCurveDelta = yPosFromAnimCurve - currentYPosAnimCurve;
-		currentYPosAnimCurve = yPosFromAnimCurve;
+		float yPosFromAnimCurveDelta = 0;
+		if (yPosCurve > 0 && GameCharacter.CombatComponent.CurrentWeapon != null && GameCharacter.CombatComponent.CurrentWeapon.LastAttack != null)
+		{
+			float yPosFromAnimCurve = math.remap(0, 1, 0, GameCharacter.CombatComponent.CurrentWeapon.LastAttack.maxVerticalMovement, yPosCurve);
+			yPosFromAnimCurveDelta = yPosFromAnimCurve - currentYPosAnimCurve;
+			currentYPosAnimCurve = yPosFromAnimCurve;
 
-		// FIX LOWFramerate Scenarios
-		float deltaTimeScale = 1f / Time.deltaTime;
-		yPosFromAnimCurveDelta *= deltaTimeScale;
+			// FIX LOWFramerate Scenarios
+			float deltaTimeScale = 1f / Time.deltaTime;
+			yPosFromAnimCurveDelta *= deltaTimeScale;
+		}
+	
 
 		lerpTimeY += deltaTime * GameCharacter.GameCharacterData.AirToZeroVelYInAttackSpeed;
 		lerpTimeX += deltaTime * GameCharacter.GameCharacterData.AirToZeroVelXInAttackSpeed;

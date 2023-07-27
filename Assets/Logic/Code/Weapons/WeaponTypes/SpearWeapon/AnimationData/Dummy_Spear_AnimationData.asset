@@ -53,6 +53,20 @@ MonoBehaviour:
     triggerAnimation: {fileID: 0}
     maxVerticalMovement: 0
   GroundUpAttacks:
+  - clip: {fileID: 6573112461941473822, guid: 515d33518d99a65429e9a0925bbd1d80, type: 3}
+    data:
+      showProperties: 1
+      hitDetectionType: 2
+      mesh: {fileID: 0}
+      offset: {x: 2, y: 2, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 2
+      boxDimensions: {x: 5, y: 2, z: 2}
+      capsulHeight: 0
+    holdAnimation: {fileID: 0}
+    triggerAnimation: {fileID: 0}
+    maxVerticalMovement: 0
+  GroundDownAttacks:
   - clip: {fileID: 1473241261528966758, guid: 9d7c59bbae41cc24681e3f166d0ed69c, type: 3}
     data:
       showProperties: 1
@@ -61,20 +75,6 @@ MonoBehaviour:
       offset: {x: 2, y: 2, z: 0}
       scale: {x: 0, y: 0, z: 0}
       radius: 2
-      boxDimensions: {x: 0, y: 0, z: 0}
-      capsulHeight: 0
-    holdAnimation: {fileID: 0}
-    triggerAnimation: {fileID: 0}
-    maxVerticalMovement: 0
-  GroundDownAttacks:
-  - clip: {fileID: 6573112461941473822, guid: 515d33518d99a65429e9a0925bbd1d80, type: 3}
-    data:
-      showProperties: 1
-      hitDetectionType: 2
-      mesh: {fileID: 0}
-      offset: {x: 0, y: 0, z: 0}
-      scale: {x: 0, y: 0, z: 0}
-      radius: 0
       boxDimensions: {x: 5, y: 2, z: 2}
       capsulHeight: 0
     holdAnimation: {fileID: 0}
@@ -141,10 +141,10 @@ MonoBehaviour:
       showProperties: 1
       hitDetectionType: 2
       mesh: {fileID: 0}
-      offset: {x: 0, y: -1, z: 0}
+      offset: {x: 0, y: 0, z: 0}
       scale: {x: 0, y: 0, z: 0}
       radius: 0
-      boxDimensions: {x: 5, y: 2, z: 1}
+      boxDimensions: {x: 5, y: 3, z: 2}
       capsulHeight: 0
     holdAnimation: {fileID: 4578858030332881257, guid: 4050218c2d2c49f469c17d16cb50cff4,
       type: 3}

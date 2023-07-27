@@ -264,4 +264,9 @@ public class GameCharacter : MonoBehaviour , IDamage
 			Ultra.Utilities.Instance.DebugLogOnScreen(name + " Is Dead", 2f, StringColor.White, 200, DebugAreas.Combat);
 		}
 	}
+
+	public void AddFreezTime()
+	{
+		FreezTimer.Start(FreezTime);
+	}
 }

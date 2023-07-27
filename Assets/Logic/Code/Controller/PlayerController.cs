@@ -65,6 +65,8 @@ public class PlayerController : ControllerBase
 		playerInputs.Default.PreviousWeapon.performed += ctx => EquipPreviousWeapon();
 		playerInputs.Default.ScrollThrouhWeapos.performed += ctx => Scroll(ctx.ReadValue<float>());
 		playerInputs.Default.Attack.performed += ctx => Attack();
+		playerInputs.Default.HeavyAttack.performed += ctx => HeavyAttack();
+		playerInputs.Default.DefensiceAction.performed += ctx => DefensiveAction();
 		playerInputs.Default.ForceFrameRate.performed += ctx => ForceFrameRate();
 		playerInputs.Default.DebugPauseGame.performed += ctx => DebugPauseGame();
 		playerInputs.Default.DebugSlomo.performed += ctx => DebugSlomo();
@@ -115,16 +117,10 @@ public class PlayerController : ControllerBase
 	{
 		float directionTreshold = 0.5f;
 		Vector2 movementVector = gameCharacter.MovementInput;
-		bool hasDirection = Mathf.Abs(movementVector.x) > directionTreshold || Mathf.Abs(movementVector.y) > directionTreshold;
+		bool hasDirection = Mathf.Abs(movementVector.y) > directionTreshold;
 		if (!hasDirection)
 		{
 			gameCharacter?.EventComponent?.AddEvent(new AttackEvent(gameCharacter, EAttackType.Default));
-			return;
-		}
-		bool isHorizontalInput = Mathf.Abs(movementVector.x) > Mathf.Abs(movementVector.y);
-		if (isHorizontalInput)
-		{
-			gameCharacter?.EventComponent?.AddEvent(new AttackEvent(gameCharacter, EAttackType.AttackHorizontal));
 			return;
 		}
 		else
@@ -140,6 +136,14 @@ public class PlayerController : ControllerBase
 				return;
 			}
 		}
+	}
+	void HeavyAttack()
+	{
+		gameCharacter?.EventComponent?.AddEvent(new AttackEvent(gameCharacter, EAttackType.AttackHorizontal));
+	}
+	void DefensiveAction()
+	{
+		gameCharacter?.EventComponent?.AddEvent(new DefensiveEvent(gameCharacter));
 	}
 
 	void DebugUp()

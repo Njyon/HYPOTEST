@@ -163,6 +163,24 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""HeavyAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""bcdc8c1c-2fd4-46ab-8dbb-161ea7969c77"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DefensiveAction"",
+                    ""type"": ""Button"",
+                    ""id"": ""2af74dec-5c9d-4d70-b03f-08772769d691"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""ForceFrameRate"",
                     ""type"": ""Button"",
                     ""id"": ""931e8e96-b16e-41f3-9822-a02b879dc33c"",
@@ -619,6 +637,94 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""action"": ""DebugSlomo"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""471e1a34-011f-48f9-9743-7210b552235f"",
+                    ""path"": ""<Mouse>/middleButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""HeavyAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Shift Left Mouse Button"",
+                    ""id"": ""e0aff06f-b1ab-474e-89b2-0fa32fc85a68"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HeavyAttack"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""4e04f530-4b4d-4f07-87f4-14b9daa6cca1"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""HeavyAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""0244dfe9-90cd-4609-845e-b4a0ffe915f6"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""HeavyAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Alt Left Mouse Button"",
+                    ""id"": ""0a8ba838-183c-4a68-b6b6-3cda78deeb19"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HeavyAttack"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""fe3421fc-1498-4d84-9842-4702a393f15c"",
+                    ""path"": ""<Keyboard>/leftAlt"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""HeavyAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""401cf1d0-249a-4a7e-8beb-baaa7b6c323d"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""HeavyAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4f50c60d-5f5e-4137-bb13-f8a4035d695a"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""DefensiveAction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -670,6 +776,8 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         m_Default_PreviousWeapon = m_Default.FindAction("PreviousWeapon", throwIfNotFound: true);
         m_Default_ScrollThrouhWeapos = m_Default.FindAction("ScrollThrouhWeapos", throwIfNotFound: true);
         m_Default_Attack = m_Default.FindAction("Attack", throwIfNotFound: true);
+        m_Default_HeavyAttack = m_Default.FindAction("HeavyAttack", throwIfNotFound: true);
+        m_Default_DefensiveAction = m_Default.FindAction("DefensiveAction", throwIfNotFound: true);
         m_Default_ForceFrameRate = m_Default.FindAction("ForceFrameRate", throwIfNotFound: true);
         m_Default_DebugPauseGame = m_Default.FindAction("DebugPauseGame", throwIfNotFound: true);
         m_Default_DebugSlomo = m_Default.FindAction("DebugSlomo", throwIfNotFound: true);
@@ -747,6 +855,8 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     private readonly InputAction m_Default_PreviousWeapon;
     private readonly InputAction m_Default_ScrollThrouhWeapos;
     private readonly InputAction m_Default_Attack;
+    private readonly InputAction m_Default_HeavyAttack;
+    private readonly InputAction m_Default_DefensiveAction;
     private readonly InputAction m_Default_ForceFrameRate;
     private readonly InputAction m_Default_DebugPauseGame;
     private readonly InputAction m_Default_DebugSlomo;
@@ -769,6 +879,8 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         public InputAction @PreviousWeapon => m_Wrapper.m_Default_PreviousWeapon;
         public InputAction @ScrollThrouhWeapos => m_Wrapper.m_Default_ScrollThrouhWeapos;
         public InputAction @Attack => m_Wrapper.m_Default_Attack;
+        public InputAction @HeavyAttack => m_Wrapper.m_Default_HeavyAttack;
+        public InputAction @DefensiveAction => m_Wrapper.m_Default_DefensiveAction;
         public InputAction @ForceFrameRate => m_Wrapper.m_Default_ForceFrameRate;
         public InputAction @DebugPauseGame => m_Wrapper.m_Default_DebugPauseGame;
         public InputAction @DebugSlomo => m_Wrapper.m_Default_DebugSlomo;
@@ -826,6 +938,12 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @Attack.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnAttack;
                 @Attack.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnAttack;
                 @Attack.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnAttack;
+                @HeavyAttack.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnHeavyAttack;
+                @HeavyAttack.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnHeavyAttack;
+                @HeavyAttack.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnHeavyAttack;
+                @DefensiveAction.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnDefensiveAction;
+                @DefensiveAction.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnDefensiveAction;
+                @DefensiveAction.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnDefensiveAction;
                 @ForceFrameRate.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnForceFrameRate;
                 @ForceFrameRate.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnForceFrameRate;
                 @ForceFrameRate.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnForceFrameRate;
@@ -884,6 +1002,12 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @Attack.started += instance.OnAttack;
                 @Attack.performed += instance.OnAttack;
                 @Attack.canceled += instance.OnAttack;
+                @HeavyAttack.started += instance.OnHeavyAttack;
+                @HeavyAttack.performed += instance.OnHeavyAttack;
+                @HeavyAttack.canceled += instance.OnHeavyAttack;
+                @DefensiveAction.started += instance.OnDefensiveAction;
+                @DefensiveAction.performed += instance.OnDefensiveAction;
+                @DefensiveAction.canceled += instance.OnDefensiveAction;
                 @ForceFrameRate.started += instance.OnForceFrameRate;
                 @ForceFrameRate.performed += instance.OnForceFrameRate;
                 @ForceFrameRate.canceled += instance.OnForceFrameRate;
@@ -932,6 +1056,8 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         void OnPreviousWeapon(InputAction.CallbackContext context);
         void OnScrollThrouhWeapos(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
+        void OnHeavyAttack(InputAction.CallbackContext context);
+        void OnDefensiveAction(InputAction.CallbackContext context);
         void OnForceFrameRate(InputAction.CallbackContext context);
         void OnDebugPauseGame(InputAction.CallbackContext context);
         void OnDebugSlomo(InputAction.CallbackContext context);

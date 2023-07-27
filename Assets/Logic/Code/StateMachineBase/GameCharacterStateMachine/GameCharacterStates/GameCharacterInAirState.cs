@@ -25,6 +25,7 @@ public class GameCharacterInAirState : AGameCharacterState
 			case EGameCharacterState.Attack: return EGameCharacterState.Attack;
 			case EGameCharacterState.HookedToCharacter: return EGameCharacterState.HookedToCharacter;
 			case EGameCharacterState.PullCharacterOnHorizontalLevel: return EGameCharacterState.PullCharacterOnHorizontalLevel;
+			case EGameCharacterState.Freez: return EGameCharacterState.Freez;
 			default: break;
 		}
 
@@ -51,7 +52,7 @@ public class GameCharacterInAirState : AGameCharacterState
 		Vector3 inputDir = new Vector3(GameCharacter.MovementInput.x, 0f, 0f);
 		Vector3 targetVelocity = inputDir.normalized * maxSpeed;
 		Vector3 velocityDiff = (targetVelocity - velocity);
-		Vector3 acceleration = Vector3.ClampMagnitude(velocityDiff, maxSpeed) * GameCharacter.GameCharacterData.InAirControll;
+		Vector3 acceleration = velocityDiff * GameCharacter.GameCharacterData.InAirControll;
 		velocity += acceleration;
 		if (groundBelowCharacter && GameCharacter.MovementComponent.PossibleGround != null) velocity = Vector3.ProjectOnPlane(velocity, GameCharacter.MovementComponent.PossibleGround.hit.normal);
 
@@ -94,6 +95,8 @@ public class GameCharacterInAirState : AGameCharacterState
 		switch (newState)
 		{
 			case EGameCharacterState.Attack: break;
+			case EGameCharacterState.Freez: break;
+			case EGameCharacterState.HookedToCharacter: break;
 			default:
 				Vector3 test = new Vector3(GameCharacter.MovementComponent.MovementVelocity.x, Physics.gravity.y / 2, GameCharacter.MovementComponent.MovementVelocity.z);
 				GameCharacter.MovementComponent.MovementVelocity = test; 

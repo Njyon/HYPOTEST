@@ -147,4 +147,9 @@ public class CombatComponent
 			}
 		}
 	}
+
+	public void DefensiveAction()
+	{
+		CurrentWeapon?.DefensiveAction();
+	}
 }
