@@ -20,6 +20,7 @@ public class AttackAnimationData
 	public AnimationClip holdAnimation;
 	public AnimationClip triggerAnimation;
 	public float maxVerticalMovement;
+	public List<GameObject> particleList;
 }
 
 public enum EHitDetectionType

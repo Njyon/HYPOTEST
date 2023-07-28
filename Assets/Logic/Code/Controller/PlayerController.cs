@@ -66,7 +66,7 @@ public class PlayerController : ControllerBase
 		playerInputs.Default.ScrollThrouhWeapos.performed += ctx => Scroll(ctx.ReadValue<float>());
 		playerInputs.Default.Attack.performed += ctx => Attack();
 		playerInputs.Default.HeavyAttack.performed += ctx => HeavyAttack();
-		playerInputs.Default.DefensiceAction.performed += ctx => DefensiveAction();
+		playerInputs.Default.DefensiveAction.performed += ctx => DefensiveAction();
 		playerInputs.Default.ForceFrameRate.performed += ctx => ForceFrameRate();
 		playerInputs.Default.DebugPauseGame.performed += ctx => DebugPauseGame();
 		playerInputs.Default.DebugSlomo.performed += ctx => DebugSlomo();

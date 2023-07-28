@@ -82,6 +82,11 @@ public class CombatComponent
 		}
 		if (weapons.Length >= 1 && weapons[0] != null && weapons[0].Weapon != null)
 		{
+			for (int i = 0; i < weapons.Length; i++) 
+			{
+				weapons[i]?.Weapon?.InitWeapon();
+			}
+
 			currentWeaponIndex = 0;
 			CurrentWeapon = weapons[currentWeaponIndex].Weapon;
 		}

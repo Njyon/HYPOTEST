@@ -197,6 +197,11 @@ public class GameCharacter : MonoBehaviour , IDamage
 		StateMachine?.RequestStateChange(EGameCharacterState.AttackRecovery);
 	}
 
+	public void StartParticleEffect(int index)
+	{
+		CombatComponent?.CurrentWeapon?.StartParticelEffect(index);
+	}
+
 	public void DoDamage(GameCharacter damageInitiator, float damage)
 	{
 		Ultra.Utilities.Instance.DebugLogOnScreen(name + " got Damaged by: " + damageInitiator.name + ", Damage = " + damage, 2f, StringColor.Red, 200, DebugAreas.Combat);

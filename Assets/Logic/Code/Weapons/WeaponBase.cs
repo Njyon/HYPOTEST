@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using Unity.VisualScripting.Antlr3.Runtime.Collections;
 using UnityEditor;
 using UnityEngine;
@@ -35,6 +36,16 @@ public abstract class WeaponBase
 	AttackAnimationData currentAttack;
 	protected List<GameObject> hitObjects;
 
+	// Particle Save
+	List<List<ParticleSystem>> groundLightAttackParticleList;
+	List<List<ParticleSystem>> groundHeavyAttackParticleList;
+	List<List<ParticleSystem>> groundUpAttackParticleList;
+	List<List<ParticleSystem>> groundDownAttackParticleList;
+	List<List<ParticleSystem>> airLightAttackParticleList;
+	List<List<ParticleSystem>> airHeavyAttackParticleList;
+	List<List<ParticleSystem>> airUpAttackParticleList;
+	List<List<ParticleSystem>> airDownAttackParticleList;
+
 	public GameCharacter GameCharacter { get { return gameCharacter; } }
     public ScriptableWeapon WeaponData { get { return weaponData; } }
     public GameObject SpawnedWeapon { get { return spawnedWeapon; } }
@@ -51,6 +62,28 @@ public abstract class WeaponBase
         this.weaponData = weaponData;
 		hitObjects = new List<GameObject>();
     }
+
+	public virtual void InitWeapon()
+	{
+		if (!weaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return;
+
+		groundLightAttackParticleList = new List<List<ParticleSystem>>();
+		InitParticleForAttackList(ref weaponData.AnimationData[GameCharacter.CharacterData.Name].GroundAttacks, ref groundLightAttackParticleList);
+		groundHeavyAttackParticleList = new List<List<ParticleSystem>>();
+		InitParticleForAttackList(ref weaponData.AnimationData[GameCharacter.CharacterData.Name].GroundDirectionAttacks, ref groundHeavyAttackParticleList);
+		groundUpAttackParticleList = new List<List<ParticleSystem>>();
+		InitParticleForAttackList(ref weaponData.AnimationData[GameCharacter.CharacterData.Name].GroundUpAttacks, ref groundUpAttackParticleList);
+		groundDownAttackParticleList = new List<List<ParticleSystem>>();
+		InitParticleForAttackList(ref weaponData.AnimationData[GameCharacter.CharacterData.Name].GroundDownAttacks, ref groundDownAttackParticleList);
+		airLightAttackParticleList = new List<List<ParticleSystem>>();
+		InitParticleForAttackList(ref weaponData.AnimationData[GameCharacter.CharacterData.Name].AirAttacks, ref airLightAttackParticleList);
+		airHeavyAttackParticleList = new List<List<ParticleSystem>>();
+		InitParticleForAttackList(ref weaponData.AnimationData[GameCharacter.CharacterData.Name].AirDirectionAttacks, ref airHeavyAttackParticleList);
+		airUpAttackParticleList = new List<List<ParticleSystem>>();
+		InitParticleForAttackList(ref weaponData.AnimationData[GameCharacter.CharacterData.Name].AirUpAttacks, ref airUpAttackParticleList);
+		airDownAttackParticleList = new List<List<ParticleSystem>>();
+		InitParticleForAttackList(ref weaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks, ref airDownAttackParticleList);
+	}
 
     public virtual void EquipWeapon()
 	{
@@ -334,7 +367,7 @@ public abstract class WeaponBase
 	protected void BaseAttackLogic(EExplicitAttackType explicitAttackType, ref List<AttackAnimationData> attackList)
 	{
 		GetAnimation(explicitAttackType, ref attackList);
-		if (currentAttack.clip == null)
+		if (currentAttack == null || currentAttack.clip == null)
 		{
 			Ultra.Utilities.Instance.DebugLogOnScreen("AttackClip was null!", 5f, StringColor.Red, 100, DebugAreas.Combat);
 			Debug.Log(Ultra.Utilities.Instance.DebugErrorString("WeaponBase", "BaseAttackLogic", "AttackClip was null!"));
@@ -501,5 +534,44 @@ public abstract class WeaponBase
 	public virtual void DefensiveAction()
 	{
 
+	}
+
+	public void StartParticelEffect(int index)
+	{
+		switch (currentAttackType)
+		{
+			case EExplicitAttackType.GroundedDefaultAttack: PlayParticleEffect(groundLightAttackParticleList[attackIndex][index], currentAttack.particleList[index]); break;
+			case EExplicitAttackType.GroundedDirectionalAttack: groundHeavyAttackParticleList[attackIndex][index].Play(); break;
+			case EExplicitAttackType.GroundedUpAttack: groundUpAttackParticleList[attackIndex][index].Play(); break;
+			case EExplicitAttackType.GroundedDownAttack: groundDownAttackParticleList[attackIndex][index].Play(); break;
+			case EExplicitAttackType.AirDefaultAttack: airLightAttackParticleList[attackIndex][index].Play(); break;
+			case EExplicitAttackType.AirDirectionalAttack: airHeavyAttackParticleList[attackIndex][index].Play(); break;
+			case EExplicitAttackType.AirDownAttack: airDownAttackParticleList[attackIndex][index].Play(); break;
+			case EExplicitAttackType.AirUpAttack: airUpAttackParticleList[attackIndex][index].Play(); break;
+			default: break;
+		}
+	}
+
+	void PlayParticleEffect(ParticleSystem particle, GameObject baseParticle)
+	{
+		particle.transform.parent = GameCharacter.GameCharacterData.Root;
+		particle.transform.localPosition = baseParticle.transform.localPosition;
+		particle.transform.localRotation = baseParticle.transform.localRotation;
+		particle.Play();
+		particle.transform.parent = null;
+	}
+
+	void InitParticleForAttackList(ref List<AttackAnimationData> animList, ref List<List<ParticleSystem>> particleList)
+	{
+		for (int i = 0; i < animList.Count; i++)
+		{
+			particleList.Add(new List<ParticleSystem>());
+			for (int j = 0; j < animList[i].particleList.Count; j++)
+			{
+				GameObject particle = GameObject.Instantiate(animList[i].particleList[j], GameCharacter.GameCharacterData.Root);
+				ParticleSystem particleSystem = particle.GetComponent<ParticleSystem>();
+				particleList[i].Add(particleSystem);
+			}
+		}
 	}
 }

@@ -105,7 +105,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 
 	private void OnAnimatorMove()
 	{
-		if (gameCharacter.Animator != null)
+		if (gameCharacter?.Animator != null)
 		{
 			rootmotionVector = gameCharacter.Animator.deltaPosition * (1 / Time.deltaTime);
 			if (gameCharacter.IsPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen(rootmotionVector.ToString(), 0, StringColor.Teal, 100, DebugAreas.Movement);
