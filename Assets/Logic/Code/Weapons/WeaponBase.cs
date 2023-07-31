@@ -541,13 +541,13 @@ public abstract class WeaponBase
 		switch (currentAttackType)
 		{
 			case EExplicitAttackType.GroundedDefaultAttack: PlayParticleEffect(groundLightAttackParticleList[attackIndex][index], currentAttack.particleList[index]); break;
-			case EExplicitAttackType.GroundedDirectionalAttack: groundHeavyAttackParticleList[attackIndex][index].Play(); break;
-			case EExplicitAttackType.GroundedUpAttack: groundUpAttackParticleList[attackIndex][index].Play(); break;
-			case EExplicitAttackType.GroundedDownAttack: groundDownAttackParticleList[attackIndex][index].Play(); break;
-			case EExplicitAttackType.AirDefaultAttack: airLightAttackParticleList[attackIndex][index].Play(); break;
-			case EExplicitAttackType.AirDirectionalAttack: airHeavyAttackParticleList[attackIndex][index].Play(); break;
-			case EExplicitAttackType.AirDownAttack: airDownAttackParticleList[attackIndex][index].Play(); break;
-			case EExplicitAttackType.AirUpAttack: airUpAttackParticleList[attackIndex][index].Play(); break;
+			case EExplicitAttackType.GroundedDirectionalAttack: PlayParticleEffect(groundHeavyAttackParticleList[attackIndex][index], currentAttack.particleList[index]); break;
+			case EExplicitAttackType.GroundedUpAttack: PlayParticleEffect(groundUpAttackParticleList[attackIndex][index], currentAttack.particleList[index]); break;
+			case EExplicitAttackType.GroundedDownAttack: PlayParticleEffect(groundDownAttackParticleList[attackIndex][index], currentAttack.particleList[index]); break;
+			case EExplicitAttackType.AirDefaultAttack: PlayParticleEffect(airLightAttackParticleList[attackIndex][index], currentAttack.particleList[index]); break;
+			case EExplicitAttackType.AirDirectionalAttack: PlayParticleEffect(airHeavyAttackParticleList[attackIndex][index], currentAttack.particleList[index]); break;
+			case EExplicitAttackType.AirDownAttack: PlayParticleEffect(airDownAttackParticleList[attackIndex][index], currentAttack.particleList[index]); break;
+			case EExplicitAttackType.AirUpAttack: PlayParticleEffect(airUpAttackParticleList[attackIndex][index], currentAttack.particleList[index]); break;
 			default: break;
 		}
 	}

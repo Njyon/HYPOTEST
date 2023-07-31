@@ -5,25 +5,25 @@ using UnityEngine.Experimental.GlobalIllumination;
 
 public class WeaponProjectile : MonoBehaviour
 {
+	public delegate void OnProjectileHit(GameObject other);
+	public OnProjectileHit onProjectileHit;
+
 	[SerializeField] float speed = 5f;
 	[SerializeField] float aliveTime = 5f;
 	Vector3 direction;
 	ColliderHitScript colliderScript;
 	CapsuleCollider capsuleCollider;
 	GameCharacter gameCharacterOwner;
-	float damage = 0;
 	bool hit = false;
 	float moveDistance = 0.5f;
 	bool initilized = false;
 	Ultra.Timer timer;
 
 	public Vector3 Direction { get { return direction; } }
-	public float Damage { get { return damage; } }
 	public GameCharacter GameCharacterOwner { get { return gameCharacterOwner; } }
 
-	public void Initialize(GameCharacter Owner, Vector3 direction, float Damage)
+	public void Initialize(GameCharacter Owner, Vector3 direction)
 	{
-		damage = Damage;
 		gameCharacterOwner = Owner;
 		this.direction = direction;
 		initilized = true;
@@ -78,11 +78,10 @@ public class WeaponProjectile : MonoBehaviour
 		transform.rotation = Quaternion.LookRotation(Direction, Vector3.up);
 		capsuleCollider.enabled = false;
 
-		IDamage damageIterface = other.GetComponent<IDamage>();
-		if (damageIterface == null) return;
+		if (onProjectileHit != null) onProjectileHit(other.gameObject);
 		transform.parent = other.transform;
 		timer.AddTime(1);
-		damageIterface.DoDamage(GameCharacterOwner, Damage);
+
 	}
 
 	void OnTimerFinished()

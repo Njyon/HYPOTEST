@@ -106,7 +106,9 @@ public class SpearWeapon : WeaponBase
 
 	public override void GroundDirectionAttackHit(GameObject hitObj)
 	{
-
+		IDamage damageIterface = hitObj.GetComponent<IDamage>();
+		if (damageIterface == null) return;
+		damageIterface.DoDamage(GameCharacter, 10);
 	}
 
 	public override void AirAttackHit(GameObject hitObj)
@@ -248,7 +250,8 @@ public class SpearWeapon : WeaponBase
 		throwSpear.transform.rotation = Quaternion.LookRotation(GameCharacter.transform.forward.normalized, Vector3.up);
 		throwSpear.transform.eulerAngles = new Vector3(throwSpear.transform.eulerAngles.x, throwSpear.transform.eulerAngles.y, 90f);
 		WeaponProjectile weaponProjectile = throwSpear.GetComponent<WeaponProjectile>();
-		weaponProjectile.Initialize(GameCharacter, GameCharacter.transform.forward, 10f);
+		weaponProjectile.onProjectileHit += GroundDirectionAttackHit;
+		weaponProjectile.Initialize(GameCharacter, GameCharacter.transform.forward);
 
 		thrownSpears.Add(throwSpear);
 	}
@@ -257,5 +260,13 @@ public class SpearWeapon : WeaponBase
 	{
 		base.DefensiveAction();
 
+		SpawnedWeapon.SetActive(false);
+		GameObject throwSpear = GameObject.Instantiate(GameAssets.Instance.ThrowSpear);
+		throwSpear.transform.position = new Vector3(SpawnedWeaponBones.transform.position.x, SpawnedWeaponBones.transform.position.y, 0);
+		throwSpear.transform.rotation = Quaternion.LookRotation(GameCharacter.transform.forward.normalized, Vector3.up);
+		throwSpear.transform.eulerAngles = new Vector3(throwSpear.transform.eulerAngles.x, throwSpear.transform.eulerAngles.y, 90f);
+		WeaponProjectile weaponProjectile = throwSpear.GetComponent<WeaponProjectile>();
+		weaponProjectile.onProjectileHit += GroundDirectionAttackHit;
+		weaponProjectile.Initialize(GameCharacter, GameCharacter.transform.forward);
 	}
 }
