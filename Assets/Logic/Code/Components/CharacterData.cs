@@ -50,6 +50,9 @@ public class GameCharacterData : MonoBehaviour
 	[Header("Bones")]
 	[SerializeField] Transform root;
 
+	[Header("Combat")]
+	[SerializeField] float characterDetectionRange = 30f;
+
 	public float MaxMovementSpeed { get { return maxMovementSpeed; } }
 	public float MovmentGravity { get { return movmentGravity; } }
 	public float Acceleration { get { return acceleration; } }	
@@ -85,4 +88,6 @@ public class GameCharacterData : MonoBehaviour
 	public float Health { get { return health; } }
 
 	public Transform Root { get { return root; } }
+
+	public float CharacterDetectionRange { get { return characterDetectionRange; } }
 }

@@ -26,6 +26,8 @@ public class GameCharacterInAirState : AGameCharacterState
 			case EGameCharacterState.HookedToCharacter: return EGameCharacterState.HookedToCharacter;
 			case EGameCharacterState.PullCharacterOnHorizontalLevel: return EGameCharacterState.PullCharacterOnHorizontalLevel;
 			case EGameCharacterState.Freez: return EGameCharacterState.Freez;
+			case EGameCharacterState.DefensiveAction: return EGameCharacterState.DefensiveAction;
+			case EGameCharacterState.MoveToPosition: return EGameCharacterState.MoveToPosition;
 			default: break;
 		}
 

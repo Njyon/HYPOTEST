@@ -260,13 +260,61 @@ public class SpearWeapon : WeaponBase
 	{
 		base.DefensiveAction();
 
+		GameCharacter targetEnemy = FindMostPointingObject((GameCharacter.MovementInput.magnitude <= 0) ? GameCharacter.transform.forward : GameCharacter.MovementInput, ref GameCharacter.CharacterDetection.OverlappingGameCharacter);
+
 		SpawnedWeapon.SetActive(false);
 		GameObject throwSpear = GameObject.Instantiate(GameAssets.Instance.ThrowSpear);
 		throwSpear.transform.position = new Vector3(SpawnedWeaponBones.transform.position.x, SpawnedWeaponBones.transform.position.y, 0);
-		throwSpear.transform.rotation = Quaternion.LookRotation(GameCharacter.transform.forward.normalized, Vector3.up);
+		throwSpear.transform.rotation = Quaternion.LookRotation((targetEnemy.MovementComponent.CharacterCenter - throwSpear.transform.position).normalized, Vector3.up);
 		throwSpear.transform.eulerAngles = new Vector3(throwSpear.transform.eulerAngles.x, throwSpear.transform.eulerAngles.y, 90f);
 		WeaponProjectile weaponProjectile = throwSpear.GetComponent<WeaponProjectile>();
-		weaponProjectile.onProjectileHit += GroundDirectionAttackHit;
-		weaponProjectile.Initialize(GameCharacter, GameCharacter.transform.forward);
+		weaponProjectile.onProjectileHit += DefensiveActionHit;
+		weaponProjectile.Initialize(GameCharacter, throwSpear.transform.position, targetEnemy);
+	}
+
+	void DefensiveActionHit(GameObject hitObj)
+	{
+		GameCharacter hitgameCharacter = hitObj.GetComponent<GameCharacter>();
+		if (hitgameCharacter == null)
+		{
+			IDamage damageInterface = hitObj.GetComponent<IDamage>();
+			if (damageInterface != null) damageInterface.DoDamage(GameCharacter, 0);
+			return;
+		}
+
+		hitgameCharacter.CombatComponent.HookedToCharacter = GameCharacter;
+		hitgameCharacter.CombatComponent.MoveToPosition = GameCharacter.transform.position + GameCharacter.transform.forward * 1f;
+
+		hitgameCharacter.StateMachine.RequestStateChange(EGameCharacterState.MoveToPosition);
+	}
+
+	public GameCharacter FindMostPointingObject(Vector3 direction, ref List<GameCharacter> list)
+	{
+
+		GameCharacter mostPointingObject = list[0];
+		float smallestAngle = GetAngleBetweenVectors(direction.normalized, (mostPointingObject.transform.position - GameCharacter.transform.position).normalized);
+
+		foreach (GameCharacter character in list)
+		{
+			float angle = GetAngleBetweenVectors(direction.normalized, (character.transform.position - GameCharacter.transform.position).normalized);
+			if (angle < smallestAngle)
+			{
+				mostPointingObject = character;
+				smallestAngle = angle;
+			}
+		}
+
+		return mostPointingObject;
+	}
+
+	private float GetAngleBetweenVectors(Vector3 a, Vector3 b)
+	{
+		float angle = Vector3.Angle(a, b);
+		Vector3 cross = Vector3.Cross(a, b);
+		if (cross.y < 0 && angle > 180f)
+		{
+			angle = 360f - angle; // Korrektur nur wenn der Winkel > 180 Grad ist
+		}
+		return angle;
 	}
 }

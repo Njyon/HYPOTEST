@@ -28,6 +28,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 	float freezTime = 1f;
 	float characterRadiusTarget;
 	float characterHeightTarget;
+	CharacterDetection characterDetection;
 
 	bool isInitialized = false;
 	public bool IsInitialized { get { return isInitialized; } }
@@ -49,6 +50,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 	public Quaternion RotationTarget { get { return rotationTarget; } }
 	public Ultra.Timer FreezTimer { get { return freezTimer; } }
 	public float FreezTime { get { return freezTime; } }	
+	public CharacterDetection CharacterDetection { get { return characterDetection; } }
 	public float CharacterRadiusTarget
 	{
 		get { return characterRadiusTarget; }
@@ -102,6 +104,10 @@ public class GameCharacter : MonoBehaviour , IDamage
 		pluginStateMachine.Init(this);
 		animController = new AnimationController(this);
 		combatComponent = new CombatComponent(this);
+
+		GameObject characterDetectionObject = GameObject.Instantiate(GameAssets.Instance.characterDetection, transform);
+		characterDetection = characterDetectionObject.GetComponent<CharacterDetection>();
+		characterDetection.Collider.radius = gameCharacterData.CharacterDetectionRange;
 
 		// Set Default Data
 		lastDir = transform.right;

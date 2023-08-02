@@ -27,12 +27,13 @@ public class GameCharacterPullCharacterOnHorizontalLevelState : AGameCharacterSt
 
 	public override EGameCharacterState GetStateType()
 	{
-		return EGameCharacterState.Unknown;
+		return EGameCharacterState.PullCharacterOnHorizontalLevel;
 	}
 
 	public override EGameCharacterState UpdateState(float deltaTime, EGameCharacterState newStateRequest)
 	{
-		if (newStateRequest != EGameCharacterState.Unknown) return newStateRequest;
+		if (newStateRequest != EGameCharacterState.Unknown) 
+			return newStateRequest;
 		return GetStateType();
 	}
 

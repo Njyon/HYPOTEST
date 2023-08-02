@@ -25,9 +25,11 @@ public class CombatComponent
 	int equipedWeaponAmount;
 	Ultra.Timer attackTimer;
 	GameCharacter hookedToCharacter;
+	Vector3 moveToPosition;
 
 	public Ultra.Timer AttackTimer { get { return attackTimer; } }
 	public GameCharacter HookedToCharacter { get { return hookedToCharacter; } set { hookedToCharacter = value; } }
+	public Vector3 MoveToPosition { get { return moveToPosition; } set { moveToPosition = value; } }
 
 	public WeaponBase CurrentWeapon { 
 		get { return currentWeapon; } 
