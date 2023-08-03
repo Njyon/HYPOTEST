@@ -17,6 +17,7 @@ public class GameCharacterAttackState : AGameCharacterState
     public override void StartState(EGameCharacterState oldState)
 	{
 		GameCharacter.AnimController.InAttack = true;
+		GameCharacter.MovementComponent.UseGravity = false;
 		GameCharacter.AnimController.InterpSecondaryMotionLayerWeight(0, 10f);
 		initYVelocity = GameCharacter.MovementComponent.MovementVelocity.y;
 		initXVelocity = GameCharacter.MovementComponent.MovementVelocity.x;
@@ -33,6 +34,7 @@ public class GameCharacterAttackState : AGameCharacterState
 			newDir = GameCharacter.RotationTarget;
 		}
 		GameCharacter.CombatComponent.CurrentWeapon.StartAttackStateLogic();
+		GameCharacter.CombatComponent.AttackTimer.Start(GameCharacter.CombatComponent.CurrentWeapon.CurrentAttack.clip.length);
 	}
 
 	public override EGameCharacterState GetStateType()
@@ -57,43 +59,11 @@ public class GameCharacterAttackState : AGameCharacterState
 	public override void ExecuteState(float deltaTime)
 	{
 		GameCharacter.CombatComponent.CurrentWeapon.PreAttackStateLogic(deltaTime);
-		RotateCharacter();
+		RotateCharacter(newDir);
 
-		float yPosCurve = GameCharacter.AnimController.GetUpMovementCurve;
-		float yPosFromAnimCurveDelta = 0;
-		if (yPosCurve > 0 && GameCharacter.CombatComponent.CurrentWeapon != null && GameCharacter.CombatComponent.CurrentWeapon.LastAttack != null)
-		{
-			float yPosFromAnimCurve = math.remap(0, 1, 0, GameCharacter.CombatComponent.CurrentWeapon.LastAttack.maxVerticalMovement, yPosCurve);
-			yPosFromAnimCurveDelta = yPosFromAnimCurve - currentYPosAnimCurve;
-			currentYPosAnimCurve = yPosFromAnimCurve;
+		CombatMovement(deltaTime, initYVelocity, initXVelocity, ref lerpTimeY, ref lerpTimeX, ref currentYPosAnimCurve);
 
-			// FIX LOWFramerate Scenarios
-			float deltaTimeScale = 1f / Time.deltaTime;
-			yPosFromAnimCurveDelta *= deltaTimeScale;
-		}
-	
-
-		lerpTimeY += deltaTime * GameCharacter.GameCharacterData.AirToZeroVelYInAttackSpeed;
-		lerpTimeX += deltaTime * GameCharacter.GameCharacterData.AirToZeroVelXInAttackSpeed;
-		float yMotion = GameCharacter.MovementComponent.RootmotionVector.y + Mathf.Lerp(initYVelocity, 0, lerpTimeY) + yPosFromAnimCurveDelta;
-		float xMotion = GameCharacter.MovementComponent.RootmotionVector.x + Mathf.Lerp(initXVelocity, 0, lerpTimeX);
-		Vector3 rootmotionVector = new Vector3(xMotion, yMotion, 0);
-
-		// Move Along Ground
-		if (GameCharacter.MovementComponent.IsGrounded)
-		{
-			Vector2 newInputVector = Vector3.ProjectOnPlane(rootmotionVector, GameCharacter.MovementComponent.RayCastGroundHit != null ? GameCharacter.MovementComponent.RayCastGroundHit.hit.normal : GameCharacter.MovementComponent.PossibleGround.hit.normal);
-			if (Mathf.Abs(newInputVector.normalized.x) > 0.1f) rootmotionVector = newInputVector;
-		}
-
-		GameCharacter.MovementComponent.MovementVelocity = rootmotionVector;
 		GameCharacter.CombatComponent.CurrentWeapon.PostAttackStateLogic(deltaTime);
-	}
-
-	private void RotateCharacter()
-	{
-		Quaternion targetRot = Quaternion.Slerp(GameCharacter.transform.rotation, newDir, Time.deltaTime * GameCharacter.GameCharacterData.RoationSpeed);
-		GameCharacter.transform.rotation = targetRot;
 	}
 
 	public override void FixedExecuteState(float deltaTime)
@@ -108,6 +78,7 @@ public class GameCharacterAttackState : AGameCharacterState
 
 	public override void EndState(EGameCharacterState newState)
 	{
+		GameCharacter.MovementComponent.UseGravity = true;
 		GameCharacter.transform.rotation = newDir;
 		GameCharacter.CombatComponent.CurrentWeapon.EndAttackStateLogic();
 	}

@@ -18,6 +18,7 @@ public class GameCharacterPullCharacterOnHorizontalLevelState : AGameCharacterSt
 			GameCharacter.RequestBestCharacterState();
 			return;
 		}
+		GameCharacter.MovementComponent.UseGravity = false;
 
 		enemyCordinate = GameCharacter.CombatComponent.HookedToCharacter.transform.position + GameCharacter.CombatComponent.HookedToCharacter.MovementComponent.CapsuleCollider.center;
 		enemyCordinateOnlyY = new Vector3(GameCharacter.transform.position.x ,enemyCordinate.y, GameCharacter.transform.position.z);
@@ -63,6 +64,7 @@ public class GameCharacterPullCharacterOnHorizontalLevelState : AGameCharacterSt
 	public override void EndState(EGameCharacterState newState)
 	{
 		GameCharacter.MovementComponent.onMoveCollisionFlag -= OnMoveCollisionFlag;
+		GameCharacter.MovementComponent.UseGravity = true;
 	}
 
 	bool ShouldLeaveState()

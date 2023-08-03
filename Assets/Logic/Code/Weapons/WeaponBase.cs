@@ -4,6 +4,7 @@ using Unity.VisualScripting;
 using Unity.VisualScripting.Antlr3.Runtime.Collections;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public enum EExplicitAttackType
 {
@@ -16,6 +17,7 @@ public enum EExplicitAttackType
     AirDirectionalAttack,
     AirUpAttack,
     AirDownAttack,
+	DefensiveAction,
 }
 
 public abstract class WeaponBase
@@ -27,6 +29,7 @@ public abstract class WeaponBase
 	EExplicitAttackType currentAttackType;
 	EExplicitAttackType lastAttackType;
     int attackIndex;
+    int defensiveActionIndex;
 	bool ishitDetecting = false;
 	GameObject hitDetectionGameObject;
 	MeshCollider hitDetectionMeshCollider;
@@ -34,6 +37,7 @@ public abstract class WeaponBase
 	MeshFilter hitDetectionMeshFilter;
 	MeshRenderer hitDetectionMeshRenderer;
 	AttackAnimationData currentAttack;
+	AttackAnimationData currentDefensiveAction;
 	protected List<GameObject> hitObjects;
 
 	// Particle Save
@@ -45,13 +49,15 @@ public abstract class WeaponBase
 	List<List<ParticleSystem>> airHeavyAttackParticleList;
 	List<List<ParticleSystem>> airUpAttackParticleList;
 	List<List<ParticleSystem>> airDownAttackParticleList;
+	List<List<ParticleSystem>> defensiveActionParticleList;
 
 	public GameCharacter GameCharacter { get { return gameCharacter; } }
     public ScriptableWeapon WeaponData { get { return weaponData; } }
     public GameObject SpawnedWeapon { get { return spawnedWeapon; } }
     public GameObject SpawnedWeaponBones { get { return spawnedWeaponBones; } }
 	public bool IsHitDetecting { get { return ishitDetecting; } }
-	public AttackAnimationData LastAttack { get { return currentAttack; } }
+	public AttackAnimationData CurrentAttack { get { return currentAttack; } }
+	public AttackAnimationData CurrentDefensiveAction { get { return currentDefensiveAction; } }
 	public EExplicitAttackType CurrentAttackType { get { return currentAttackType; } }
 	public EExplicitAttackType LastAttackType { get { return lastAttackType; } }
 
@@ -83,6 +89,8 @@ public abstract class WeaponBase
 		InitParticleForAttackList(ref weaponData.AnimationData[GameCharacter.CharacterData.Name].AirUpAttacks, ref airUpAttackParticleList);
 		airDownAttackParticleList = new List<List<ParticleSystem>>();
 		InitParticleForAttackList(ref weaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks, ref airDownAttackParticleList);
+		defensiveActionParticleList = new List<List<ParticleSystem>>();
+		InitParticleForAttackList(ref weaponData.AnimationData[GameCharacter.CharacterData.Name].DefensiveAction, ref defensiveActionParticleList);
 	}
 
     public virtual void EquipWeapon()
@@ -92,6 +100,7 @@ public abstract class WeaponBase
 		SpawnVisualWeaponMesh();
 		SetUpHitDetectionMeshLogic();
 		gameCharacter.StateMachine.onStateChanged += OnGameCharacterStateChange;
+		defensiveActionIndex = 0;
 	}
 
 	private void SpawnVisualWeaponMesh()
@@ -298,6 +307,12 @@ public abstract class WeaponBase
 		else AirAttack();
 	}
 
+	public virtual void DefensiveAction()
+	{
+		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return;
+		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].DefensiveAction.Count > 0) DefensiceActionLogic(ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].DefensiveAction);
+	}
+
 	public virtual void GroundAttackHit(GameObject hitObj)
 	{
 
@@ -364,6 +379,15 @@ public abstract class WeaponBase
 		currentAttack = attackList[attackIndex];
 	}
 
+	void GetDefensiveAnimation(ref List<AttackAnimationData> defensiveList)
+	{
+		currentAttackType = EExplicitAttackType.DefensiveAction;
+		defensiveActionIndex++;
+		if (defensiveList == null || defensiveList.Count <= 0) return;
+		defensiveActionIndex = defensiveActionIndex % defensiveList.Count;
+		currentDefensiveAction = defensiveList[defensiveActionIndex];
+	}
+
 	protected void BaseAttackLogic(EExplicitAttackType explicitAttackType, ref List<AttackAnimationData> attackList)
 	{
 		GetAnimation(explicitAttackType, ref attackList);
@@ -375,7 +399,19 @@ public abstract class WeaponBase
 		}
 		gameCharacter.AnimController.Attack(currentAttack.clip);
 		gameCharacter.StateMachine.RequestStateChange(EGameCharacterState.Attack);
-		gameCharacter.CombatComponent.AttackTimer.Start(currentAttack.clip.length);
+	}
+
+	protected void DefensiceActionLogic(ref List<AttackAnimationData> defensiveList)
+	{
+		GetDefensiveAnimation(ref defensiveList);
+		if (currentDefensiveAction == null || currentDefensiveAction.clip == null)
+		{
+			Ultra.Utilities.Instance.DebugLogOnScreen("DefensiveActionClip was null!", 5f, StringColor.Red, 100, DebugAreas.Combat);
+			Debug.Log(Ultra.Utilities.Instance.DebugErrorString("WeaponBase", "DefensiceActionLogic", "DefensiveActionClip was null!"));
+			return;
+		}
+		gameCharacter.AnimController.SetDefensiveAction(currentDefensiveAction.clip);
+		gameCharacter.StateMachine.RequestStateChange(EGameCharacterState.DefensiveAction);
 	}
 
 	protected void HoldAttackAfterAttack(EExplicitAttackType explicitAttackType, ref List<AttackAnimationData> attackList)
@@ -531,23 +567,19 @@ public abstract class WeaponBase
 
 	}
 
-	public virtual void DefensiveAction()
-	{
-
-	}
-
 	public void StartParticelEffect(int index)
 	{
 		switch (currentAttackType)
 		{
-			case EExplicitAttackType.GroundedDefaultAttack: PlayParticleEffect(groundLightAttackParticleList[attackIndex][index], currentAttack.particleList[index]); break;
-			case EExplicitAttackType.GroundedDirectionalAttack: PlayParticleEffect(groundHeavyAttackParticleList[attackIndex][index], currentAttack.particleList[index]); break;
-			case EExplicitAttackType.GroundedUpAttack: PlayParticleEffect(groundUpAttackParticleList[attackIndex][index], currentAttack.particleList[index]); break;
-			case EExplicitAttackType.GroundedDownAttack: PlayParticleEffect(groundDownAttackParticleList[attackIndex][index], currentAttack.particleList[index]); break;
-			case EExplicitAttackType.AirDefaultAttack: PlayParticleEffect(airLightAttackParticleList[attackIndex][index], currentAttack.particleList[index]); break;
-			case EExplicitAttackType.AirDirectionalAttack: PlayParticleEffect(airHeavyAttackParticleList[attackIndex][index], currentAttack.particleList[index]); break;
-			case EExplicitAttackType.AirDownAttack: PlayParticleEffect(airDownAttackParticleList[attackIndex][index], currentAttack.particleList[index]); break;
-			case EExplicitAttackType.AirUpAttack: PlayParticleEffect(airUpAttackParticleList[attackIndex][index], currentAttack.particleList[index]); break;
+			case EExplicitAttackType.GroundedDefaultAttack: PlayParticleEffect(groundLightAttackParticleList[attackIndex][index], CurrentAttack.particleList[index]); break;
+			case EExplicitAttackType.GroundedDirectionalAttack: PlayParticleEffect(groundHeavyAttackParticleList[attackIndex][index], CurrentAttack.particleList[index]); break;
+			case EExplicitAttackType.GroundedUpAttack: PlayParticleEffect(groundUpAttackParticleList[attackIndex][index], CurrentAttack.particleList[index]); break;
+			case EExplicitAttackType.GroundedDownAttack: PlayParticleEffect(groundDownAttackParticleList[attackIndex][index], CurrentAttack.particleList[index]); break;
+			case EExplicitAttackType.AirDefaultAttack: PlayParticleEffect(airLightAttackParticleList[attackIndex][index], CurrentAttack.particleList[index]); break;
+			case EExplicitAttackType.AirDirectionalAttack: PlayParticleEffect(airHeavyAttackParticleList[attackIndex][index], CurrentAttack.particleList[index]); break;
+			case EExplicitAttackType.AirDownAttack: PlayParticleEffect(airDownAttackParticleList[attackIndex][index], CurrentAttack.particleList[index]); break;
+			case EExplicitAttackType.AirUpAttack: PlayParticleEffect(airUpAttackParticleList[attackIndex][index], CurrentAttack.particleList[index]); break;
+			case EExplicitAttackType.DefensiveAction: PlayParticleEffect(defensiveActionParticleList[defensiveActionIndex][index], CurrentDefensiveAction.particleList[index]); break;
 			default: break;
 		}
 	}
@@ -573,5 +605,10 @@ public abstract class WeaponBase
 				particleList[i].Add(particleSystem);
 			}
 		}
+	}
+
+	public virtual void CharacterArrivedAtRequestedLocation(GameCharacter movedCharacter)
+	{
+
 	}
 }

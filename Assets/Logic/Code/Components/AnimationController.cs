@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
@@ -39,6 +40,7 @@ public class AnimationController
 	int freezAIndex;
 	int holdAttackIndex;
 	int triggerAttackIndex;
+	int inDefensiveActionIndex;
 
 	float minMalkSpeed;
 	bool startWalkRunBlendInterp = true;
@@ -296,6 +298,19 @@ public class AnimationController
 			}
 		}
 	}
+	bool inDefensiveAction = false;
+	public bool InDefensiveAction
+	{
+		get { return inDefensiveAction; }
+		set
+		{
+			if (inDefensiveAction != value)
+			{
+				inDefensiveAction = value;
+				gameCharacter.Animator.SetBool(inDefensiveActionIndex, inDefensiveAction);
+			}
+		}
+	}
 
 	public float GetUpMovementCurve { get { return gameCharacter.Animator.GetFloat(upMovementCurveIndex); } }
 
@@ -334,6 +349,7 @@ public class AnimationController
 		freezAIndex = Animator.StringToHash("FreezA");
 		holdAttackIndex = Animator.StringToHash("HoldAttack");
 		triggerAttackIndex = Animator.StringToHash("TriggerAttack");
+		inDefensiveActionIndex = Animator.StringToHash("InDefensiveAction");
 
 		overrideController = new AnimatorOverrideController(gameCharacter.Animator.runtimeAnimatorController);
 
@@ -468,6 +484,12 @@ public class AnimationController
 		gameCharacter.Animator.runtimeAnimatorController = overrideController;
 	}
 
+	public void SetDefensiveAction(AnimationClip defensiveActionClip) 
+	{
+		overrideController["DefensiveAction"] = defensiveActionClip;
+		gameCharacter.Animator.runtimeAnimatorController = overrideController;
+	}
+
 	public void LateUpdate()
 	{
 
@@ -564,5 +586,10 @@ public class AnimationController
 	public void TriggerAdditiveHit()
 	{
 		gameCharacter.Animator.SetTrigger(hitTriggerIndex);
+	}
+
+	public void SwitchFreezState()
+	{
+		if (InFreez) FreezA = !FreezA;
 	}
 }

@@ -280,4 +280,9 @@ public class GameCharacter : MonoBehaviour , IDamage
 	{
 		FreezTimer.Start(FreezTime);
 	}
+
+	public void CharacterMoveToPositionStateCharacterOnDestination(GameCharacter movedCharacter)
+	{
+		CombatComponent.CurrentWeapon.CharacterArrivedAtRequestedLocation(movedCharacter);
+	}
 }

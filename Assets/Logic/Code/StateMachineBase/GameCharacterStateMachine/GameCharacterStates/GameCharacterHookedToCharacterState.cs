@@ -18,6 +18,7 @@ public class GameCharacterHookedToCharacterState : AGameCharacterState
 			return;
 		}
 		enemyHitGround = false;
+		GameCharacter.MovementComponent.UseGravity = false;
 
 		GameCharacter.MovementComponent.MovementVelocity = GameCharacter.CombatComponent.HookedToCharacter.MovementComponent.MovementVelocity;
 
@@ -70,6 +71,7 @@ public class GameCharacterHookedToCharacterState : AGameCharacterState
 
 	public override void EndState(EGameCharacterState newState)
 	{
+		GameCharacter.MovementComponent.UseGravity = true;
 
 	}
 

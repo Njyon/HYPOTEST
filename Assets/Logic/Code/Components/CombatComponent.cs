@@ -24,10 +24,12 @@ public class CombatComponent
 	int currentWeaponIndex;
 	int equipedWeaponAmount;
 	Ultra.Timer attackTimer;
+	Ultra.Timer defensiveTimer;
 	GameCharacter hookedToCharacter;
 	Vector3 moveToPosition;
 
 	public Ultra.Timer AttackTimer { get { return attackTimer; } }
+	public Ultra.Timer DefensiveTimer { get { return defensiveTimer; } }
 	public GameCharacter HookedToCharacter { get { return hookedToCharacter; } set { hookedToCharacter = value; } }
 	public Vector3 MoveToPosition { get { return moveToPosition; } set { moveToPosition = value; } }
 
@@ -57,11 +59,13 @@ public class CombatComponent
 	{
 		InitWeapons();
 		attackTimer = new Ultra.Timer(0f, true);
+		defensiveTimer = new Ultra.Timer(0f, true);
 	}
 
 	public void UpdateComponent(float deltaTime) 
 	{
 		if (attackTimer != null) attackTimer.Update(deltaTime);
+		if (defensiveTimer != null) defensiveTimer.Update(deltaTime);
 		if (CurrentWeapon != null) CurrentWeapon.UpdateWeapon(deltaTime);
 	}
 

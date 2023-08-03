@@ -260,7 +260,8 @@ public class SpearWeapon : WeaponBase
 	{
 		base.DefensiveAction();
 
-		GameCharacter targetEnemy = FindMostPointingObject((GameCharacter.MovementInput.magnitude <= 0) ? GameCharacter.transform.forward : GameCharacter.MovementInput, ref GameCharacter.CharacterDetection.OverlappingGameCharacter);
+		GameCharacter targetEnemy = Ultra.HypoUttilies.FindCharactereNearestToDirection(GameCharacter.MovementComponent.CharacterCenter, (GameCharacter.MovementInput.magnitude <= 0) ? GameCharacter.transform.forward : GameCharacter.MovementInput, ref GameCharacter.CharacterDetection.OverlappingGameCharacter);
+		if (targetEnemy == null) return;
 
 		SpawnedWeapon.SetActive(false);
 		GameObject throwSpear = GameObject.Instantiate(GameAssets.Instance.ThrowSpear);
@@ -286,35 +287,14 @@ public class SpearWeapon : WeaponBase
 		hitgameCharacter.CombatComponent.MoveToPosition = GameCharacter.transform.position + GameCharacter.transform.forward * 1f;
 
 		hitgameCharacter.StateMachine.RequestStateChange(EGameCharacterState.MoveToPosition);
+		GameCharacter.AnimController.SetTriggerAttack(GameCharacter.CombatComponent.CurrentWeapon.CurrentDefensiveAction.triggerAnimation);
+		GameCharacter.AnimController.TriggerAttack = true;
+		GameCharacter.AnimController.InDefensiveAction = false;
 	}
 
-	public GameCharacter FindMostPointingObject(Vector3 direction, ref List<GameCharacter> list)
+	public override void CharacterArrivedAtRequestedLocation(GameCharacter movedCharacter)
 	{
-
-		GameCharacter mostPointingObject = list[0];
-		float smallestAngle = GetAngleBetweenVectors(direction.normalized, (mostPointingObject.transform.position - GameCharacter.transform.position).normalized);
-
-		foreach (GameCharacter character in list)
-		{
-			float angle = GetAngleBetweenVectors(direction.normalized, (character.transform.position - GameCharacter.transform.position).normalized);
-			if (angle < smallestAngle)
-			{
-				mostPointingObject = character;
-				smallestAngle = angle;
-			}
-		}
-
-		return mostPointingObject;
-	}
-
-	private float GetAngleBetweenVectors(Vector3 a, Vector3 b)
-	{
-		float angle = Vector3.Angle(a, b);
-		Vector3 cross = Vector3.Cross(a, b);
-		if (cross.y < 0 && angle > 180f)
-		{
-			angle = 360f - angle; // Korrektur nur wenn der Winkel > 180 Grad ist
-		}
-		return angle;
+		GameCharacter.AnimController.TriggerAttack = false;
+		GameCharacter.RequestBestCharacterState();
 	}
 }

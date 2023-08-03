@@ -63,6 +63,8 @@ public class ScriptableWeaponAnimationData : ScriptableObject
 	public List<AttackAnimationData> AirDownAttacks;
 	public List<AttackAnimationData> AirDirectionAttacks;
 
+	public List<AttackAnimationData> DefensiveAction;
+
 	public EWeaponHandType HandType;
 	public AnimationClip WeaponReadyPose;
 	[Range(0f,1f)]

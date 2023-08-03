@@ -11,7 +11,9 @@ public class GameCharacterMoveToPositionState : AGameCharacterState
 
     public override void StartState(EGameCharacterState oldState)
 	{
-
+		GameCharacter.AnimController.SwitchFreezState();
+		GameCharacter.AnimController.InFreez = true;
+		GameCharacter.MovementComponent.UseGravity = false;
 	}
 
 	public override EGameCharacterState GetStateType()
@@ -29,6 +31,16 @@ public class GameCharacterMoveToPositionState : AGameCharacterState
 	public override void ExecuteState(float deltaTime)
 	{
 		GameCharacter.MovementComponent.MovementVelocity = (GameCharacter.CombatComponent.MoveToPosition - GameCharacter.transform.position).normalized * (interpolationSpeed * (Vector3.Distance(GameCharacter.transform.position, GameCharacter.CombatComponent.MoveToPosition) * distenceMultiplier)) * deltaTime;
+		if (Ultra.Utilities.IsNearlyEqual(GameCharacter.transform.position, GameCharacter.CombatComponent.MoveToPosition, 0.1f))
+		{
+			// Arived at Location
+			GameCharacter.CombatComponent.HookedToCharacter.CharacterMoveToPositionStateCharacterOnDestination(GameCharacter);
+			GameCharacter.CombatComponent.HookedToCharacter = null;
+			if (GameCharacter.StateMachine.CanSwitchToStateOrIsState(EGameCharacterState.Freez))
+				GameCharacter.StateMachine.RequestStateChange(EGameCharacterState.Freez);
+			else 
+				GameCharacter.RequestBestCharacterState();
+		}
 	}
 
 	public override void FixedExecuteState(float deltaTime)
@@ -43,6 +55,8 @@ public class GameCharacterMoveToPositionState : AGameCharacterState
 
 	public override void EndState(EGameCharacterState newState)
 	{
-	
+		GameCharacter.AnimController.InFreez = false;
+		GameCharacter.MovementComponent.UseGravity = true;
+		GameCharacter.MovementComponent.MovementVelocity = Vector3.zero;
 	}
 }

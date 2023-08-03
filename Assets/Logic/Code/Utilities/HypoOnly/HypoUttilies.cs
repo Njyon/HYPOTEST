@@ -24,5 +24,24 @@ namespace Ultra
 			}
 			return dataList;
 		}
+		public static GameCharacter FindCharactereNearestToDirection(Vector3 fromPosition, Vector3 direction, ref List<GameCharacter> list)
+		{
+			if (list == null || list.Count <= 0) return null;
+
+			GameCharacter mostPointingObject = list[0];
+			float smallestAngle = Ultra.Utilities.GetAngleBetweenVectors(direction.normalized, (mostPointingObject.transform.position - fromPosition).normalized);
+
+			foreach (GameCharacter character in list)
+			{
+				float angle = Ultra.Utilities.GetAngleBetweenVectors(direction.normalized, (character.transform.position - fromPosition).normalized);
+				if (angle < smallestAngle)
+				{
+					mostPointingObject = character;
+					smallestAngle = angle;
+				}
+			}
+
+			return mostPointingObject;
+		}
 	}
 }

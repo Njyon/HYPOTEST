@@ -60,6 +60,7 @@ public class GameCharacterAttackRecoveryState : AGameCharacterState
 		GameCharacter.AnimController.InAttack = false;
 		GameCharacter.AnimController.HoldAttack = false;
 		GameCharacter.AnimController.TriggerAttack = false;
+		GameCharacter.AnimController.InDefensiveAction = false;
 		GameCharacter.AnimController.InterpSecondaryMotionLayerWeight(1, 10f);
 		GameCharacter.CombatComponent.CurrentWeapon.AttackRecoveryEnd();
 	}
