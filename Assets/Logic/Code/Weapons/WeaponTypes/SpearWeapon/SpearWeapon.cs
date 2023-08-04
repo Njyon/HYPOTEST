@@ -7,6 +7,7 @@ public class SpearWeapon : WeaponBase
 	float yVel = 50f;
 	bool landed = false;
 	bool startFalling = false;
+	WeaponProjectile defensiveSpear = null;
 	List<GameObject> thrownSpears = new List<GameObject>();
 
     public SpearWeapon() { }
@@ -93,6 +94,7 @@ public class SpearWeapon : WeaponBase
 		if (enemyCharacter.StateMachine.CanSwitchToStateOrIsState(EGameCharacterState.Freez))
 		{
 			enemyCharacter.CombatComponent.HookedToCharacter = GameCharacter;
+			GameCharacter.CombatComponent.HookedCharacter = enemyCharacter;
 			if (enemyCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.Freez)
 				enemyCharacter.AddFreezTime();
 			else
@@ -128,6 +130,7 @@ public class SpearWeapon : WeaponBase
 		if (enemyCharacter.StateMachine.CanSwitchToStateOrIsState(EGameCharacterState.PullCharacterOnHorizontalLevel))
 		{
 			enemyCharacter.CombatComponent.HookedToCharacter = GameCharacter;
+			GameCharacter.CombatComponent.HookedCharacter = enemyCharacter;
 			enemyCharacter.StateMachine.RequestStateChange(EGameCharacterState.PullCharacterOnHorizontalLevel);
 		}
 	}
@@ -141,6 +144,7 @@ public class SpearWeapon : WeaponBase
 		if (enemyCharacter.StateMachine.CanSwitchToStateOrIsState(EGameCharacterState.HookedToCharacter))
 		{
 			enemyCharacter.CombatComponent.HookedToCharacter = GameCharacter;
+			GameCharacter.CombatComponent.HookedCharacter = enemyCharacter;
 			enemyCharacter.StateMachine.RequestStateChange(EGameCharacterState.HookedToCharacter);
 		}
 	}
@@ -220,6 +224,7 @@ public class SpearWeapon : WeaponBase
 			if (character == null) continue;
 			character.CombatComponent.HookedToCharacter = null;
 		}
+		GameCharacter.CombatComponent.HookedCharacter = null;
 
 		base.EndAttackStateLogic();
 	}
@@ -258,19 +263,30 @@ public class SpearWeapon : WeaponBase
 
 	public override void DefensiveAction()
 	{
-		base.DefensiveAction();
+		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return;
+		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].DefensiveAction.Count > 0) DefensiveActionBlendSpaceLogic(ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].DefensiveAction, EAnimationType.Default);
+
 
 		GameCharacter targetEnemy = Ultra.HypoUttilies.FindCharactereNearestToDirection(GameCharacter.MovementComponent.CharacterCenter, (GameCharacter.MovementInput.magnitude <= 0) ? GameCharacter.transform.forward : GameCharacter.MovementInput, ref GameCharacter.CharacterDetection.OverlappingGameCharacter);
 		if (targetEnemy == null) return;
 
+
 		SpawnedWeapon.SetActive(false);
 		GameObject throwSpear = GameObject.Instantiate(GameAssets.Instance.ThrowSpear);
+		Vector3 spearDir = targetEnemy.MovementComponent.CharacterCenter - throwSpear.transform.position;
 		throwSpear.transform.position = new Vector3(SpawnedWeaponBones.transform.position.x, SpawnedWeaponBones.transform.position.y, 0);
-		throwSpear.transform.rotation = Quaternion.LookRotation((targetEnemy.MovementComponent.CharacterCenter - throwSpear.transform.position).normalized, Vector3.up);
+		throwSpear.transform.rotation = Quaternion.LookRotation(spearDir.normalized, Vector3.up);
 		throwSpear.transform.eulerAngles = new Vector3(throwSpear.transform.eulerAngles.x, throwSpear.transform.eulerAngles.y, 90f);
-		WeaponProjectile weaponProjectile = throwSpear.GetComponent<WeaponProjectile>();
-		weaponProjectile.onProjectileHit += DefensiveActionHit;
-		weaponProjectile.Initialize(GameCharacter, throwSpear.transform.position, targetEnemy);
+
+		GameCharacter.AnimController.AimBlend = Vector3.Dot(Vector3.down, (targetEnemy.transform.position - GameCharacter.transform.position).normalized);
+
+		GameCharacter.CombatComponent.HookedCharacter = targetEnemy;
+		GameCharacter.MovementComponent.MovementVelocity = Vector3.zero;
+
+
+		defensiveSpear = throwSpear.GetComponent<WeaponProjectile>();
+		defensiveSpear.onProjectileHit += DefensiveActionHit;
+		defensiveSpear.Initialize(GameCharacter, throwSpear.transform.position, targetEnemy);
 	}
 
 	void DefensiveActionHit(GameObject hitObj)
@@ -283,18 +299,43 @@ public class SpearWeapon : WeaponBase
 			return;
 		}
 
+		GameCharacter.CombatComponent.HookedCharacter = hitgameCharacter;
 		hitgameCharacter.CombatComponent.HookedToCharacter = GameCharacter;
 		hitgameCharacter.CombatComponent.MoveToPosition = GameCharacter.transform.position + GameCharacter.transform.forward * 1f;
 
 		hitgameCharacter.StateMachine.RequestStateChange(EGameCharacterState.MoveToPosition);
-		GameCharacter.AnimController.SetTriggerAttack(GameCharacter.CombatComponent.CurrentWeapon.CurrentDefensiveAction.triggerAnimation);
-		GameCharacter.AnimController.TriggerAttack = true;
-		GameCharacter.AnimController.InDefensiveAction = false;
+		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].DefensiveAction.Count > 0) DefensiveActionBlendSpaceLogic(ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].DefensiveAction, EAnimationType.Trigger);
+
+		GameCharacter.AnimController.AimBlend = Vector3.Dot(Vector3.down, (hitgameCharacter.transform.position - GameCharacter.transform.position).normalized);
 	}
 
 	public override void CharacterArrivedAtRequestedLocation(GameCharacter movedCharacter)
 	{
-		GameCharacter.AnimController.TriggerAttack = false;
+		GameCharacter.AnimController.InAimBlendTree = false;
+		GameCharacter.CombatComponent.HookedCharacter = null;
 		GameCharacter.RequestBestCharacterState();
+		SpawnedWeapon.SetActive(true);
+		GameObject.Destroy(defensiveSpear.gameObject);
 	}
+
+	public override void CharacterMoveToAbort(GameCharacter movedCharacter)
+	{
+		GameCharacter.AnimController.InAimBlendTree = false;
+		GameCharacter.CombatComponent.HookedCharacter = null;
+		GameCharacter.RequestBestCharacterState();
+		SpawnedWeapon.SetActive(true);
+		GameObject.Destroy(defensiveSpear.gameObject);
+	}
+
+	public override void CharacterMoveToEnd(GameCharacter movedCharacter)
+	{
+		if (GameCharacter.CombatComponent.HookedCharacter == null) return;
+		
+		GameCharacter.AnimController.InAimBlendTree = false;
+		GameCharacter.CombatComponent.HookedCharacter = null;
+		GameCharacter.RequestBestCharacterState();
+		SpawnedWeapon.SetActive(true);
+		GameObject.Destroy(defensiveSpear.gameObject);
+	}
+
 }

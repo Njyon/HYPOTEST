@@ -20,6 +20,19 @@ public enum EExplicitAttackType
 	DefensiveAction,
 }
 
+public enum EAnimationType
+{
+	Default,
+	Trigger,
+	Hold
+}
+
+public enum EAttackAnimType
+{
+	Default,
+	AimBlendSpace
+}
+
 public abstract class WeaponBase
 {
     GameCharacter gameCharacter;
@@ -39,6 +52,7 @@ public abstract class WeaponBase
 	AttackAnimationData currentAttack;
 	AttackAnimationData currentDefensiveAction;
 	protected List<GameObject> hitObjects;
+	EAttackAnimType attackAnimType;
 
 	// Particle Save
 	List<List<ParticleSystem>> groundLightAttackParticleList;
@@ -60,6 +74,7 @@ public abstract class WeaponBase
 	public AttackAnimationData CurrentDefensiveAction { get { return currentDefensiveAction; } }
 	public EExplicitAttackType CurrentAttackType { get { return currentAttackType; } }
 	public EExplicitAttackType LastAttackType { get { return lastAttackType; } }
+	public EAttackAnimType AttackAnimType { get { return attackAnimType; } }
 
     public WeaponBase() { }
     public WeaponBase(GameCharacter gameCharacter, ScriptableWeapon weaponData)
@@ -399,6 +414,18 @@ public abstract class WeaponBase
 		}
 		gameCharacter.AnimController.Attack(currentAttack.clip);
 		gameCharacter.StateMachine.RequestStateChange(EGameCharacterState.Attack);
+		attackAnimType = EAttackAnimType.Default;
+		
+		
+	}
+
+	protected void AttackBlendSpaceLogic(EExplicitAttackType explicitAttackType, ref List<AttackAnimationData> attackList, EAnimationType animType)
+	{
+		GetAnimation(explicitAttackType, ref attackList);
+		AimBlendSpace(ref attackList, animType); 
+		gameCharacter.StateMachine.RequestStateChange(EGameCharacterState.Attack);
+		attackAnimType = EAttackAnimType.AimBlendSpace;
+		
 	}
 
 	protected void DefensiceActionLogic(ref List<AttackAnimationData> defensiveList)
@@ -412,6 +439,46 @@ public abstract class WeaponBase
 		}
 		gameCharacter.AnimController.SetDefensiveAction(currentDefensiveAction.clip);
 		gameCharacter.StateMachine.RequestStateChange(EGameCharacterState.DefensiveAction);
+		attackAnimType = EAttackAnimType.Default;
+		
+	}
+
+	protected void DefensiveActionBlendSpaceLogic(ref List<AttackAnimationData> defensiveList, EAnimationType animType)
+	{
+		GetDefensiveAnimation(ref defensiveList);
+		AimBlendSpace(ref defensiveList, animType);
+		gameCharacter.StateMachine.RequestStateChange(EGameCharacterState.DefensiveAction);
+		attackAnimType = EAttackAnimType.AimBlendSpace;
+	}
+
+	protected void AimBlendSpace(ref List<AttackAnimationData> defensiveList, EAnimationType animType)
+	{
+		AttackAnimationData attackData = GetAttackAnimationData();
+		if (attackData == null)
+		{
+			Ultra.Utilities.Instance.DebugLogOnScreen("AttackData was null!", 5f, StringColor.Red, 100, DebugAreas.Combat);
+			Debug.Log(Ultra.Utilities.Instance.DebugErrorString("WeaponBase", "AimBlendSpace", "AttackData was null!"));
+			return;
+		}
+		switch (animType)
+		{
+			case EAnimationType.Hold: gameCharacter.AnimController.ApplyBlendTree(attackData.aimBlendTypes.blendHoldAnimations); break;
+			case EAnimationType.Trigger: gameCharacter.AnimController.ApplyBlendTree(attackData.aimBlendTypes.blendTriggerAnimations); break;
+			default:
+				gameCharacter.AnimController.ApplyBlendTree(attackData.aimBlendTypes.blendAnimations);
+				break;
+		}
+	}
+
+	AttackAnimationData GetAttackAnimationData()
+	{
+		switch (CurrentAttackType)
+		{
+			case EExplicitAttackType.DefensiveAction:
+				return currentDefensiveAction;
+			default:
+				return currentAttack;
+		}
 	}
 
 	protected void HoldAttackAfterAttack(EExplicitAttackType explicitAttackType, ref List<AttackAnimationData> attackList)
@@ -608,6 +675,16 @@ public abstract class WeaponBase
 	}
 
 	public virtual void CharacterArrivedAtRequestedLocation(GameCharacter movedCharacter)
+	{
+
+	}
+
+	public virtual void CharacterMoveToAbort(GameCharacter movedCharacter)
+	{
+
+	}
+
+	public virtual void CharacterMoveToEnd(GameCharacter movedCharacter)
 	{
 
 	}

@@ -88,6 +88,11 @@ public class GameCharacterStateMachine : AStateMachineBase<EGameCharacterState>
 		return newState != null;
 	}
 
+	public bool CanSwitchToState(EGameCharacterState state)
+	{
+		return (CurrentState.UpdateState(0, state) == state);
+	}
+
 	public bool CanSwitchToStateOrIsState(EGameCharacterState state)
 	{
 		return (CurrentState.UpdateState(0, state) == state || GetCurrentStateType() == state);

@@ -19,8 +19,25 @@ public class AttackAnimationData
 	public AttackAnimationHitDetectionData data;
 	public AnimationClip holdAnimation;
 	public AnimationClip triggerAnimation;
+	public AimBlendTypes aimBlendTypes;
 	public float maxVerticalMovement;
 	public List<GameObject> particleList;
+}
+
+[Serializable]
+public class AimBlendTypes
+{
+	public AimBlendAnimations blendAnimations;
+	public AimBlendAnimations blendHoldAnimations;
+	public AimBlendAnimations blendTriggerAnimations;
+}
+
+[Serializable]
+public class AimBlendAnimations
+{
+	public AnimationClip upAnimation;
+	public AnimationClip midAnimation;
+	public AnimationClip downAnimation;
 }
 
 public enum EHitDetectionType

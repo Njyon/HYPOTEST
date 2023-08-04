@@ -109,7 +109,6 @@ public class AttackAnimationPropertyDrawer : PropertyDrawer
 
 		}
 
-
 		EditorGUI.EndProperty();
 	}
 

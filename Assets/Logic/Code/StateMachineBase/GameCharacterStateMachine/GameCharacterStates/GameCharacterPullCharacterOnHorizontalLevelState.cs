@@ -20,8 +20,11 @@ public class GameCharacterPullCharacterOnHorizontalLevelState : AGameCharacterSt
 		}
 		GameCharacter.MovementComponent.UseGravity = false;
 
-		enemyCordinate = GameCharacter.CombatComponent.HookedToCharacter.transform.position + GameCharacter.CombatComponent.HookedToCharacter.MovementComponent.CapsuleCollider.center;
-		enemyCordinateOnlyY = new Vector3(GameCharacter.transform.position.x ,enemyCordinate.y, GameCharacter.transform.position.z);
+		if (GameCharacter.CombatComponent.HookedToCharacter != null)
+		{
+			enemyCordinate = GameCharacter.CombatComponent.HookedToCharacter.transform.position + GameCharacter.CombatComponent.HookedToCharacter.MovementComponent.CapsuleCollider.center;
+			enemyCordinateOnlyY = new Vector3(GameCharacter.transform.position.x ,enemyCordinate.y, GameCharacter.transform.position.z);
+		}
 
 		GameCharacter.MovementComponent.onMoveCollisionFlag += OnMoveCollisionFlag;
 	}

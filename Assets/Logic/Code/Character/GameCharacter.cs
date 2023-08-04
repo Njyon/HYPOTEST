@@ -47,10 +47,11 @@ public class GameCharacter : MonoBehaviour , IDamage
 	public Rigidbody Rigidbody { get { return rigidbody; } }
 	public bool IsPlayerCharacter { get {  return isPlayerCharacter; } set { isPlayerCharacter = value; } }
 	public RecourceBase Health { get { return health; } }
-	public Quaternion RotationTarget { get { return rotationTarget; } }
+	public Quaternion RotationTarget { get { return rotationTarget; } set { rotationTarget = value; } }
 	public Ultra.Timer FreezTimer { get { return freezTimer; } }
 	public float FreezTime { get { return freezTime; } }	
 	public CharacterDetection CharacterDetection { get { return characterDetection; } }
+	public Vector3 LastDir { get { return lastDir; } set { lastDir = value; } }
 	public float CharacterRadiusTarget
 	{
 		get { return characterRadiusTarget; }
@@ -90,6 +91,9 @@ public class GameCharacter : MonoBehaviour , IDamage
 		if (rigidbody == null) Debug.LogError("GameObject: " + name + " Does not have an Rigibody Attached!");
 
 		freezTimer = new Ultra.Timer(freezTime, true);
+
+		// Set Default Data
+		lastDir = transform.right;
 	}
 
 	public void CustomAwake()
@@ -108,9 +112,6 @@ public class GameCharacter : MonoBehaviour , IDamage
 		GameObject characterDetectionObject = GameObject.Instantiate(GameAssets.Instance.characterDetection, transform);
 		characterDetection = characterDetectionObject.GetComponent<CharacterDetection>();
 		characterDetection.Collider.radius = gameCharacterData.CharacterDetectionRange;
-
-		// Set Default Data
-		lastDir = transform.right;
 
 		animController.Start();
 		combatComponent.StartComponent();
@@ -156,9 +157,15 @@ public class GameCharacter : MonoBehaviour , IDamage
 
 	private void RotateCharacterInVelocityDirection()
 	{
-		if (StateMachine.GetCurrentStateType() == EGameCharacterState.Attack || StateMachine.GetCurrentStateType() == EGameCharacterState.AttackRecovery) return;
+		switch (StateMachine.GetCurrentStateType())
+		{
+			case EGameCharacterState.Attack: case EGameCharacterState.AttackRecovery:
+			case EGameCharacterState.DefensiveAction:
+				return;
+			default: break;
+		}
 
-		if (MovementComponent.MovementVelocity.normalized.x != 0) lastDir = new Vector3(MovementComponent.MovementVelocity.x, 0, 0);
+		if (Mathf.Abs(MovementComponent.MovementVelocity.x) >= 0.2f) lastDir = new Vector3(MovementComponent.MovementVelocity.x, 0, 0);
 		if (lastDir == Vector3.zero) return;
 		rotationTarget = Quaternion.LookRotation(lastDir.normalized, Vector3.up);
 		Quaternion targetRot = Quaternion.Slerp(transform.rotation, rotationTarget, Time.deltaTime * gameCharacterData.RoationSpeed);
@@ -284,5 +291,15 @@ public class GameCharacter : MonoBehaviour , IDamage
 	public void CharacterMoveToPositionStateCharacterOnDestination(GameCharacter movedCharacter)
 	{
 		CombatComponent.CurrentWeapon.CharacterArrivedAtRequestedLocation(movedCharacter);
+	}
+
+	public void CharacterMoveToPositionStateAbort(GameCharacter movedCharacter)
+	{
+		CombatComponent.CurrentWeapon.CharacterMoveToAbort(movedCharacter);
+	}
+
+	public void CharacterMoveToPositionStateEnd(GameCharacter movedCharacter)
+	{
+		CombatComponent.CurrentWeapon.CharacterMoveToEnd(movedCharacter);
 	}
 }

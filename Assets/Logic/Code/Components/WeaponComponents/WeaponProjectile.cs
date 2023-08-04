@@ -25,6 +25,7 @@ public class WeaponProjectile : MonoBehaviour
 	GameCharacter toCharacter;
 	Ultra.Timer timer;
 	Vector3 scale;
+	LineRenderer lineRenderer;
 
 	public Vector3 Direction { get { return direction; } }
 	public GameCharacter GameCharacterOwner { get { return gameCharacterOwner; } }
@@ -33,7 +34,9 @@ public class WeaponProjectile : MonoBehaviour
 	{
 		gameCharacterOwner = Owner;
 		this.direction = direction;
-		flyInDirection = true; 
+		flyInDirection = true;
+		lineRenderer = gameObject.GetComponent<LineRenderer>();
+		lineRenderer.enabled = false;
 
 		Init();
 	}
@@ -45,6 +48,8 @@ public class WeaponProjectile : MonoBehaviour
 		this.from = from;
 		lerpToCharacter = true;
 		t = 0;
+		lineRenderer = gameObject.GetComponent<LineRenderer>();
+		lineRenderer.positionCount = 2;
 
 		Init();
 	}
@@ -69,6 +74,13 @@ public class WeaponProjectile : MonoBehaviour
 	// Update is called once per frame
 	void Update()
     {
+		if (lineRenderer != null)
+		{
+			lineRenderer.SetPosition(0, transform.position);
+			lineRenderer.SetPosition(1, gameCharacterOwner.GameCharacterData.HandROnjectPoint.position);
+		}
+	
+
 		timer.Update(Time.deltaTime);
 		if (!hit && initilized)
 		{
@@ -87,7 +99,7 @@ public class WeaponProjectile : MonoBehaviour
 
 			if (lerpToCharacter)
 			{
-				t += Time.deltaTime * 5f;
+				t += Time.deltaTime * 2f;
 				transform.position = Vector3.Lerp(from, toCharacter.MovementComponent.CharacterCenter, t);
 				transform.rotation = Quaternion.LookRotation((toCharacter.MovementComponent.CharacterCenter - transform.position).normalized, Vector3.up);
 			}

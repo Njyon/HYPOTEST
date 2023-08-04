@@ -26,11 +26,13 @@ public class CombatComponent
 	Ultra.Timer attackTimer;
 	Ultra.Timer defensiveTimer;
 	GameCharacter hookedToCharacter;
+	GameCharacter hookedCharacter;
 	Vector3 moveToPosition;
 
 	public Ultra.Timer AttackTimer { get { return attackTimer; } }
 	public Ultra.Timer DefensiveTimer { get { return defensiveTimer; } }
 	public GameCharacter HookedToCharacter { get { return hookedToCharacter; } set { hookedToCharacter = value; } }
+	public GameCharacter HookedCharacter { get { return hookedCharacter; } set { hookedCharacter = value; } }
 	public Vector3 MoveToPosition { get { return moveToPosition; } set { moveToPosition = value; } }
 
 	public WeaponBase CurrentWeapon { 
