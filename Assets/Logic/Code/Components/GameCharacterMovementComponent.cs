@@ -30,6 +30,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	int characterLayerIndex;
 	float characterDefaultRadius;
 	float characterDefaultHeight;
+	bool useGravity = true;
 
 	CapsuleCollider capsuleCollider;
 	public CapsuleCollider CapsuleCollider { get { return capsuleCollider; } }
@@ -48,6 +49,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	public float SlopeLimit { get { return unityMovementController.slopeLimit; } set { unityMovementController.slopeLimit = value; } }
 	public CharacterController UnityMovementController { get { return unityMovementController; } }
 	public float HeadBounceValue { get { return headBounceValue; } }
+	public bool UseGravity { get { return useGravity; } set { useGravity = value; } }
 	public bool IsInJump
 	{
 		get { return isInJump; }
@@ -341,13 +343,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	{
 		if (gameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.InAir || !IsGrounded)
 		{
-			switch (gameCharacter.StateMachine.GetCurrentStateType())
-			{
-				case EGameCharacterState.Attack: case EGameCharacterState.PullCharacterOnHorizontalLevel:
-				case EGameCharacterState.HookedToCharacter: case EGameCharacterState.Freez:
-					return;
-				default: break;
-			}
+			if (!UseGravity) return;
 			float yGravity = CalculateGravity();
 			MovementVelocity = new Vector3(MovementVelocity.x, MovementVelocity.y - yGravity, MovementVelocity.z);
 		}

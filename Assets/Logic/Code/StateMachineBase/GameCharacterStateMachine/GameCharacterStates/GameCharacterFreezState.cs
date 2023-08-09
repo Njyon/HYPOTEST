@@ -11,6 +11,7 @@ public class GameCharacterFreezState : AGameCharacterState
     public override void StartState(EGameCharacterState oldState)
 	{
 		GameCharacter.FreezTimer.Start(GameCharacter.FreezTime);
+		GameCharacter.MovementComponent.UseGravity = false;
 
 		GameCharacter.FreezTimer.onTimerPaused += TimerEnded;
 		GameCharacter.FreezTimer.onTimerFinished += TimerEnded;
@@ -57,6 +58,7 @@ public class GameCharacterFreezState : AGameCharacterState
 	public override void EndState(EGameCharacterState newState)
 	{
 		GameCharacter.AnimController.InFreez = false;
+		GameCharacter.MovementComponent.UseGravity = true;
 
 		if (GameCharacter != null && GameCharacter.FreezTimer != null) GameCharacter.FreezTimer.onTimerPaused -= TimerEnded;
 		if (GameCharacter != null && GameCharacter.FreezTimer != null) GameCharacter.FreezTimer.onTimerFinished -= TimerEnded;

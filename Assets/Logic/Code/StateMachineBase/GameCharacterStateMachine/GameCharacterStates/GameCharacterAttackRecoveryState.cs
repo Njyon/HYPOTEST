@@ -24,6 +24,7 @@ public class GameCharacterAttackRecoveryState : AGameCharacterState
 			case EGameCharacterState.Attack: return EGameCharacterState.Attack;
 			case EGameCharacterState.HookedToCharacter: return EGameCharacterState.HookedToCharacter;
 			case EGameCharacterState.PullCharacterOnHorizontalLevel: return EGameCharacterState.PullCharacterOnHorizontalLevel;
+			case EGameCharacterState.DefensiveAction: return EGameCharacterState.DefensiveAction;
 			default: break;
 		}
 
@@ -59,6 +60,8 @@ public class GameCharacterAttackRecoveryState : AGameCharacterState
 		GameCharacter.AnimController.InAttack = false;
 		GameCharacter.AnimController.HoldAttack = false;
 		GameCharacter.AnimController.TriggerAttack = false;
+		GameCharacter.AnimController.InDefensiveAction = false;
+		GameCharacter.AnimController.InAimBlendTree = false;
 		GameCharacter.AnimController.InterpSecondaryMotionLayerWeight(1, 10f);
 		GameCharacter.CombatComponent.CurrentWeapon.AttackRecoveryEnd();
 	}

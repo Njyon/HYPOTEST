@@ -11,7 +11,7 @@ public class JumpEvent : CharacterEvent
 	{
 		switch (gameCharacter.StateMachine.GetCurrentStateType())
 		{
-			case EGameCharacterState.Attack: return false;
+			case EGameCharacterState.Attack: case EGameCharacterState.Freez: return false;
 			default: break;
 		}
 		if (gameCharacter.CurrentJumpAmount < gameCharacter.GameCharacterData.MaxJumps) return true;
@@ -32,5 +32,12 @@ public class JumpEvent : CharacterEvent
 		if (gameCharacter.StateMachine.GetCurrentStateType() != EGameCharacterState.InAir) gameCharacter.StateMachine.ForceStateChange(EGameCharacterState.InAir, true);
 		gameCharacter.AnimController.Jump();
 		if (gameCharacter.IsPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen("JumpVel: " + jumpVelocity, 2f, 200, DebugAreas.Movement);
+
+		gameCharacter.AnimController.InAttack = false;
+		gameCharacter.AnimController.InAimBlendTree = false;
+		gameCharacter.AnimController.InFreez = false;
+		gameCharacter.AnimController.HoldAttack = false;
+		gameCharacter.AnimController.TriggerAttack = false;
+		gameCharacter.AnimController.InDefensiveAction = false;
 	}
 }

@@ -1,39 +1,69 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
 
 public class WeaponProjectile : MonoBehaviour
 {
+	public delegate void OnProjectileHit(GameObject other);
+	public OnProjectileHit onProjectileHit;
+
 	[SerializeField] float speed = 5f;
 	[SerializeField] float aliveTime = 5f;
 	Vector3 direction;
 	ColliderHitScript colliderScript;
 	CapsuleCollider capsuleCollider;
 	GameCharacter gameCharacterOwner;
-	float damage = 0;
 	bool hit = false;
 	float moveDistance = 0.5f;
 	bool initilized = false;
+	bool flyInDirection = false;
+	bool lerpToCharacter;
+	float t;
+	Vector3 from;
+	GameCharacter toCharacter;
 	Ultra.Timer timer;
+	Vector3 scale;
+	LineRenderer lineRenderer;
 
 	public Vector3 Direction { get { return direction; } }
-	public float Damage { get { return damage; } }
 	public GameCharacter GameCharacterOwner { get { return gameCharacterOwner; } }
 
-	public void Initialize(GameCharacter Owner, Vector3 direction, float Damage)
+	public void Initialize(GameCharacter Owner, Vector3 direction)
 	{
-		damage = Damage;
 		gameCharacterOwner = Owner;
 		this.direction = direction;
-		initilized = true;
+		flyInDirection = true;
+		lineRenderer = gameObject.GetComponent<LineRenderer>();
+		lineRenderer.enabled = false;
 
+		Init();
+	}
+
+	public void Initialize(GameCharacter Owner, Vector3 from, GameCharacter toCharacter)
+	{
+		gameCharacterOwner = Owner;
+		this.toCharacter = toCharacter;
+		this.from = from;
+		lerpToCharacter = true;
+		t = 0;
+		lineRenderer = gameObject.GetComponent<LineRenderer>();
+		lineRenderer.positionCount = 2;
+
+		Init();
+	}
+
+	private void Init()
+	{
+		initilized = true;
 		colliderScript = GetComponent<ColliderHitScript>();
 		capsuleCollider = GetComponent<CapsuleCollider>();
 		colliderScript.onOverlapEnter += OnOverlapEnter;
 		timer = new Ultra.Timer();
 		timer.onTimerFinished += OnTimerFinished;
 		timer.Start(aliveTime);
+		scale = transform.localScale;
 	}
 
 	private void Awake()
@@ -44,6 +74,13 @@ public class WeaponProjectile : MonoBehaviour
 	// Update is called once per frame
 	void Update()
     {
+		if (lineRenderer != null)
+		{
+			lineRenderer.SetPosition(0, transform.position);
+			lineRenderer.SetPosition(1, gameCharacterOwner.GameCharacterData.HandROnjectPoint.position);
+		}
+	
+
 		timer.Update(Time.deltaTime);
 		if (!hit && initilized)
 		{
@@ -56,9 +93,18 @@ public class WeaponProjectile : MonoBehaviour
 					return;
 				}
 			}
-			transform.position = transform.position + Direction.normalized * (speed * Time.deltaTime);
+
+			if (flyInDirection)
+				transform.position = transform.position + Direction.normalized * (speed * Time.deltaTime);
+
+			if (lerpToCharacter)
+			{
+				t += Time.deltaTime * 2f;
+				transform.position = Vector3.Lerp(from, toCharacter.MovementComponent.CharacterCenter, t);
+				transform.rotation = Quaternion.LookRotation((toCharacter.MovementComponent.CharacterCenter - transform.position).normalized, Vector3.up);
+			}
 		}
-    }
+	}
 
 	private void OnDestroy()
 	{
@@ -74,15 +120,22 @@ public class WeaponProjectile : MonoBehaviour
 
 		if (hit) return; 
 		hit = true;
-		transform.position = transform.position + Direction.normalized * moveDistance;
-		transform.rotation = Quaternion.LookRotation(Direction, Vector3.up);
+		if (flyInDirection)
+		{
+			transform.position = transform.position + Direction.normalized * moveDistance;
+			transform.rotation = Quaternion.LookRotation(Direction, Vector3.up);
+		}
+		if (lerpToCharacter)
+		{
+			transform.position = otherChracter.MovementComponent.CharacterCenter + -transform.forward * 1.5f;
+		}
 		capsuleCollider.enabled = false;
 
-		IDamage damageIterface = other.GetComponent<IDamage>();
-		if (damageIterface == null) return;
+		if (onProjectileHit != null) onProjectileHit(other.gameObject);
 		transform.parent = other.transform;
+		transform.localScale = scale;
 		timer.AddTime(1);
-		damageIterface.DoDamage(GameCharacterOwner, Damage);
+
 	}
 
 	void OnTimerFinished()

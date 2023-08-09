@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
@@ -39,6 +40,11 @@ public class AnimationController
 	int freezAIndex;
 	int holdAttackIndex;
 	int triggerAttackIndex;
+	int inDefensiveActionIndex;
+	int inAimBlendTreeIndex;
+	int inAimBlendTreeAIndex;
+	int inAimBlendTreeAStateIndex;
+	int aimBlendIndex;
 
 	float minMalkSpeed;
 	bool startWalkRunBlendInterp = true;
@@ -296,6 +302,60 @@ public class AnimationController
 			}
 		}
 	}
+	bool inDefensiveAction = false;
+	public bool InDefensiveAction
+	{
+		get { return inDefensiveAction; }
+		set
+		{
+			if (inDefensiveAction != value)
+			{
+				inDefensiveAction = value;
+				gameCharacter.Animator.SetBool(inDefensiveActionIndex, inDefensiveAction);
+			}
+		}
+	}
+	bool inAimBlendTree = false;
+	public bool InAimBlendTree
+	{
+		get { return inAimBlendTree; }
+		set 
+		{
+			if (inAimBlendTree != value)
+			{
+				inAimBlendTree = value;
+				gameCharacter.Animator.SetBool(inAimBlendTreeIndex, inAimBlendTree);
+			}
+		}
+	}
+	bool inAimBlendTreeA = true;
+	public bool InAimBlendTreeA
+	{
+		get { return inAimBlendTreeA; }
+		set
+		{
+			if (inAimBlendTreeA != value)
+			{
+				inAimBlendTreeA = value;
+				gameCharacter.Animator.SetBool(inAimBlendTreeAIndex, inAimBlendTreeA);
+			}
+		}
+	}
+	float aimBlend = 0f;
+	public float AimBlend
+	{
+		get { return aimBlend; }
+		set
+		{
+			if (aimBlend != value)
+			{
+				aimBlend = value;
+				gameCharacter.Animator.SetFloat(aimBlendIndex, aimBlend);
+			}
+		}
+	}
+	bool blockRotation = false;
+	public bool BlockRotation { get { return blockRotation; } set { blockRotation = value; } }
 
 	public float GetUpMovementCurve { get { return gameCharacter.Animator.GetFloat(upMovementCurveIndex); } }
 
@@ -334,6 +394,11 @@ public class AnimationController
 		freezAIndex = Animator.StringToHash("FreezA");
 		holdAttackIndex = Animator.StringToHash("HoldAttack");
 		triggerAttackIndex = Animator.StringToHash("TriggerAttack");
+		inDefensiveActionIndex = Animator.StringToHash("InDefensiveAction");
+		inAimBlendTreeIndex = Animator.StringToHash("InAimBlendTree");
+		inAimBlendTreeAIndex = Animator.StringToHash("InAimBlendTreeA");
+		aimBlendIndex = Animator.StringToHash("AimBlend");
+		inAimBlendTreeAStateIndex = Animator.StringToHash("AimBlendTreeA");
 
 		overrideController = new AnimatorOverrideController(gameCharacter.Animator.runtimeAnimatorController);
 
@@ -358,7 +423,14 @@ public class AnimationController
 				break;
 		}
 
-		RotationLayer(deltaTime);
+		if (BlockRotation)
+		{
+			gameCharacter.Animator.SetLayerWeight(rotationLayerIndex, 0);
+		}
+		else
+		{
+			RotationLayer(deltaTime);
+		}
 		SpineLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(spineLayerIndex), spineLayerInterpTarget, deltaTime * spineLayerInterpSpeed);
 		LegLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(legLayerIndex), legLayerInterpTarget, deltaTime * legLayerInterpSpeed);
 		HeadLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(headLayerIndex), headLayerInterpTarget, deltaTime * headLayerInterpSpeed);
@@ -441,10 +513,7 @@ public class AnimationController
     
 	public void Attack(AnimationClip attackClip)
 	{
-		AnimatorStateInfo animatorState = gameCharacter.Animator.GetCurrentAnimatorStateInfo(0);
-		bool isAttackAState = false;
-
-		if (animatorState.shortNameHash == attackAStateIndex) isAttackAState = true;
+		bool isAttackAState = IsInState(attackAStateIndex);
 		if (isAttackAState)
 		{
 			overrideController["AttackB"] = attackClip;
@@ -456,6 +525,34 @@ public class AnimationController
 		AttackA = !isAttackAState;
 	}
 
+	public void ApplyBlendTree(AimBlendAnimations anims)
+	{
+		bool isBlendAState = IsInState(inAimBlendTreeAStateIndex);
+		if (isBlendAState)
+		{
+			overrideController["AimBlendSpaceUpB"] = anims.upAnimation;
+			overrideController["AimBlendSpaceMidB"] = anims.midAnimation;
+			overrideController["AimBlendSpaceDownB"] = anims.downAnimation;
+		}
+		else
+		{
+			overrideController["AimBlendSpaceUpA"] = anims.upAnimation;
+			overrideController["AimBlendSpaceMidA"] = anims.midAnimation;
+			overrideController["AimBlendSpaceDownA"] = anims.downAnimation;
+		}
+		gameCharacter.Animator.runtimeAnimatorController = overrideController;
+		InAimBlendTreeA = !isBlendAState;
+	}
+
+	private bool IsInState(int stateIndex)
+	{
+		AnimatorStateInfo animatorState = gameCharacter.Animator.GetCurrentAnimatorStateInfo(0);
+		bool state = false;
+
+		if (animatorState.shortNameHash == stateIndex) state = true;
+		return state;
+	}
+
 	public void SetHoldAttack(AnimationClip holdClip)
 	{
 		overrideController["Hold"] = holdClip;
@@ -465,6 +562,12 @@ public class AnimationController
 	public void SetTriggerAttack(AnimationClip triggerClip)
 	{
 		overrideController["Trigger"] = triggerClip;
+		gameCharacter.Animator.runtimeAnimatorController = overrideController;
+	}
+
+	public void SetDefensiveAction(AnimationClip defensiveActionClip) 
+	{
+		overrideController["DefensiveAction"] = defensiveActionClip;
 		gameCharacter.Animator.runtimeAnimatorController = overrideController;
 	}
 
@@ -564,5 +667,10 @@ public class AnimationController
 	public void TriggerAdditiveHit()
 	{
 		gameCharacter.Animator.SetTrigger(hitTriggerIndex);
+	}
+
+	public void SwitchFreezState()
+	{
+		if (InFreez) FreezA = !FreezA;
 	}
 }

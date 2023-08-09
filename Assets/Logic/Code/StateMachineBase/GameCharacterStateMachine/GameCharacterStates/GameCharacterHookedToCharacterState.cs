@@ -18,8 +18,9 @@ public class GameCharacterHookedToCharacterState : AGameCharacterState
 			return;
 		}
 		enemyHitGround = false;
+		GameCharacter.MovementComponent.UseGravity = false;
 
-		GameCharacter.MovementComponent.MovementVelocity = GameCharacter.CombatComponent.HookedToCharacter.MovementComponent.MovementVelocity;
+		if (GameCharacter.CombatComponent.HookedToCharacter != null) GameCharacter.MovementComponent.MovementVelocity = GameCharacter.CombatComponent.HookedToCharacter.MovementComponent.MovementVelocity;
 
 		GameCharacter.MovementComponent.onMoveCollisionFlag += OnMoveCollisionFlag;
 		GameCharacter.CombatComponent.HookedToCharacter.MovementComponent.onMoveCollisionFlag += OnEnemyMoveCollisionFlag;
@@ -53,7 +54,8 @@ public class GameCharacterHookedToCharacterState : AGameCharacterState
 		} else
 		{
 			// Follow Enemy
-			GameCharacter.MovementComponent.MovementVelocity = GameCharacter.CombatComponent.HookedToCharacter.MovementComponent.MovementVelocity;
+			if (GameCharacter.CombatComponent.HookedToCharacter != null)
+				GameCharacter.MovementComponent.MovementVelocity = GameCharacter.CombatComponent.HookedToCharacter.MovementComponent.MovementVelocity;
 		}
 
 	}
@@ -70,6 +72,7 @@ public class GameCharacterHookedToCharacterState : AGameCharacterState
 
 	public override void EndState(EGameCharacterState newState)
 	{
+		GameCharacter.MovementComponent.UseGravity = true;
 
 	}
 

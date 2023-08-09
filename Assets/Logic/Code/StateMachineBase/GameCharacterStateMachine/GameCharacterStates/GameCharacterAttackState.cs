@@ -16,12 +16,20 @@ public class GameCharacterAttackState : AGameCharacterState
 
     public override void StartState(EGameCharacterState oldState)
 	{
-		GameCharacter.AnimController.InAttack = true;
+		switch(GameCharacter.CombatComponent.CurrentWeapon.AttackAnimType)
+		{
+			case EAttackAnimType.AimBlendSpace: 
+				GameCharacter.AnimController.InAimBlendTree = true; break;
+			default:
+				GameCharacter.AnimController.InAttack = true; break;
+		}
+		GameCharacter.MovementComponent.UseGravity = false;
 		GameCharacter.AnimController.InterpSecondaryMotionLayerWeight(0, 10f);
 		initYVelocity = GameCharacter.MovementComponent.MovementVelocity.y;
 		initXVelocity = GameCharacter.MovementComponent.MovementVelocity.x;
 		lerpTimeY = 0;
 		lerpTimeX = 0;
+		GameCharacter.AnimController.BlockRotation = true;
 
 		GameCharacter.AnimController.RotationTrarget = 0f;
 		if (GameCharacter.MovementInput.x != 0)
@@ -30,9 +38,11 @@ public class GameCharacterAttackState : AGameCharacterState
 			newDir = Quaternion.LookRotation(currentDir.normalized, Vector3.up);
 		}else
 		{
-			newDir = GameCharacter.RotationTarget;
+			Vector3 currentDir = new Vector3(GameCharacter.transform.forward.x, 0, 0);
+			newDir = Quaternion.LookRotation(currentDir.normalized, Vector3.up);
 		}
 		GameCharacter.CombatComponent.CurrentWeapon.StartAttackStateLogic();
+		GameCharacter.CombatComponent.AttackTimer.Start(GameCharacter.CombatComponent.CurrentWeapon.CurrentAttack.clip.length);
 	}
 
 	public override EGameCharacterState GetStateType()
@@ -57,43 +67,11 @@ public class GameCharacterAttackState : AGameCharacterState
 	public override void ExecuteState(float deltaTime)
 	{
 		GameCharacter.CombatComponent.CurrentWeapon.PreAttackStateLogic(deltaTime);
-		RotateCharacter();
+		RotateCharacter(newDir);
 
-		float yPosCurve = GameCharacter.AnimController.GetUpMovementCurve;
-		float yPosFromAnimCurveDelta = 0;
-		if (yPosCurve > 0 && GameCharacter.CombatComponent.CurrentWeapon != null && GameCharacter.CombatComponent.CurrentWeapon.LastAttack != null)
-		{
-			float yPosFromAnimCurve = math.remap(0, 1, 0, GameCharacter.CombatComponent.CurrentWeapon.LastAttack.maxVerticalMovement, yPosCurve);
-			yPosFromAnimCurveDelta = yPosFromAnimCurve - currentYPosAnimCurve;
-			currentYPosAnimCurve = yPosFromAnimCurve;
+		CombatMovement(deltaTime, initYVelocity, initXVelocity, ref lerpTimeY, ref lerpTimeX, ref currentYPosAnimCurve);
 
-			// FIX LOWFramerate Scenarios
-			float deltaTimeScale = 1f / Time.deltaTime;
-			yPosFromAnimCurveDelta *= deltaTimeScale;
-		}
-	
-
-		lerpTimeY += deltaTime * GameCharacter.GameCharacterData.AirToZeroVelYInAttackSpeed;
-		lerpTimeX += deltaTime * GameCharacter.GameCharacterData.AirToZeroVelXInAttackSpeed;
-		float yMotion = GameCharacter.MovementComponent.RootmotionVector.y + Mathf.Lerp(initYVelocity, 0, lerpTimeY) + yPosFromAnimCurveDelta;
-		float xMotion = GameCharacter.MovementComponent.RootmotionVector.x + Mathf.Lerp(initXVelocity, 0, lerpTimeX);
-		Vector3 rootmotionVector = new Vector3(xMotion, yMotion, 0);
-
-		// Move Along Ground
-		if (GameCharacter.MovementComponent.IsGrounded)
-		{
-			Vector2 newInputVector = Vector3.ProjectOnPlane(rootmotionVector, GameCharacter.MovementComponent.RayCastGroundHit != null ? GameCharacter.MovementComponent.RayCastGroundHit.hit.normal : GameCharacter.MovementComponent.PossibleGround.hit.normal);
-			if (Mathf.Abs(newInputVector.normalized.x) > 0.1f) rootmotionVector = newInputVector;
-		}
-
-		GameCharacter.MovementComponent.MovementVelocity = rootmotionVector;
 		GameCharacter.CombatComponent.CurrentWeapon.PostAttackStateLogic(deltaTime);
-	}
-
-	private void RotateCharacter()
-	{
-		Quaternion targetRot = Quaternion.Slerp(GameCharacter.transform.rotation, newDir, Time.deltaTime * GameCharacter.GameCharacterData.RoationSpeed);
-		GameCharacter.transform.rotation = targetRot;
 	}
 
 	public override void FixedExecuteState(float deltaTime)
@@ -108,7 +86,10 @@ public class GameCharacterAttackState : AGameCharacterState
 
 	public override void EndState(EGameCharacterState newState)
 	{
+		GameCharacter.MovementComponent.UseGravity = true;
+		GameCharacter.AnimController.BlockRotation = false;
 		GameCharacter.transform.rotation = newDir;
+		GameCharacter.LastDir = new Vector3(GameCharacter.transform.forward.x, 0, 0); 
 		GameCharacter.CombatComponent.CurrentWeapon.EndAttackStateLogic();
 	}
 }

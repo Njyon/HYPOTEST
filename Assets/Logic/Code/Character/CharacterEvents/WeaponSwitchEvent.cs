@@ -21,6 +21,8 @@ public class WeaponSwitchEvent : CharacterEvent
 
 	public override bool CanBeExecuted()
 	{
+		if (gameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.Attack || gameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.DefensiveAction) 
+			return false;
 		return true;
 	}
 

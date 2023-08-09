@@ -18,21 +18,26 @@ public class GameCharacterPullCharacterOnHorizontalLevelState : AGameCharacterSt
 			GameCharacter.RequestBestCharacterState();
 			return;
 		}
+		GameCharacter.MovementComponent.UseGravity = false;
 
-		enemyCordinate = GameCharacter.CombatComponent.HookedToCharacter.transform.position + GameCharacter.CombatComponent.HookedToCharacter.MovementComponent.CapsuleCollider.center;
-		enemyCordinateOnlyY = new Vector3(GameCharacter.transform.position.x ,enemyCordinate.y, GameCharacter.transform.position.z);
+		if (GameCharacter.CombatComponent.HookedToCharacter != null)
+		{
+			enemyCordinate = GameCharacter.CombatComponent.HookedToCharacter.transform.position + GameCharacter.CombatComponent.HookedToCharacter.MovementComponent.CapsuleCollider.center;
+			enemyCordinateOnlyY = new Vector3(GameCharacter.transform.position.x ,enemyCordinate.y, GameCharacter.transform.position.z);
+		}
 
 		GameCharacter.MovementComponent.onMoveCollisionFlag += OnMoveCollisionFlag;
 	}
 
 	public override EGameCharacterState GetStateType()
 	{
-		return EGameCharacterState.Unknown;
+		return EGameCharacterState.PullCharacterOnHorizontalLevel;
 	}
 
 	public override EGameCharacterState UpdateState(float deltaTime, EGameCharacterState newStateRequest)
 	{
-		if (newStateRequest != EGameCharacterState.Unknown) return newStateRequest;
+		if (newStateRequest != EGameCharacterState.Unknown) 
+			return newStateRequest;
 		return GetStateType();
 	}
 
@@ -62,6 +67,7 @@ public class GameCharacterPullCharacterOnHorizontalLevelState : AGameCharacterSt
 	public override void EndState(EGameCharacterState newState)
 	{
 		GameCharacter.MovementComponent.onMoveCollisionFlag -= OnMoveCollisionFlag;
+		GameCharacter.MovementComponent.UseGravity = true;
 	}
 
 	bool ShouldLeaveState()

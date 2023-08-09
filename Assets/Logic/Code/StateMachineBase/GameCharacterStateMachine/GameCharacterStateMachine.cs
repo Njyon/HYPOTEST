@@ -19,6 +19,7 @@ public enum EGameCharacterState
 	PullCharacterOnHorizontalLevel = 9,
 	Freez = 10,
 	DefensiveAction = 11,
+	MoveToPosition = 12,
 }
 
 public class GameCharacterStateMachine : AStateMachineBase<EGameCharacterState>
@@ -85,6 +86,11 @@ public class GameCharacterStateMachine : AStateMachineBase<EGameCharacterState>
 		newState = Activator.CreateInstance(stateClass, this, gameCharacter) as AGameCharacterState;
 
 		return newState != null;
+	}
+
+	public bool CanSwitchToState(EGameCharacterState state)
+	{
+		return (CurrentState.UpdateState(0, state) == state);
 	}
 
 	public bool CanSwitchToStateOrIsState(EGameCharacterState state)

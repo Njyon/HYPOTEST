@@ -627,5 +627,16 @@ namespace Ultra {
 			}
 			return value;
 		}
+
+		public static float GetAngleBetweenVectors(Vector3 a, Vector3 b)
+		{
+			float angle = Vector3.Angle(a, b);
+			Vector3 cross = Vector3.Cross(a, b);
+			if (cross.y < 0 && angle > 180f)
+			{
+				angle = 360f - angle; // Korrektur nur wenn der Winkel > 180 Grad ist
+			}
+			return angle;
+		}
 	}
 }
