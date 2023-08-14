@@ -147,6 +147,17 @@ public class GameCharacter : MonoBehaviour , IDamage
 		animController.Update(Time.deltaTime);
 		if (Health != null) Health.Update(Time.deltaTime);
 
+
+		
+		// Debug
+		if (IsPlayerCharacter)
+		{
+			foreach (var item in PluginStateMachine.DictionaryOfPluginStates)
+			{
+				if (item.Value.IsActive())
+					Ultra.Utilities.Instance.DebugLogOnScreen("GameCharacter" + item.Value.GetStateType() + "PluginState is Active", 100, DebugAreas.Misc);
+			}
+		}
 		if (MovementComponent.PossibleGround != null)
 		{
 			Ultra.Utilities.DrawWireSphere(MovementComponent.PossibleGround.hit.point, 0.2f, Color.blue, 0.0f, 100, DebugAreas.Movement);
@@ -239,12 +250,12 @@ public class GameCharacter : MonoBehaviour , IDamage
 
 	public bool CheckIfCharacterIsMoving()
 	{
-		return MovementComponent.Veloctiy.magnitude > 0 || GetHorizontalMovementInputDir().magnitude > 0;
+		return MovementComponent.Velocity.magnitude > 0 || GetHorizontalMovementInputDir().magnitude > 0;
 	}
 
 	public bool CheckIfCharacterIsStanding()
 	{
-		return MovementComponent.Veloctiy.magnitude <= 0 && GetHorizontalMovementInputDir().magnitude <= 0;
+		return MovementComponent.Velocity.magnitude <= 0 && GetHorizontalMovementInputDir().magnitude <= 0;
 	}
 
 	public void RequestBestCharacterState()

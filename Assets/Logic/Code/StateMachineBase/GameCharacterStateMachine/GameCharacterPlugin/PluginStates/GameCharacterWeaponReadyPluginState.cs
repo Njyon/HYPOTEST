@@ -92,7 +92,7 @@ public class GameCharacterWeaponReadyPluginState : AGameCharacterPluginState
 	void SetDefaultWeaponUpperBodyLayer()
 	{
 		ScriptableWeaponAnimationData weaponAnimationData = GameCharacter.CombatComponent.CurrentWeapon.WeaponData.AnimationData[GameCharacter.CharacterData.Name];
-		GameCharacter.AnimController.InterpUpperBodyWeight(weaponAnimationData.WeaponReadyWeight, weaponAnimationData.WeaponReadyInterpSpeed);
+		GameCharacter.AnimController.InterpHeadSpineArmWeight(weaponAnimationData.WeaponReadyWeight, weaponAnimationData.WeaponReadyInterpSpeed);
 	}
 
 	void SetDefaultWeaponLowerBodyLayer()
@@ -115,7 +115,7 @@ public class GameCharacterWeaponReadyPluginState : AGameCharacterPluginState
 		switch(type)
 		{
 			case EGameCharacterEvent.Jump: 
-				GameCharacter.AnimController.SetUpperBodyWeight(0);
+				GameCharacter.AnimController.SetHeadSpineArmWeight(0);
 				GameCharacter.AnimController.SetLegLayerWeight(0);
 				break;
 			default: break;

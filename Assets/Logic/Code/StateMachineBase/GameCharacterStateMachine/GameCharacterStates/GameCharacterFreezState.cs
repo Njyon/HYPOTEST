@@ -74,7 +74,7 @@ public class GameCharacterFreezState : AGameCharacterState
 	{
 		if ((collisionFlag & CollisionFlags.Below) != 0)
 		{
-			if (GameCharacter.MovementComponent.Veloctiy.magnitude > 2f)
+			if (GameCharacter.MovementComponent.Velocity.magnitude > 2f)
 			{
 				GameCharacter.MovementComponent.MovementVelocity = Vector3.Reflect(GameCharacter.MovementComponent.MovementVelocity, GameCharacter.MovementComponent.PossibleGround.hit.normal);
 				addDrag = true;

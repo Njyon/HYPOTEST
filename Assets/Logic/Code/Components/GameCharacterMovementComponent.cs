@@ -40,8 +40,8 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	public NullableHit RayCastGroundHit { get { return rayCastGroundHit; } set { rayCastGroundHit = value; } }
 	public bool IsGrounded { get { return isGrounded && !IsInJump; } }
 	public Vector3 MovementVelocity { get { return movementVelocity; } set { movementVelocity = value; } }
-	public Vector3 Veloctiy { get { return veloctiy; } }
-	public float MovementSpeed { get { return Veloctiy.magnitude; } }
+	public Vector3 Velocity { get { return veloctiy; } }
+	public float MovementSpeed { get { return Velocity.magnitude; } }
 	public float MaxWalkableSlopAngle { get { return maxWalkableSlopAngle; } }
 	public Vector3 RootmotionVector { get { return rootmotionVector; } }
 	public float Height { get { return capsuleCollider.height; } }
@@ -213,7 +213,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 		if (moveRequestVector.magnitude < 0.001f || iteration > 2)
 		{
 			Debug.Log("Movement Max iteration hit");
-			MovementVelocity = new Vector3(0, Veloctiy.y, 0);
+			MovementVelocity = new Vector3(0, Velocity.y, 0);
 			return capsulCenter;
 		}
 
@@ -303,11 +303,18 @@ public class GameCharacterMovementComponent : MonoBehaviour
 		RaycastHit groundHitRayCast;
 		if (IsGroundedCheck(CharacterCenter, out groundHitCapsul))
 		{
+			if (groundHitCapsul.transform.gameObject.layer == characterLayerIndex)
+			{
+				isGrounded = false;
+				return;
+			}
+
 			Vector3 castOrigin = new Vector3(groundHitCapsul.point.x, groundHitCapsul.point.y + 1f, groundHitCapsul.point.z);
 			if (Physics.Raycast(castOrigin, groundHitCapsul.point - castOrigin, out groundHitRayCast, Vector3.Distance(castOrigin, groundHitCapsul.point) + 0.1f))
 				RayCastGroundHit = new NullableHit(groundHitRayCast);
 			else
 				RayCastGroundHit = null;
+
 			isGrounded = true;
 			PossibleGround = new NullableHit(groundHitCapsul);
 			//if (MovementVelocity.y < 0) MovementVelocity = new Vector3(MovementVelocity.x, 0f, MovementVelocity.z);
@@ -334,7 +341,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 		Vector3 movementVector = GetMovmentVelocityWithDeltaTime();
 		RequestMove(movementVector);
 		if (gameCharacter.IsPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen("MovementVelocity: " + MovementVelocity.ToString() + " MovementSpeed: " + MovementVelocity.magnitude);
-		if (gameCharacter.IsPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen(StringColor.Lime + "Velocity: " + Veloctiy.ToString() + " VelocityMagnitude: " + Veloctiy.magnitude + StringColor.EndColor);
+		if (gameCharacter.IsPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen(StringColor.Lime + "Velocity: " + Velocity.ToString() + " VelocityMagnitude: " + Velocity.magnitude + StringColor.EndColor);
 		Ultra.Utilities.DrawArrow(transform.position, movementVector.normalized, movementVector.magnitude * 50f, Color.red, 0f, 50, DebugAreas.Movement);
 		Vector3 moveDir = GetMovementVelocityWithoutGravity();
 		Ultra.Utilities.DrawArrow(transform.position, (moveDir.normalized.magnitude <= 0) ? transform.forward : moveDir.normalized, moveDir.magnitude * Time.deltaTime * 50f, Color.blue, 0f, 50, DebugAreas.Movement);

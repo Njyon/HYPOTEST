@@ -1,0 +1,44 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class #SCRIPTNAME# : AState
+{
+	public #SCRIPTNAME#(GameCharacter gameCharacter, PluginStateMachine pluginStateMachine) : base (gameCharacter, pluginStateMachine)
+	{ }
+	
+	public override EPluginCharacterState GetStateType()
+	{
+		return PluginStateType;
+	}
+
+    public override void Active()
+	{
+		base.Active();
+	}
+
+	public override void Deactive()
+	{
+		base.Deactive();
+	}
+
+	public override void AddState()
+	{
+	#NOTRIM#
+	}
+	
+	public override void RemoveState()
+	{
+	#NOTRIM#
+	}
+
+	public override void WantsToBeActive()
+	{
+	#NOTRIM#
+	}
+
+	public override void ExecuteState(float deltaTime)
+	{
+	#NOTRIM#
+	}
+}

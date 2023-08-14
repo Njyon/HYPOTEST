@@ -419,13 +419,12 @@ public abstract class WeaponBase
 		
 	}
 
-	protected void AttackBlendSpaceLogic(EExplicitAttackType explicitAttackType, ref List<AttackAnimationData> attackList, EAnimationType animType)
+	protected void AttackAimLogic(EExplicitAttackType explicitAttackType, ref List<AttackAnimationData> attackList, EAnimationType animType)
 	{
 		GetAnimation(explicitAttackType, ref attackList);
 		AimBlendSpace(ref attackList, animType); 
-		gameCharacter.StateMachine.RequestStateChange(EGameCharacterState.Attack);
+		gameCharacter.PluginStateMachine.AddPluginState(EPluginCharacterState.Aim);
 		attackAnimType = EAttackAnimType.AimBlendSpace;
-		
 	}
 
 	protected void DefensiceActionLogic(ref List<AttackAnimationData> defensiveList)
@@ -443,10 +442,11 @@ public abstract class WeaponBase
 		
 	}
 
-	protected void DefensiveActionBlendSpaceLogic(ref List<AttackAnimationData> defensiveList, EAnimationType animType)
+	protected void DefensiveActionAimLogic(ref List<AttackAnimationData> defensiveList, EAnimationType animType)
 	{
 		GetDefensiveAnimation(ref defensiveList);
 		AimBlendSpace(ref defensiveList, animType);
+		gameCharacter.PluginStateMachine.AddPluginState(EPluginCharacterState.Aim);
 		gameCharacter.StateMachine.RequestStateChange(EGameCharacterState.DefensiveAction);
 		attackAnimType = EAttackAnimType.AimBlendSpace;
 	}

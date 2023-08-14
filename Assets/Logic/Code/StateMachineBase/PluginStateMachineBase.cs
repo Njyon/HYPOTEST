@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class PluginStateMachineBase<T> : MonoBehaviour
 {
 	Dictionary<T, IPluginState<T>> dictionaryOfPluginStates;
-	Dictionary<T, IPluginState<T>> DictionaryOfPluginStates { get { return dictionaryOfPluginStates; } }
+	public Dictionary<T, IPluginState<T>> DictionaryOfPluginStates { get { return dictionaryOfPluginStates; } }
 
 	public OnPluginStateAdded onPluginStateAdded;
 	public OnPluginStateRemoved onPluginStateRemoved;
@@ -82,6 +82,7 @@ public abstract class PluginStateMachineBase<T> : MonoBehaviour
 
 		IPluginState<T> removeState;
 		DictionaryOfPluginStates.TryGetValue(stateType, out removeState);
+		removeState?.Deactive();
 		removeState?.RemoveState();
 		bool removed = DictionaryOfPluginStates.Remove(stateType);
 		if (removed && onPluginStateRemoved != null) onPluginStateRemoved(stateType);

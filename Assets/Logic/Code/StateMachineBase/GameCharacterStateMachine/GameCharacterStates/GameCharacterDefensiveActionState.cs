@@ -19,7 +19,6 @@ public class GameCharacterDefensiveActionState : AGameCharacterState
 		switch (GameCharacter.CombatComponent.CurrentWeapon.AttackAnimType)
 		{
 			case EAttackAnimType.AimBlendSpace:
-				GameCharacter.AnimController.InAimBlendTree = true;
 				GameCharacter.CombatComponent.DefensiveTimer.Start(GameCharacter.CombatComponent.CurrentWeapon.CurrentDefensiveAction.aimBlendTypes.blendAnimations.midAnimation.length);
 				break;
 			default:

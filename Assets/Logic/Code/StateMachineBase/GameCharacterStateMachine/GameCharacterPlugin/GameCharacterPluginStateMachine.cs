@@ -9,6 +9,7 @@ using UnityEngine.InputSystem.LowLevel;
 public enum EPluginCharacterState
 {
 	WeaponReady,
+	Aim,
 }
 
 public class GameCharacterPluginStateMachine : PluginStateMachineBase<EPluginCharacterState>
