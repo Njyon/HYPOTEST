@@ -21,8 +21,6 @@ public class WeaponSwitchEvent : CharacterEvent
 
 	public override bool CanBeExecuted()
 	{
-		if (gameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.Attack || gameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.DefensiveAction) 
-			return false;
 		return true;
 	}
 
@@ -36,10 +34,10 @@ public class WeaponSwitchEvent : CharacterEvent
 		switch (weaponSwitchType)
 		{
 			case EWeaponSwitchType.NextWeapon:
-				gameCharacter?.CombatComponent?.NextWeapon();
+				gameCharacter?.CombatComponent?.EquipNextWeapon();
 				break;
 				case EWeaponSwitchType.PreviousWeapon:
-				gameCharacter?.CombatComponent?.PreviousWeapon();
+				gameCharacter?.CombatComponent?.EquipPreviousWeapon();
 				break;
 			default:
 				gameCharacter?.CombatComponent?.SwitchWeapon(weaponIndex);

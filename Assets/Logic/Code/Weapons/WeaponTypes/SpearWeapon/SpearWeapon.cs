@@ -17,11 +17,20 @@ public class SpearWeapon : WeaponBase
     public override void EquipWeapon()
     {
         base.EquipWeapon();
-    }
+	}
 
     public override void UnEquipWeapon()
     {
         base.UnEquipWeapon();
+
+		GameCharacter.AnimController.InAimBlendTree = false;
+		GameCharacter.CombatComponent.HookedCharacter = null;
+		GameCharacter.RequestBestCharacterState();
+		GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.Aim);
+		SpawnedWeapon.SetActive(true);
+
+		if (defensiveSpear != null)
+			GameObject.Destroy(defensiveSpear.gameObject);
 	}
 
     public override void UpdateWeapon(float deltaTime)

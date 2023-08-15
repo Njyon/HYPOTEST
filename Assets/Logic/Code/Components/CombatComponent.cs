@@ -21,6 +21,7 @@ public class CombatComponent
 	GameCharacter gameCharacter;
 	ScriptableWeapon[] weapons = new ScriptableWeapon[4];
 	WeaponBase currentWeapon;
+	WeaponBase nextWeapon;
 	int currentWeaponIndex;
 	int equipedWeaponAmount;
 	Ultra.Timer attackTimer;
@@ -36,6 +37,17 @@ public class CombatComponent
 	public GameCharacter HookedCharacter { get { return hookedCharacter; } set { hookedCharacter = value; } }
 	public GameCharacter AimCharacter { get { return aimToCharacter; } set { aimToCharacter = value; } }
 	public Vector3 MoveToPosition { get { return moveToPosition; } set { moveToPosition = value; } }
+
+	public WeaponBase NextWeapon
+	{
+		get { return nextWeapon; }
+		set
+		{
+			if (nextWeapon == value) return;
+
+			nextWeapon = value;
+		}
+	}
 
 	public WeaponBase CurrentWeapon { 
 		get { return currentWeapon; } 
@@ -57,6 +69,15 @@ public class CombatComponent
 	public CombatComponent(GameCharacter gameCharacter)
 	{
 		this.gameCharacter = gameCharacter;
+		nextWeapon = null;
+	}
+
+	~CombatComponent()
+	{
+		if (gameCharacter != null)
+		{
+			gameCharacter.StateMachine.onStateChanged -= OnStateChanged;
+		}
 	}
 
 	public void StartComponent()
@@ -64,6 +85,8 @@ public class CombatComponent
 		InitWeapons();
 		attackTimer = new Ultra.Timer(0f, true);
 		defensiveTimer = new Ultra.Timer(0f, true);
+
+		gameCharacter.StateMachine.onStateChanged += OnStateChanged;
 	}
 
 	public void UpdateComponent(float deltaTime) 
@@ -71,6 +94,30 @@ public class CombatComponent
 		if (attackTimer != null) attackTimer.Update(deltaTime);
 		if (defensiveTimer != null) defensiveTimer.Update(deltaTime);
 		if (CurrentWeapon != null) CurrentWeapon.UpdateWeapon(deltaTime);
+
+		if (NextWeapon != null)
+		{
+			CheckIfCanSwitchWeapon(gameCharacter.StateMachine.GetCurrentStateType());
+		}
+	}
+
+	private void CheckIfCanSwitchWeapon(EGameCharacterState state)
+	{
+		switch (state)
+		{
+			case EGameCharacterState.Attack:
+			case EGameCharacterState.DefensiveAction:
+				break;
+			default:
+				UpdateWeapon();
+				break;
+		}
+	}
+
+	private void UpdateWeapon()
+	{
+		CurrentWeapon = NextWeapon;
+		NextWeapon = null;
 	}
 
 	void InitWeapons()
@@ -98,7 +145,7 @@ public class CombatComponent
 			}
 
 			currentWeaponIndex = 0;
-			CurrentWeapon = weapons[currentWeaponIndex].Weapon;
+			NextWeapon = weapons[currentWeaponIndex].Weapon;
 		}
 	}
 
@@ -107,18 +154,18 @@ public class CombatComponent
 		if (weapons.Length >= index && weapons[index] != null && weapons[index].Weapon != null)
 		{
 			currentWeaponIndex = index;
-			CurrentWeapon = weapons[currentWeaponIndex].Weapon;
+			NextWeapon = weapons[currentWeaponIndex].Weapon;
 		}
 	}
 
-	public void NextWeapon()
+	public void EquipNextWeapon()
 	{
 		int index = currentWeaponIndex + 1;
 		index %= equipedWeaponAmount;
 		SwitchWeapon(index);
 	}
 
-	public void PreviousWeapon()
+	public void EquipPreviousWeapon()
 	{
 		int index = currentWeaponIndex - 1;
 		if (index < 0) index = equipedWeaponAmount - 1;
@@ -140,6 +187,9 @@ public class CombatComponent
 
 	public void Attack(EAttackType attackType)
 	{
+		if (NextWeapon != null)
+			UpdateWeapon();
+
 		if (gameCharacter.MovementComponent.IsGrounded || CurrentAttackIsGroundType())
 		{
 			switch (attackType)
@@ -165,6 +215,15 @@ public class CombatComponent
 
 	public void DefensiveAction()
 	{
+		if (NextWeapon != null)
+			UpdateWeapon();
+
 		CurrentWeapon?.DefensiveAction();
+	}
+
+	void OnStateChanged(IState<EGameCharacterState> newState, IState<EGameCharacterState> oldState)
+	{
+		if (NextWeapon != null) 
+			CheckIfCanSwitchWeapon(newState.GetStateType());
 	}
 }

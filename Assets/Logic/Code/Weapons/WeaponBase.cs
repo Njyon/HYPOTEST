@@ -549,8 +549,10 @@ public abstract class WeaponBase
 		}
 	}
 
-	public virtual void HitDetectionEnd() 
+	public virtual void HitDetectionEnd()
 	{
+		hitObjects.Clear();
+
 		ishitDetecting = false;
 		switch(currentAttack.data.hitDetectionType)
 		{

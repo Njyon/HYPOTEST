@@ -541,6 +541,17 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""84f7a67f-899f-494d-82e3-d1ef19175e79"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""NextWeapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""799a4d71-587d-4439-945b-3bd38ee83f49"",
                     ""path"": ""<Mouse>/forwardButton"",
                     ""interactions"": """",
