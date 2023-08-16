@@ -10,6 +10,8 @@ namespace Ultra
 	{
 		public static List<ScriptableCharacter> GetAllCharacters()
 		{
+#if UNITY_EDITOR
+
 			List<ScriptableCharacter> dataList = new List<ScriptableCharacter>();
 			string[] guids = AssetDatabase.FindAssets("t:" + typeof(ScriptableCharacter).Name);
 			foreach (string guid in guids)
@@ -23,6 +25,8 @@ namespace Ultra
 				}
 			}
 			return dataList;
+#endif
+			return new List<ScriptableCharacter>();
 		}
 		public static GameCharacter FindCharactereNearestToDirection(Vector3 fromPosition, Vector3 direction, ref List<GameCharacter> list)
 		{

@@ -47,7 +47,7 @@ public class DefaultCameraState : ACameraState
 		Vector3 targetDirection = CameraController.MainTargetVelocity * (CameraController.LookAhead * CameraController.Speed);
 
 		// Move the camera towards the target position and direction
-		Vector3 targetPosition =  Vector3.SmoothDamp(CameraController.Camera.transform.position, target.position + targetDirection, ref camerVel, CameraController.Damping) ;
+		Vector3 targetPosition =  Vector3.SmoothDamp(CameraController.FinalCameraPosition, target.position + targetDirection, ref camerVel, CameraController.Damping) ;
 		targetPosition.z = CameraController.CameraTargetPosition.z;
 
 		// Keep the camera within the bounds of the scene
@@ -58,10 +58,12 @@ public class DefaultCameraState : ACameraState
 		float yMax = target.position.y + CameraController.ClampX.y;
 		float y = Mathf.Clamp(targetPosition.y, yMin, yMax);
 
-		Ultra.Utilities.DrawWireSphere(new Vector3(CameraController.transform.position.x, yMin, CameraController.transform.position.z), 0.2f, Color.magenta, 0, 100, DebugAreas.Camera);
-		Ultra.Utilities.DrawWireSphere(new Vector3(CameraController.transform.position.x, y, CameraController.transform.position.z), 0.2f, Color.magenta, 0, 100, DebugAreas.Camera);
-
 		CameraController.CameraTargetPosition = new Vector3(x, y, CameraController.CameraTargetPosition.z);
+
+		Vector3 xPos = Vector3.SmoothDamp(CameraController.FinalCameraPosition, Vector3.ProjectOnPlane(CameraController.CameraTargetPosition, Vector3.up), ref CameraController.velocityVelx, 1 / CameraController.MoveSpeedx);
+		Vector3 yPos = Vector3.SmoothDamp(CameraController.FinalCameraPosition, Vector3.ProjectOnPlane(CameraController.CameraTargetPosition, Vector3.right), ref CameraController.velocityVely, 1 / CameraController.MoveSpeedy);
+
+		CameraController.FinalCameraPosition = new Vector3(xPos.x, yPos.y, CameraController.CameraTargetPosition.z);
 	}
 
 	public override void EndState(ECameraStates newState)

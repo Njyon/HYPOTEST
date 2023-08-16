@@ -1,3 +1,4 @@
+using EasyButtons;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -33,9 +34,9 @@ public class CameraController : MonoBehaviour
     Vector3 prevTargetPos;
     Vector3 mainTargetVelocity;
     Vector3 cameraTargetPosition;
-    private Vector3 velocityVelx = Vector3.zero;
-    private Vector3 velocityVely = Vector3.zero;
-
+    Vector3 finalCameraPosition;
+    Vector3 cameraEffectOffset;
+    CameraEffectComponent cameraEffectComponent;
 
     public List<Transform> Targets { get { return targets; } }
     public CameraStateMachine StateMachine { get { return stateMachine; } }
@@ -58,10 +59,24 @@ public class CameraController : MonoBehaviour
     public Vector2 ClampY { get { return clampY; } }
     public Vector3 CameraTargetPosition { get { return cameraTargetPosition; } set { cameraTargetPosition = value; } }
     public GameCharacter GameCharacter { get { return gameCharacter; } }
+    public Vector3 FinalCameraPosition { get { return finalCameraPosition; } set { finalCameraPosition = value; } }
+    public Vector3 CameraEffectOffset { get { return cameraEffectOffset; } set { cameraEffectOffset = value; } }
+	public CameraEffectComponent CameraEffectComponent { get { return cameraEffectComponent; } }
 
-    private void Start()
+	public Vector3 velocityVelx = Vector3.zero;
+	public Vector3 velocityVely = Vector3.zero;
+
+	[Button("DefaultCameraShake")]
+	private void DefaultCameraShake()
+    {
+        CameraEffectComponent.AddCameraEffect(new CameraEffectShake(this));
+    }
+
+	private void Start()
     {
         cam = GetComponent<Camera>();
+        cameraEffectComponent = new CameraEffectComponent(this);
+        CameraEffectComponent.Init();
     }
 
     public void OnPosses(GameObject newTarget)
@@ -89,11 +104,8 @@ public class CameraController : MonoBehaviour
 
     private void LateUpdate()
     {
-        // TODO Probalby use smoothdamp here and use target position calculated in states
-        //transform.position = cameraTargetPosition; //Vector3.Lerp(transform.position, cameraTargetPosition, StateToStateInterpolationSpeed * Time.deltaTime);
-
-        Vector3 xPos = Vector3.SmoothDamp(transform.position, Vector3.ProjectOnPlane(cameraTargetPosition, Vector3.up) , ref velocityVelx, 1 / MoveSpeedx);
-        Vector3 yPos = Vector3.SmoothDamp(transform.position, Vector3.ProjectOnPlane(cameraTargetPosition, Vector3.right) , ref velocityVely, 1 / MoveSpeedy);
-        transform.position = new Vector3(xPos.x, yPos.y, xPos.z);
-    }
+		CameraEffectComponent.Update(Time.deltaTime);
+        transform.position = FinalCameraPosition + CameraEffectOffset;
+        CameraEffectOffset = Vector3.zero;
+	}
 }

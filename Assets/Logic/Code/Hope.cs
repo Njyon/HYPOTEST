@@ -1,6 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
+#if UNITY_EDITOR
 namespace Ultra
 {
 	public class Hope
@@ -28,4 +29,5 @@ namespace Ultra
 		}
 	}
 }
+#endif
 

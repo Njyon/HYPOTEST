@@ -67,6 +67,11 @@ public class MultiTargetCamerState : ACameraState
 
 		// Ausrichtung der Kamera
 		CameraController.transform.LookAt(bounds.center);
+
+		Vector3 xPos = Vector3.SmoothDamp(CameraController.transform.position, Vector3.ProjectOnPlane(CameraController.CameraTargetPosition, Vector3.up), ref CameraController.velocityVelx, 1 / CameraController.MoveSpeedx);
+		Vector3 yPos = Vector3.SmoothDamp(CameraController.transform.position, Vector3.ProjectOnPlane(CameraController.CameraTargetPosition, Vector3.right), ref CameraController.velocityVely, 1 / CameraController.MoveSpeedy);
+
+		CameraController.FinalCameraPosition = new Vector3(xPos.x, yPos.y, CameraController.CameraTargetPosition.z);
 	}
 
 	public override void EndState(ECameraStates newState)

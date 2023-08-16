@@ -49,6 +49,8 @@ namespace Ultra
 		}
 		public bool IsFinished { get { return isFinished; } }
 		public bool IsRunning { get { return !isPaused && !isFinished; } }
+		public float CurrentTime { get { return currentTime; } }
+		public float Time { get { return time; } }	
 
 		public void Start(float time)
 		{

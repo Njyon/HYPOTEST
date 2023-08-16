@@ -9,7 +9,7 @@ public enum EAttackType
 {
 	Default,
 	AttackHorizontal,
-	AttckUp,
+	AttackUp,
 	AttackDown
 }
 
@@ -172,31 +172,18 @@ public class CombatComponent
 		SwitchWeapon(index);
 	}
 
-	public bool CurrentAttackIsGroundType()
-	{
-		if (CurrentWeapon == null) return false;
-		switch (CurrentWeapon.CurrentAttackType)
-		{
-			case EExplicitAttackType.GroundedDefaultAttack: return true;
-			case EExplicitAttackType.GroundedUpAttack: return true;
-			case EExplicitAttackType.GroundedDirectionalAttack: return true;
-			case EExplicitAttackType.GroundedDownAttack: return true;
-			default: return false;
-		}
-	}
-
 	public void Attack(EAttackType attackType)
 	{
 		if (NextWeapon != null)
 			UpdateWeapon();
 
-		if (gameCharacter.MovementComponent.IsGrounded || CurrentAttackIsGroundType())
+		if (gameCharacter.MovementComponent.IsGrounded)
 		{
 			switch (attackType)
 			{
 				case EAttackType.Default: CurrentWeapon?.GroundAttack(); break;
 				case EAttackType.AttackHorizontal: CurrentWeapon?.GroundDirectionAttack(); break;
-				case EAttackType.AttckUp: CurrentWeapon?.GroundUpAttack(); break;
+				case EAttackType.AttackUp: CurrentWeapon?.GroundUpAttack(); break;
 				case EAttackType.AttackDown: CurrentWeapon?.GroundDownAttack(); break;
 				default: break;
 			}
@@ -206,7 +193,7 @@ public class CombatComponent
 			{
 				case EAttackType.Default: CurrentWeapon?.AirAttack(); break;
 				case EAttackType.AttackHorizontal: CurrentWeapon?.AirDirectionAttack(); break;
-				case EAttackType.AttckUp: CurrentWeapon?.AirUpAttack(); break;
+				case EAttackType.AttackUp: CurrentWeapon?.AirUpAttack(); break;
 				case EAttackType.AttackDown: CurrentWeapon?.AirDownAttack(); break;
 				default: break;
 			}
