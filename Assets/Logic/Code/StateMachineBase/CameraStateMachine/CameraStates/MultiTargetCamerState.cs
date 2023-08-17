@@ -39,10 +39,10 @@ public class MultiTargetCamerState : ACameraState
 		if (CameraController.Targets.Count == 0) return;
 
 		// Ermittlung der Bounding Box, die alle Targets umschlieﬂt
-		Bounds bounds = new Bounds(CameraController.Targets[0].position, Vector3.zero);
+		Bounds bounds = new Bounds(CameraController.Targets[0].transform.position, Vector3.zero);
 		for (int i = 0; i < CameraController.Targets.Count; i++)
 		{
-			bounds.Encapsulate(CameraController.Targets[i].position);
+			bounds.Encapsulate(CameraController.Targets[i].transform.position);
 		}
 
 		// Berechnung der neuen Kamera-Position

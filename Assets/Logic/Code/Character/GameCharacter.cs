@@ -206,6 +206,8 @@ public class GameCharacter : MonoBehaviour , IDamage
 		
 	}
 
+#region AnimEvents
+
 	public void HitDetectionEventStart()
 	{
 		CombatComponent?.CurrentWeapon?.HitDetectionStart();
@@ -225,6 +227,13 @@ public class GameCharacter : MonoBehaviour , IDamage
 	{
 		CombatComponent?.CurrentWeapon?.StartParticelEffect(index);
 	}
+
+	public void StartCameraShake(int index)
+	{
+		CameraController.Instance.ShakeCamerea(index);
+	}
+
+#endregion
 
 	public void DoDamage(GameCharacter damageInitiator, float damage)
 	{

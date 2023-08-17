@@ -33,4 +33,9 @@ public class Singelton<T> : MonoBehaviour  where T : MonoBehaviour{
 
         }
     }
+
+	private void OnDestroy()
+	{
+		Instance = null;
+	}
 }

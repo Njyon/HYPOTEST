@@ -1,12 +1,13 @@
 using EasyButtons;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class CameraController : MonoBehaviour
+public class CameraController : Singelton<CameraController>
 {
     GameCharacter gameCharacter;
-    List<Transform> targets = new List<Transform>();
+    List<GameCharacter> targets = new List<GameCharacter>();
     [Header("Overall Values")]
     [SerializeField] Vector3 offset;
     [SerializeField] float StateToStateInterpolationSpeed = 100f;
@@ -27,18 +28,20 @@ public class CameraController : MonoBehaviour
     [SerializeField] float zoomLimiter = 50f;  // Die maximale Entfernung zwischen den Zielen, die die Kamera verfolgt
     [SerializeField] float minDistance = 10f; // Mindestentfernung der Kamera zu den Targets
 
+    [Header("Effects")]
+    [SerializeField] int TestDebugCameraShakeIndex = 0;
+    [SerializeField] List<CameraShakeScriptableObject> cameraShakes = new List<CameraShakeScriptableObject>();
+
     Vector3 velocity;
     Camera cam;
     float zoomVelocity;
     CameraStateMachine stateMachine;
-    Vector3 prevTargetPos;
-    Vector3 mainTargetVelocity;
     Vector3 cameraTargetPosition;
     Vector3 finalCameraPosition;
     Vector3 cameraEffectOffset;
     CameraEffectComponent cameraEffectComponent;
 
-    public List<Transform> Targets { get { return targets; } }
+    public List<GameCharacter> Targets { get { return targets; } }
     public CameraStateMachine StateMachine { get { return stateMachine; } }
     public Camera Camera { get { return cam; } }   
     public Vector3 Offset { get { return offset; } }
@@ -49,7 +52,6 @@ public class CameraController : MonoBehaviour
     public float MaxZoom { get { return maxZoom; } }
     public float MinZoom { get { return minZoom; } }
     public float SmoothTime { get { return smoothTime; } }
-    public Vector3 MainTargetVelocity { get { return mainTargetVelocity; } }
     public float MoveSpeedx { get { return moveSpeedx; } }
     public float MoveSpeedy { get { return moveSpeedy; } }
     public float LookAhead { get { return lookAhead; } }
@@ -69,7 +71,8 @@ public class CameraController : MonoBehaviour
 	[Button("DefaultCameraShake")]
 	private void DefaultCameraShake()
     {
-        CameraEffectComponent.AddCameraEffect(new CameraEffectShake(this));
+        if (cameraShakes.Count > TestDebugCameraShakeIndex) 
+            CameraEffectComponent.AddCameraEffect(new CameraEffectShake(this, cameraShakes[TestDebugCameraShakeIndex]));
     }
 
 	private void Start()
@@ -83,29 +86,29 @@ public class CameraController : MonoBehaviour
     {
         gameCharacter = newTarget.GetComponent<GameCharacter>();
 
-        targets.Add(newTarget.transform);
+        targets.Add(gameCharacter);
         transform.position = newTarget.transform.position + offset;
 
         stateMachine = gameObject.AddComponent<CameraStateMachine>();
-        prevTargetPos = newTarget.transform.position;
         cameraTargetPosition = transform.position; 
     }
 
 
 	private void Update()
 	{
-        if (Targets.Count > 0 && Targets[0] != null)
-        {
-            Vector3 currentPosition = Targets[0].position;
-            mainTargetVelocity = (currentPosition - prevTargetPos) / Time.deltaTime;
-            prevTargetPos = currentPosition;
-        }
-    }
+		
+	}
 
-    private void LateUpdate()
+	private void LateUpdate()
     {
 		CameraEffectComponent.Update(Time.deltaTime);
         transform.position = FinalCameraPosition + CameraEffectOffset;
         CameraEffectOffset = Vector3.zero;
+	}
+
+    public void ShakeCamerea(int index)
+    {
+		if (cameraShakes.Count > index)
+			CameraEffectComponent.AddCameraEffect(new CameraEffectShake(this, cameraShakes[index]));
 	}
 }
