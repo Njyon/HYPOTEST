@@ -25,6 +25,7 @@ public class GameCharacterAttackRecoveryState : AGameCharacterState
 			case EGameCharacterState.HookedToCharacter: return EGameCharacterState.HookedToCharacter;
 			case EGameCharacterState.PullCharacterOnHorizontalLevel: return EGameCharacterState.PullCharacterOnHorizontalLevel;
 			case EGameCharacterState.DefensiveAction: return EGameCharacterState.DefensiveAction;
+			case EGameCharacterState.FlyAway: return EGameCharacterState.FlyAway;
 			default: break;
 		}
 

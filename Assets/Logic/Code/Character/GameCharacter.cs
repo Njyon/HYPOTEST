@@ -171,7 +171,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 		switch (StateMachine.GetCurrentStateType())
 		{
 			case EGameCharacterState.Attack: case EGameCharacterState.AttackRecovery:
-			case EGameCharacterState.DefensiveAction:
+			case EGameCharacterState.DefensiveAction: case EGameCharacterState.FlyAway:
 				return;
 			default: break;
 		}

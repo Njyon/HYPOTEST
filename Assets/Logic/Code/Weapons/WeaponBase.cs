@@ -44,15 +44,11 @@ public abstract class WeaponBase
     int attackIndex;
     int defensiveActionIndex;
 	bool ishitDetecting = false;
-	GameObject hitDetectionGameObject;
-	MeshCollider hitDetectionMeshCollider;
-	ColliderHitScript hitDetectionColliderScript;
-	MeshFilter hitDetectionMeshFilter;
-	MeshRenderer hitDetectionMeshRenderer;
 	AttackAnimationData currentAttack;
 	AttackAnimationData currentDefensiveAction;
 	protected List<GameObject> hitObjects;
 	EAttackAnimType attackAnimType;
+	int comboIndexInSameAttack;
 
 	// Particle Save
 	List<List<ParticleSystem>> groundLightAttackParticleList;
@@ -75,8 +71,10 @@ public abstract class WeaponBase
 	public EExplicitAttackType CurrentAttackType { get { return currentAttackType; } }
 	public EExplicitAttackType LastAttackType { get { return lastAttackType; } }
 	public EAttackAnimType AttackAnimType { get { return attackAnimType; } }
+	public int ComboIndexInSameAttack { get { return comboIndexInSameAttack; } }	
+	public int AttackIndex { get { return attackIndex; } }
 
-    public WeaponBase() { }
+	public WeaponBase() { }
     public WeaponBase(GameCharacter gameCharacter, ScriptableWeapon weaponData)
     {
         this.gameCharacter = gameCharacter;
@@ -184,23 +182,9 @@ public abstract class WeaponBase
 
 	private void SetUpHitDetectionMeshLogic()
 	{
-		hitDetectionGameObject = new GameObject("HitDetectionGameObject");
-		if (hitDetectionGameObject == null) return;
-		hitDetectionGameObject.transform.parent = gameCharacter.transform;
-		hitDetectionGameObject.transform.position = Vector3.zero;
-		hitDetectionMeshCollider = hitDetectionGameObject.AddComponent<MeshCollider>();
-		if (hitDetectionMeshCollider == null) return;
-		hitDetectionMeshCollider.convex = true;
-		hitDetectionMeshCollider.isTrigger = true;
-		hitDetectionColliderScript = hitDetectionGameObject.AddComponent<ColliderHitScript>();
-		if (hitDetectionColliderScript == null) return;
-		hitDetectionColliderScript.onOverlapEnter += WeaponColliderEnter;
-		hitDetectionColliderScript.onOverlapExit += WeaponColliderExit;
-		// Debug
-		hitDetectionMeshFilter = hitDetectionGameObject.AddComponent<MeshFilter>();
-		hitDetectionMeshRenderer = hitDetectionGameObject.AddComponent<MeshRenderer>();
-		hitDetectionMeshRenderer.material = GameAssets.Instance.debugMaterial;
-		hitDetectionMeshRenderer.enabled = false;
+		if (gameCharacter.CombatComponent.HitDetectionGameObject == null) gameCharacter.CombatComponent.SetUpHitDetection();
+		gameCharacter.CombatComponent.HitDetectionColliderScript.onOverlapEnter += WeaponColliderEnter;
+		gameCharacter.CombatComponent.HitDetectionColliderScript.onOverlapExit += WeaponColliderExit;
 	}
 
 	public virtual void UnEquipWeapon()
@@ -208,11 +192,8 @@ public abstract class WeaponBase
 		GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.WeaponReady);
         GameObject.Destroy(spawnedWeapon);
         GameObject.Destroy(spawnedWeaponBones);
-		if (hitDetectionColliderScript != null) hitDetectionColliderScript.onOverlapEnter -= WeaponColliderEnter;
-		if (hitDetectionColliderScript != null) hitDetectionColliderScript.onOverlapExit -= WeaponColliderExit;
-		hitDetectionMeshCollider = null;
-		hitDetectionColliderScript = null;
-		GameObject.Destroy(hitDetectionGameObject);
+		if (gameCharacter.CombatComponent.HitDetectionColliderScript != null) gameCharacter.CombatComponent.HitDetectionColliderScript.onOverlapEnter -= WeaponColliderEnter;
+		if (gameCharacter.CombatComponent.HitDetectionColliderScript != null) gameCharacter.CombatComponent.HitDetectionColliderScript.onOverlapExit -= WeaponColliderExit;
 
 	}
 
@@ -234,41 +215,41 @@ public abstract class WeaponBase
 				break;
 			case EHitDetectionType.Box:
 				{
-					hitDetectionGameObject.transform.position = gameCharacter.MovementComponent.CharacterCenter;
-					hitDetectionGameObject.transform.Translate(currentAttack.data.offset);
-					Collider[] colliders = Physics.OverlapBox(hitDetectionGameObject.transform.position, currentAttack.data.boxDimensions / 2);
+					gameCharacter.CombatComponent.HitDetectionGameObject.transform.position = gameCharacter.MovementComponent.CharacterCenter;
+					gameCharacter.CombatComponent.HitDetectionGameObject.transform.Translate(currentAttack.data.offset);
+					Collider[] colliders = Physics.OverlapBox(gameCharacter.CombatComponent.HitDetectionGameObject.transform.position, currentAttack.data.boxDimensions / 2);
 					foreach (Collider collider in colliders)
 					{
 						WeaponColliderEnter(collider);
 					}
 					//Ultra.Utilities.DrawBox(hitDetectionGameObject.transform.position, Quaternion.identity, lastAttack.data.boxDimensions, Color.red, 200);
-					Ultra.Utilities.DrawBox(hitDetectionGameObject.transform.position, Quaternion.identity, currentAttack.data.boxDimensions, Color.red);
+					Ultra.Utilities.DrawBox(gameCharacter.CombatComponent.HitDetectionGameObject.transform.position, Quaternion.identity, currentAttack.data.boxDimensions, Color.red);
 				}
 				break;
 			case EHitDetectionType.Capsul:
 				{
-					hitDetectionGameObject.transform.position = gameCharacter.MovementComponent.CharacterCenter;
-					hitDetectionGameObject.transform.Translate(currentAttack.data.offset);
-					Collider[] colliders = Ultra.Utilities.OverlapCapsule(hitDetectionGameObject.transform.position, currentAttack.data.capsulHeight, currentAttack.data.radius);
+					gameCharacter.CombatComponent.HitDetectionGameObject.transform.position = gameCharacter.MovementComponent.CharacterCenter;
+					gameCharacter.CombatComponent.HitDetectionGameObject.transform.Translate(currentAttack.data.offset);
+					Collider[] colliders = Ultra.Utilities.OverlapCapsule(gameCharacter.CombatComponent.HitDetectionGameObject.transform.position, currentAttack.data.capsulHeight, currentAttack.data.radius);
 					foreach (Collider collider in colliders)
 					{
 						WeaponColliderEnter(collider);
 					}
-					Ultra.Utilities.DrawCapsule(hitDetectionGameObject.transform.position, Quaternion.identity,currentAttack.data.capsulHeight, currentAttack.data.radius, Color.red);
+					Ultra.Utilities.DrawCapsule(gameCharacter.CombatComponent.HitDetectionGameObject.transform.position, Quaternion.identity,currentAttack.data.capsulHeight, currentAttack.data.radius, Color.red);
 					//Ultra.Utilities.DrawWireCapsule(hitDetectionGameObject.transform.position, Quaternion.identity, lastAttack.data.radius, lastAttack.data.capsulHeight, Color.red, 200);
 					//Gizmos.DrawCube(hitDetectionGameObject.transform.position, Vector3.one);
 				}
 				break;
 			default:
 				{
-					hitDetectionGameObject.transform.position = gameCharacter.MovementComponent.CharacterCenter;
-					hitDetectionGameObject.transform.Translate(currentAttack.data.offset);
-					Collider[] colliders = Physics.OverlapSphere(hitDetectionGameObject.transform.position, currentAttack.data.radius);
+					gameCharacter.CombatComponent.HitDetectionGameObject.transform.position = gameCharacter.MovementComponent.CharacterCenter;
+					gameCharacter.CombatComponent.HitDetectionGameObject.transform.Translate(currentAttack.data.offset);
+					Collider[] colliders = Physics.OverlapSphere(gameCharacter.CombatComponent.HitDetectionGameObject.transform.position, currentAttack.data.radius);
 					foreach (Collider collider in colliders)
 					{
 						WeaponColliderEnter(collider);
 					}
-					Ultra.Utilities.DrawWireSphere(hitDetectionGameObject.transform.position, currentAttack.data.radius, Color.red, 0f, 100);
+					Ultra.Utilities.DrawWireSphere(gameCharacter.CombatComponent.HitDetectionGameObject.transform.position, currentAttack.data.radius, Color.red, 0f, 100);
 				}
 				break;
 		}
@@ -520,16 +501,13 @@ public abstract class WeaponBase
 		switch (currentAttack.data.hitDetectionType)
 		{
 			case EHitDetectionType.Mesh:
-				hitDetectionMeshCollider.sharedMesh = currentAttack.data.mesh;
-				Vector3 localpos;
-				Quaternion localrot;
-				hitDetectionGameObject.transform.GetLocalPositionAndRotation(out localpos, out localrot);
-				hitDetectionGameObject.transform.Translate(localpos * -1, Space.Self);
-				hitDetectionGameObject.transform.Translate(currentAttack.data.offset, Space.Self);
-				hitDetectionMeshFilter.mesh = currentAttack.data.mesh;
-				hitDetectionMeshFilter.sharedMesh = currentAttack.data.mesh;
+				gameCharacter.CombatComponent.HitDetectionMeshCollider.sharedMesh = currentAttack.data.mesh;
+				gameCharacter.CombatComponent.HitDetectionGameObject.transform.position = gameCharacter.MovementComponent.CharacterCenter;
+				gameCharacter.CombatComponent.HitDetectionGameObject.transform.Translate(currentAttack.data.offset);
+				gameCharacter.CombatComponent.HitDetectionMeshFilter.mesh = currentAttack.data.mesh;
+				gameCharacter.CombatComponent.HitDetectionMeshFilter.sharedMesh = currentAttack.data.mesh;
 #if UNITY_EDITOR
-				if (Ultra.Utilities.Instance.debugLevel >= 100) hitDetectionMeshRenderer.enabled = true;
+				if (Ultra.Utilities.Instance.debugLevel >= 100) gameCharacter.CombatComponent.HitDetectionMeshRenderer.enabled = true;
 #endif
 				// Happens at the end of frame where collision got updated from movement above
 				InitialMeshColliderCheck();
@@ -543,7 +521,7 @@ public abstract class WeaponBase
 	async void InitialMeshColliderCheck()
 	{
 		await new WaitForEndOfFrame();
-		foreach (Collider collider in hitDetectionColliderScript.OverlappingColliders)
+		foreach (Collider collider in gameCharacter.CombatComponent.HitDetectionColliderScript.OverlappingColliders)
 		{
 			WeaponColliderEnter(collider);
 		}
@@ -556,10 +534,11 @@ public abstract class WeaponBase
 		ishitDetecting = false;
 		switch(currentAttack.data.hitDetectionType)
 		{
-			case EHitDetectionType.Mesh: hitDetectionMeshRenderer.enabled = false; break;
+			case EHitDetectionType.Mesh: gameCharacter.CombatComponent.HitDetectionMeshRenderer.enabled = false; break;
 				default: break;
 		}
 		AttackPhaseEnd();
+		comboIndexInSameAttack++;
 	}
 
 	protected virtual void WeaponColliderEnter(Collider other)
@@ -593,7 +572,10 @@ public abstract class WeaponBase
 
 	void OnGameCharacterStateChange(IState<EGameCharacterState> newState, IState<EGameCharacterState> oldState)
 	{
-
+		if (oldState.GetStateType() == EGameCharacterState.Attack)
+		{
+			comboIndexInSameAttack = 0;
+		}
 		if (newState?.GetStateType() != EGameCharacterState.Attack && oldState?.GetStateType() == EGameCharacterState.AttackRecovery)
 		{
 			lastAttackType = currentAttackType;

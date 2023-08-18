@@ -44,6 +44,8 @@ public class AnimationController
 	int aimBlendIndex;
 	int inUpperBodyLayerAIndex;
 	int upperBodyLayerIndex;
+	int flyAwayIndex;
+	int flyAwayDirIndex;
 
 	float minMalkSpeed;
 	bool startWalkRunBlendInterp = true;
@@ -379,6 +381,32 @@ public class AnimationController
 			}
 		} 
 	}
+	bool flyAway = false;
+	public bool FlyAway
+	{
+		get { return flyAway; }
+		set 
+		{
+			if (flyAway != value)
+			{
+				flyAway = value;
+				gameCharacter.Animator.SetBool(flyAwayIndex, flyAway);
+			}
+		}
+	}
+	float flyAwayDir = 0f;
+	public float FlyAwayDir
+	{
+		get { return flyAwayDir; }
+		set
+		{
+			if (flyAwayDir != value)
+			{
+				flyAwayDir = value;
+				gameCharacter.Animator.SetFloat(flyAwayDirIndex, flyAwayDir);
+			}
+		}
+	}
 
 	bool blockRotation = false;
 	public bool BlockRotation { get { return blockRotation; } set { blockRotation = value; } }
@@ -427,6 +455,8 @@ public class AnimationController
 		inAimBlendTreeAStateIndex = Animator.StringToHash("AimBlendTreeA");
 		inUpperBodyLayerAIndex = Animator.StringToHash("InUpperBodyLayerA");
 		upperBodyLayerIndex = gameCharacter.Animator.GetLayerIndex("UpperBodyLayer");
+		flyAwayIndex = Animator.StringToHash("FlyAway");
+		flyAwayDirIndex = Animator.StringToHash("FlyAwayDir");
 
 		overrideController = new AnimatorOverrideController(gameCharacter.Animator.runtimeAnimatorController);
 

@@ -20,6 +20,7 @@ public class GameCharacterSlidingState : AGameCharacterState
 			case EGameCharacterState.HookedToCharacter: return EGameCharacterState.HookedToCharacter;
 			case EGameCharacterState.DefensiveAction: return EGameCharacterState.DefensiveAction;
 			case EGameCharacterState.MoveToPosition: return EGameCharacterState.MoveToPosition;
+			case EGameCharacterState.FlyAway: return EGameCharacterState.FlyAway;
 			default: break;
 		}
 

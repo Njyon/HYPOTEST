@@ -20,8 +20,17 @@ public class AttackAnimationData
 	public AnimationClip holdAnimation;
 	public AnimationClip triggerAnimation;
 	public AimBlendTypes aimBlendTypes;
-	public float maxVerticalMovement;
 	public List<GameObject> particleList;
+	public AttackAnimationExtraData extraData;
+}
+
+[Serializable]
+public class AttackAnimationExtraData
+{
+	public float maxVerticalMovement;
+	public float maxHorizontalMovement;
+	public Vector3 flyAwayDirection;
+	public float flyAwayStrengh;
 }
 
 [Serializable]

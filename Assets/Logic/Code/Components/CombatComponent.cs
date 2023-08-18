@@ -26,17 +26,29 @@ public class CombatComponent
 	int equipedWeaponAmount;
 	Ultra.Timer attackTimer;
 	Ultra.Timer defensiveTimer;
+	Ultra.Timer flyAwayTimer;
 	GameCharacter hookedToCharacter;
 	GameCharacter hookedCharacter;
 	GameCharacter aimToCharacter;
 	Vector3 moveToPosition;
+	GameObject hitDetectionGameObject;
+	MeshCollider hitDetectionMeshCollider;
+	ColliderHitScript hitDetectionColliderScript;
+	MeshFilter hitDetectionMeshFilter;
+	MeshRenderer hitDetectionMeshRenderer;
 
 	public Ultra.Timer AttackTimer { get { return attackTimer; } }
 	public Ultra.Timer DefensiveTimer { get { return defensiveTimer; } }
+	public Ultra.Timer FlyAwayTimer { get { return flyAwayTimer; } }
 	public GameCharacter HookedToCharacter { get { return hookedToCharacter; } set { hookedToCharacter = value; } }
 	public GameCharacter HookedCharacter { get { return hookedCharacter; } set { hookedCharacter = value; } }
 	public GameCharacter AimCharacter { get { return aimToCharacter; } set { aimToCharacter = value; } }
 	public Vector3 MoveToPosition { get { return moveToPosition; } set { moveToPosition = value; } }
+	public GameObject HitDetectionGameObject { get { return hitDetectionGameObject; } }
+	public MeshCollider HitDetectionMeshCollider { get { return hitDetectionMeshCollider; } }
+	public ColliderHitScript HitDetectionColliderScript { get { return hitDetectionColliderScript; } }
+	public MeshFilter HitDetectionMeshFilter { get { return hitDetectionMeshFilter; } }
+	public MeshRenderer HitDetectionMeshRenderer { get { return hitDetectionMeshRenderer; } }
 
 	public WeaponBase NextWeapon
 	{
@@ -80,11 +92,41 @@ public class CombatComponent
 		}
 	}
 
+	public void SetUpHitDetection()
+	{
+		hitDetectionGameObject = new GameObject("HitDetectionGameObject");
+		if (hitDetectionGameObject == null) return;
+		hitDetectionGameObject.transform.position = gameCharacter.MovementComponent.CharacterCenter;
+		hitDetectionGameObject.transform.parent = gameCharacter.transform;
+		hitDetectionGameObject.transform.localPosition = Vector3.zero;
+		hitDetectionGameObject.transform.localRotation = Quaternion.Euler(0f, -90f, 0f);
+		hitDetectionMeshCollider = hitDetectionGameObject.AddComponent<MeshCollider>();
+		if (hitDetectionMeshCollider == null) return;
+		hitDetectionMeshCollider.convex = true;
+		hitDetectionMeshCollider.isTrigger = true;
+		hitDetectionColliderScript = hitDetectionGameObject.AddComponent<ColliderHitScript>();
+		if (hitDetectionColliderScript == null) return;
+		// Debug
+		hitDetectionMeshFilter = hitDetectionGameObject.AddComponent<MeshFilter>();
+		hitDetectionMeshRenderer = hitDetectionGameObject.AddComponent<MeshRenderer>();
+		hitDetectionMeshRenderer.material = GameAssets.Instance.debugMaterial;
+		hitDetectionMeshRenderer.enabled = false;
+
+	}
+
+	public void DestroyHitDestection()
+	{
+		hitDetectionMeshCollider = null;
+		hitDetectionColliderScript = null;
+		GameObject.Destroy(hitDetectionGameObject);
+	}
+
 	public void StartComponent()
 	{
 		InitWeapons();
 		attackTimer = new Ultra.Timer(0f, true);
 		defensiveTimer = new Ultra.Timer(0f, true);
+		flyAwayTimer = new Ultra.Timer(0f, true);
 
 		gameCharacter.StateMachine.onStateChanged += OnStateChanged;
 	}
@@ -93,6 +135,7 @@ public class CombatComponent
 	{
 		if (attackTimer != null) attackTimer.Update(deltaTime);
 		if (defensiveTimer != null) defensiveTimer.Update(deltaTime);
+		if (flyAwayTimer != null) flyAwayTimer.Update(deltaTime);
 		if (CurrentWeapon != null) CurrentWeapon.UpdateWeapon(deltaTime);
 
 		if (NextWeapon != null)
@@ -212,5 +255,10 @@ public class CombatComponent
 	{
 		if (NextWeapon != null) 
 			CheckIfCanSwitchWeapon(newState.GetStateType());
+	}
+
+	public bool CanRequestFlyAway()
+	{
+		return true;
 	}
 }

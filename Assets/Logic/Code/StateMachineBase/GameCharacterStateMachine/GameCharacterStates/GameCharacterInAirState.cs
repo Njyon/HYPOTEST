@@ -28,6 +28,7 @@ public class GameCharacterInAirState : AGameCharacterState
 			case EGameCharacterState.Freez: return EGameCharacterState.Freez;
 			case EGameCharacterState.DefensiveAction: return EGameCharacterState.DefensiveAction;
 			case EGameCharacterState.MoveToPosition: return EGameCharacterState.MoveToPosition;
+			case EGameCharacterState.FlyAway: return EGameCharacterState.FlyAway;
 			default: break;
 		}
 
@@ -55,8 +56,8 @@ public class GameCharacterInAirState : AGameCharacterState
 		Vector3 targetVelocity = inputDir.normalized * maxSpeed;
 		Vector3 velocityDiff = (targetVelocity - velocity);
 		Vector3 acceleration = velocityDiff * GameCharacter.GameCharacterData.InAirControll;
-		velocity += acceleration;
-		if (groundBelowCharacter && GameCharacter.MovementComponent.PossibleGround != null) velocity = Vector3.ProjectOnPlane(velocity, GameCharacter.MovementComponent.PossibleGround.hit.normal);
+		velocity.x += acceleration.x;
+  		if (groundBelowCharacter /*&& GameCharacter.MovementComponent.PossibleGround != null*/) velocity = Vector3.ProjectOnPlane(velocity, hit.normal);
 
 		// Anwenden der Geschwindigkeit
 		velocity = new Vector3(velocity.x, GameCharacter.MovementComponent.MovementVelocity.y, GameCharacter.MovementComponent.MovementVelocity.z);

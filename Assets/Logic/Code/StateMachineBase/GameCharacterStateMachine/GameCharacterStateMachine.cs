@@ -20,6 +20,7 @@ public enum EGameCharacterState
 	Freez = 10,
 	DefensiveAction = 11,
 	MoveToPosition = 12,
+	FlyAway = 13,
 }
 
 public class GameCharacterStateMachine : AStateMachineBase<EGameCharacterState>

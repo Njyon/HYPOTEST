@@ -140,7 +140,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 
 
 		CollisionFlags collisionFlag = unityMovementController.Move(moveRequestVector);
-		if (onMoveCollisionFlag != null) onMoveCollisionFlag(collisionFlag);
+		if (onMoveCollisionFlag != null && collisionFlag != CollisionFlags.None) onMoveCollisionFlag(collisionFlag);
 
 		MovementVelocity = new Vector3(MovementVelocity.x, MovementVelocity.y, 0);
 
@@ -328,6 +328,11 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	public bool IsGroundedCheck(Vector3 center, out RaycastHit newHit)
 	{
 		return Ultra.Utilities.CapsulCast(center, capsuleCollider.height, capsuleCollider.radius, Vector3.down * (0.1f + minDistance), out newHit, Color.cyan.WithAlpha(0.35f), 100, DebugAreas.Movement);
+	}
+
+	public bool CheckCharacterCapsulInDirection(Vector3 center ,Vector3 direction, out RaycastHit newHit)
+	{
+		return Ultra.Utilities.CapsulCast(center, capsuleCollider.height, capsuleCollider.radius, direction, out newHit, Color.cyan.WithAlpha(0.35f), 100, DebugAreas.Movement);
 	}
 
 	Vector3 GetMovementVelocityWithoutGravity()
