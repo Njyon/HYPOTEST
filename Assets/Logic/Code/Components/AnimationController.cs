@@ -46,6 +46,10 @@ public class AnimationController
 	int upperBodyLayerIndex;
 	int flyAwayIndex;
 	int flyAwayDirIndex;
+	int inCombat3BlendIndex;
+	int combat3BlendDirIndex;
+	int inCombat3BlendStateAIndex;
+	int combat3BlendTreeAStateIndex;
 
 	float minMalkSpeed;
 	bool startWalkRunBlendInterp = true;
@@ -407,6 +411,45 @@ public class AnimationController
 			}
 		}
 	}
+	bool inCombat3Blend = false;
+	public bool InCombat3Blend
+	{
+		get { return inCombat3Blend; }
+		set
+		{
+			if (inCombat3Blend != value)
+			{
+				inCombat3Blend = value;
+				gameCharacter.Animator.SetBool(inCombat3BlendIndex, inCombat3Blend);
+			}
+		}
+	}
+	float combat3BlendDir = 0f;
+	public float Combat3BlendDir
+	{
+		get { return combat3BlendDir; }
+		set
+		{
+			if (combat3BlendDir != value)
+			{
+				combat3BlendDir = value;
+				gameCharacter.Animator.SetFloat(combat3BlendDirIndex, combat3BlendDir);
+			}
+		}
+	}
+	bool inCombat3BlendStateA = true;
+	public bool InCombat3BlendStateA
+	{
+		get { return inCombat3BlendStateA; }
+		set
+		{
+			if (inCombat3BlendStateA != value)
+			{
+				inCombat3BlendStateA = value;
+				gameCharacter.Animator.SetBool(inCombat3BlendStateAIndex, inCombat3BlendStateA);
+			}
+		}
+	}
 
 	bool blockRotation = false;
 	public bool BlockRotation { get { return blockRotation; } set { blockRotation = value; } }
@@ -457,6 +500,10 @@ public class AnimationController
 		upperBodyLayerIndex = gameCharacter.Animator.GetLayerIndex("UpperBodyLayer");
 		flyAwayIndex = Animator.StringToHash("FlyAway");
 		flyAwayDirIndex = Animator.StringToHash("FlyAwayDir");
+		inCombat3BlendIndex = Animator.StringToHash("InCombat3Blend");
+		combat3BlendDirIndex = Animator.StringToHash("Combat3BlendDir");
+		inCombat3BlendStateAIndex = Animator.StringToHash("InCombat3BlendAState");
+		combat3BlendTreeAStateIndex = Animator.StringToHash("Combat3BlendTreeA");
 
 		overrideController = new AnimatorOverrideController(gameCharacter.Animator.runtimeAnimatorController);
 
@@ -602,6 +649,24 @@ public class AnimationController
 		}
 		gameCharacter.Animator.runtimeAnimatorController = overrideController;
 		InAimBlendTreeA = !isBlendAState;
+	}
+	public void ApplyCombat3BlendTree(AimBlendAnimations anims)
+	{
+		bool isBlendAState = IsInState(inCombat3BlendStateAIndex);
+		if (isBlendAState)
+		{
+			overrideController["Combat3BlendB1"] = anims.upAnimation;
+			overrideController["Combat3BlendB0"] = anims.midAnimation;
+			overrideController["Combat3BlendB-1"] = anims.downAnimation;
+		}
+		else
+		{
+			overrideController["Combat3BlendA1"] = anims.upAnimation;
+			overrideController["Combat3BlendA0"] = anims.midAnimation;
+			overrideController["Combat3BlendA-1"] = anims.downAnimation;
+		}
+		gameCharacter.Animator.runtimeAnimatorController = overrideController;
+		InCombat3BlendStateA = !isBlendAState;
 	}
 
 	private bool IsInState(int stateIndex)

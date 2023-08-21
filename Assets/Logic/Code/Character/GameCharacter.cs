@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Transactions;
 using Unity.VisualScripting;
+using UnityEditor.AnimatedValues;
 using UnityEngine;
 
 public class GameCharacter : MonoBehaviour , IDamage
@@ -206,31 +207,36 @@ public class GameCharacter : MonoBehaviour , IDamage
 		
 	}
 
-#region AnimEvents
+	#region AnimEvents
 
-	public void HitDetectionEventStart()
+	public void HitDetectionEventStart(AnimationEvent evt)
 	{
-		CombatComponent?.CurrentWeapon?.HitDetectionStart();
+		if (evt.animatorClipInfo.weight > 0.5f)
+			CombatComponent?.CurrentWeapon?.HitDetectionStart();
 	}
 
-	public void HitDetectionEventEnd()
+	public void HitDetectionEventEnd(AnimationEvent evt)
 	{
-		CombatComponent?.CurrentWeapon?.HitDetectionEnd();
+		if (evt.animatorClipInfo.weight > 0.5f)
+			CombatComponent?.CurrentWeapon?.HitDetectionEnd();
 	}
 
-	public void AttackRecoveryEvent()
+	public void AttackRecoveryEvent(AnimationEvent evt)
 	{
-		StateMachine?.RequestStateChange(EGameCharacterState.AttackRecovery);
+		if (evt.animatorClipInfo.weight > 0.5f)
+			StateMachine?.RequestStateChange(EGameCharacterState.AttackRecovery);
 	}
 
-	public void StartParticleEffect(int index)
+	public void StartParticleEffect(AnimationEvent evt)
 	{
-		CombatComponent?.CurrentWeapon?.StartParticelEffect(index);
+		if (evt.animatorClipInfo.weight > 0.5f)
+			CombatComponent?.CurrentWeapon?.StartParticelEffect(evt.intParameter);
 	}
 
-	public void StartCameraShake(int index)
+	public void StartCameraShake(AnimationEvent evt)
 	{
-		CameraController.Instance.ShakeCamerea(index);
+		if (evt.animatorClipInfo.weight > 0.5f)
+			CameraController.Instance.ShakeCamerea(evt.intParameter);
 	}
 
 #endregion

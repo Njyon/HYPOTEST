@@ -16,7 +16,7 @@ MonoBehaviour:
   - clip: {fileID: -2426589905315972437, guid: a20ed1cb39892024fa4d3602ce6d5cdb, type: 3}
     data:
       showProperties: 1
-      hitDetectionType: 0
+      hitDetectionType: 1
       mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
       offset: {x: 1, y: 0, z: 0}
       scale: {x: 1, y: 1, z: 1}
@@ -107,7 +107,7 @@ MonoBehaviour:
       flyAwayDirection: {x: 0, y: 0, z: 0}
       flyAwayStrengh: 0
   GroundUpAttacks:
-  - clip: {fileID: 710647662889926410, guid: 30e43eb0a3983a447888d8ff5bebb77d, type: 3}
+  - clip: {fileID: 4916077277263605233, guid: d4622cd20c5a5b843926955dd81f21f8, type: 3}
     data:
       showProperties: 0
       hitDetectionType: 1
@@ -134,7 +134,7 @@ MonoBehaviour:
         downAnimation: {fileID: 0}
     particleList: []
     extraData:
-      maxVerticalMovement: 0
+      maxVerticalMovement: 100
       maxHorizontalMovement: 0
       flyAwayDirection: {x: 0, y: 0, z: 0}
       flyAwayStrengh: 0
@@ -169,8 +169,8 @@ MonoBehaviour:
     extraData:
       maxVerticalMovement: 0
       maxHorizontalMovement: 0
-      flyAwayDirection: {x: 0, y: 0, z: -90}
-      flyAwayStrengh: 100
+      flyAwayDirection: {x: 0, y: 0, z: -45}
+      flyAwayStrengh: 30
   AirAttacks:
   - clip: {fileID: -6042615203269523770, guid: 26911eb7d4649cd4fa5c1b42fbc6883f, type: 3}
     data:
@@ -264,9 +264,76 @@ MonoBehaviour:
       maxVerticalMovement: 0
       maxHorizontalMovement: 0
       flyAwayDirection: {x: 0, y: 0, z: -10}
-      flyAwayStrengh: 100
-  AirUpAttacks: []
-  AirDownAttacks: []
+      flyAwayStrengh: 50
+  AirUpAttacks:
+  - clip: {fileID: 4809141571418458547, guid: 2abaf50464518db4c9a74b0c9ceaff5d, type: 3}
+    data:
+      showProperties: 0
+      hitDetectionType: 0
+      mesh: {fileID: 0}
+      offset: {x: 0, y: 0, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 0
+      boxDimensions: {x: 0, y: 0, z: 0}
+      capsulHeight: 0
+    holdAnimation: {fileID: 0}
+    triggerAnimation: {fileID: 0}
+    aimBlendTypes:
+      blendAnimations:
+        upAnimation: {fileID: 0}
+        midAnimation: {fileID: 0}
+        downAnimation: {fileID: 0}
+      blendHoldAnimations:
+        upAnimation: {fileID: 0}
+        midAnimation: {fileID: 0}
+        downAnimation: {fileID: 0}
+      blendTriggerAnimations:
+        upAnimation: {fileID: 0}
+        midAnimation: {fileID: 0}
+        downAnimation: {fileID: 0}
+    particleList: []
+    extraData:
+      maxVerticalMovement: 0
+      maxHorizontalMovement: 0
+      flyAwayDirection: {x: 0, y: 0, z: 0}
+      flyAwayStrengh: 0
+  AirDownAttacks:
+  - clip: {fileID: 0}
+    data:
+      showProperties: 0
+      hitDetectionType: 0
+      mesh: {fileID: 0}
+      offset: {x: 0, y: 0, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 0
+      boxDimensions: {x: 0, y: 0, z: 0}
+      capsulHeight: 0
+    holdAnimation: {fileID: 0}
+    triggerAnimation: {fileID: 17136065998202433, guid: 1d048d398f94aef4d878fd4487f49a2c,
+      type: 3}
+    aimBlendTypes:
+      blendAnimations:
+        upAnimation: {fileID: -1795832262590111387, guid: 314e395bc066f8e44a01b35e61e319aa,
+          type: 3}
+        midAnimation: {fileID: 17136065998202433, guid: b48d08753bf709e43ad3132952b4239c,
+          type: 3}
+        downAnimation: {fileID: 0}
+      blendHoldAnimations:
+        upAnimation: {fileID: -2458144356878027265, guid: de563377388830b4f9f1a6eb867fc57b,
+          type: 3}
+        midAnimation: {fileID: -4107872184108702142, guid: 8461cb203fda02149b08c3c119f6abf2,
+          type: 3}
+        downAnimation: {fileID: 0}
+      blendTriggerAnimations:
+        upAnimation: {fileID: 0}
+        midAnimation: {fileID: 0}
+        downAnimation: {fileID: 0}
+    particleList: []
+    extraData:
+      maxVerticalMovement: 0
+      maxHorizontalMovement: 0
+      flyAwayDirection: {x: 0, y: 0, z: 0}
+      flyAwayStrengh: 0
   AirDirectionAttacks:
   - clip: {fileID: 6594025621508612525, guid: 6a832559fea509346bd7faaaf47d642b, type: 3}
     data:
@@ -298,7 +365,7 @@ MonoBehaviour:
       maxVerticalMovement: 0
       maxHorizontalMovement: 0
       flyAwayDirection: {x: 0, y: 0, z: -90}
-      flyAwayStrengh: 100
+      flyAwayStrengh: 30
   DefensiveAction: []
   HandType: 0
   WeaponReadyPose: {fileID: -931667488845356766, guid: a8be00c9d0a9e8240b1d6429b3847810,

@@ -30,7 +30,8 @@ public enum EAnimationType
 public enum EAttackAnimType
 {
 	Default,
-	AimBlendSpace
+	AimBlendSpace,
+	Combat3Blend,
 }
 
 public abstract class WeaponBase
@@ -399,7 +400,13 @@ public abstract class WeaponBase
 		
 		
 	}
-
+	protected void Attack3BlendLogic(EExplicitAttackType explicitAttackType, ref List<AttackAnimationData> attackList, EAnimationType animType)
+	{
+		GetAnimation(explicitAttackType, ref attackList);
+		Attack3BlendSpace(ref attackList, animType);
+		gameCharacter.StateMachine.RequestStateChange(EGameCharacterState.Attack);
+		attackAnimType = EAttackAnimType.Combat3Blend;
+	}
 	protected void AttackAimLogic(EExplicitAttackType explicitAttackType, ref List<AttackAnimationData> attackList, EAnimationType animType)
 	{
 		GetAnimation(explicitAttackType, ref attackList);
@@ -447,6 +454,25 @@ public abstract class WeaponBase
 			case EAnimationType.Trigger: gameCharacter.AnimController.ApplyBlendTree(attackData.aimBlendTypes.blendTriggerAnimations); break;
 			default:
 				gameCharacter.AnimController.ApplyBlendTree(attackData.aimBlendTypes.blendAnimations);
+				break;
+		}
+	}
+
+	protected void Attack3BlendSpace(ref List<AttackAnimationData> Attack3Blend, EAnimationType animType)
+	{
+		AttackAnimationData attackData = GetAttackAnimationData();
+		if (attackData == null)
+		{
+			Ultra.Utilities.Instance.DebugLogOnScreen("AttackData was null!", 5f, StringColor.Red, 100, DebugAreas.Combat);
+			Debug.Log(Ultra.Utilities.Instance.DebugErrorString("WeaponBase", "AimBlendSpace", "AttackData was null!"));
+			return;
+		}
+		switch (animType)
+		{
+			case EAnimationType.Hold: gameCharacter.AnimController.ApplyCombat3BlendTree(attackData.aimBlendTypes.blendHoldAnimations); break;
+			case EAnimationType.Trigger: gameCharacter.AnimController.ApplyCombat3BlendTree(attackData.aimBlendTypes.blendTriggerAnimations); break;
+			default:
+				gameCharacter.AnimController.ApplyCombat3BlendTree(attackData.aimBlendTypes.blendAnimations);
 				break;
 		}
 	}

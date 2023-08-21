@@ -10,6 +10,8 @@ public class GameCharacterMovementComponent : MonoBehaviour
 {
 	public delegate void OnMoveCollisionFlag(CollisionFlags collisionFlag);
 	public OnMoveCollisionFlag onMoveCollisionFlag;
+	public delegate void OnCharacterGroundedChanged(bool newState);
+	public OnCharacterGroundedChanged onCharacterGroundedChanged;
 
 	[SerializeField] float stepHight = 0.5f;
 	[SerializeField] float maxWalkableSlopAngle = 45f;
@@ -62,6 +64,14 @@ public class GameCharacterMovementComponent : MonoBehaviour
 			}
 			isInJump = value;
 
+		}
+	}
+	private bool IsGroundedIntern { get { return isGrounded; } 
+		set 
+		{
+			if (value == isGrounded) return;
+			isGrounded = value;
+			if (onCharacterGroundedChanged != null) onCharacterGroundedChanged(isGrounded);
 		}
 	}
 	static float minDistance = 0.001f;
@@ -305,7 +315,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 		{
 			if (groundHitCapsul.transform.gameObject.layer == characterLayerIndex)
 			{
-				isGrounded = false;
+				IsGroundedIntern = false;
 				return;
 			}
 
@@ -315,13 +325,13 @@ public class GameCharacterMovementComponent : MonoBehaviour
 			else
 				RayCastGroundHit = null;
 
-			isGrounded = true;
+			IsGroundedIntern = true;
 			PossibleGround = new NullableHit(groundHitCapsul);
 			//if (MovementVelocity.y < 0) MovementVelocity = new Vector3(MovementVelocity.x, 0f, MovementVelocity.z);
 		}
 		else
 		{
-			isGrounded = false;
+			IsGroundedIntern = false;
 		}
 	}
 

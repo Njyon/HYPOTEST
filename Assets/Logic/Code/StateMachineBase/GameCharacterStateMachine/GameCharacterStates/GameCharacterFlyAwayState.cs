@@ -37,14 +37,15 @@ public class GameCharacterFlyAwayState : AGameCharacterState
 
 		// MaybeAir Speed?
 		float maxSpeed = GameCharacter.GameCharacterData.MaxMovementSpeed * 2;
-		Vector3 inputDir = Vector3.zero;
-		Vector3 targetVelocity = inputDir.normalized * maxSpeed;
+		Vector3 inputDir = velocity;
+		Vector3 targetVelocity = inputDir.normalized * (maxSpeed / 2);
 		Vector3 velocityDiff = (targetVelocity - velocity);
 		Vector3 acceleration = velocityDiff * slowDown;
 		velocity.x += acceleration.x;
 
 
 		velocity = new Vector3(velocity.x, velocity.y, GameCharacter.MovementComponent.MovementVelocity.z);
+		//Ultra.Utilities.DrawArrow(GameCharacter.MovementComponent.CharacterCenter, velocity.normalized, 1f, Color.red, 10f, 100, DebugAreas.Combat);
 		GameCharacter.MovementComponent.MovementVelocity = velocity;
 
 		RotateCharacter();
@@ -99,7 +100,9 @@ public class GameCharacterFlyAwayState : AGameCharacterState
 		RaycastHit hit;
 		bool groundBelowCharacter = GameCharacter.MovementComponent.CheckCharacterCapsulInDirection(GameCharacter.MovementComponent.CharacterCenter, GameCharacter.MovementComponent.MovementVelocity, out hit);
 
+		//Ultra.Utilities.DrawArrow(GameCharacter.MovementComponent.CharacterCenter, velocity.normalized, 2f, Color.magenta, 10f, 100, DebugAreas.Combat);
 		if (groundBelowCharacter) velocity = Vector3.Reflect(velocity, hit.normal);
+		//Ultra.Utilities.DrawArrow(GameCharacter.MovementComponent.CharacterCenter, velocity.normalized, 2f, Color.green, 10f, 100, DebugAreas.Combat);
 
 		velocity = velocity * 0.5f;
 

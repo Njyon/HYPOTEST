@@ -18,10 +18,18 @@ public class GameCharacterAttackState : AGameCharacterState
 	{
 		switch(GameCharacter.CombatComponent.CurrentWeapon.AttackAnimType)
 		{
+			case EAttackAnimType.Combat3Blend: 
+				GameCharacter.AnimController.InCombat3Blend = true;
+				GameCharacter.CombatComponent.AttackTimer.Start(GameCharacter.CombatComponent.CurrentWeapon.CurrentAttack.aimBlendTypes.blendAnimations.midAnimation.length); 
+				break;
 			case EAttackAnimType.AimBlendSpace: 
-				GameCharacter.AnimController.InAimBlendTree = true; break;
+				GameCharacter.AnimController.InAimBlendTree = true;
+				GameCharacter.CombatComponent.AttackTimer.Start(GameCharacter.CombatComponent.CurrentWeapon.CurrentAttack.aimBlendTypes.blendAnimations.midAnimation.length); 
+				break;
 			default:
-				GameCharacter.AnimController.InAttack = true; break;
+				GameCharacter.AnimController.InAttack = true;
+				GameCharacter.CombatComponent.AttackTimer.Start(GameCharacter.CombatComponent.CurrentWeapon.CurrentAttack.clip.length); 
+				break;
 		}
 		GameCharacter.MovementComponent.UseGravity = false;
 		GameCharacter.AnimController.InterpSecondaryMotionLayerWeight(0, 10f);
@@ -42,7 +50,6 @@ public class GameCharacterAttackState : AGameCharacterState
 			newDir = Quaternion.LookRotation(currentDir.normalized, Vector3.up);
 		}
 		GameCharacter.CombatComponent.CurrentWeapon.StartAttackStateLogic();
-		GameCharacter.CombatComponent.AttackTimer.Start(GameCharacter.CombatComponent.CurrentWeapon.CurrentAttack.clip.length);
 	}
 
 	public override EGameCharacterState GetStateType()
