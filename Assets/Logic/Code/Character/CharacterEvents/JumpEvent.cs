@@ -39,5 +39,6 @@ public class JumpEvent : CharacterEvent
 		gameCharacter.AnimController.HoldAttack = false;
 		gameCharacter.AnimController.TriggerAttack = false;
 		gameCharacter.AnimController.InDefensiveAction = false;
+		gameCharacter.AnimController.InCombat3Blend = false;
 	}
 }

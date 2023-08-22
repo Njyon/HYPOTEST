@@ -31,22 +31,22 @@ public class CameraEffectShake : ACameraEffect
 			//float xOffset = Mathf.Sin(Time.time * shake.Frequency) * shake.Amplitude;
 			//float yOffset = Mathf.Cos(Time.time * shake.Frequency) * shake.Amplitude;
 
-			Vector3 lol = ((Mathf.PerlinNoise(Timer.CurrentTime * shake.Frequency.x, Timer.CurrentTime * shake.Frequency.x * Random.Range(shake.RandomValue.x, shake.RandomValue.y)) - 0.5f) * shake.Amplitude.x * Vector3.right +
-							(Mathf.PerlinNoise(Timer.CurrentTime * shake.Frequency.y * Random.Range(shake.RandomValue.x, shake.RandomValue.y), Timer.CurrentTime * shake.Frequency.y) - 0.5f) * shake.Amplitude.y * Vector3.up);
+			Vector3 shake = ((Mathf.PerlinNoise(Timer.CurrentTime * this.shake.Frequency.x, Timer.CurrentTime * this.shake.Frequency.x * Random.Range(this.shake.RandomValue.x, this.shake.RandomValue.y)) - 0.5f) * this.shake.Amplitude.x * Vector3.right +
+							(Mathf.PerlinNoise(Timer.CurrentTime * this.shake.Frequency.y * Random.Range(this.shake.RandomValue.x, this.shake.RandomValue.y), Timer.CurrentTime * this.shake.Frequency.y) - 0.5f) * this.shake.Amplitude.y * Vector3.up);
 
-			lol.x = Mathf.Clamp(lol.x, shake.Clamp.x, shake.Clamp.y);
-			lol.y = Mathf.Clamp(lol.y, shake.Clamp.x, shake.Clamp.y);
+			shake.x = Mathf.Clamp(shake.x, this.shake.Clamp.x, this.shake.Clamp.y);
+			shake.y = Mathf.Clamp(shake.y, this.shake.Clamp.x, this.shake.Clamp.y);
 
-			switch (shake.ShakeAxis)
+			switch (this.shake.ShakeAxis)
 			{
 				case ECameraShakeAxis.X:
-					CameraController.CameraEffectOffset += new Vector3(lol.x, 0f, 0f);
+					CameraController.CameraEffectOffset += new Vector3(shake.x, 0f, 0f);
 					break;
 				case ECameraShakeAxis.Y:
-					CameraController.CameraEffectOffset += new Vector3(0f, lol.y, 0f);
+					CameraController.CameraEffectOffset += new Vector3(0f, shake.y, 0f);
 					break;
 				default:
-					CameraController.CameraEffectOffset += new Vector3(lol.x, lol.y, 0f);
+					CameraController.CameraEffectOffset += new Vector3(shake.x, shake.y, 0f);
 					break;
 			}
 		}

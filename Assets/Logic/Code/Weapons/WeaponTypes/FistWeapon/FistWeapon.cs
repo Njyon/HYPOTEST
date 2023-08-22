@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using static GameCharacterMovementComponent;
 
@@ -9,9 +10,18 @@ public class FistWeapon : WeaponBase
 	bool startFalling = false;
 	Vector3 targetDir = Vector3.zero;
 	float speed = 40f;
+	float interpSpeed = 10f;
+	float targetAngel;
+	Ultra.Timer backupFallTimer;
+	Vector3 defensiveMoveVector;
+	bool defensiveShouldMove = false;
+
 	public FistWeapon() { }
 	public FistWeapon(GameCharacter gameCharacter, ScriptableWeapon weaponData) : base (gameCharacter, weaponData)
-	{ }
+	{
+		backupFallTimer = new Ultra.Timer(0.4f, true);
+		backupFallTimer.onTimerFinished += OnBackupTimerFinished;
+	}
 
     public override void EquipWeapon()
     {
@@ -65,12 +75,18 @@ public class FistWeapon : WeaponBase
 		startFalling = false;
 
 		Vector3 maxDir = (GameCharacter.transform.forward + Vector3.down).normalized;
-		GameCharacter target = Ultra.HypoUttilies.FindCHaracterNearestToDirectionWithMinAngel(GameCharacter.MovementComponent.CharacterCenter, Vector3.down, 45f, ref GameCharacter.CharacterDetection.OverlappingGameCharacter);
-		targetDir = maxDir;
-		//if (target == null)
+		GameCharacter target = Ultra.HypoUttilies.FindCHaracterNearestToDirectionWithMinAngel(GameCharacter.MovementComponent.CharacterCenter, Vector3.down, GameCharacter.transform.forward, 45f, ref GameCharacter.CharacterDetection.OverlappingGameCharacter);
+		GameCharacter.AnimController.Combat3BlendDir = 0f;
+		backupFallTimer.Start();
+		if (target == null)
 		{
-			GameCharacter.AnimController.Combat3BlendDir = Vector3.Dot(maxDir, GameCharacter.transform.forward);
+			targetDir = maxDir;
+		}else
+		{
+			// Aim towards feet for better results
+			targetDir = (target.transform.position - GameCharacter.MovementComponent.CharacterCenter).normalized;
 		}
+		targetAngel = Vector3.Angle(targetDir, GameCharacter.transform.forward);
 	}
     public override void AirDirectionAttack() 
     {
@@ -98,14 +114,18 @@ public class FistWeapon : WeaponBase
 		GameCharacter enemyCharacter = hitObj.GetComponent<GameCharacter>();
 		if (enemyCharacter == null) return;
 		if (enemyCharacter.CombatComponent != null) enemyCharacter.CombatComponent.HookedToCharacter = GameCharacter;
+		HookCharacterToCharacter(enemyCharacter);
 		if (enemyCharacter.StateMachine != null) enemyCharacter.StateMachine.RequestStateChange(EGameCharacterState.HookedToCharacter);
 	}
+
+	
 
 	public override void GroundDownAttackHit(GameObject hitObj)
 	{
 		IDamage damageInterface = GetDamageInterface(hitObj);
 		if (damageInterface == null) return;
 		damageInterface.DoDamage(GameCharacter, 10);
+
 	}
 
 	public override void GroundDirectionAttackHit(GameObject hitObj)
@@ -119,11 +139,15 @@ public class FistWeapon : WeaponBase
 
 	private void HeavyAttackLogic(GameObject hitObj)
 	{
+		GameCharacter enemyCharacter = hitObj.GetComponent<GameCharacter>();
+		if (enemyCharacter == null) return;
+
 		if (ComboIndexInSameAttack == 2)
-		{
-			GameCharacter enemyCharacter = hitObj.GetComponent<GameCharacter>();
-			if (enemyCharacter == null) return;
+		{	
 			RequestFlyAway(enemyCharacter);
+		}else
+		{
+			RequestFreez(enemyCharacter);
 		}
 	}
 
@@ -141,32 +165,19 @@ public class FistWeapon : WeaponBase
 		}
 	}
 
-	private void RequestFlyAway(GameCharacter enemyCharacter)
-	{
-		if (enemyCharacter.CombatComponent.CanRequestFlyAway())
-		{
-			enemyCharacter.StateMachine.RequestStateChange(EGameCharacterState.FlyAway);
-			if (Mathf.Sign(GameCharacter.transform.forward.x) < 0)
-			{
-				Vector3 direction = Quaternion.Euler(CurrentAttack.extraData.flyAwayDirection) * GameCharacter.transform.forward;
-				direction.y = direction.y * -1;
-				enemyCharacter.MovementComponent.MovementVelocity = direction * CurrentAttack.extraData.flyAwayStrengh;
-			}
-			else
-			{
-				Vector3 direction = Quaternion.Euler(CurrentAttack.extraData.flyAwayDirection) * GameCharacter.transform.forward;
-				enemyCharacter.MovementComponent.MovementVelocity = direction * CurrentAttack.extraData.flyAwayStrengh;
-			}
-			
-			Ultra.Utilities.DrawArrow(enemyCharacter.MovementComponent.CharacterCenter, enemyCharacter.MovementComponent.MovementVelocity, 5f, Color.magenta, 10f, 100, DebugAreas.Combat);
-		}
-	}
 
 	public override void AirUpAttackHit(GameObject hitObj)
 	{
 		IDamage damageInterface = GetDamageInterface(hitObj);
 		if (damageInterface == null) return;
 		damageInterface.DoDamage(GameCharacter, 10);
+
+		if (ComboIndexInSameAttack > 0)
+		{
+			GameCharacter enemyCharacter = hitObj.GetComponent<GameCharacter>();
+			if (enemyCharacter == null) return;
+			RequestFlyAway(enemyCharacter);
+		}
 	}
 
 	public override void AirDownAttackHit(GameObject hitObj)
@@ -178,7 +189,7 @@ public class FistWeapon : WeaponBase
 		if (enemyCharacter.StateMachine.CanSwitchToStateOrIsState(EGameCharacterState.HookedToCharacter))
 		{
 			enemyCharacter.CombatComponent.HookedToCharacter = GameCharacter;
-			GameCharacter.CombatComponent.HookedCharacter = enemyCharacter;
+			HookCharacterToCharacter(enemyCharacter);
 			enemyCharacter.StateMachine.RequestStateChange(EGameCharacterState.HookedToCharacter);
 		}
 	}
@@ -237,7 +248,11 @@ public class FistWeapon : WeaponBase
 		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return;
 		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks.Count > 0) TriggerAttack(CurrentAttackType, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks);
 		GameCharacter.AnimController.HoldAttack = false;
-		GameCharacter.AnimController.InAttack = false; 
+		GameCharacter.AnimController.InAttack = false;
+
+		CameraController.Instance.ShakeCamerea(2);
+
+		UnHookAllHookedCharacerts();
 
 		foreach (GameObject obj in hitObjects)
 		{
@@ -250,14 +265,30 @@ public class FistWeapon : WeaponBase
 		IDamage damageInterface = GetDamageInterface(hitObject);
 		if (damageInterface == null) return;
 		damageInterface.DoDamage(GameCharacter, 10);
+
 	}
 
 	public override void PostAttackStateLogic(float deltaTime)
 	{
 		base.PostAttackStateLogic(deltaTime);
+		backupFallTimer.Update(deltaTime);
 		if (CurrentAttackType == EExplicitAttackType.AirDownAttack)
 		{
+			GameCharacter.AnimController.Combat3BlendDir = Mathf.Lerp(GameCharacter.AnimController.Combat3BlendDir, Ultra.Utilities.Remap(targetAngel, 0, 180, 1, -1), deltaTime * interpSpeed);
 			UpdateAirDownAttack(deltaTime);
+		}
+		else if (CurrentAttackType == EExplicitAttackType.DefensiveAction)
+		{
+			if (defensiveShouldMove)
+			{
+				float deltaTimeScale = 1f / Time.deltaTime;
+				defensiveMoveVector *= deltaTimeScale;
+				GameCharacter.MovementComponent.MovementVelocity = defensiveMoveVector;
+				GameCharacter.MovementComponent.DeactiveStepup();
+				Ultra.Utilities.DrawArrow(GameCharacter.MovementComponent.CharacterCenter, defensiveMoveVector.normalized, defensiveMoveVector.magnitude, Color.white, 10f, 100, DebugAreas.Combat);
+				defensiveShouldMove = false;
+				DidMove();
+			}
 		}
 	}
 
@@ -269,5 +300,49 @@ public class FistWeapon : WeaponBase
 			velocity = targetDir * speed;
 			GameCharacter.MovementComponent.MovementVelocity = velocity;
 		}
+	}
+
+	void OnBackupTimerFinished()
+	{
+		startFalling = true;
+	}
+
+	public override void DefensiveActionStart()
+	{
+		GameCharacter targetCharacter = Ultra.HypoUttilies.FindCharactereNearestToDirectionWithRange(GameCharacter.MovementComponent.CharacterCenter, GameCharacter.MovementInput.normalized.magnitude > 0 ? GameCharacter.MovementInput.normalized : GameCharacter.transform.forward, CurrentDefensiveAction.extraData.rangeValue, ref GameCharacter.CharacterDetection.OverlappingGameCharacter);
+		Vector3 targetPosition = Vector3.zero;
+		if (targetCharacter != null)
+		{
+			Vector3 dir =  GameCharacter.MovementComponent.CharacterCenter - targetCharacter.MovementComponent.CharacterCenter;
+			dir = new Vector3(dir.x, 0f, 0f).normalized;
+			float lenght = targetCharacter.MovementComponent.CapsuleCollider.radius + GameCharacter.MovementComponent.CapsuleCollider.radius;
+			targetPosition = targetCharacter.MovementComponent.CharacterCenter + dir * lenght;
+			Ultra.Utilities.DrawWireSphere(targetPosition, .5f, Color.red, 10f, 100, DebugAreas.Combat);
+		}
+		else
+		{
+			targetPosition = GameCharacter.MovementComponent.CharacterCenter + (GameCharacter.MovementInput.normalized.magnitude > 0 ? new Vector3(GameCharacter.MovementInput.x, 0f, 0f) : GameCharacter.transform.forward)* (CurrentDefensiveAction.extraData.rangeValue / 2);
+		}
+		defensiveMoveVector = targetPosition - GameCharacter.MovementComponent.CharacterCenter;
+		defensiveShouldMove = true;
+
+		SpawnedWeapon?.SetActive(false);
+		GameCharacter.GameCharacterData.MeshRenderer.enabled = false;
+	}	
+
+	public override void DefensiveActionEnd()
+	{
+		SpawnedWeapon?.SetActive(true);
+		GameCharacter.GameCharacterData.MeshRenderer.enabled = true;
+		GameCharacter.RequestBestCharacterState();
+	}
+
+	async void DidMove()
+	{
+		await new WaitForEndOfFrame();
+		await new WaitForEndOfFrame();
+
+		GameCharacter.MovementComponent.MovementVelocity = Vector3.zero;
+		GameCharacter.MovementComponent.ActivateStepup();
 	}
 }

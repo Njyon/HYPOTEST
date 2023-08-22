@@ -31,6 +31,7 @@ public class AttackAnimationExtraData
 	public float maxHorizontalMovement;
 	public Vector3 flyAwayDirection;
 	public float flyAwayStrengh;
+	public float rangeValue;
 }
 
 [Serializable]

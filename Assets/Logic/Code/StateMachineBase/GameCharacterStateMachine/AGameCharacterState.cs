@@ -69,7 +69,7 @@ public abstract class AGameCharacterState : IState<EGameCharacterState>
 		Vector3 rootmotionVector = new Vector3(xMotion, yMotion, 0);
 
 		// Move Along Ground
-		if (GameCharacter.MovementComponent.IsGrounded)
+		if (GameCharacter.MovementComponent.IsGrounded && yPosCurve <= 0)
 		{
 			Vector2 newInputVector = Vector3.ProjectOnPlane(rootmotionVector, GameCharacter.MovementComponent.RayCastGroundHit != null ? GameCharacter.MovementComponent.RayCastGroundHit.hit.normal : GameCharacter.MovementComponent.PossibleGround.hit.normal);
 			if (Mathf.Abs(newInputVector.normalized.x) > 0.1f) rootmotionVector = newInputVector;

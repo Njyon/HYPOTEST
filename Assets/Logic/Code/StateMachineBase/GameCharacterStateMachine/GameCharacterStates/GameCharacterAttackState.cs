@@ -11,11 +11,17 @@ public class GameCharacterAttackState : AGameCharacterState
 	float lerpTimeX;
 	float currentYPosAnimCurve;
 	Quaternion newDir;
+	Ultra.Timer backupTimer = null;
 	public GameCharacterAttackState(GameCharacterStateMachine stateMachine, GameCharacter gameCharacter) : base (stateMachine, gameCharacter)
-	{ }
+	{
+		backupTimer = new Ultra.Timer();
+		backupTimer.onTimerFinished += OnBackupTimerFinished;
+	}
 
     public override void StartState(EGameCharacterState oldState)
 	{
+		backupTimer.Start(5f);
+
 		switch(GameCharacter.CombatComponent.CurrentWeapon.AttackAnimType)
 		{
 			case EAttackAnimType.Combat3Blend: 
@@ -73,6 +79,8 @@ public class GameCharacterAttackState : AGameCharacterState
 
 	public override void ExecuteState(float deltaTime)
 	{
+		backupTimer.Update(deltaTime);
+
 		GameCharacter.CombatComponent.CurrentWeapon.PreAttackStateLogic(deltaTime);
 		RotateCharacter(newDir);
 
@@ -98,5 +106,10 @@ public class GameCharacterAttackState : AGameCharacterState
 		GameCharacter.transform.rotation = newDir;
 		GameCharacter.LastDir = new Vector3(GameCharacter.transform.forward.x, 0, 0); 
 		GameCharacter.CombatComponent.CurrentWeapon.EndAttackStateLogic();
+	}
+
+	void OnBackupTimerFinished()
+	{
+		GameCharacter.StateMachine.RequestStateChange(EGameCharacterState.AttackRecovery);
 	}
 }

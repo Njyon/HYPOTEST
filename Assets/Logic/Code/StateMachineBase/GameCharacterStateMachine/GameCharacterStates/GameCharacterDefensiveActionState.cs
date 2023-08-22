@@ -37,9 +37,9 @@ public class GameCharacterDefensiveActionState : AGameCharacterState
 		lerpTimeX = 0;
 
 		GameCharacter.AnimController.RotationTrarget = 0f;
-		if (GameCharacter.CombatComponent.HookedCharacter != null)
+		if (GameCharacter.CombatComponent.HookedCharacters.Count > 0 )
 		{
-			GameCharacter.transform.rotation = Quaternion.LookRotation(new Vector3((GameCharacter.CombatComponent.HookedCharacter.transform.position - GameCharacter.transform.position).x, 0, 0).normalized, Vector3.up);
+			GameCharacter.transform.rotation = Quaternion.LookRotation(new Vector3((GameCharacter.CombatComponent.HookedCharacters[0].transform.position - GameCharacter.transform.position).x, 0, 0).normalized, Vector3.up);
 			GameCharacter.RotationTarget = GameCharacter.transform.rotation;
 			GameCharacter.AnimController.RotationTrarget = 0f;
 		}
@@ -74,10 +74,12 @@ public class GameCharacterDefensiveActionState : AGameCharacterState
 
 	public override void ExecuteState(float deltaTime)
 	{
+		GameCharacter.CombatComponent.CurrentWeapon.PreAttackStateLogic(deltaTime);
 		//RotateCharacter(newDir);
 
 		CombatMovement(deltaTime, initYVelocity, initXVelocity, ref lerpTimeY, ref lerpTimeX, ref currentYPosAnimCurve);
 
+		GameCharacter.CombatComponent.CurrentWeapon.PostAttackStateLogic(deltaTime);
 	}
 	
 	public override void FixedExecuteState(float deltaTime)
@@ -94,6 +96,7 @@ public class GameCharacterDefensiveActionState : AGameCharacterState
 	{
 		GameCharacter.MovementComponent.UseGravity = true;
 		GameCharacter.AnimController.BlockRotation = false;
+		GameCharacter.AnimController.InDefensiveAction = false;
 		GameCharacter.LastDir = new Vector3(GameCharacter.transform.forward.x, 0, 0);
 		GameCharacter.AnimController.InterpSecondaryMotionLayerWeight(1);
 	}

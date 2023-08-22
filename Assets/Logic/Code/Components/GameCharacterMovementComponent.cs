@@ -41,7 +41,11 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	public NullableHit PossibleGround { get { return predictedLandingPoint; } set { predictedLandingPoint = value; } }
 	public NullableHit RayCastGroundHit { get { return rayCastGroundHit; } set { rayCastGroundHit = value; } }
 	public bool IsGrounded { get { return isGrounded && !IsInJump; } }
-	public Vector3 MovementVelocity { get { return movementVelocity; } set { movementVelocity = value; } }
+	public Vector3 MovementVelocity 
+	{ 
+		get { return movementVelocity; } 
+		set { movementVelocity = value; } 
+	}
 	public Vector3 Velocity { get { return veloctiy; } }
 	public float MovementSpeed { get { return Velocity.magnitude; } }
 	public float MaxWalkableSlopAngle { get { return maxWalkableSlopAngle; } }
@@ -418,6 +422,16 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	{
 		gameCharacter.CharacterRadiusTarget = characterDefaultRadius;
 		gameCharacter.CharacterHeightTarget = characterDefaultHeight;
+	}
+
+	public void DeactiveStepup()
+	{
+		unityMovementController.stepOffset = 0;
+	}
+
+	public void ActivateStepup()
+	{
+		unityMovementController.stepOffset = stepHight;
 	}
 
 	IEnumerator IsJumping()

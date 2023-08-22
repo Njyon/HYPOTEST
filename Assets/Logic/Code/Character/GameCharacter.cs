@@ -211,37 +211,43 @@ public class GameCharacter : MonoBehaviour , IDamage
 
 	public void HitDetectionEventStart(AnimationEvent evt)
 	{
-		if (evt.animatorClipInfo.weight > 0.5f)
+		if (evt.animatorClipInfo.weight >= 0.48f)
 			CombatComponent?.CurrentWeapon?.HitDetectionStart();
 	}
 
 	public void HitDetectionEventEnd(AnimationEvent evt)
 	{
-		if (evt.animatorClipInfo.weight > 0.5f)
-			CombatComponent?.CurrentWeapon?.HitDetectionEnd();
+		CombatComponent?.CurrentWeapon?.HitDetectionEnd();
 	}
 
 	public void AttackRecoveryEvent(AnimationEvent evt)
 	{
-		if (evt.animatorClipInfo.weight > 0.5f)
-			StateMachine?.RequestStateChange(EGameCharacterState.AttackRecovery);
+		StateMachine?.RequestStateChange(EGameCharacterState.AttackRecovery);
 	}
 
 	public void StartParticleEffect(AnimationEvent evt)
 	{
-		if (evt.animatorClipInfo.weight > 0.5f)
-			CombatComponent?.CurrentWeapon?.StartParticelEffect(evt.intParameter);
+		CombatComponent?.CurrentWeapon?.StartParticelEffect(evt.intParameter);
 	}
 
 	public void StartCameraShake(AnimationEvent evt)
 	{
-		if (evt.animatorClipInfo.weight > 0.5f)
-			CameraController.Instance.ShakeCamerea(evt.intParameter);
+		CameraController.Instance.ShakeCamerea(evt.intParameter);
 	}
 
-#endregion
+	public void DefensiveActionStart(AnimationEvent evt)
+	{
+		CombatComponent?.CurrentWeapon.DefensiveActionStart();
+	}
 
-	public void DoDamage(GameCharacter damageInitiator, float damage)
+	public void DefensiveActionEnd(AnimationEvent evt)
+	{
+		CombatComponent?.CurrentWeapon.DefensiveActionEnd();
+	}
+
+	#endregion
+
+		public void DoDamage(GameCharacter damageInitiator, float damage)
 	{
 		Ultra.Utilities.Instance.DebugLogOnScreen(name + " got Damaged by: " + damageInitiator.name + ", Damage = " + damage, 2f, StringColor.Red, 200, DebugAreas.Combat);
 		Health.AddCurrentValue(-damage);

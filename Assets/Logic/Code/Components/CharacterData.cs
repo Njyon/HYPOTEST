@@ -53,6 +53,9 @@ public class GameCharacterData : MonoBehaviour
 	[Header("Combat")]
 	[SerializeField] float characterDetectionRange = 30f;
 
+	[Header("Data")]
+	[SerializeField] SkinnedMeshRenderer meshRenderer;
+
 	public float MaxMovementSpeed { get { return maxMovementSpeed; } }
 	public float MovmentGravity { get { return movmentGravity; } }
 	public float Acceleration { get { return acceleration; } }	
@@ -90,4 +93,6 @@ public class GameCharacterData : MonoBehaviour
 	public Transform Root { get { return root; } }
 
 	public float CharacterDetectionRange { get { return characterDetectionRange; } }
+
+	public SkinnedMeshRenderer MeshRenderer { get { return meshRenderer; } }
 }

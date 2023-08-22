@@ -28,7 +28,7 @@ public class CombatComponent
 	Ultra.Timer defensiveTimer;
 	Ultra.Timer flyAwayTimer;
 	GameCharacter hookedToCharacter;
-	GameCharacter hookedCharacter;
+	List<GameCharacter> hookedCharacters;
 	GameCharacter aimToCharacter;
 	Vector3 moveToPosition;
 	GameObject hitDetectionGameObject;
@@ -41,7 +41,7 @@ public class CombatComponent
 	public Ultra.Timer DefensiveTimer { get { return defensiveTimer; } }
 	public Ultra.Timer FlyAwayTimer { get { return flyAwayTimer; } }
 	public GameCharacter HookedToCharacter { get { return hookedToCharacter; } set { hookedToCharacter = value; } }
-	public GameCharacter HookedCharacter { get { return hookedCharacter; } set { hookedCharacter = value; } }
+	public List<GameCharacter> HookedCharacters { get { return hookedCharacters; } set { hookedCharacters = value; } }
 	public GameCharacter AimCharacter { get { return aimToCharacter; } set { aimToCharacter = value; } }
 	public Vector3 MoveToPosition { get { return moveToPosition; } set { moveToPosition = value; } }
 	public GameObject HitDetectionGameObject { get { return hitDetectionGameObject; } }
@@ -82,6 +82,7 @@ public class CombatComponent
 	{
 		this.gameCharacter = gameCharacter;
 		nextWeapon = null;
+		hookedCharacters = new List<GameCharacter>();
 	}
 
 	~CombatComponent()
@@ -258,6 +259,11 @@ public class CombatComponent
 	}
 
 	public bool CanRequestFlyAway()
+	{
+		return true;
+	}
+
+	public bool CanRequestFreez()
 	{
 		return true;
 	}

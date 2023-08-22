@@ -507,7 +507,7 @@ public abstract class WeaponBase
 	protected void TriggerAttack(EExplicitAttackType explicitAttackType, ref List<AttackAnimationData> attackList)
 	{
 		GetAnimation(explicitAttackType, ref attackList, false);
-		if (currentAttack.holdAnimation == null)
+		if (currentAttack.triggerAnimation == null)
 		{
 			Ultra.Utilities.Instance.DebugLogOnScreen("TriggerAnimation was null!", 5f, StringColor.Red, 100, DebugAreas.Combat);
 			Debug.Log(Ultra.Utilities.Instance.DebugErrorString("WeaponBase", "TriggerAttack", "TriggerAnimation was null!"));
@@ -521,7 +521,8 @@ public abstract class WeaponBase
 
 	public virtual void HitDetectionStart()
 	{
-		if (currentAttack == null) return;
+		if (currentAttack == null) 
+			return;
 
 		ishitDetecting = true;
 		switch (currentAttack.data.hitDetectionType)
@@ -697,5 +698,66 @@ public abstract class WeaponBase
 	public virtual void CharacterMoveToEnd(GameCharacter movedCharacter)
 	{
 
+	}
+
+	public virtual void DefensiveActionStart()
+	{
+
+	}
+
+	public virtual void DefensiveActionEnd()
+	{
+
+	}
+
+	protected void UnHookAllHookedCharacerts()
+	{
+		foreach (GameCharacter character in GameCharacter.CombatComponent.HookedCharacters)
+		{
+			character.CombatComponent.HookedToCharacter = null;
+		}
+		GameCharacter.CombatComponent.HookedCharacters.Clear();
+	}
+
+	protected void HookCharacterToCharacter(GameCharacter enemyCharacter)
+	{
+		if (!GameCharacter.CombatComponent.HookedCharacters.Contains(enemyCharacter))
+			GameCharacter.CombatComponent.HookedCharacters.Add(enemyCharacter);
+	}
+
+	protected void RequestFlyAway(GameCharacter enemyCharacter)
+	{
+		if (enemyCharacter.CombatComponent.CanRequestFlyAway())
+		{
+			enemyCharacter.StateMachine.RequestStateChange(EGameCharacterState.FlyAway);
+			if (Mathf.Sign(GameCharacter.transform.forward.x) < 0)
+			{
+				Vector3 direction = Quaternion.Euler(CurrentAttack.extraData.flyAwayDirection) * GameCharacter.transform.forward;
+				direction.y = direction.y * -1;
+				enemyCharacter.MovementComponent.MovementVelocity = direction * CurrentAttack.extraData.flyAwayStrengh;
+			}
+			else
+			{
+				Vector3 direction = Quaternion.Euler(CurrentAttack.extraData.flyAwayDirection) * GameCharacter.transform.forward;
+				enemyCharacter.MovementComponent.MovementVelocity = direction * CurrentAttack.extraData.flyAwayStrengh;
+			}
+
+			Ultra.Utilities.DrawArrow(enemyCharacter.MovementComponent.CharacterCenter, enemyCharacter.MovementComponent.MovementVelocity, 5f, Color.magenta, 10f, 100, DebugAreas.Combat);
+		}
+	}
+
+	protected void RequestFreez(GameCharacter enemyCharacter)
+	{
+		if (enemyCharacter.CombatComponent.CanRequestFreez())
+		{
+			if (enemyCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.Freez)
+			{
+				enemyCharacter.AddFreezTime();
+
+			}else
+			{
+				enemyCharacter.StateMachine.RequestStateChange(EGameCharacterState.Freez);
+			}
+		}
 	}
 }

@@ -7,11 +7,18 @@ using static GameCharacterMovementComponent;
 public class GameCharacterHookedToCharacterState : AGameCharacterState
 {
 	bool enemyHitGround = false;
+	Ultra.Timer backupTimer = null;
+
 	public GameCharacterHookedToCharacterState(GameCharacterStateMachine stateMachine, GameCharacter gameCharacter) : base (stateMachine, gameCharacter)
-	{ }
+	{ 
+		backupTimer = new Ultra.Timer();
+		backupTimer.onTimerFinished += OnBackupTimerFinished;
+	}
 
     public override void StartState(EGameCharacterState oldState)
 	{
+		backupTimer.Start(5f);
+
 		if (ShouldLeaveState())
 		{
 			GameCharacter.RequestBestCharacterState();
@@ -39,6 +46,8 @@ public class GameCharacterHookedToCharacterState : AGameCharacterState
 
 	public override void ExecuteState(float deltaTime)
 	{
+		backupTimer.Update(deltaTime);
+
 		if (ShouldLeaveState())
 		{
 			GameCharacter.StateMachine.RequestStateChange(EGameCharacterState.Freez);
@@ -104,5 +113,10 @@ public class GameCharacterHookedToCharacterState : AGameCharacterState
 		{
 			enemyHitGround = true;
 		}
+	}
+
+	void OnBackupTimerFinished()
+	{
+		GameCharacter.CombatComponent.HookedToCharacter = null;	
 	}
 }

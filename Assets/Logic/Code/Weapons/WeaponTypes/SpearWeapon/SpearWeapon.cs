@@ -24,7 +24,7 @@ public class SpearWeapon : WeaponBase
         base.UnEquipWeapon();
 
 		GameCharacter.AnimController.InAimBlendTree = false;
-		GameCharacter.CombatComponent.HookedCharacter = null;
+		UnHookAllHookedCharacerts();
 		GameCharacter.RequestBestCharacterState();
 		GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.Aim);
 		SpawnedWeapon.SetActive(true);
@@ -103,7 +103,7 @@ public class SpearWeapon : WeaponBase
 		if (enemyCharacter.StateMachine.CanSwitchToStateOrIsState(EGameCharacterState.Freez))
 		{
 			enemyCharacter.CombatComponent.HookedToCharacter = GameCharacter;
-			GameCharacter.CombatComponent.HookedCharacter = enemyCharacter;
+			HookCharacterToCharacter(enemyCharacter);
 			if (enemyCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.Freez)
 				enemyCharacter.AddFreezTime();
 			else
@@ -139,7 +139,7 @@ public class SpearWeapon : WeaponBase
 		if (enemyCharacter.StateMachine.CanSwitchToStateOrIsState(EGameCharacterState.PullCharacterOnHorizontalLevel))
 		{
 			enemyCharacter.CombatComponent.HookedToCharacter = GameCharacter;
-			GameCharacter.CombatComponent.HookedCharacter = enemyCharacter;
+			HookCharacterToCharacter(enemyCharacter);
 			enemyCharacter.StateMachine.RequestStateChange(EGameCharacterState.PullCharacterOnHorizontalLevel);
 		}
 	}
@@ -153,7 +153,7 @@ public class SpearWeapon : WeaponBase
 		if (enemyCharacter.StateMachine.CanSwitchToStateOrIsState(EGameCharacterState.HookedToCharacter))
 		{
 			enemyCharacter.CombatComponent.HookedToCharacter = GameCharacter;
-			GameCharacter.CombatComponent.HookedCharacter = enemyCharacter;
+			HookCharacterToCharacter(enemyCharacter);
 			enemyCharacter.StateMachine.RequestStateChange(EGameCharacterState.HookedToCharacter);
 		}
 	}
@@ -226,17 +226,11 @@ public class SpearWeapon : WeaponBase
 		GameCharacter.MovementComponent.ResetCharacterCapsulToDefault();
 		SpawnedWeapon.SetActive(true);
 
-		foreach (GameObject go in hitObjects)
-		{
-			if (go == null) continue;
-			GameCharacter character = go.GetComponent<GameCharacter>();
-			if (character == null) continue;
-			character.CombatComponent.HookedToCharacter = null;
-		}
-		GameCharacter.CombatComponent.HookedCharacter = null;
+		UnHookAllHookedCharacerts();
 
 		base.EndAttackStateLogic();
 	}
+
 
 	void UpdateAirDownAttack(float deltaTime)
 	{
@@ -288,8 +282,7 @@ public class SpearWeapon : WeaponBase
 		throwSpear.transform.eulerAngles = new Vector3(throwSpear.transform.eulerAngles.x, throwSpear.transform.eulerAngles.y, 90f);
 
 		GameCharacter.CombatComponent.AimCharacter = targetEnemy;
-
-		GameCharacter.CombatComponent.HookedCharacter = targetEnemy;
+		HookCharacterToCharacter(targetEnemy);
 		GameCharacter.MovementComponent.MovementVelocity = Vector3.zero;
 
 
@@ -309,8 +302,8 @@ public class SpearWeapon : WeaponBase
 		}
 
 		GameCharacter.CombatComponent.AimCharacter = hitgameCharacter;
-
-		GameCharacter.CombatComponent.HookedCharacter = hitgameCharacter;
+		HookCharacterToCharacter(hitgameCharacter);
+		GameCharacter.CombatComponent.HookedCharacters.Add(hitgameCharacter);
 		hitgameCharacter.CombatComponent.HookedToCharacter = GameCharacter;
 		hitgameCharacter.CombatComponent.MoveToPosition = GameCharacter.transform.position + GameCharacter.transform.forward * 1f;
 
@@ -321,9 +314,10 @@ public class SpearWeapon : WeaponBase
 	public override void CharacterArrivedAtRequestedLocation(GameCharacter movedCharacter)
 	{
 		GameCharacter.AnimController.InAimBlendTree = false;
-		GameCharacter.CombatComponent.HookedCharacter = null;
-		GameCharacter.RequestBestCharacterState();
+		UnHookAllHookedCharacerts();
+		GameCharacter.CombatComponent.HookedCharacters.Clear();
 		GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.Aim);
+		GameCharacter.RequestBestCharacterState();
 		SpawnedWeapon.SetActive(true);
 		GameObject.Destroy(defensiveSpear.gameObject);
 	}
@@ -331,21 +325,24 @@ public class SpearWeapon : WeaponBase
 	public override void CharacterMoveToAbort(GameCharacter movedCharacter)
 	{
 		GameCharacter.AnimController.InAimBlendTree = false;
-		GameCharacter.CombatComponent.HookedCharacter = null;
-		GameCharacter.RequestBestCharacterState();
+		UnHookAllHookedCharacerts();
+		GameCharacter.CombatComponent.HookedCharacters.Clear();
 		GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.Aim);
+		GameCharacter.RequestBestCharacterState();
 		SpawnedWeapon.SetActive(true);
 		GameObject.Destroy(defensiveSpear.gameObject);
 	}
 
 	public override void CharacterMoveToEnd(GameCharacter movedCharacter)
 	{
-		if (GameCharacter.CombatComponent.HookedCharacter == null) return;
+		if (GameCharacter.CombatComponent.HookedCharacters.Count == 0) return;
 		
 		GameCharacter.AnimController.InAimBlendTree = false;
-		GameCharacter.CombatComponent.HookedCharacter = null;
+		UnHookAllHookedCharacerts();
+		GameCharacter.CombatComponent.HookedCharacters.Clear();
 		GameCharacter.RequestBestCharacterState();
 		GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.Aim);
+		GameCharacter.RequestBestCharacterState();
 		SpawnedWeapon.SetActive(true);
 		GameObject.Destroy(defensiveSpear.gameObject);
 	}
