@@ -4,13 +4,17 @@ using UnityEngine;
 
 public class GameCharacterFreezState : AGameCharacterState
 {
-	bool addDrag = false;
 	public GameCharacterFreezState(GameCharacterStateMachine stateMachine, GameCharacter gameCharacter) : base (stateMachine, gameCharacter)
 	{ }
 
     public override void StartState(EGameCharacterState oldState)
 	{
-		GameCharacter.FreezTimer.Start(GameCharacter.FreezTime);
+		if (GameCharacter.FreezTimeOverride <= 0) 
+			GameCharacter.FreezTimer.Start(GameCharacter.FreezTime);
+		else
+			GameCharacter.FreezTimer.Start(GameCharacter.FreezTimeOverride);
+
+		GameCharacter.FreezTimeOverride = 0;
 		GameCharacter.MovementComponent.UseGravity = false;
 
 		GameCharacter.FreezTimer.onTimerPaused += TimerEnded;
@@ -18,7 +22,6 @@ public class GameCharacterFreezState : AGameCharacterState
 		GameCharacter.MovementComponent.onMoveCollisionFlag += OnMoveCollisionFlag;
 
 		GameCharacter.AnimController.InFreez = true;
-		addDrag = false;
 	}
 
 	public override EGameCharacterState GetStateType()
@@ -35,14 +38,11 @@ public class GameCharacterFreezState : AGameCharacterState
 
 	public override void ExecuteState(float deltaTime)
 	{
-		if (addDrag)
-		{
-			Vector3 velocity = GameCharacter.MovementComponent.MovementVelocity;
-			Ultra.Utilities.Instance.DebugLogOnScreen("Velocity: " + velocity.ToString(), 0f, StringColor.Brown, 100, DebugAreas.Combat);
-			float drag = 40f;
-			velocity = Vector3.MoveTowards(velocity, Vector3.zero, drag);
-			GameCharacter.MovementComponent.MovementVelocity = velocity;
-		}
+		Vector3 velocity = GameCharacter.MovementComponent.MovementVelocity;
+		Ultra.Utilities.Instance.DebugLogOnScreen("Velocity: " + velocity.ToString(), 0f, StringColor.Brown, 100, DebugAreas.Combat);
+		float drag = 40f;
+		velocity = Vector3.MoveTowards(velocity, Vector3.zero, drag);
+		GameCharacter.MovementComponent.MovementVelocity = velocity;
 	}
 	
 	public override void FixedExecuteState(float deltaTime)
@@ -77,7 +77,6 @@ public class GameCharacterFreezState : AGameCharacterState
 			if (GameCharacter.MovementComponent.Velocity.magnitude > 2f)
 			{
 				GameCharacter.MovementComponent.MovementVelocity = Vector3.Reflect(GameCharacter.MovementComponent.MovementVelocity, GameCharacter.MovementComponent.PossibleGround.hit.normal);
-				addDrag = true;
 			}
 		}
 	}

@@ -36,6 +36,7 @@ public class CombatComponent
 	ColliderHitScript hitDetectionColliderScript;
 	MeshFilter hitDetectionMeshFilter;
 	MeshRenderer hitDetectionMeshRenderer;
+	float flyAwayTime = 1f;
 
 	public Ultra.Timer AttackTimer { get { return attackTimer; } }
 	public Ultra.Timer DefensiveTimer { get { return defensiveTimer; } }
@@ -49,6 +50,7 @@ public class CombatComponent
 	public ColliderHitScript HitDetectionColliderScript { get { return hitDetectionColliderScript; } }
 	public MeshFilter HitDetectionMeshFilter { get { return hitDetectionMeshFilter; } }
 	public MeshRenderer HitDetectionMeshRenderer { get { return hitDetectionMeshRenderer; } }
+	public float FlyAwayTime { get { return flyAwayTime; } set { flyAwayTime = value; } }
 
 	public WeaponBase NextWeapon
 	{
@@ -266,5 +268,20 @@ public class CombatComponent
 	public bool CanRequestFreez()
 	{
 		return true;
+	}
+
+	public void RequestFreez(float freezTime = 1f)
+	{
+		if (CanRequestFreez())
+		{
+			if (gameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.Freez)
+			{
+				gameCharacter.AddFreezTime(freezTime);
+			}else
+			{
+				gameCharacter.StateMachine.RequestStateChange(EGameCharacterState.Freez);
+				gameCharacter.FreezTimeOverride = freezTime;
+			}
+		}
 	}
 }

@@ -105,7 +105,7 @@ public class SpearWeapon : WeaponBase
 			enemyCharacter.CombatComponent.HookedToCharacter = GameCharacter;
 			HookCharacterToCharacter(enemyCharacter);
 			if (enemyCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.Freez)
-				enemyCharacter.AddFreezTime();
+				enemyCharacter.AddFreezTime(GameCharacter.FreezTime);
 			else
 				enemyCharacter.StateMachine.RequestStateChange(EGameCharacterState.Freez);
 			float downforce = -Mathf.Sqrt(2 * enemyCharacter.GameCharacterData.MovmentGravity * 4f);

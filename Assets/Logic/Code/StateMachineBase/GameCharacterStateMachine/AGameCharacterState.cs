@@ -27,10 +27,6 @@ public abstract class AGameCharacterState : IState<EGameCharacterState>
 	public abstract void StartState(EGameCharacterState oldState);
 	public abstract EGameCharacterState UpdateState(float deltaTime, EGameCharacterState newStateRequest);
 
-	public void ResetJumps()
-	{
-		GameCharacter.CurrentJumpAmount = 0;
-	}
 
 	public void SetSlopStrenghToZero(EGameCharacterState oldState)
 	{

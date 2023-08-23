@@ -10,6 +10,7 @@ public enum EPluginCharacterState
 {
 	WeaponReady,
 	Aim,
+	MovementOverride,
 }
 
 public class GameCharacterPluginStateMachine : PluginStateMachineBase<EPluginCharacterState>

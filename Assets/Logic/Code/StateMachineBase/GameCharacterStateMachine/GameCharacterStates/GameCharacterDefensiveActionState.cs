@@ -66,8 +66,11 @@ public class GameCharacterDefensiveActionState : AGameCharacterState
 
 	public override EGameCharacterState UpdateState(float deltaTime, EGameCharacterState newStateRequest)
 	{
-		if (newStateRequest != EGameCharacterState.Unknown)
-			return newStateRequest;
+		if (GameCharacter.CombatComponent.CurrentWeapon.CanLeaveDefensiveState())
+		{
+			if (newStateRequest != EGameCharacterState.Unknown)
+				return newStateRequest;
+		}
 
 		return GetStateType();
 	}
@@ -99,5 +102,6 @@ public class GameCharacterDefensiveActionState : AGameCharacterState
 		GameCharacter.AnimController.InDefensiveAction = false;
 		GameCharacter.LastDir = new Vector3(GameCharacter.transform.forward.x, 0, 0);
 		GameCharacter.AnimController.InterpSecondaryMotionLayerWeight(1);
+		GameCharacter.CombatComponent.CurrentWeapon?.DefensiveActionStateEnd();
 	}
 }

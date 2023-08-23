@@ -15,7 +15,7 @@ public class GameCharacterFlyAwayState : AGameCharacterState
 		GameCharacter.MovementComponent.onMoveCollisionFlag += OnMoveCollisionFlag;
 
 		GameCharacter.CombatComponent.FlyAwayTimer.onTimerFinished += OnTimerFinished;
-		GameCharacter.CombatComponent.FlyAwayTimer.Start(1f);
+		GameCharacter.CombatComponent.FlyAwayTimer.Start(GameCharacter.CombatComponent.FlyAwayTime);
 
 		GameCharacter.AnimController.FlyAway = true;
 	}

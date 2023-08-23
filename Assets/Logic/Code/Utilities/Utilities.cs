@@ -16,6 +16,16 @@ public enum DebugAreas
     Misc = 16,
 }
 
+public enum EAxis
+{
+	X,
+	XY,
+	XYZ,
+	Y,
+	YZ,
+	Z,
+}
+
 namespace Ultra {
 	public class Utilities : Singelton<Utilities> {
 		public List<string> onScreenList = new List<string>();
@@ -341,7 +351,7 @@ namespace Ultra {
 			return startValue + (endValue - startValue) * sigmoid;
 		}
 
-		public static void DrawCapsule(Vector3 position, Quaternion orientation, float height, float radius, Color color, int debugLevel = 100, DebugAreas debugArea = DebugAreas.Misc, bool drawFromBase = false)
+		public static void DrawCapsule(Vector3 position, Quaternion orientation, float height, float radius, Color color, float time = 1f, int debugLevel = 100, DebugAreas debugArea = DebugAreas.Misc, bool drawFromBase = false)
 		{
 			if (debugLevel > Instance.debugLevel || (debugArea & Instance.debugAreas) != debugArea) return;
 
@@ -352,19 +362,19 @@ namespace Ultra {
 
 			Vector3 basePositionOffset = drawFromBase ? Vector3.zero : (localUp * (height * 0.5f));
 			Vector3 baseArcPosition = position + localUp * radius - basePositionOffset;
-			DrawArc(180, 360, baseArcPosition, orientation, radius, color);
-			DrawArc(180, 360, baseArcPosition, arcOrientation, radius, color);
+			DrawArc(180, 360, baseArcPosition, orientation, radius, color, time);
+			DrawArc(180, 360, baseArcPosition, arcOrientation, radius, color, time);
 
 			float cylinderHeight = height - (radius * 2.0f);
-			DrawCylinder(baseArcPosition, orientation, cylinderHeight, radius, color, true);
+			DrawCylinder(baseArcPosition, orientation, cylinderHeight, radius, color, time, true);
 
 			Vector3 topArcPosition = baseArcPosition + localUp * cylinderHeight;
 
-			DrawArc(0, 180, topArcPosition, orientation, radius, color);
-			DrawArc(0, 180, topArcPosition, arcOrientation, radius, color);
+			DrawArc(0, 180, topArcPosition, orientation, radius, color, time);
+			DrawArc(0, 180, topArcPosition, arcOrientation, radius, color, time);
 		}
 
-		public static void DrawCylinder(Vector3 position, Quaternion orientation, float height, float radius, Color color, bool drawFromBase = true)
+		public static void DrawCylinder(Vector3 position, Quaternion orientation, float height, float radius, Color color, float time, bool drawFromBase = true)
 		{
 			Vector3 localUp = orientation * Vector3.up;
 			Vector3 localRight = orientation * Vector3.right;
@@ -381,16 +391,16 @@ namespace Ultra {
 			Vector3 pointC = basePosition - localRight * radius;
 			Vector3 pointD = basePosition - localForward * radius;
 
-			Debug.DrawRay(pointA, localUp * height, color);
-			Debug.DrawRay(pointB, localUp * height, color);
-			Debug.DrawRay(pointC, localUp * height, color);
-			Debug.DrawRay(pointD, localUp * height, color);
+			Debug.DrawRay(pointA, localUp * height, color, time);
+			Debug.DrawRay(pointB, localUp * height, color, time);
+			Debug.DrawRay(pointC, localUp * height, color, time);
+			Debug.DrawRay(pointD, localUp * height, color, time);
 
-			DrawCircle(basePosition, circleOrientation, radius, 32, color);
-			DrawCircle(topPosition, circleOrientation, radius, 32, color);
+			DrawCircle(basePosition, circleOrientation, radius, 32, color, time);
+			DrawCircle(topPosition, circleOrientation, radius, 32, color, time);
 		}
 
-		public static void DrawCircle(Vector3 position, Quaternion rotation, float radius, int segments, Color color)
+		public static void DrawCircle(Vector3 position, Quaternion rotation, float radius, int segments, Color color, float time)
 		{
 			// If either radius or number of segments are less or equal to 0, skip drawing
 			if (radius <= 0.0f || segments <= 0)
@@ -437,11 +447,11 @@ namespace Ultra {
 				lineEnd += position;
 
 				// Points are connected using DrawLine method and using the passed color
-				Debug.DrawLine(lineStart, lineEnd, color);
+				Debug.DrawLine(lineStart, lineEnd, color, time);
 			}
 		}
 
-		public static void DrawArc(float startAngle, float endAngle, Vector3 position, Quaternion orientation, float radius, Color color, bool drawChord = false, bool drawSector = false, int arcSegments = 32)
+		public static void DrawArc(float startAngle, float endAngle, Vector3 position, Quaternion orientation, float radius, Color color, float time, bool drawChord = false, bool drawSector = false, int arcSegments = 32)
 		{
 			float arcSpan = Mathf.DeltaAngle(startAngle, endAngle);
 
@@ -509,17 +519,17 @@ namespace Ultra {
 					arcEnd = lineEnd;
 				}
 
-				Debug.DrawLine(lineStart, lineEnd, color);
+				Debug.DrawLine(lineStart, lineEnd, color, time);
 			}
 
 			if (drawChord)
 			{
-				Debug.DrawLine(arcStart, arcEnd, color);
+				Debug.DrawLine(arcStart, arcEnd, color, time);
 			}
 			if (drawSector)
 			{
-				Debug.DrawLine(arcStart, arcOrigin, color);
-				Debug.DrawLine(arcEnd, arcOrigin, color);
+				Debug.DrawLine(arcStart, arcOrigin, color, time);
+				Debug.DrawLine(arcEnd, arcOrigin, color, time);
 			}
 		}
 
@@ -617,12 +627,12 @@ namespace Ultra {
 		}
 		public static bool CapsulCast(Vector3 capsulCenter, float capsulHeight, float radius, Vector3 direction, out RaycastHit hit, Color debugColor, int debugLevel = 100, DebugAreas debugAreas = DebugAreas.Misc) {
 			// IF Application is Playing check is needed to be able to use the funtion out of playmodus
-			if (Application.isPlaying) DrawCapsule(capsulCenter, Quaternion.identity, capsulHeight, radius, debugColor.WithAlpha(0.2f), debugLevel, debugAreas);
+			if (Application.isPlaying) DrawCapsule(capsulCenter, Quaternion.identity, capsulHeight, radius, debugColor.WithAlpha(0.2f), 0f, debugLevel, debugAreas);
 			bool value = Physics.CapsuleCast(GetCapsuleSphere(capsulCenter, capsulHeight, radius), GetCapsuleSphere(capsulCenter, -capsulHeight, radius), radius, direction, out hit, direction.magnitude);
 			if (Application.isPlaying) 
 			{
 				if (value) DrawArrow(capsulCenter, hit.point - capsulCenter, Vector3.Distance(capsulCenter, hit.point), debugColor, 0, debugLevel, debugAreas);
-				else DrawCapsule(capsulCenter + direction, Quaternion.identity, capsulHeight, radius, debugColor.WithAlpha(0.5f), debugLevel, debugAreas);
+				else DrawCapsule(capsulCenter + direction, Quaternion.identity, capsulHeight, radius, debugColor.WithAlpha(0.5f), 0f, debugLevel, debugAreas);
 			}
 			return value;
 		}
@@ -636,6 +646,37 @@ namespace Ultra {
 				angle = 360f - angle; // Korrektur nur wenn der Winkel > 180 Grad ist
 			}
 			return angle;
+		}
+
+		public static Vector3 IgnoreAxis(Vector3 dir, EAxis axis)
+		{
+			switch (axis)
+			{
+				case EAxis.X:
+					dir.x = 0;
+					break;	
+				case EAxis.XY: 
+					dir.x = 0;
+					dir.y = 0;
+					break;
+				case EAxis.XYZ:
+					dir.x = 0;
+					dir.y = 0;
+					dir.z = 0;
+					break;
+				case EAxis.Y:
+					dir.y = 0;
+					break; 
+				case EAxis.YZ:
+					dir.y = 0;
+					dir.z = 0;
+					break;
+				case EAxis.Z:
+					dir.z = 0;
+					break;
+				default: return dir;
+			}
+			return dir;
 		}
 	}
 }

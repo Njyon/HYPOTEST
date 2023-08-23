@@ -9,7 +9,6 @@ public class GameCharacterStandingState : AGameCharacterState
 
 	public override void StartState(EGameCharacterState oldState)
 	{
-		ResetJumps();
 		SetSlopStrenghToZero(oldState);
 	}
 

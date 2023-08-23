@@ -33,6 +33,8 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	float characterDefaultRadius;
 	float characterDefaultHeight;
 	bool useGravity = true;
+	float movementOverrideTime;
+	Vector3 movementOverride;
 
 	CapsuleCollider capsuleCollider;
 	public CapsuleCollider CapsuleCollider { get { return capsuleCollider; } }
@@ -56,6 +58,8 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	public CharacterController UnityMovementController { get { return unityMovementController; } }
 	public float HeadBounceValue { get { return headBounceValue; } }
 	public bool UseGravity { get { return useGravity; } set { useGravity = value; } }
+	public float MovementOverrideTime { get { return movementOverrideTime; } set { movementOverrideTime = value; } }
+	public Vector3 MovementOverride { get { return movementOverride; } set { movementOverride = value; } }
 	public bool IsInJump
 	{
 		get { return isInJump; }
@@ -73,9 +77,14 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	private bool IsGroundedIntern { get { return isGrounded; } 
 		set 
 		{
-			if (value == isGrounded) return;
-			isGrounded = value;
-			if (onCharacterGroundedChanged != null) onCharacterGroundedChanged(isGrounded);
+			if (value != isGrounded)
+			{
+				isGrounded = value;
+
+				if (onCharacterGroundedChanged != null) onCharacterGroundedChanged(isGrounded);
+			}
+			if (isGrounded)
+				GroundReset();
 		}
 	}
 	static float minDistance = 0.001f;
@@ -195,7 +204,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 					if (gameCharacter.IsPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen(StringColor.Red + "StepDownHit" + StringColor.EndColor);
 					// ConvertHitPoint into center
 					capsulCenter = CapsulCenterFromEnds(moveRequestVector, stepDownHit, Vector3.up);
-					Ultra.Utilities.DrawCapsule(capsulCenter, Quaternion.identity, capsuleCollider.height, capsuleCollider.radius, Color.green.WithAlpha(0.5f), 100, DebugAreas.Movement);
+					Ultra.Utilities.DrawCapsule(capsulCenter, Quaternion.identity, capsuleCollider.height, capsuleCollider.radius, Color.green.WithAlpha(0.5f), 0f, 100, DebugAreas.Movement);
 				}
 				else
 				{
@@ -275,14 +284,14 @@ public class GameCharacterMovementComponent : MonoBehaviour
 			
 				capsulCenter = newCenter;
 			
-				Ultra.Utilities.DrawCapsule(capsulCenter, Quaternion.identity, capsuleCollider.height, capsuleCollider.radius, Color.red.WithAlpha(0.7f), 100, DebugAreas.Movement);
+				Ultra.Utilities.DrawCapsule(capsulCenter, Quaternion.identity, capsuleCollider.height, capsuleCollider.radius, Color.red.WithAlpha(0.7f), 0f, 100, DebugAreas.Movement);
 			
 				return MoveCapsul(newMoveRequest, capsulCenter, iteration++);
 			}
 
 			capsulCenter = newCenter;
 			//MovementVelocity = new Vector3(0, Veloctiy.y, 0);
-			Ultra.Utilities.DrawCapsule(capsulCenter, Quaternion.identity, capsuleCollider.height, capsuleCollider.radius, Color.blue.WithAlpha(0.5f), 100, DebugAreas.Movement);
+			Ultra.Utilities.DrawCapsule(capsulCenter, Quaternion.identity, capsuleCollider.height, capsuleCollider.radius, Color.blue.WithAlpha(0.5f), 0f, 100, DebugAreas.Movement);
 		}
 		else
 		{
@@ -330,6 +339,9 @@ public class GameCharacterMovementComponent : MonoBehaviour
 				RayCastGroundHit = null;
 
 			IsGroundedIntern = true;
+
+			Ultra.Utilities.DrawCapsule(CharacterCenter, Quaternion.identity, CapsuleCollider.height, CapsuleCollider.radius, Color.red, 10f, 300, DebugAreas.Movement);
+
 			PossibleGround = new NullableHit(groundHitCapsul);
 			//if (MovementVelocity.y < 0) MovementVelocity = new Vector3(MovementVelocity.x, 0f, MovementVelocity.z);
 		}
@@ -358,7 +370,12 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	public void MoveCharacter()
 	{
 		Vector3 movementVector = GetMovmentVelocityWithDeltaTime();
+
+		if (gameCharacter.PluginStateMachine.IsPluginStatePlugedIn(EPluginCharacterState.MovementOverride))
+			movementVector = movementOverride; 
+
 		RequestMove(movementVector);
+
 		if (gameCharacter.IsPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen("MovementVelocity: " + MovementVelocity.ToString() + " MovementSpeed: " + MovementVelocity.magnitude);
 		if (gameCharacter.IsPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen(StringColor.Lime + "Velocity: " + Velocity.ToString() + " VelocityMagnitude: " + Velocity.magnitude + StringColor.EndColor);
 		Ultra.Utilities.DrawArrow(transform.position, movementVector.normalized, movementVector.magnitude * 50f, Color.red, 0f, 50, DebugAreas.Movement);
@@ -432,6 +449,26 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	public void ActivateStepup()
 	{
 		unityMovementController.stepOffset = stepHight;
+	}
+
+	public void RequestMovementOverride(float overrideTime = 1f)
+	{
+		if (CanMovementOverride())
+		{
+			MovementOverrideTime = overrideTime;
+			gameCharacter.PluginStateMachine.AddPluginState(EPluginCharacterState.MovementOverride);
+		}
+	}
+
+	public void GroundReset()
+	{
+		gameCharacter.CurrentJumpAmount = 0;
+		gameCharacter.CombatComponent.CurrentWeapon?.GroundReset();
+	}
+
+	public bool CanMovementOverride()
+	{
+		return true;
 	}
 
 	IEnumerator IsJumping()

@@ -27,6 +27,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 	Quaternion rotationTarget;
 	Ultra.Timer freezTimer;
 	float freezTime = 1f;
+	float freezTimeOverride = 0f;
 	float characterRadiusTarget;
 	float characterHeightTarget;
 	CharacterDetection characterDetection;
@@ -51,6 +52,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 	public Quaternion RotationTarget { get { return rotationTarget; } set { rotationTarget = value; } }
 	public Ultra.Timer FreezTimer { get { return freezTimer; } }
 	public float FreezTime { get { return freezTime; } }	
+	public float FreezTimeOverride { get { return freezTimeOverride; } set { freezTimeOverride = value; } }	
 	public CharacterDetection CharacterDetection { get { return characterDetection; } }
 	public Vector3 LastDir { get { return lastDir; } set { lastDir = value; } }
 	public float CharacterRadiusTarget
@@ -247,15 +249,22 @@ public class GameCharacter : MonoBehaviour , IDamage
 
 	#endregion
 
-		public void DoDamage(GameCharacter damageInitiator, float damage)
+	public void DoDamage(GameCharacter damageInitiator, float damage)
 	{
 		Ultra.Utilities.Instance.DebugLogOnScreen(name + " got Damaged by: " + damageInitiator.name + ", Damage = " + damage, 2f, StringColor.Red, 200, DebugAreas.Combat);
 		Health.AddCurrentValue(-damage);
-		if (StateMachine.GetCurrentStateType() == EGameCharacterState.Freez || StateMachine.GetCurrentStateType() == EGameCharacterState.InAir)
+		if (CombatComponent.CanRequestFreez())
 		{
-			freezTimer.Start(freezTime);
-			AnimController.FreezA = !AnimController.FreezA;
+			if (StateMachine.GetCurrentStateType() == EGameCharacterState.Freez)
+			{
+				freezTimer.Start(freezTime);
+				AnimController.FreezA = !AnimController.FreezA;
+			}else if (StateMachine.GetCurrentStateType() == EGameCharacterState.InAir)
+			{
+				StateMachine.RequestStateChange(EGameCharacterState.Freez);
+			}
 		}
+		
 		animController.TriggerAdditiveHit();
 	}
 
@@ -315,9 +324,16 @@ public class GameCharacter : MonoBehaviour , IDamage
 		}
 	}
 
-	public void AddFreezTime()
+	public void AddFreezTime(float freezTime)
 	{
-		FreezTimer.Start(FreezTime);
+		if (FreezTimer.CurrentTime + freezTime > FreezTime)
+		{
+			FreezTimer.Start(freezTime);
+		}
+		else
+		{
+			FreezTimer.AddTime(freezTime);
+		}
 	}
 
 	public void CharacterMoveToPositionStateCharacterOnDestination(GameCharacter movedCharacter)
@@ -333,5 +349,10 @@ public class GameCharacter : MonoBehaviour , IDamage
 	public void CharacterMoveToPositionStateEnd(GameCharacter movedCharacter)
 	{
 		CombatComponent.CurrentWeapon.CharacterMoveToEnd(movedCharacter);
+	}
+
+	public void RotateToDir(Vector3 dir)
+	{
+		transform.rotation = Quaternion.LookRotation(dir.normalized, Vector3.up);
 	}
 }

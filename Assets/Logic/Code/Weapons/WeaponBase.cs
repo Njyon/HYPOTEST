@@ -603,7 +603,7 @@ public abstract class WeaponBase
 		{
 			comboIndexInSameAttack = 0;
 		}
-		if (newState?.GetStateType() != EGameCharacterState.Attack && oldState?.GetStateType() == EGameCharacterState.AttackRecovery)
+		if (!(newState?.GetStateType() == EGameCharacterState.Attack || newState?.GetStateType() == EGameCharacterState.DefensiveAction) && oldState?.GetStateType() == EGameCharacterState.AttackRecovery)
 		{
 			lastAttackType = currentAttackType;
 			currentAttackType = EExplicitAttackType.Unknown;
@@ -641,6 +641,11 @@ public abstract class WeaponBase
 	}
 
 	public virtual void AttackRecoveryEnd()
+	{
+
+	}
+
+	public virtual void DefensiveActionStateEnd()
 	{
 
 	}
@@ -710,6 +715,16 @@ public abstract class WeaponBase
 
 	}
 
+	public virtual bool CanLeaveDefensiveState()
+	{
+		return true;
+	}
+
+	public virtual void GroundReset()
+	{
+
+	}
+
 	protected void UnHookAllHookedCharacerts()
 	{
 		foreach (GameCharacter character in GameCharacter.CombatComponent.HookedCharacters)
@@ -730,6 +745,7 @@ public abstract class WeaponBase
 		if (enemyCharacter.CombatComponent.CanRequestFlyAway())
 		{
 			enemyCharacter.StateMachine.RequestStateChange(EGameCharacterState.FlyAway);
+			enemyCharacter.CombatComponent.FlyAwayTime = CurrentAttack.extraData.flyAwayTime;
 			if (Mathf.Sign(GameCharacter.transform.forward.x) < 0)
 			{
 				Vector3 direction = Quaternion.Euler(CurrentAttack.extraData.flyAwayDirection) * GameCharacter.transform.forward;
@@ -743,21 +759,6 @@ public abstract class WeaponBase
 			}
 
 			Ultra.Utilities.DrawArrow(enemyCharacter.MovementComponent.CharacterCenter, enemyCharacter.MovementComponent.MovementVelocity, 5f, Color.magenta, 10f, 100, DebugAreas.Combat);
-		}
-	}
-
-	protected void RequestFreez(GameCharacter enemyCharacter)
-	{
-		if (enemyCharacter.CombatComponent.CanRequestFreez())
-		{
-			if (enemyCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.Freez)
-			{
-				enemyCharacter.AddFreezTime();
-
-			}else
-			{
-				enemyCharacter.StateMachine.RequestStateChange(EGameCharacterState.Freez);
-			}
 		}
 	}
 }

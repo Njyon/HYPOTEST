@@ -32,6 +32,8 @@ public class AttackAnimationExtraData
 	public Vector3 flyAwayDirection;
 	public float flyAwayStrengh;
 	public float rangeValue;
+	public float flyAwayTime = 1f;
+	public float freezTime = 1f;
 }
 
 [Serializable]
