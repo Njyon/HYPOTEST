@@ -13,11 +13,26 @@ public class FistWeapon : WeaponBase
 	float interpSpeed = 10f;
 	float targetAngel;
 	float teleportCharacterDistance = 0.5f;
+	float smashDownDistance = 0.2f;
 	Ultra.Timer backupFallTimer;
 	Vector3 defensiveMoveVector;
 	Vector3 defensiveMoveInput;
 	bool defensiveShouldMove = false;
 	bool canTeleport = true;
+
+	bool StartFalling { 
+		get { return startFalling; }
+		set
+		{
+			startFalling = value;
+			if (startFalling)
+			{
+				GameCharacter.MovementComponent.MoveThroughCharacterLayer();
+				HitDetectionStart();
+			}
+		}
+	}
+
 	GameCharacter targetTeleportCharacter;
 
 	public FistWeapon() { }
@@ -35,6 +50,9 @@ public class FistWeapon : WeaponBase
     public override void UnEquipWeapon()
     {
         base.UnEquipWeapon();
+		GameCharacter.GameCharacterData.MeshRenderer.enabled = true;
+		GameCharacter.MovementComponent.ActivateStepup();
+		GameCharacter.MovementComponent.SetLayerToDefault();
 	}
 
     public override void UpdateWeapon(float deltaTime)
@@ -76,7 +94,7 @@ public class FistWeapon : WeaponBase
 		GameCharacter.MovementComponent.onCharacterGroundedChanged += OnCharacterGroundedChanged;
 
 		landed = false;
-		startFalling = false;
+		StartFalling = false;
 
 		Vector3 maxDir = (GameCharacter.transform.forward + Vector3.down).normalized;
 		GameCharacter target = Ultra.HypoUttilies.FindCHaracterNearestToDirectionWithMinAngel(GameCharacter.MovementComponent.CharacterCenter, Vector3.down, GameCharacter.transform.forward, 45f, ref GameCharacter.CharacterDetection.OverlappingGameCharacter);
@@ -89,6 +107,9 @@ public class FistWeapon : WeaponBase
 		{
 			// Aim towards feet for better results
 			targetDir = (target.transform.position - GameCharacter.MovementComponent.CharacterCenter).normalized;
+			float minDistance = GameCharacter.MovementComponent.Radius + target.MovementComponent.Radius + smashDownDistance;
+			Vector3 newTargetPos = target.transform.position + Ultra.Utilities.IgnoreAxis(targetDir * -1, EAxis.YZ).normalized * minDistance;
+			targetDir = (newTargetPos - GameCharacter.MovementComponent.CharacterCenter).normalized;
 		}
 		targetAngel = Vector3.Angle(targetDir, GameCharacter.transform.forward);
 	}
@@ -110,7 +131,7 @@ public class FistWeapon : WeaponBase
 	public override void AttackPhaseStart()
 	{
 		base.AttackPhaseStart();
-		startFalling = true;
+		StartFalling = true;
 	}
 
 	public override void GroundAttackHit(GameObject hitObj)
@@ -227,6 +248,7 @@ public class FistWeapon : WeaponBase
 	public override void EndAttackStateLogic()
 	{
 		UnHookAllHookedCharacerts();
+		GameCharacter.MovementComponent.SetLayerToDefault();
 
 		base.EndAttackStateLogic();
 	}
@@ -252,7 +274,6 @@ public class FistWeapon : WeaponBase
 	}
 	void OnCharacterGroundedChanged(bool newState)
 	{
-
 		if (CurrentAttackType == EExplicitAttackType.AirDownAttack)
 		{
 			if (!landed) OnAirDownHitLanding();
@@ -270,6 +291,7 @@ public class FistWeapon : WeaponBase
 		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks.Count > 0) TriggerAttack(CurrentAttackType, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks);
 		GameCharacter.AnimController.HoldAttack = false;
 		GameCharacter.AnimController.InAttack = false;
+		GameCharacter.MovementComponent.SetLayerToDefault();
 
 		CameraController.Instance.ShakeCamerea(2);
 
@@ -279,6 +301,8 @@ public class FistWeapon : WeaponBase
 		{
 			OnGroundAttackHit(obj);
 		}
+
+		HitDetectionEnd();
 	}
 
 	void OnGroundAttackHit(GameObject hitObject)
@@ -347,7 +371,7 @@ public class FistWeapon : WeaponBase
 
 	void UpdateAirDownAttack(float deltaTime)
 	{
-		if (!landed && startFalling)
+		if (!landed && StartFalling)
 		{
 			Vector3 velocity = GameCharacter.MovementComponent.MovementVelocity;
 			velocity = targetDir * speed;
@@ -357,12 +381,14 @@ public class FistWeapon : WeaponBase
 
 	void OnBackupTimerFinished()
 	{
-		startFalling = true;
+		if (!landed && !StartFalling)
+			StartFalling = true;
 	}
 
 	public override void DefensiveActionStart()
 	{
-		targetTeleportCharacter = Ultra.HypoUttilies.FindCharactereNearestToDirectionWithRange(GameCharacter.MovementComponent.CharacterCenter, defensiveMoveVector.normalized.magnitude > 0 ? defensiveMoveVector.normalized : GameCharacter.transform.forward, Ultra.Utilities.IgnoreAxis(defensiveMoveVector, EAxis.YZ).normalized.magnitude > 0 ? Ultra.Utilities.IgnoreAxis(defensiveMoveVector, EAxis.YZ).normalized : GameCharacter.transform.forward, CurrentDefensiveAction.extraData.rangeValue, ref GameCharacter.CharacterDetection.OverlappingGameCharacter);
+		float angelTreshold = 5f;
+		targetTeleportCharacter = Ultra.HypoUttilies.FindCharactereNearestToDirectionTresholdWithRange(GameCharacter.MovementComponent.CharacterCenter, defensiveMoveVector.normalized.magnitude > 0 ? defensiveMoveVector.normalized : GameCharacter.transform.forward, angelTreshold, Ultra.Utilities.IgnoreAxis(defensiveMoveVector, EAxis.YZ).normalized.magnitude > 0 ? Ultra.Utilities.IgnoreAxis(defensiveMoveVector, EAxis.YZ).normalized : GameCharacter.transform.forward, CurrentDefensiveAction.extraData.rangeValue, ref GameCharacter.CharacterDetection.OverlappingGameCharacter);
 		Vector3 targetPosition = Vector3.zero;
 		if (targetTeleportCharacter != null)
 		{

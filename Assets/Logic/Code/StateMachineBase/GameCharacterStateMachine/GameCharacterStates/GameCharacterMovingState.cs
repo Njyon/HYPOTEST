@@ -147,6 +147,6 @@ public class GameCharacterMovingState : AGameCharacterState
 
 	public override void EndState(EGameCharacterState newState)
 	{
-
+		
 	}
 }

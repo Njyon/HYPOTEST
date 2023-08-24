@@ -524,6 +524,8 @@ public abstract class WeaponBase
 		if (currentAttack == null) 
 			return;
 
+		if (ishitDetecting) return;
+
 		ishitDetecting = true;
 		switch (currentAttack.data.hitDetectionType)
 		{
@@ -557,6 +559,8 @@ public abstract class WeaponBase
 	public virtual void HitDetectionEnd()
 	{
 		hitObjects.Clear();
+
+		if (!ishitDetecting) return;
 
 		ishitDetecting = false;
 		switch(currentAttack.data.hitDetectionType)
@@ -758,7 +762,7 @@ public abstract class WeaponBase
 				enemyCharacter.MovementComponent.MovementVelocity = direction * CurrentAttack.extraData.flyAwayStrengh;
 			}
 
-			Ultra.Utilities.DrawArrow(enemyCharacter.MovementComponent.CharacterCenter, enemyCharacter.MovementComponent.MovementVelocity, 5f, Color.magenta, 10f, 100, DebugAreas.Combat);
+			Ultra.Utilities.DrawArrow(enemyCharacter.MovementComponent.CharacterCenter, enemyCharacter.MovementComponent.MovementVelocity.normalized, 5f, Color.magenta, 10f, 100, DebugAreas.Combat);
 		}
 	}
 }

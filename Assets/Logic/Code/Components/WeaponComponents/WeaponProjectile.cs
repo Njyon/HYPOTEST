@@ -110,6 +110,7 @@ public class WeaponProjectile : MonoBehaviour
 	{
 		if (colliderScript != null) colliderScript.onOverlapEnter -= OnOverlapEnter;
 		if (timer != null) timer.onTimerFinished -= OnTimerFinished;
+		lineRenderer.enabled = false;
 	}
 
 	void OnOverlapEnter(Collider other)

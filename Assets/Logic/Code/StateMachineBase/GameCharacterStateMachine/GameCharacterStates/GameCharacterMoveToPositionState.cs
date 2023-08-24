@@ -15,6 +15,7 @@ public class GameCharacterMoveToPositionState : AGameCharacterState
 		GameCharacter.AnimController.SwitchFreezState();
 		GameCharacter.AnimController.InFreez = true;
 		GameCharacter.MovementComponent.UseGravity = false;
+		GameCharacter.MovementComponent.MoveThroughCharacterLayer();
 
 		GameCharacter.MovementComponent.onMoveCollisionFlag += OnMoveCollisionFlag;
 	}
@@ -63,6 +64,7 @@ public class GameCharacterMoveToPositionState : AGameCharacterState
 		GameCharacter.MovementComponent.MovementVelocity = Vector3.zero;
 		if (GameCharacter.CombatComponent.HookedToCharacter != null) GameCharacter.CombatComponent.HookedToCharacter.CharacterMoveToPositionStateAbort(GameCharacter);
 		GameCharacter.MovementComponent.onMoveCollisionFlag -= OnMoveCollisionFlag;
+		GameCharacter.MovementComponent.SetLayerToDefault();
 	}
 
 	void OnMoveCollisionFlag(CollisionFlags collisionFlag)

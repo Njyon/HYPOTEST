@@ -313,38 +313,28 @@ public class SpearWeapon : WeaponBase
 
 	public override void CharacterArrivedAtRequestedLocation(GameCharacter movedCharacter)
 	{
-		GameCharacter.AnimController.InAimBlendTree = false;
-		UnHookAllHookedCharacerts();
-		GameCharacter.CombatComponent.HookedCharacters.Clear();
-		GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.Aim);
-		GameCharacter.RequestBestCharacterState();
-		SpawnedWeapon.SetActive(true);
-		GameObject.Destroy(defensiveSpear.gameObject);
+		AftherDefensiveActionCleanUp();
 	}
 
 	public override void CharacterMoveToAbort(GameCharacter movedCharacter)
 	{
-		GameCharacter.AnimController.InAimBlendTree = false;
-		UnHookAllHookedCharacerts();
-		GameCharacter.CombatComponent.HookedCharacters.Clear();
-		GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.Aim);
-		GameCharacter.RequestBestCharacterState();
-		SpawnedWeapon.SetActive(true);
-		GameObject.Destroy(defensiveSpear.gameObject);
+
+		AftherDefensiveActionCleanUp();
 	}
 
 	public override void CharacterMoveToEnd(GameCharacter movedCharacter)
 	{
-		if (GameCharacter.CombatComponent.HookedCharacters.Count == 0) return;
-		
+		AftherDefensiveActionCleanUp();
+	}
+
+	private void AftherDefensiveActionCleanUp()
+	{
 		GameCharacter.AnimController.InAimBlendTree = false;
 		UnHookAllHookedCharacerts();
-		GameCharacter.CombatComponent.HookedCharacters.Clear();
-		GameCharacter.RequestBestCharacterState();
 		GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.Aim);
 		GameCharacter.RequestBestCharacterState();
 		SpawnedWeapon.SetActive(true);
-		GameObject.Destroy(defensiveSpear.gameObject);
+		if (defensiveSpear != null)
+			GameObject.Destroy(defensiveSpear.gameObject);
 	}
-
 }

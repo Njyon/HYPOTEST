@@ -33,12 +33,12 @@ namespace Ultra
 		{
 			if (list == null || list.Count <= 0) return null;
 
-			GameCharacter mostPointingObject = list[0];
-			float smallestAngle = Ultra.Utilities.GetAngleBetweenVectors(direction.normalized, (mostPointingObject.transform.position - fromPosition).normalized);
+			GameCharacter mostPointingObject = null;
+			float smallestAngle = 360f;
 
 			foreach (GameCharacter character in list)
 			{
-				float angle = Ultra.Utilities.GetAngleBetweenVectors(direction.normalized, (character.transform.position - fromPosition).normalized);
+				float angle = Ultra.Utilities.GetAngleBetweenVectors(direction.normalized, (character.MovementComponent.CharacterCenter - fromPosition).normalized);
 				if (angle < smallestAngle)
 				{
 					mostPointingObject = character;
@@ -57,7 +57,7 @@ namespace Ultra
 
 			foreach (GameCharacter character in list)
 			{
-				float angle = Ultra.Utilities.GetAngleBetweenVectors(direction.normalized, (character.transform.position - fromPosition).normalized);
+				float angle = Ultra.Utilities.GetAngleBetweenVectors(direction.normalized, (character.MovementComponent.CharacterCenter - fromPosition).normalized);
 				if (angle <= smallestAngle)
 				{
 					mostPointingObject = character;
@@ -76,9 +76,9 @@ namespace Ultra
 
 			foreach (GameCharacter character in list)
 			{
-				if (Vector3.Dot(character.transform.position - fromPosition, forward) >= 0)
+				if (Vector3.Dot(character.MovementComponent.CharacterCenter - fromPosition, forward) >= 0)
 				{
-					float angle = Ultra.Utilities.GetAngleBetweenVectors(direction.normalized, (character.transform.position - fromPosition).normalized);
+					float angle = Ultra.Utilities.GetAngleBetweenVectors(direction.normalized, (character.MovementComponent.CharacterCenter - fromPosition).normalized);
 					if (angle <= smallestAngle)
 					{
 						mostPointingObject = character;
@@ -98,10 +98,10 @@ namespace Ultra
 
 			foreach (GameCharacter character in list)
 			{
-				float distance = Vector3.Distance(fromPosition, character.transform.position);
+				float distance = Vector3.Distance(fromPosition, character.MovementComponent.CharacterCenter);
 				if (distance <= range)
 				{
-					float angle = Ultra.Utilities.GetAngleBetweenVectors(direction.normalized, (character.transform.position - fromPosition).normalized);
+					float angle = Ultra.Utilities.GetAngleBetweenVectors(direction.normalized, (character.MovementComponent.CharacterCenter - fromPosition).normalized);
 					if (angle < smallestAngle)
 					{
 						mostPointingObject = character;
@@ -121,17 +121,70 @@ namespace Ultra
 
 			foreach (GameCharacter character in list)
 			{
-				float distance = Vector3.Distance(fromPosition, character.transform.position);
+				float distance = Vector3.Distance(fromPosition, character.MovementComponent.CharacterCenter);
 				if (distance <= range)
 				{
-					if (Vector3.Dot(character.transform.position - fromPosition, forward) >= 0)
+					if (Vector3.Dot(character.MovementComponent.CharacterCenter - fromPosition, forward) >= 0)
 					{
-						float angle = Ultra.Utilities.GetAngleBetweenVectors(direction.normalized, (character.transform.position - fromPosition).normalized);
+						float angle = Ultra.Utilities.GetAngleBetweenVectors(direction.normalized, (character.MovementComponent.CharacterCenter - fromPosition).normalized);
 						if (angle < smallestAngle)
 						{
 							mostPointingObject = character;
 							smallestAngle = angle;
 						}
+					}
+				}
+			}
+
+			return mostPointingObject;
+		}
+		public static GameCharacter FindCharactereNearestToDirectionTresholdWithRange(Vector3 fromPosition, Vector3 direction, float directionTresholdAngel, Vector3 forward, float range, ref List<GameCharacter> list)
+		{
+			if (list == null || list.Count <= 0) return null;
+
+			GameCharacter mostPointingObject = null;
+			float smallestAngle = 360f;
+			float closestRange = range;
+
+			foreach (GameCharacter character in list)
+			{
+				float distance = Vector3.Distance(fromPosition, character.MovementComponent.CharacterCenter);
+				if (distance <= range)
+				{
+					if (Vector3.Dot(character.MovementComponent.CharacterCenter - fromPosition, forward) >= 0)
+					{
+						float angle = Ultra.Utilities.GetAngleBetweenVectors(direction.normalized, (character.MovementComponent.CharacterCenter - fromPosition).normalized);
+						if (angle <= smallestAngle)
+						{
+							if (angle + directionTresholdAngel < smallestAngle || distance < closestRange)
+							{
+								mostPointingObject = character;
+								smallestAngle = angle;
+								closestRange = distance;
+							}
+						}
+					}
+				}
+			}
+
+			return mostPointingObject;
+		}
+		public static GameCharacter FindCharactereInDirectionInRange(Vector3 fromPosition, Vector3 direction, Vector3 range, ref List<GameCharacter> list)
+		{
+			if (list == null || list.Count <= 0) return null;
+
+			GameCharacter mostPointingObject = null;
+			float smallestAngle = 360;
+
+			foreach (GameCharacter character in list)
+			{
+				if (Ultra.Utilities.IsPointInBoundingBox(character.MovementComponent.CharacterCenter, fromPosition, range))
+				{
+					float angle = Ultra.Utilities.GetAngleBetweenVectors(direction.normalized, (character.MovementComponent.CharacterCenter - fromPosition).normalized);
+					if (angle < smallestAngle)
+					{
+						mostPointingObject = character;
+						smallestAngle = angle;
 					}
 				}
 			}

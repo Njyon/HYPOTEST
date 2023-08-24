@@ -571,16 +571,16 @@ namespace Ultra {
 
 			DrawTriangle(pointA, pointB, pointC, origin, orientation, color);
 		}
-		public static void DrawQuad(Vector3 pointA, Vector3 pointB, Vector3 pointC, Vector3 pointD, Color color)
+		public static void DrawQuad(Vector3 pointA, Vector3 pointB, Vector3 pointC, Vector3 pointD, Color color, float time = 0)
 		{
 			// Draw lines between the points
-			Debug.DrawLine(pointA, pointB, color);
-			Debug.DrawLine(pointB, pointC, color);
-			Debug.DrawLine(pointC, pointD, color);
-			Debug.DrawLine(pointD, pointA, color);
+			Debug.DrawLine(pointA, pointB, color, time);
+			Debug.DrawLine(pointB, pointC, color, time);
+			Debug.DrawLine(pointC, pointD, color, time);
+			Debug.DrawLine(pointD, pointA, color, time);
 		}
 		// Draw a rectangle defined by its position, orientation and extent
-		public static void DrawRectangle(Vector3 position, Quaternion orientation, Vector2 extent, Color color)
+		public static void DrawRectangle(Vector3 position, Quaternion orientation, Vector2 extent, Color color, float time = 0)
 		{
 			Vector3 rightOffset = Vector3.right * extent.x * 0.5f;
 			Vector3 upOffset = Vector3.up * extent.y * 0.5f;
@@ -594,10 +594,13 @@ namespace Ultra {
 						position + offsetB,
 						position + offsetC,
 						position + offsetD,
-						color);
+						color,
+						time);
 		}
-		public static void DrawBox(Vector3 position, Quaternion orientation, Vector3 size, Color color)
+		public static void DrawBox(Vector3 position, Quaternion orientation, Vector3 size, Color color, float time = 0, int debugLevel = 100, DebugAreas debugArea = DebugAreas.Misc)
 		{
+			if (debugLevel > Instance.debugLevel || (debugArea & Instance.debugAreas) != debugArea) return;
+
 			Vector3 offsetX = orientation * Vector3.right * size.x * 0.5f;
 			Vector3 offsetY = orientation * Vector3.up * size.y * 0.5f;
 			Vector3 offsetZ = orientation * Vector3.forward * size.z * 0.5f;
@@ -607,13 +610,13 @@ namespace Ultra {
 			Vector3 pointC = (offsetX - offsetY) + position;
 			Vector3 pointD = (-offsetX - offsetY) + position;
 
-			DrawRectangle(position - offsetZ, orientation, new Vector2(size.x, size.y), color);
-			DrawRectangle(position + offsetZ, orientation, new Vector2(size.x, size.y), color);
+			DrawRectangle(position - offsetZ, orientation, new Vector2(size.x, size.y), color, time);
+			DrawRectangle(position + offsetZ, orientation, new Vector2(size.x, size.y), color, time);
 
-			Debug.DrawLine(pointA - offsetZ, pointA + offsetZ, color);
-			Debug.DrawLine(pointB - offsetZ, pointB + offsetZ, color);
-			Debug.DrawLine(pointC - offsetZ, pointC + offsetZ, color);
-			Debug.DrawLine(pointD - offsetZ, pointD + offsetZ, color);
+			Debug.DrawLine(pointA - offsetZ, pointA + offsetZ, color, time);
+			Debug.DrawLine(pointB - offsetZ, pointB + offsetZ, color, time);
+			Debug.DrawLine(pointC - offsetZ, pointC + offsetZ, color, time);
+			Debug.DrawLine(pointD - offsetZ, pointD + offsetZ, color, time);
 		}
 		public static Collider[] OverlapCapsule(Vector3 position, float capsulHeight, float radius)
 		{
@@ -677,6 +680,12 @@ namespace Ultra {
 				default: return dir;
 			}
 			return dir;
+		}
+		public static bool IsPointInBoundingBox(Vector3 pointToCheck, Vector3 boundsCenter, Vector3 boundsRanges)
+		{
+			Bounds bounds = new Bounds(boundsCenter, boundsRanges * 2); // Erstelle Bounding Box
+
+			return bounds.Contains(pointToCheck); // Überprüfe, ob der Punkt in der Bounding Box liegt
 		}
 	}
 }

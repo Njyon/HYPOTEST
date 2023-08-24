@@ -213,8 +213,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 
 	public void HitDetectionEventStart(AnimationEvent evt)
 	{
-		if (evt.animatorClipInfo.weight >= 0.48f)
-			CombatComponent?.CurrentWeapon?.HitDetectionStart();
+		CombatComponent?.CurrentWeapon?.HitDetectionStart();
 	}
 
 	public void HitDetectionEventEnd(AnimationEvent evt)
