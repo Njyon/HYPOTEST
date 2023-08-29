@@ -455,6 +455,8 @@ public class AnimationController
 	public bool BlockRotation { get { return blockRotation; } set { blockRotation = value; } }
 
 	public float GetUpMovementCurve { get { return gameCharacter.Animator.GetFloat(upMovementCurveIndex); } }
+	Ultra.Timer attackTriggerTimer = new Ultra.Timer();
+	public Ultra.Timer	AttackTriggerTimer { get { return attackTriggerTimer; } }
 
 	public AnimationController(GameCharacter character)
 	{
@@ -508,10 +510,14 @@ public class AnimationController
 		overrideController = new AnimatorOverrideController(gameCharacter.Animator.runtimeAnimatorController);
 
 		minMalkSpeed = gameCharacter.GameCharacterData.MaxMovementSpeed * gameCharacter.GameCharacterData.WalkFactor;
+
+		AttackTriggerTimer.onTimerFinished += OnAttackTriggerTimerFinished;
 	}
 
 	public void Update(float deltaTime)
 	{
+		AttackTriggerTimer.Update(deltaTime);
+
 		IsMoving = Mathf.Abs(gameCharacter.MovementComponent.Velocity.x) > 0;
 		IsGrounded = gameCharacter.MovementComponent.IsGrounded;
 
@@ -808,5 +814,10 @@ public class AnimationController
 	public void SwitchFreezState()
 	{
 		if (InFreez) FreezA = !FreezA;
+	}
+
+	void OnAttackTriggerTimerFinished()
+	{
+		TriggerAttack = false;
 	}
 }

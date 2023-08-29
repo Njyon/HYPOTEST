@@ -515,6 +515,7 @@ public abstract class WeaponBase
 		}
 		gameCharacter.AnimController.SetTriggerAttack(currentAttack.triggerAnimation);
 		gameCharacter.CombatComponent.AttackTimer.Start(currentAttack.triggerAnimation.length);
+		gameCharacter.AnimController.AttackTriggerTimer.Start(currentAttack.triggerAnimation.length);
 
 		gameCharacter.AnimController.TriggerAttack = true;
 	}

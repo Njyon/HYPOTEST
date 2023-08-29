@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class SpearWeapon : WeaponBase
 {
-	float yVel = 50f;
 	bool landed = false;
 	bool startFalling = false;
+	bool groundUpAttackhit = false;
+	bool groundUpAttackMove = false;
+	Ultra.Timer groundUpTimer = new Ultra.Timer();
 	WeaponProjectile defensiveSpear = null;
 	List<GameObject> thrownSpears = new List<GameObject>();
 
@@ -29,6 +31,11 @@ public class SpearWeapon : WeaponBase
 		GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.Aim);
 		SpawnedWeapon.SetActive(true);
 
+		landed = false;
+		startFalling = false;
+		groundUpAttackhit = false;
+		groundUpAttackMove = false;
+
 		if (defensiveSpear != null)
 			GameObject.Destroy(defensiveSpear.gameObject);
 	}
@@ -45,7 +52,11 @@ public class SpearWeapon : WeaponBase
     public override void GroundUpAttack()    
     {
         base.GroundUpAttack();
-    }
+		GameCharacter.CombatComponent.AttackTimer.onTimerFinished += AttackTimerFinished;
+		groundUpAttackhit = false;
+		groundUpAttackMove = false;
+
+	}
     public override void GroundDownAttack()  
     {
         base.GroundDownAttack();
@@ -75,8 +86,8 @@ public class SpearWeapon : WeaponBase
     public override void AirDirectionAttack() 
     {
         base.AirDirectionAttack();
-		GameCharacter.MovementComponent.MoveThroughCharacterLayer();
-		GameCharacter.CharacterHeightTarget = GameCharacter.CharacterHeightTarget / 2;
+		//GameCharacter.MovementComponent.MoveThroughCharacterLayer();
+		//GameCharacter.CharacterHeightTarget = GameCharacter.CharacterHeightTarget / 2;
 	}
 
 	public override void GroundAttackHit(GameObject hitObj)
@@ -91,6 +102,11 @@ public class SpearWeapon : WeaponBase
 		IDamage damageInterface = GetDamageInterface(hitObj);
 		if (damageInterface == null) return;
 		damageInterface.DoDamage(GameCharacter, 10);
+
+		if (!groundUpAttackhit)
+		{
+			GroundUpAttackEnd();
+		}
 	}
 
 	public override void GroundDownAttackHit(GameObject hitObj)
@@ -98,21 +114,10 @@ public class SpearWeapon : WeaponBase
 		IDamage damageInterface = GetDamageInterface(hitObj);
 		if (damageInterface == null) return;
 		damageInterface.DoDamage(GameCharacter, 10);
+
 		GameCharacter enemyCharacter = hitObj.GetComponent<GameCharacter>();
-		if (enemyCharacter == null || enemyCharacter.StateMachine == null || enemyCharacter.CombatComponent == null) return;
-		if (enemyCharacter.StateMachine.CanSwitchToStateOrIsState(EGameCharacterState.Freez))
-		{
-			enemyCharacter.CombatComponent.HookedToCharacter = GameCharacter;
-			HookCharacterToCharacter(enemyCharacter);
-			if (enemyCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.Freez)
-				enemyCharacter.AddFreezTime(GameCharacter.FreezTime);
-			else
-				enemyCharacter.StateMachine.RequestStateChange(EGameCharacterState.Freez);
-			float downforce = -Mathf.Sqrt(2 * enemyCharacter.GameCharacterData.MovmentGravity * 4f);
-			if (enemyCharacter.MovementComponent.MovementVelocity.y < 0) 
-				downforce -= Mathf.Abs(enemyCharacter.MovementComponent.MovementVelocity.y); // Abs because its easier than Minus - Minus math :D
-			enemyCharacter.MovementComponent.MovementVelocity = new Vector3(enemyCharacter.MovementComponent.MovementVelocity.x, downforce, enemyCharacter.MovementComponent.MovementVelocity.z);
-		}
+		if (enemyCharacter == null) return;
+		RequestFlyAway(enemyCharacter);
 	}
 
 	public override void GroundDirectionAttackHit(GameObject hitObj)
@@ -120,6 +125,13 @@ public class SpearWeapon : WeaponBase
 		IDamage damageIterface = hitObj.GetComponent<IDamage>();
 		if (damageIterface == null) return;
 		damageIterface.DoDamage(GameCharacter, 10);
+
+		if (AttackIndex == 2)
+		{
+			GameCharacter enemyCharacter = hitObj.GetComponent<GameCharacter>();
+			if (enemyCharacter == null) return;
+			RequestFlyAway(enemyCharacter);
+		}
 	}
 
 	public override void AirAttackHit(GameObject hitObj)
@@ -127,6 +139,13 @@ public class SpearWeapon : WeaponBase
 		IDamage damageInterface = GetDamageInterface(hitObj);
 		if (damageInterface == null) return;
 		damageInterface.DoDamage(GameCharacter, 10);
+
+		if (AttackIndex == 2)
+		{
+			GameCharacter enemyCharacter = hitObj.GetComponent<GameCharacter>();
+			if (enemyCharacter == null) return;
+			RequestFlyAway(enemyCharacter);
+		}
 	}
 
 	public override void AirUpAttackHit(GameObject hitObj)
@@ -163,6 +182,10 @@ public class SpearWeapon : WeaponBase
 		IDamage damageInterface = GetDamageInterface(hitObj);
 		if (damageInterface == null) return;
 		damageInterface.DoDamage(GameCharacter, 10);
+
+		GameCharacter enemyCharacter = hitObj.GetComponent<GameCharacter>();
+		if (enemyCharacter == null) return;
+		RequestFlyAway(enemyCharacter);
 	}
 
 	void AttackTimerFinished()
@@ -172,6 +195,17 @@ public class SpearWeapon : WeaponBase
 			GameCharacter.CombatComponent.AttackTimer.onTimerFinished -= AttackTimerFinished;
 			if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return;
 			if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks.Count > 0) HoldAttackAfterAttack(CurrentAttackType, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks);
+		}
+		else if (CurrentAttackType == EExplicitAttackType.GroundedUpAttack)
+		{
+			GameCharacter.CombatComponent.AttackTimer.onTimerFinished -= AttackTimerFinished;
+			
+			if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return;
+			if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks.Count > 0) HoldAttackAfterAttack(CurrentAttackType, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundUpAttacks);
+			GameCharacter.HitDetectionEventStart(new AnimationEvent());
+			groundUpAttackMove = true;
+			groundUpTimer.Start(CurrentAttack.extraData.timeValue);
+			groundUpTimer.onTimerFinished += OnGroundUpTimerFinished;
 		}
 	}
 
@@ -218,6 +252,10 @@ public class SpearWeapon : WeaponBase
 		{
 			UpdateAirDownAttack(deltaTime);
 		}
+		else if (CurrentAttackType == EExplicitAttackType.GroundedUpAttack)
+		{
+			UpdateGroundUpAttack(deltaTime);
+		}
 	}
 
 	public override void EndAttackStateLogic()
@@ -237,7 +275,17 @@ public class SpearWeapon : WeaponBase
 		if (!landed && startFalling)
 		{
 			Vector3 velocity = GameCharacter.MovementComponent.MovementVelocity;
-			velocity = new Vector3(velocity.x, velocity.y - yVel, velocity.z);
+			velocity = new Vector3(velocity.x, velocity.y - CurrentAttack.extraData.speedValue, velocity.z);
+			GameCharacter.MovementComponent.MovementVelocity = velocity;
+		}
+	}
+
+	void UpdateGroundUpAttack(float deltaTime)
+	{
+		if (groundUpAttackMove)
+		{
+			groundUpTimer.Update(deltaTime);
+			Vector3 velocity = GameCharacter.transform.forward.normalized * CurrentAttack.extraData.speedValue;
 			GameCharacter.MovementComponent.MovementVelocity = velocity;
 		}
 	}
@@ -245,24 +293,27 @@ public class SpearWeapon : WeaponBase
 	public override void AttackPhaseStart()
 	{
 		base.AttackPhaseEnd();
-		if (CurrentAttackType == EExplicitAttackType.GroundedDirectionalAttack)
-			ThrowSpear();
-		startFalling = true;
+
+		//if (CurrentAttackType == EExplicitAttackType.GroundedDirectionalAttack)
+		//	ThrowSpear();
+
+		if (CurrentAttackType == EExplicitAttackType.AirDownAttack)
+			startFalling = true;
 	}
 
-	void ThrowSpear()
-	{
-		SpawnedWeapon.SetActive(false);
-		GameObject throwSpear = GameObject.Instantiate(GameAssets.Instance.ThrowSpear);
-		throwSpear.transform.position =  new Vector3(SpawnedWeaponBones.transform.position.x, SpawnedWeaponBones.transform.position.y, 0);
-		throwSpear.transform.rotation = Quaternion.LookRotation(GameCharacter.transform.forward.normalized, Vector3.up);
-		throwSpear.transform.eulerAngles = new Vector3(throwSpear.transform.eulerAngles.x, throwSpear.transform.eulerAngles.y, 90f);
-		WeaponProjectile weaponProjectile = throwSpear.GetComponent<WeaponProjectile>();
-		weaponProjectile.onProjectileHit += GroundDirectionAttackHit;
-		weaponProjectile.Initialize(GameCharacter, GameCharacter.transform.forward);
-
-		thrownSpears.Add(throwSpear);
-	}
+	//void ThrowSpear()
+	//{
+	//	SpawnedWeapon.SetActive(false);
+	//	GameObject throwSpear = GameObject.Instantiate(GameAssets.Instance.ThrowSpear);
+	//	throwSpear.transform.position =  new Vector3(SpawnedWeaponBones.transform.position.x, SpawnedWeaponBones.transform.position.y, 0);
+	//	throwSpear.transform.rotation = Quaternion.LookRotation(GameCharacter.transform.forward.normalized, Vector3.up);
+	//	throwSpear.transform.eulerAngles = new Vector3(throwSpear.transform.eulerAngles.x, throwSpear.transform.eulerAngles.y, 90f);
+	//	WeaponProjectile weaponProjectile = throwSpear.GetComponent<WeaponProjectile>();
+	//	weaponProjectile.onProjectileHit += GroundDirectionAttackHit;
+	//	weaponProjectile.Initialize(GameCharacter, GameCharacter.transform.forward);
+	//
+	//	thrownSpears.Add(throwSpear);
+	//}
 
 	public override void DefensiveAction()
 	{
@@ -336,5 +387,23 @@ public class SpearWeapon : WeaponBase
 		SpawnedWeapon.SetActive(true);
 		if (defensiveSpear != null)
 			GameObject.Destroy(defensiveSpear.gameObject);
+	}
+
+	void OnGroundUpTimerFinished()
+	{
+		groundUpTimer.onTimerFinished -= OnGroundUpTimerFinished;
+		if (!groundUpAttackhit)
+		{
+			GroundUpAttackEnd();
+		}
+	}
+
+	void GroundUpAttackEnd()
+	{
+		groundUpAttackhit = true;
+		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return;
+		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks.Count > 0) TriggerAttack(CurrentAttackType, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundUpAttacks);
+		GameCharacter.AnimController.HoldAttack = false;
+		groundUpAttackMove = false;
 	}
 }
