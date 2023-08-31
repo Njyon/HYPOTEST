@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class GameCharacterMoveToPositionState : AGameCharacterState
 {
-	float interpolationSpeed = 10f;
-	float distenceMultiplier = 60f;
+	float interpolationSpeed = 2f;
+	float distenceMultiplier = 10f;
 	bool sideHit = false;
 	public GameCharacterMoveToPositionState(GameCharacterStateMachine stateMachine, GameCharacter gameCharacter) : base (stateMachine, gameCharacter)
 	{ }
@@ -34,7 +34,7 @@ public class GameCharacterMoveToPositionState : AGameCharacterState
 
 	public override void ExecuteState(float deltaTime)
 	{
-		GameCharacter.MovementComponent.MovementVelocity = (GameCharacter.CombatComponent.MoveToPosition - GameCharacter.transform.position).normalized * (interpolationSpeed * (Vector3.Distance(GameCharacter.transform.position, GameCharacter.CombatComponent.MoveToPosition) * distenceMultiplier)) * deltaTime;
+		GameCharacter.MovementComponent.MovementVelocity = (GameCharacter.CombatComponent.MoveToPosition - GameCharacter.transform.position).normalized * (interpolationSpeed * (Vector3.Distance(GameCharacter.transform.position, GameCharacter.CombatComponent.MoveToPosition) * distenceMultiplier));
 		if (Ultra.Utilities.IsNearlyEqual(GameCharacter.transform.position, GameCharacter.CombatComponent.MoveToPosition, 0.4f))
 		{
 			// Arived at Location

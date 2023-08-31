@@ -8,8 +8,8 @@ public class AttackEvent : CharacterEvent
 	public AttackEvent(GameCharacter gameCharacter, EAttackType attackType, float time = 0.2F) : base(gameCharacter, time)
 	{
 		this.attackType = attackType;
-		if (gameCharacter?.StateMachine?.GetCurrentStateType() == EGameCharacterState.Attack || gameCharacter?.StateMachine?.GetCurrentStateType() == EGameCharacterState.AttackRecovery) 
-			this.time = 0.5f;
+		//if (gameCharacter?.StateMachine?.GetCurrentStateType() == EGameCharacterState.Attack || gameCharacter?.StateMachine?.GetCurrentStateType() == EGameCharacterState.AttackRecovery) 
+		//	this.time = 0.5f;
 
 		//Ultra.Utilities.Instance.DebugLogOnScreen("AttackRequested!", 2f, StringColor.Orange, 100, DebugAreas.Combat);
 	}

@@ -511,7 +511,7 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.1
+  m_TransitionDuration: 0.05
   m_TransitionOffset: 0
   m_ExitTime: 0
   m_HasExitTime: 0
@@ -565,7 +565,7 @@ BlendTree:
     m_DirectBlendParameter: WalkRunBlend
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: -1309009702435010125, guid: 85ac04df3b66d8a4ba493502d9e3ce15,
+    m_Motion: {fileID: 6776329306762048357, guid: 50c9e01b537e5774b8391c2fe555f9d7,
       type: 3}
     m_Threshold: 1
     m_Position: {x: 0, y: 1}
@@ -574,7 +574,7 @@ BlendTree:
     m_DirectBlendParameter: WalkRunBlend
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7419199693576350118, guid: 341c22402e8ea694fb2f7ed35dc2428d,
+    m_Motion: {fileID: 4464284224675167389, guid: 33d41a5efd291114b92bd5bbf9df39ca,
       type: 3}
     m_Threshold: 2
     m_Position: {x: 1, y: 0}
@@ -583,7 +583,7 @@ BlendTree:
     m_DirectBlendParameter: WalkRunBlend
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: -7717083798522971530, guid: 556040a8b6a72ce4280b0ed1837a1e49,
+    m_Motion: {fileID: 5480250810905207137, guid: a18d1036c261b6f4cab7adbb45dc8bfa,
       type: 3}
     m_Threshold: 3
     m_Position: {x: 1, y: 1}
@@ -2757,7 +2757,7 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.1
+  m_TransitionDuration: 0.05
   m_TransitionOffset: 0
   m_ExitTime: 0
   m_HasExitTime: 0
@@ -6119,14 +6119,14 @@ AnimatorStateMachine:
   - {fileID: 7782130189828423323}
   - {fileID: 1177517562748411259}
   m_StateMachineTransitions:
-  - first: {fileID: -8111224501868799656}
-    second:
-    - {fileID: 2448250383055443488}
-    - {fileID: -508669196316728468}
   - first: {fileID: 5197202963176412457}
     second:
     - {fileID: 230446846562545517}
     - {fileID: -8673845662308397929}
+  - first: {fileID: -8111224501868799656}
+    second:
+    - {fileID: 2448250383055443488}
+    - {fileID: -508669196316728468}
   - first: {fileID: -1270458086660230412}
     second: []
   m_StateMachineBehaviours: []

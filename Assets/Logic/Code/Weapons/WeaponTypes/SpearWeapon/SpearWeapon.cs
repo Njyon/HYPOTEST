@@ -360,25 +360,32 @@ public class SpearWeapon : WeaponBase
 
 		hitgameCharacter.StateMachine.RequestStateChange(EGameCharacterState.MoveToPosition);
 		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].DefensiveAction.Count > 0) DefensiveActionAimLogic(ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].DefensiveAction, EAnimationType.Trigger);
+		
 	}
 
 	public override void CharacterArrivedAtRequestedLocation(GameCharacter movedCharacter)
 	{
-		AftherDefensiveActionCleanUp();
+		AfterDefensiveActionCleanUp();
 	}
 
 	public override void CharacterMoveToAbort(GameCharacter movedCharacter)
 	{
 
-		AftherDefensiveActionCleanUp();
+		AfterDefensiveActionCleanUp();
 	}
 
 	public override void CharacterMoveToEnd(GameCharacter movedCharacter)
 	{
-		AftherDefensiveActionCleanUp();
+		AfterDefensiveActionCleanUp();
 	}
 
-	private void AftherDefensiveActionCleanUp()
+	public override void DefensiveActionEnd()
+	{
+		base.DefensiveActionEnd();
+		AfterDefensiveActionCleanUp();
+	}
+
+	private void AfterDefensiveActionCleanUp()
 	{
 		GameCharacter.AnimController.InAimBlendTree = false;
 		UnHookAllHookedCharacerts();

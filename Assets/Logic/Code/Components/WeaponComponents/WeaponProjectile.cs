@@ -101,7 +101,7 @@ public class WeaponProjectile : MonoBehaviour
 			{
 				t += Time.deltaTime * 2f;
 				transform.position = Vector3.Lerp(from, toCharacter.MovementComponent.CharacterCenter, t);
-				transform.rotation = Quaternion.LookRotation((toCharacter.MovementComponent.CharacterCenter - transform.position).normalized, Vector3.up);
+				transform.rotation = Quaternion.LookRotation((toCharacter.MovementComponent.CharacterCenter - lineRenderer.GetPosition(1)).normalized, Vector3.up);
 			}
 		}
 	}

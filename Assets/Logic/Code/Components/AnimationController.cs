@@ -640,7 +640,7 @@ public class AnimationController
 
 	public void ApplyBlendTree(AimBlendAnimations anims)
 	{
-		bool isBlendAState = IsInState(inAimBlendTreeAStateIndex);
+		bool isBlendAState = IsInState(inAimBlendTreeAStateIndex, upperBodyLayerIndex);
 		if (isBlendAState)
 		{
 			overrideController["AimBlendSpaceUpB"] = anims.upAnimation;
@@ -675,9 +675,9 @@ public class AnimationController
 		InCombat3BlendStateA = !isBlendAState;
 	}
 
-	private bool IsInState(int stateIndex)
+	private bool IsInState(int stateIndex, int layerIndex = 0)
 	{
-		AnimatorStateInfo animatorState = gameCharacter.Animator.GetCurrentAnimatorStateInfo(0);
+		AnimatorStateInfo animatorState = gameCharacter.Animator.GetCurrentAnimatorStateInfo(layerIndex);
 		bool state = false;
 
 		if (animatorState.shortNameHash == stateIndex) state = true;

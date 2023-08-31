@@ -22,7 +22,9 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	CharacterController unityMovementController;
 	bool isGrounded = false;
 	Vector3 postionLastFrame;
+	Vector3 fixedPostionLastFrame;
 	Vector3 veloctiy;
+	Vector3 fixedVeloctiy;
 	Vector3 movementVelocity;
 	GameCharacter gameCharacter;
 	Vector3 rootmotionVector;
@@ -49,6 +51,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 		set { movementVelocity = value; } 
 	}
 	public Vector3 Velocity { get { return veloctiy; } }
+	public Vector3 FixedVelocity { get { return fixedVeloctiy; } }
 	public float MovementSpeed { get { return Velocity.magnitude; } }
 	public float MaxWalkableSlopAngle { get { return maxWalkableSlopAngle; } }
 	public Vector3 RootmotionVector { get { return rootmotionVector; } }
@@ -136,6 +139,13 @@ public class GameCharacterMovementComponent : MonoBehaviour
 			if (gameCharacter.IsPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen(rootmotionVector.ToString(), 0, StringColor.Teal, 100, DebugAreas.Movement);
 		
 		}
+	}
+
+	private void FixedUpdate()
+	{
+		Vector3 fixedPosition = transform.position;
+		fixedVeloctiy = (fixedPosition - fixedPostionLastFrame) / Time.fixedDeltaTime;
+		fixedPostionLastFrame = fixedPosition;
 	}
 
 	public void SetupGameCharacter(GameCharacter character)

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Mathematics;
 
 public class GameCharacterAimPluginState : AGameCharacterPluginState
 {
@@ -23,6 +24,7 @@ public class GameCharacterAimPluginState : AGameCharacterPluginState
 	public override void Deactive()
 	{
 		base.Deactive();
+		GameCharacter.AnimController.InAimBlendTree = false;
 		GameCharacter.AnimController.SetUpperBodyLayerWeight(0);
 
 	}
@@ -51,7 +53,11 @@ public class GameCharacterAimPluginState : AGameCharacterPluginState
 	public override void ExecuteState(float deltaTime)
 	{
 		if (GameCharacter.CombatComponent.AimCharacter != null)
-			GameCharacter.AnimController.AimBlend = Vector3.Dot(Vector3.down, (GameCharacter.CombatComponent.AimCharacter.transform.position - GameCharacter.transform.position).normalized);
+		{
+			float angle = Vector3.Angle(Vector3.down, (GameCharacter.CombatComponent.AimCharacter.transform.position - GameCharacter.transform.position).normalized);
+			float aimValue = Ultra.Utilities.Remap(angle, 0, 180, 1, -1);
+ 			GameCharacter.AnimController.AimBlend = aimValue;
+		}
 
 	}
 }

@@ -1,10 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Transactions;
-using Unity.VisualScripting;
-using UnityEditor.AnimatedValues;
 using UnityEngine;
 
 public class GameCharacter : MonoBehaviour , IDamage
@@ -175,6 +171,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 		{
 			case EGameCharacterState.Attack: case EGameCharacterState.AttackRecovery:
 			case EGameCharacterState.DefensiveAction: case EGameCharacterState.FlyAway:
+			case EGameCharacterState.MoveToPosition:
 				return;
 			default: break;
 		}

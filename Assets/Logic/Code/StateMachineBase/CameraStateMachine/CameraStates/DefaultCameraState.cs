@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class DefaultCameraState : ACameraState
 {
@@ -32,7 +33,7 @@ public class DefaultCameraState : ACameraState
 
 	public override void FixedExecuteState(float deltaTime)
 	{
-
+	
 	}
 
 	public override void LateExecuteState(float deltaTime)
@@ -46,9 +47,10 @@ public class DefaultCameraState : ACameraState
 		Vector3 targetDirection = CameraController.Targets[0].MovementComponent.Velocity * (CameraController.LookAhead * CameraController.Speed);
 		Ultra.Utilities.DrawArrow(target, targetDirection, 1f, Color.blue);
 
+		Vector3 newTargetLocation = new Vector3(target.x, target.y, CameraController.FinalCameraPosition.z);
+
 		// Move the camera towards the target position and direction
-		Vector3 targetPosition =  Vector3.SmoothDamp(CameraController.FinalCameraPosition, target + targetDirection, ref camerVel, CameraController.Damping) ;
-		targetPosition.z = CameraController.CameraTargetPosition.z;
+		Vector3 targetPosition = newTargetLocation + targetDirection;   // Vector3.SmoothDamp(CameraController.FinalCameraPosition, newTargetLocation + targetDirection, ref camerVel, CameraController.Damping, Mathf.Infinity, Time.deltaTime);
 		Ultra.Utilities.DrawWireSphere(targetPosition, 1, Color.red, 0);
 
 		// Keep the camera within the bounds of the scene
@@ -61,12 +63,12 @@ public class DefaultCameraState : ACameraState
 
 		CameraController.CameraTargetPosition = new Vector3(x, y, CameraController.CameraTargetPosition.z);
 
-		Vector3 xPos = Vector3.SmoothDamp(CameraController.FinalCameraPosition, Vector3.ProjectOnPlane(CameraController.CameraTargetPosition, Vector3.up), ref CameraController.velocityVelx, 1 / CameraController.MoveSpeedx);
-		Vector3 yPos = Vector3.SmoothDamp(CameraController.FinalCameraPosition, Vector3.ProjectOnPlane(CameraController.CameraTargetPosition, Vector3.right), ref CameraController.velocityVely, 1 / CameraController.MoveSpeedy);
-		
+		Vector3 xPos = Vector3.SmoothDamp(CameraController.FinalCameraPosition, Vector3.ProjectOnPlane(CameraController.CameraTargetPosition, Vector3.up), ref CameraController.velocityVelx, 1 / CameraController.MoveSpeedx, Mathf.Infinity, Time.deltaTime);
+		Vector3 yPos = Vector3.SmoothDamp(CameraController.FinalCameraPosition, Vector3.ProjectOnPlane(CameraController.CameraTargetPosition, Vector3.right), ref CameraController.velocityVely, 1 / CameraController.MoveSpeedy, Mathf.Infinity, Time.deltaTime);
+
 		Ultra.Utilities.DrawWireSphere(xPos, 1, Color.cyan, 0);
 		Ultra.Utilities.DrawWireSphere(yPos, 1, Color.magenta, 0);
-		
+
 		x = Mathf.Clamp(xPos.x, xMin, xMax);
 		y = Mathf.Clamp(yPos.y, yMin, yMax);
 

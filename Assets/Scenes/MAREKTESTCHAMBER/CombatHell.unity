@@ -630,6 +630,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5871210591813294166, guid: 86332de1ed30b784793c06564d56c577,
         type: 3}
+      propertyPath: inAirControll
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5871210591813294166, guid: 86332de1ed30b784793c06564d56c577,
+        type: 3}
+      propertyPath: movmentGravity
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 5871210591813294166, guid: 86332de1ed30b784793c06564d56c577,
+        type: 3}
       propertyPath: weapons.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -1247,8 +1257,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   offset: {x: 0, y: 2, z: -10}
   StateToStateInterpolationSpeed: 5
-  moveSpeedx: 5
-  moveSpeedy: 2
+  moveSpeedx: 3
+  moveSpeedy: 1.5
   lookAhead: 1
   speed: 1
   damping: 0.04

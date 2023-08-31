@@ -37,14 +37,14 @@ public class GameCharacterFlyAwayState : AGameCharacterState
 
 		// MaybeAir Speed?
 		float maxSpeed = GameCharacter.GameCharacterData.MaxMovementSpeed * 2;
-		Vector3 inputDir = velocity;
-		Vector3 targetVelocity = inputDir.normalized * (maxSpeed / 2);
+		Vector3 targetVelocity = velocity.normalized * (maxSpeed / 2);
 		Vector3 velocityDiff = (targetVelocity - velocity);
-		Vector3 acceleration = velocityDiff * slowDown;
+		Vector3 acceleration = velocityDiff * slowDown * deltaTime;
 		velocity.x += acceleration.x;
 
 
 		velocity = new Vector3(velocity.x, velocity.y, GameCharacter.MovementComponent.MovementVelocity.z);
+
 		//Ultra.Utilities.DrawArrow(GameCharacter.MovementComponent.CharacterCenter, velocity.normalized, 1f, Color.red, 10f, 100, DebugAreas.Combat);
 		GameCharacter.MovementComponent.MovementVelocity = velocity;
 

@@ -45,6 +45,8 @@ MonoBehaviour:
       flyAwayDirection: {x: 0, y: 0, z: 0}
       flyAwayStrengh: 0
       rangeValue: 0
+      speedValue: 0
+      timeValue: 0
       flyAwayTime: 1
       freezTime: 1
   - clip: {fileID: 6779268952688790718, guid: 188767a2950ced040bf42bb5d36865b7, type: 3}
@@ -79,6 +81,8 @@ MonoBehaviour:
       flyAwayDirection: {x: 0, y: 0, z: 0}
       flyAwayStrengh: 0
       rangeValue: 0
+      speedValue: 0
+      timeValue: 0
       flyAwayTime: 1
       freezTime: 1
   - clip: {fileID: 9200174377881703865, guid: 797c4e3506e779c4aa88dc230d85ff97, type: 3}
@@ -113,6 +117,8 @@ MonoBehaviour:
       flyAwayDirection: {x: 0, y: 0, z: 30}
       flyAwayStrengh: 15
       rangeValue: 0
+      speedValue: 0
+      timeValue: 0
       flyAwayTime: 0.5
       freezTime: 1
   GroundUpAttacks:
@@ -148,6 +154,8 @@ MonoBehaviour:
       flyAwayDirection: {x: 0, y: 0, z: 0}
       flyAwayStrengh: 0
       rangeValue: 0
+      speedValue: 0
+      timeValue: 0
       flyAwayTime: 1
       freezTime: 1
   GroundDownAttacks: []
@@ -184,6 +192,8 @@ MonoBehaviour:
       flyAwayDirection: {x: 0, y: 0, z: 45}
       flyAwayStrengh: 20
       rangeValue: 0
+      speedValue: 0
+      timeValue: 0
       flyAwayTime: 1
       freezTime: 1
   AirAttacks:
@@ -219,6 +229,8 @@ MonoBehaviour:
       flyAwayDirection: {x: 0, y: 0, z: 0}
       flyAwayStrengh: 0
       rangeValue: 0
+      speedValue: 0
+      timeValue: 0
       flyAwayTime: 1
       freezTime: 1
   - clip: {fileID: 4783459395969580578, guid: bc07ec1c4cbfa4343bcc99f145b51207, type: 3}
@@ -253,6 +265,8 @@ MonoBehaviour:
       flyAwayDirection: {x: 0, y: 0, z: 0}
       flyAwayStrengh: 0
       rangeValue: 0
+      speedValue: 0
+      timeValue: 0
       flyAwayTime: 1
       freezTime: 1
   - clip: {fileID: 2938286237668451413, guid: 119509c8c5b25604387a070f1bf88446, type: 3}
@@ -284,10 +298,12 @@ MonoBehaviour:
     extraData:
       maxVerticalMovement: 0
       maxHorizontalMovement: 0
-      flyAwayDirection: {x: 0, y: 0, z: -10}
-      flyAwayStrengh: 50
+      flyAwayDirection: {x: 0, y: 0, z: -30}
+      flyAwayStrengh: 20
       rangeValue: 0
-      flyAwayTime: 1
+      speedValue: 0
+      timeValue: 0
+      flyAwayTime: 0.6
       freezTime: 1
   AirUpAttacks:
   - clip: {fileID: 4809141571418458547, guid: 2abaf50464518db4c9a74b0c9ceaff5d, type: 3}
@@ -322,6 +338,8 @@ MonoBehaviour:
       flyAwayDirection: {x: 0, y: 0, z: 85}
       flyAwayStrengh: 20
       rangeValue: 0
+      speedValue: 0
+      timeValue: 0
       flyAwayTime: 1
       freezTime: 1
   AirDownAttacks:
@@ -364,6 +382,8 @@ MonoBehaviour:
       flyAwayDirection: {x: 0, y: 0, z: 90}
       flyAwayStrengh: 5
       rangeValue: 0
+      speedValue: 0
+      timeValue: 0
       flyAwayTime: 0.2
       freezTime: 1
   AirDirectionAttacks:
@@ -399,6 +419,8 @@ MonoBehaviour:
       flyAwayDirection: {x: 0, y: 0, z: -90}
       flyAwayStrengh: 30
       rangeValue: 0
+      speedValue: 0
+      timeValue: 0
       flyAwayTime: 1
       freezTime: 1
   DefensiveAction:
@@ -434,6 +456,8 @@ MonoBehaviour:
       flyAwayDirection: {x: 0, y: 0, z: 0}
       flyAwayStrengh: 0
       rangeValue: 10
+      speedValue: 0
+      timeValue: 0
       flyAwayTime: 1
       freezTime: 1
   HandType: 0
