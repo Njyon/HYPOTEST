@@ -45,47 +45,53 @@ public class SpearWeapon : WeaponBase
         base.UpdateWeapon(deltaTime);
     }
 
-    public override void GroundAttack()   
+    public override AttackAnimationData GroundAttack()   
     {
-      	base.GroundAttack();
+      	return base.GroundAttack();
     }
-    public override void GroundUpAttack()    
+    public override AttackAnimationData GroundUpAttack()    
     {
-        base.GroundUpAttack();
+		AttackAnimationData returnData = null;
+
+		returnData = base.GroundUpAttack();
 		GameCharacter.CombatComponent.AttackTimer.onTimerFinished += AttackTimerFinished;
 		groundUpAttackhit = false;
 		groundUpAttackMove = false;
 
+		return returnData;
 	}
-    public override void GroundDownAttack()  
+    public override AttackAnimationData GroundDownAttack()  
     {
-        base.GroundDownAttack();
+        return base.GroundDownAttack();
     }
-    public override void GroundDirectionAttack()   
+    public override AttackAnimationData GroundDirectionAttack()   
     {
-        base.GroundDirectionAttack();
+        return base.GroundDirectionAttack();
     }
 
-    public override void AirAttack()  
+    public override AttackAnimationData AirAttack()  
     {
-        base.AirAttack();
+        return base.AirAttack();
     }
-    public override void AirUpAttack()
+    public override AttackAnimationData AirUpAttack()
     {
-        base.AirUpAttack();
+        return base.AirUpAttack();
     }
-    public override void AirDownAttack()  
+    public override AttackAnimationData AirDownAttack()  
     {
-        base.AirDownAttack();
+		AttackAnimationData returnData = null;
+
+		returnData = base.AirDownAttack();
 		GameCharacter.CombatComponent.AttackTimer.onTimerFinished += AttackTimerFinished;
 		GameCharacter.MovementComponent.onMoveCollisionFlag += OnMoveCollisionFlag;
 		landed = false;
 		startFalling = false;
 
+		return returnData;
 	}
-    public override void AirDirectionAttack() 
+    public override AttackAnimationData AirDirectionAttack() 
     {
-        base.AirDirectionAttack();
+        return base.AirDirectionAttack();
 		//GameCharacter.MovementComponent.MoveThroughCharacterLayer();
 		//GameCharacter.CharacterHeightTarget = GameCharacter.CharacterHeightTarget / 2;
 	}
@@ -315,14 +321,15 @@ public class SpearWeapon : WeaponBase
 	//	thrownSpears.Add(throwSpear);
 	//}
 
-	public override void DefensiveAction()
+	public override AttackAnimationData DefensiveAction()
 	{
-		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return;
-		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].DefensiveAction.Count > 0) DefensiveActionAimLogic(ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].DefensiveAction, EAnimationType.Default);
+		AttackAnimationData returnData = null;
+		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return null;
+		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].DefensiveAction.Count > 0) returnData = DefensiveActionAimLogic(ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].DefensiveAction, EAnimationType.Default);
 
 
 		GameCharacter targetEnemy = Ultra.HypoUttilies.FindCharactereNearestToDirection(GameCharacter.MovementComponent.CharacterCenter, (GameCharacter.MovementInput.magnitude <= 0) ? GameCharacter.transform.forward : GameCharacter.MovementInput, ref GameCharacter.CharacterDetection.OverlappingGameCharacter);
-		if (targetEnemy == null) return;
+		if (targetEnemy == null) return null;
 
 
 		SpawnedWeapon.SetActive(false);
@@ -340,6 +347,8 @@ public class SpearWeapon : WeaponBase
 		defensiveSpear = throwSpear.GetComponent<WeaponProjectile>();
 		defensiveSpear.onProjectileHit += DefensiveActionHit;
 		defensiveSpear.Initialize(GameCharacter, throwSpear.transform.position, targetEnemy);
+
+		return returnData;
 	}
 
 	void DefensiveActionHit(GameObject hitObj)

@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
-using Unity.VisualScripting;
 using UnityEngine;
 using System.Linq;
 
@@ -37,6 +36,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	bool useGravity = true;
 	float movementOverrideTime;
 	Vector3 movementOverride;
+	float variableGravityMultiplierOverTime = 1;
 
 	CapsuleCollider capsuleCollider;
 	public CapsuleCollider CapsuleCollider { get { return capsuleCollider; } }
@@ -63,6 +63,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	public bool UseGravity { get { return useGravity; } set { useGravity = value; } }
 	public float MovementOverrideTime { get { return movementOverrideTime; } set { movementOverrideTime = value; } }
 	public Vector3 MovementOverride { get { return movementOverride; } set { movementOverride = value; } }
+	public float VariableGravityMultiplierOverTime { get { return variableGravityMultiplierOverTime; } set { variableGravityMultiplierOverTime = value; } }
 	public bool IsInJump
 	{
 		get { return isInJump; }
@@ -327,7 +328,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 
 	public float CalculateGravity()
 	{
-		return ((MovementVelocity.y > 0) ? gameCharacter.GameCharacterData.MovmentGravity * gameCharacter.GameCharacterData.GravityMultiplier : gameCharacter.GameCharacterData.MovmentGravity) * Time.deltaTime;
+		return ((MovementVelocity.y > 0) ? gameCharacter.GameCharacterData.MovmentGravity * gameCharacter.GameCharacterData.GravityMultiplier : gameCharacter.GameCharacterData.MovmentGravity * VariableGravityMultiplierOverTime) * Time.deltaTime;
 	}
 
 	public void CheckIfCharacterIsGrounded()
@@ -479,6 +480,25 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	public bool CanMovementOverride()
 	{
 		return true;
+	}
+
+	public void InterpGravityUp(float time = 1f)
+	{
+		StopCoroutine(InterpGravity(time));
+		StartCoroutine(InterpGravity(time));
+	}
+
+	IEnumerator InterpGravity(float time)
+	{
+		variableGravityMultiplierOverTime = 0f;
+		float currentTime = 0f;
+		while (currentTime < time)
+		{
+			yield return new WaitForEndOfFrame();
+			currentTime += Time.deltaTime;
+			float value = Ultra.Utilities.Remap(currentTime, 0f, time, 0f, 1f);
+			variableGravityMultiplierOverTime = gameCharacter.GameCharacterData.GravityInterpCurve.Evaluate(value);
+		}
 	}
 
 	IEnumerator IsJumping()

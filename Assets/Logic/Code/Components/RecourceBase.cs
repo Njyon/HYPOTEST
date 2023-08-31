@@ -68,7 +68,7 @@ public class RecourceBase
 	public bool ValueChangePerSecondTimerRunning { get { return valueChangePerSecondTimer.IsRunning; } }
 
 
-	public RecourceBase(float startValue, float maxValue, float minValue = 0, float defaultValueChangePerSecond = 0)
+	public RecourceBase(float startValue, float maxValue = Mathf.Infinity, float minValue = 0, float defaultValueChangePerSecond = 0)
 	{
 		CurrentValue = startValue;
 		MaxValue = maxValue;
@@ -91,7 +91,7 @@ public class RecourceBase
 
 	public virtual void Update(float deltaTime)
 	{
-		CurrentValue = Mathf.Clamp(CurrentValue + ValueChangePerSecond * deltaTime, MinValue, MaxValue);
+		CurrentValue = Mathf.Clamp(CurrentValue + (ValueChangePerSecond * deltaTime), MinValue, MaxValue);
 		
 		if (maxValueTimer.IsRunning)
 		{

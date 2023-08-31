@@ -26,17 +26,23 @@ public class GameCharacterAttackRecoveryState : AGameCharacterState
 			case EGameCharacterState.PullCharacterOnHorizontalLevel: return EGameCharacterState.PullCharacterOnHorizontalLevel;
 			case EGameCharacterState.DefensiveAction: return EGameCharacterState.DefensiveAction;
 			case EGameCharacterState.FlyAway: return EGameCharacterState.FlyAway;
+			case EGameCharacterState.InAir: return EGameCharacterState.InAir;
 			default: break;
 		}
 
-		if (GameCharacter.MovementComponent.IsInJump)
-			return EGameCharacterState.InAir;
-
-		if (GameCharacter.GetHorizontalMovementInputDir().magnitude > 0)
-			return EGameCharacterState.Moving;
-
 		if (GameCharacter.CombatComponent.AttackTimer.IsFinished)
-			return EGameCharacterState.Standing;
+		{
+			return GameCharacter.GetBestCharacterState();
+		}
+
+		//if (GameCharacter.MovementComponent.IsInJump)
+		//	return EGameCharacterState.InAir;
+		//
+		//if (GameCharacter.GetHorizontalMovementInputDir().magnitude > 0)
+		//	return EGameCharacterState.Moving;
+		//
+		//if (GameCharacter.CombatComponent.AttackTimer.IsFinished)
+		//	return EGameCharacterState.Standing;
 
 		return GetStateType();
 	}
@@ -64,5 +70,6 @@ public class GameCharacterAttackRecoveryState : AGameCharacterState
 		GameCharacter.AnimController.InDefensiveAction = false;
 		GameCharacter.AnimController.InterpSecondaryMotionLayerWeight(1, 10f);
 		GameCharacter.CombatComponent.CurrentWeapon.AttackRecoveryEnd();
+		GameCharacter.AnimController.BlockRotation = false;
 	}
 }

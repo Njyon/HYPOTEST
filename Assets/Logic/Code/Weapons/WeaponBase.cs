@@ -256,58 +256,59 @@ public abstract class WeaponBase
 		}
 	}
 
-	public virtual void GroundAttack()
+	public virtual AttackAnimationData GroundAttack()
 	{
-		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return;
-		BaseAttackLogic(EExplicitAttackType.GroundedDefaultAttack, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundAttacks);
+		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return null;
+		return BaseAttackLogic(EExplicitAttackType.GroundedDefaultAttack, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundAttacks);
 	}
-	public virtual void GroundUpAttack()
+	public virtual AttackAnimationData GroundUpAttack()
 	{
-		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return;
-		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundUpAttacks.Count > 0) BaseAttackLogic(EExplicitAttackType.GroundedUpAttack, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundUpAttacks);
-		else GroundAttack();
+		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return null;
+		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundUpAttacks.Count > 0) return BaseAttackLogic(EExplicitAttackType.GroundedUpAttack, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundUpAttacks);
+		else return GroundAttack();
 	}
-    public virtual void GroundDownAttack()
+    public virtual AttackAnimationData GroundDownAttack()
 	{
-		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return;
-		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundDownAttacks.Count > 0) BaseAttackLogic(EExplicitAttackType.GroundedDownAttack, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundDownAttacks);
-		else GroundAttack();
+		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return null;
+		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundDownAttacks.Count > 0) return BaseAttackLogic(EExplicitAttackType.GroundedDownAttack, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundDownAttacks);
+		else return GroundAttack();
 	}
-    public virtual void GroundDirectionAttack()
+    public virtual AttackAnimationData GroundDirectionAttack()
 	{
-		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return;
-		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundDirectionAttacks.Count > 0) BaseAttackLogic(EExplicitAttackType.GroundedDirectionalAttack, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundDirectionAttacks);
-		else GroundAttack();
-	}
-
-    public virtual void AirAttack()
-	{
-		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return;
-		BaseAttackLogic(EExplicitAttackType.AirDefaultAttack, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirAttacks);
-	}
-    public virtual void AirUpAttack()
-	{
-		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return;
-		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirUpAttacks.Count > 0) BaseAttackLogic(EExplicitAttackType.AirUpAttack, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirUpAttacks);
-		else AirAttack();
-	}
-    public virtual void AirDownAttack()
-	{
-		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return;
-		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks.Count > 0) BaseAttackLogic(EExplicitAttackType.AirDownAttack, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks);
-		else AirAttack();
-	}
-    public virtual void AirDirectionAttack()
-	{
-		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return;
-		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDirectionAttacks.Count > 0) BaseAttackLogic(EExplicitAttackType.AirDirectionalAttack, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDirectionAttacks);
-		else AirAttack();
+		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return null;
+		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundDirectionAttacks.Count > 0) return BaseAttackLogic(EExplicitAttackType.GroundedDirectionalAttack, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundDirectionAttacks);
+		else return GroundAttack();
 	}
 
-	public virtual void DefensiveAction()
+    public virtual AttackAnimationData AirAttack()
 	{
-		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return;
-		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].DefensiveAction.Count > 0) DefensiceActionLogic(ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].DefensiveAction);
+		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return null;
+		return BaseAttackLogic(EExplicitAttackType.AirDefaultAttack, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirAttacks);
+	}
+    public virtual AttackAnimationData AirUpAttack()
+	{
+		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return null;
+		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirUpAttacks.Count > 0) return BaseAttackLogic(EExplicitAttackType.AirUpAttack, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirUpAttacks);
+		else return AirAttack();
+	}
+    public virtual AttackAnimationData AirDownAttack()
+	{
+		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return null;
+		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks.Count > 0) return BaseAttackLogic(EExplicitAttackType.AirDownAttack, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks);
+		else return AirAttack();
+	}
+    public virtual AttackAnimationData AirDirectionAttack()
+	{
+		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return null;
+		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDirectionAttacks.Count > 0) return BaseAttackLogic(EExplicitAttackType.AirDirectionalAttack, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDirectionAttacks);
+		else return AirAttack();
+	}
+
+	public virtual AttackAnimationData DefensiveAction()
+	{
+		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return null;
+		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].DefensiveAction.Count > 0) return DefensiceActionLogic(ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].DefensiveAction);
+		return null;
 	}
 
 	public virtual void GroundAttackHit(GameObject hitObj)
@@ -385,58 +386,67 @@ public abstract class WeaponBase
 		currentDefensiveAction = defensiveList[defensiveActionIndex];
 	}
 
-	protected void BaseAttackLogic(EExplicitAttackType explicitAttackType, ref List<AttackAnimationData> attackList)
+	protected AttackAnimationData BaseAttackLogic(EExplicitAttackType explicitAttackType, ref List<AttackAnimationData> attackList)
 	{
 		GetAnimation(explicitAttackType, ref attackList);
 		if (currentAttack == null || currentAttack.clip == null)
 		{
 			Ultra.Utilities.Instance.DebugLogOnScreen("AttackClip was null!", 5f, StringColor.Red, 100, DebugAreas.Combat);
 			Debug.Log(Ultra.Utilities.Instance.DebugErrorString("WeaponBase", "BaseAttackLogic", "AttackClip was null!"));
-			return;
+			return null;
 		}
 		gameCharacter.AnimController.Attack(currentAttack.clip);
 		gameCharacter.StateMachine.RequestStateChange(EGameCharacterState.Attack);
 		attackAnimType = EAttackAnimType.Default;
+
+		return currentAttack;
 		
 		
 	}
-	protected void Attack3BlendLogic(EExplicitAttackType explicitAttackType, ref List<AttackAnimationData> attackList, EAnimationType animType)
+	protected AttackAnimationData Attack3BlendLogic(EExplicitAttackType explicitAttackType, ref List<AttackAnimationData> attackList, EAnimationType animType)
 	{
 		GetAnimation(explicitAttackType, ref attackList);
 		Attack3BlendSpace(ref attackList, animType);
 		gameCharacter.StateMachine.RequestStateChange(EGameCharacterState.Attack);
 		attackAnimType = EAttackAnimType.Combat3Blend;
+
+		return currentAttack;
 	}
-	protected void AttackAimLogic(EExplicitAttackType explicitAttackType, ref List<AttackAnimationData> attackList, EAnimationType animType)
+	protected AttackAnimationData AttackAimLogic(EExplicitAttackType explicitAttackType, ref List<AttackAnimationData> attackList, EAnimationType animType)
 	{
 		GetAnimation(explicitAttackType, ref attackList);
 		AimBlendSpace(ref attackList, animType); 
 		gameCharacter.PluginStateMachine.AddPluginState(EPluginCharacterState.Aim);
 		attackAnimType = EAttackAnimType.AimBlendSpace;
+
+		return currentAttack;
 	}
 
-	protected void DefensiceActionLogic(ref List<AttackAnimationData> defensiveList)
+	protected AttackAnimationData DefensiceActionLogic(ref List<AttackAnimationData> defensiveList)
 	{
 		GetDefensiveAnimation(ref defensiveList);
 		if (currentDefensiveAction == null || currentDefensiveAction.clip == null)
 		{
 			Ultra.Utilities.Instance.DebugLogOnScreen("DefensiveActionClip was null!", 5f, StringColor.Red, 100, DebugAreas.Combat);
 			Debug.Log(Ultra.Utilities.Instance.DebugErrorString("WeaponBase", "DefensiceActionLogic", "DefensiveActionClip was null!"));
-			return;
+			return null;
 		}
 		gameCharacter.AnimController.SetDefensiveAction(currentDefensiveAction.clip);
 		gameCharacter.StateMachine.RequestStateChange(EGameCharacterState.DefensiveAction);
 		attackAnimType = EAttackAnimType.Default;
-		
+
+		return currentDefensiveAction;
 	}
 
-	protected void DefensiveActionAimLogic(ref List<AttackAnimationData> defensiveList, EAnimationType animType)
+	protected AttackAnimationData DefensiveActionAimLogic(ref List<AttackAnimationData> defensiveList, EAnimationType animType)
 	{
 		GetDefensiveAnimation(ref defensiveList);
 		AimBlendSpace(ref defensiveList, animType);
 		gameCharacter.PluginStateMachine.AddPluginState(EPluginCharacterState.Aim);
 		gameCharacter.StateMachine.RequestStateChange(EGameCharacterState.DefensiveAction);
 		attackAnimType = EAttackAnimType.AimBlendSpace;
+
+		return currentDefensiveAction;
 	}
 
 	protected void AimBlendSpace(ref List<AttackAnimationData> defensiveList, EAnimationType animType)

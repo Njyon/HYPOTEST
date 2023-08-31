@@ -27,7 +27,8 @@ public class GameCharacterDefensiveActionState : AGameCharacterState
 				GameCharacter.CombatComponent.DefensiveTimer.Start(GameCharacter.CombatComponent.CurrentWeapon.CurrentDefensiveAction.clip.length);
 				break;
 		}
-		GameCharacter.MovementComponent.UseGravity = false;
+		//GameCharacter.MovementComponent.UseGravity = false;
+		GameCharacter.MovementComponent.VariableGravityMultiplierOverTime = GameCharacter.GameCharacterData.GravityMultiplierInAttack;
 		GameCharacter.AnimController.BlockRotation = true;
 
 		GameCharacter.AnimController.InterpSecondaryMotionLayerWeight(0, 10f);
@@ -97,7 +98,8 @@ public class GameCharacterDefensiveActionState : AGameCharacterState
 
 	public override void EndState(EGameCharacterState newState)
 	{
-		GameCharacter.MovementComponent.UseGravity = true;
+		//GameCharacter.MovementComponent.UseGravity = true;
+		GameCharacter.MovementComponent.InterpGravityUp();
 		GameCharacter.AnimController.BlockRotation = false;
 		GameCharacter.AnimController.InDefensiveAction = false;
 		GameCharacter.LastDir = new Vector3(GameCharacter.transform.forward.x, 0, 0);

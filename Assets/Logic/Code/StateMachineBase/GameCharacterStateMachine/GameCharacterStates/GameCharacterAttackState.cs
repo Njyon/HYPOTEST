@@ -37,7 +37,8 @@ public class GameCharacterAttackState : AGameCharacterState
 				GameCharacter.CombatComponent.AttackTimer.Start(GameCharacter.CombatComponent.CurrentWeapon.CurrentAttack.clip.length); 
 				break;
 		}
-		GameCharacter.MovementComponent.UseGravity = false;
+		//GameCharacter.MovementComponent.UseGravity = false;
+		GameCharacter.MovementComponent.VariableGravityMultiplierOverTime = GameCharacter.GameCharacterData.GravityMultiplierInAttack;
 		GameCharacter.AnimController.InterpSecondaryMotionLayerWeight(0, 10f);
 		initYVelocity = GameCharacter.MovementComponent.MovementVelocity.y;
 		initXVelocity = GameCharacter.MovementComponent.MovementVelocity.x;
@@ -112,8 +113,8 @@ public class GameCharacterAttackState : AGameCharacterState
 
 	public override void EndState(EGameCharacterState newState)
 	{
-		GameCharacter.MovementComponent.UseGravity = true;
-		GameCharacter.AnimController.BlockRotation = false;
+		//GameCharacter.MovementComponent.UseGravity = true;
+		GameCharacter.MovementComponent.InterpGravityUp();
 		GameCharacter.transform.rotation = newDir;
 		GameCharacter.LastDir = new Vector3(GameCharacter.transform.forward.x, 0, 0); 
 		GameCharacter.CombatComponent.CurrentWeapon.EndAttackStateLogic();

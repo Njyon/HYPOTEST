@@ -23,39 +23,44 @@ public class #SCRIPTNAME# : WeaponBase
         base.UpdateWeapon(deltaTime);
     }
 
-    public override void GroundAttack()   
-    {
-      	base.GroundAttack();
-    }
-    public override void GroundUpAttack()    
-    {
-        base.GroundUpAttack();
-    }
-    public override void GroundDownAttack()  
-    {
-        base.GroundDownAttack();
-    }
-    public override void GroundDirectionAttack()   
-    {
-        base.GroundDirectionAttack();
-    }
+    	public override AttackAnimationData GroundAttack()
+	{
+		return base.GroundAttack();
+	}
+	public override AttackAnimationData GroundUpAttack()
+	{
+		return base.GroundUpAttack();
+	}
+	public override AttackAnimationData GroundDownAttack()
+	{
+		return base.GroundDownAttack();
+	}
+	public override AttackAnimationData GroundDirectionAttack()
+	{
+		return base.GroundDirectionAttack();
+	}
 
-    public override void AirAttack()  
-    {
-        base.AirAttack();
-    }
-    public override void AirUpAttack()
-    {
-        base.AirUpAttack();
-    }
-    public override void AirDownAttack()  
-    {
-        base.AirDownAttack();
-    }
-    public override void AirDirectionAttack() 
-    {
-        base.AirDirectionAttack();
-    }
+	public override AttackAnimationData AirAttack()
+	{
+		return base.AirAttack();
+	}
+	public override AttackAnimationData AirUpAttack()
+	{
+		return base.AirUpAttack();
+	}
+	public override AttackAnimationData AirDownAttack()
+	{
+		return base.AirDownAttack();
+	}
+	public override AttackAnimationData AirDirectionAttack()
+	{
+		return base.AirDirectionAttack();
+	}
+
+	public override AttackAnimationData DefensiveAction()
+	{
+		return base.DefensiveAction();
+	}
 
     public override void GroundAttackHit(GameObject hitObj)
 	{

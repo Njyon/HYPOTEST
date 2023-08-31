@@ -145,15 +145,6 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""ScrollThrouhWeapos"",
-                    ""type"": ""Button"",
-                    ""id"": ""b696ed97-65f5-438a-8819-97285c6f7056"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Attack"",
                     ""type"": ""Button"",
                     ""id"": ""2e62b461-2beb-4455-a316-8afc8efd29bb"",
@@ -276,6 +267,39 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
+                    ""name"": ""UpDownStick"",
+                    ""id"": ""da1adcff-c3a2-41f6-b2a0-d9f243237b55"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""VerticalInput"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""bc545567-6afc-4103-a0dc-7aa2277eeece"",
+                    ""path"": ""<XInputController>/leftStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""VerticalInput"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""f496508e-84d3-44e6-8de4-2e6648840515"",
+                    ""path"": ""<XInputController>/leftStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""VerticalInput"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
                     ""name"": ""AD Axis"",
                     ""id"": ""0adb8c97-dbec-47f7-b2dc-9248fc5de7ff"",
                     ""path"": ""1DAxis"",
@@ -392,6 +416,17 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8924d310-c2e3-4409-98c8-4a45e203bf46"",
+                    ""path"": ""<XInputController>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -552,6 +587,39 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""52a6c813-ac4d-42c6-b46d-09bd14286433"",
+                    ""path"": ""<Keyboard>/v"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""NextWeapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2ec75de8-ada1-46dc-b84c-de869059a24a"",
+                    ""path"": ""<Keyboard>/leftCtrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""NextWeapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""78d793ce-c359-4bf5-aa5a-debf047e6209"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""NextWeapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""799a4d71-587d-4439-945b-3bd38ee83f49"",
                     ""path"": ""<Mouse>/forwardButton"",
                     ""interactions"": """",
@@ -562,37 +630,26 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""MouseScroll"",
-                    ""id"": ""95550388-efcc-43b0-9bf2-a92106508280"",
-                    ""path"": ""1DAxis"",
+                    ""name"": """",
+                    ""id"": ""d493a0e2-c879-4bf4-83e3-21415dd67b82"",
+                    ""path"": ""<Keyboard>/c"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ScrollThrouhWeapos"",
-                    ""isComposite"": true,
+                    ""action"": ""PreviousWeapon"",
+                    ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""negative"",
-                    ""id"": ""aab813b9-93a3-4127-87b4-c28cada27d23"",
-                    ""path"": ""<Mouse>/scroll/down"",
+                    ""name"": """",
+                    ""id"": ""a8ad02ea-4f3a-4f55-97f6-6dd90660eea6"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard and Mouse"",
-                    ""action"": ""ScrollThrouhWeapos"",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""PreviousWeapon"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""positive"",
-                    ""id"": ""75ad7532-a21d-4df7-b117-433b1315be8c"",
-                    ""path"": ""<Mouse>/scroll/up"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard and Mouse"",
-                    ""action"": ""ScrollThrouhWeapos"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
+                    ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
@@ -608,7 +665,7 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""d2a20418-0070-4ed1-b298-cb8e4f2a6b9b"",
-                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""path"": ""<XInputController>/buttonWest"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
@@ -728,11 +785,33 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""41e237fd-15ff-4552-a915-a8c070b28183"",
+                    ""path"": ""<XInputController>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""HeavyAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""4f50c60d-5f5e-4137-bb13-f8a4035d695a"",
                     ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""DefensiveAction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a9be2f8a-69f8-474b-8544-5607b7ef0142"",
+                    ""path"": ""<XInputController>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""DefensiveAction"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -785,7 +864,6 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         m_Default_WeaponFour = m_Default.FindAction("WeaponFour", throwIfNotFound: true);
         m_Default_NextWeapon = m_Default.FindAction("NextWeapon", throwIfNotFound: true);
         m_Default_PreviousWeapon = m_Default.FindAction("PreviousWeapon", throwIfNotFound: true);
-        m_Default_ScrollThrouhWeapos = m_Default.FindAction("ScrollThrouhWeapos", throwIfNotFound: true);
         m_Default_Attack = m_Default.FindAction("Attack", throwIfNotFound: true);
         m_Default_HeavyAttack = m_Default.FindAction("HeavyAttack", throwIfNotFound: true);
         m_Default_DefensiveAction = m_Default.FindAction("DefensiveAction", throwIfNotFound: true);
@@ -864,7 +942,6 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     private readonly InputAction m_Default_WeaponFour;
     private readonly InputAction m_Default_NextWeapon;
     private readonly InputAction m_Default_PreviousWeapon;
-    private readonly InputAction m_Default_ScrollThrouhWeapos;
     private readonly InputAction m_Default_Attack;
     private readonly InputAction m_Default_HeavyAttack;
     private readonly InputAction m_Default_DefensiveAction;
@@ -888,7 +965,6 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         public InputAction @WeaponFour => m_Wrapper.m_Default_WeaponFour;
         public InputAction @NextWeapon => m_Wrapper.m_Default_NextWeapon;
         public InputAction @PreviousWeapon => m_Wrapper.m_Default_PreviousWeapon;
-        public InputAction @ScrollThrouhWeapos => m_Wrapper.m_Default_ScrollThrouhWeapos;
         public InputAction @Attack => m_Wrapper.m_Default_Attack;
         public InputAction @HeavyAttack => m_Wrapper.m_Default_HeavyAttack;
         public InputAction @DefensiveAction => m_Wrapper.m_Default_DefensiveAction;
@@ -943,9 +1019,6 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @PreviousWeapon.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnPreviousWeapon;
                 @PreviousWeapon.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnPreviousWeapon;
                 @PreviousWeapon.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnPreviousWeapon;
-                @ScrollThrouhWeapos.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnScrollThrouhWeapos;
-                @ScrollThrouhWeapos.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnScrollThrouhWeapos;
-                @ScrollThrouhWeapos.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnScrollThrouhWeapos;
                 @Attack.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnAttack;
                 @Attack.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnAttack;
                 @Attack.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnAttack;
@@ -1007,9 +1080,6 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @PreviousWeapon.started += instance.OnPreviousWeapon;
                 @PreviousWeapon.performed += instance.OnPreviousWeapon;
                 @PreviousWeapon.canceled += instance.OnPreviousWeapon;
-                @ScrollThrouhWeapos.started += instance.OnScrollThrouhWeapos;
-                @ScrollThrouhWeapos.performed += instance.OnScrollThrouhWeapos;
-                @ScrollThrouhWeapos.canceled += instance.OnScrollThrouhWeapos;
                 @Attack.started += instance.OnAttack;
                 @Attack.performed += instance.OnAttack;
                 @Attack.canceled += instance.OnAttack;
@@ -1065,7 +1135,6 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         void OnWeaponFour(InputAction.CallbackContext context);
         void OnNextWeapon(InputAction.CallbackContext context);
         void OnPreviousWeapon(InputAction.CallbackContext context);
-        void OnScrollThrouhWeapos(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
         void OnHeavyAttack(InputAction.CallbackContext context);
         void OnDefensiveAction(InputAction.CallbackContext context);

@@ -63,7 +63,7 @@ public class PlayerController : ControllerBase
 		playerInputs.Default.WeaponFour.performed += ctx => EquipWeaponFour();
 		playerInputs.Default.NextWeapon.performed += ctx => EquipNextWeapon();
 		playerInputs.Default.PreviousWeapon.performed += ctx => EquipPreviousWeapon();
-		playerInputs.Default.ScrollThrouhWeapos.performed += ctx => Scroll(ctx.ReadValue<float>());
+		//playerInputs.Default.ScrollThrouhWeapos.performed += ctx => Scroll(ctx.ReadValue<float>());
 		playerInputs.Default.Attack.performed += ctx => Attack();
 		playerInputs.Default.HeavyAttack.performed += ctx => HeavyAttack();
 		playerInputs.Default.DefensiveAction.performed += ctx => DefensiveAction();

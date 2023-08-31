@@ -82,7 +82,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 		//transform.position = pos;
 	}
 
-	void Awake()
+	protected void Awake()
 	{
 		animator = gameObject.GetComponent<Animator>();
 		if (animator == null) Debug.LogError("GameObject: " + name + " Does not have an Animator Attached!");
@@ -95,7 +95,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 		lastDir = transform.right;
 	}
 
-	public void CustomAwake()
+	public virtual void CustomAwake()
 	{
 		movementComponent = gameObject.GetComponent<GameCharacterMovementComponent>();
 		if (movementComponent == null) Debug.LogError("GameObject: " + name + " Does not have an GameCharacterMovementComponent Attached!");
@@ -121,7 +121,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 		isInitialized = true;
 	}
 
-	void OnDestroy()
+	protected void OnDestroy()
 	{
 		if (health != null)
 		{
@@ -129,7 +129,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 		}
 	}
 
-	private void Update()
+	protected void Update()
 	{
 		if (!isInitialized) return;
 		freezTimer.Update(Time.deltaTime);
@@ -309,6 +309,31 @@ public class GameCharacter : MonoBehaviour , IDamage
 			StateMachine.RequestStateChange(EGameCharacterState.Standing);
 			return;
 		}
+	}
+
+	public EGameCharacterState GetBestCharacterState()
+	{
+		if (CheckIfCharacterIsInAir())
+		{
+			return EGameCharacterState.InAir;
+		}
+
+		if (CheckIfCharacterIsOnSteepGround())
+		{
+			return EGameCharacterState.InAir;
+		}
+
+		if (CheckIfCharacterIsMoving())
+		{
+			return EGameCharacterState.Moving;
+		}
+
+		if (CheckIfCharacterIsStanding())
+		{
+			return EGameCharacterState.Standing;
+		}
+
+		return StateMachine.GetCurrentStateType();
 	}
 
 	void OnHealthValueChanged(float newHealthAmount, float oldHealthAmount)

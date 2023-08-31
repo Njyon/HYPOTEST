@@ -17,6 +17,8 @@ public class GameCharacterData : MonoBehaviour
 	[SerializeField] float slopStrenghDecrease = 1f;
 	[SerializeField] float maxSlopAngle = 75f;
 	[SerializeField] float roationSpeed = 5f;
+	[SerializeField] AnimationCurve gravityInterpCurve;
+	[SerializeField] float gravityMultiplierInAttack = 0.2f;
 
 	[Header("JumpData")]
 	[SerializeField] int maxJumps = 3;
@@ -52,6 +54,7 @@ public class GameCharacterData : MonoBehaviour
 
 	[Header("Combat")]
 	[SerializeField] float characterDetectionRange = 30f;
+	[SerializeField] int combatAttackListLenght = 10;
 
 	[Header("Data")]
 	[SerializeField] SkinnedMeshRenderer meshRenderer;
@@ -65,6 +68,8 @@ public class GameCharacterData : MonoBehaviour
 	public float SlopStrenghDecrease { get { return slopStrenghDecrease; } }
 	public float MaxSlopAngle { get { return maxSlopAngle; } }
 	public float RoationSpeed { get { return roationSpeed; } }
+	public AnimationCurve GravityInterpCurve { get { return gravityInterpCurve; } }
+	public float GravityMultiplierInAttack { get { return gravityMultiplierInAttack; } }
 
 	public int MaxJumps { get { return maxJumps; } }
 	public float JumpForce { get { return jumpForce; } }
@@ -93,6 +98,7 @@ public class GameCharacterData : MonoBehaviour
 	public Transform Root { get { return root; } }
 
 	public float CharacterDetectionRange { get { return characterDetectionRange; } }
+	public int CombatAttackListLenght { get { return combatAttackListLenght; } }
 
 	public SkinnedMeshRenderer MeshRenderer { get { return meshRenderer; } }
 }

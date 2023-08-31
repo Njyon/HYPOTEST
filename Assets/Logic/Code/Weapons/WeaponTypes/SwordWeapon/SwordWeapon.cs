@@ -23,37 +23,37 @@ public class SwordWeapon : WeaponBase
 		base.UpdateWeapon(deltaTime);
 	}
 
-	public override void GroundAttack()
+	public override AttackAnimationData GroundAttack()
 	{
-		base.GroundAttack();
+		return base.GroundAttack();
 	}
-	public override void GroundUpAttack()
+	public override AttackAnimationData GroundUpAttack()
 	{
-		base.GroundUpAttack();
+		return base.GroundUpAttack();
 	}
-	public override void GroundDownAttack()
+	public override AttackAnimationData GroundDownAttack()
 	{
-		base.GroundDownAttack();
+		return base.GroundDownAttack();
 	}
-	public override void GroundDirectionAttack()
+	public override AttackAnimationData GroundDirectionAttack()
 	{
-		base.GroundDirectionAttack();
+		return base.GroundDirectionAttack();
 	}
 
-	public override void AirAttack()
+	public override AttackAnimationData AirAttack()
 	{
-		base.AirAttack();
+		return base.AirAttack();
 	}
-	public override void AirUpAttack()
+	public override AttackAnimationData AirUpAttack()
 	{
-		base.AirUpAttack();
+		return base.AirUpAttack();
 	}
-	public override void AirDownAttack()
+	public override AttackAnimationData AirDownAttack()
 	{
-		base.AirDownAttack();
+		return base.AirDownAttack();
 	}
-	public override void AirDirectionAttack()
+	public override AttackAnimationData AirDirectionAttack()
 	{
-		base.AirDirectionAttack();
+		return base.AirDirectionAttack();
 	}
 }

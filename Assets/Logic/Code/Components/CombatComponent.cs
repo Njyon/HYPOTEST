@@ -37,6 +37,7 @@ public class CombatComponent
 	MeshFilter hitDetectionMeshFilter;
 	MeshRenderer hitDetectionMeshRenderer;
 	float flyAwayTime = 1f;
+	ShelfList<AttackAnimationData> previousAttacks;
 
 	public Ultra.Timer AttackTimer { get { return attackTimer; } }
 	public Ultra.Timer DefensiveTimer { get { return defensiveTimer; } }
@@ -51,6 +52,7 @@ public class CombatComponent
 	public MeshFilter HitDetectionMeshFilter { get { return hitDetectionMeshFilter; } }
 	public MeshRenderer HitDetectionMeshRenderer { get { return hitDetectionMeshRenderer; } }
 	public float FlyAwayTime { get { return flyAwayTime; } set { flyAwayTime = value; } }
+	public ShelfList<AttackAnimationData> PreviousAttacks { get { return previousAttacks; } }
 
 	public WeaponBase NextWeapon
 	{
@@ -85,6 +87,7 @@ public class CombatComponent
 		this.gameCharacter = gameCharacter;
 		nextWeapon = null;
 		hookedCharacters = new List<GameCharacter>();
+		previousAttacks = new ShelfList<AttackAnimationData>(gameCharacter.GameCharacterData.CombatAttackListLenght);
 	}
 
 	~CombatComponent()
@@ -223,26 +226,34 @@ public class CombatComponent
 		if (NextWeapon != null)
 			UpdateWeapon();
 
+		// Used for attackTracking for Evaluate CombatRating
+		AttackAnimationData newAttack = null;
+
 		if (gameCharacter.MovementComponent.IsGrounded)
 		{
 			switch (attackType)
 			{
-				case EAttackType.Default: CurrentWeapon?.GroundAttack(); break;
-				case EAttackType.AttackHorizontal: CurrentWeapon?.GroundDirectionAttack(); break;
-				case EAttackType.AttackUp: CurrentWeapon?.GroundUpAttack(); break;
-				case EAttackType.AttackDown: CurrentWeapon?.GroundDownAttack(); break;
+				case EAttackType.Default: newAttack = CurrentWeapon?.GroundAttack(); break;
+				case EAttackType.AttackHorizontal: newAttack = CurrentWeapon?.GroundDirectionAttack(); break;
+				case EAttackType.AttackUp: newAttack = CurrentWeapon?.GroundUpAttack(); break;
+				case EAttackType.AttackDown: newAttack = CurrentWeapon?.GroundDownAttack(); break;
 				default: break;
 			}
 		}else
 		{
 			switch (attackType)
 			{
-				case EAttackType.Default: CurrentWeapon?.AirAttack(); break;
-				case EAttackType.AttackHorizontal: CurrentWeapon?.AirDirectionAttack(); break;
-				case EAttackType.AttackUp: CurrentWeapon?.AirUpAttack(); break;
-				case EAttackType.AttackDown: CurrentWeapon?.AirDownAttack(); break;
+				case EAttackType.Default: newAttack = CurrentWeapon?.AirAttack(); break;
+				case EAttackType.AttackHorizontal: newAttack = CurrentWeapon?.AirDirectionAttack(); break;
+				case EAttackType.AttackUp: newAttack = CurrentWeapon?.AirUpAttack(); break;
+				case EAttackType.AttackDown: newAttack = CurrentWeapon?.AirDownAttack(); break;
 				default: break;
 			}
+		}
+
+		if (newAttack != null)
+		{
+			previousAttacks.Add(newAttack);
 		}
 	}
 
