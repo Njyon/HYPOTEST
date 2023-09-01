@@ -82,7 +82,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 		//transform.position = pos;
 	}
 
-	protected void Awake()
+	protected virtual void Awake()
 	{
 		animator = gameObject.GetComponent<Animator>();
 		if (animator == null) Debug.LogError("GameObject: " + name + " Does not have an Animator Attached!");
@@ -262,6 +262,18 @@ public class GameCharacter : MonoBehaviour , IDamage
 		}
 		
 		animController.TriggerAdditiveHit();
+		OnDamaged(damageInitiator, damage);
+		damageInitiator.AddRatingOnHit();
+	}
+
+	protected virtual void OnDamaged(GameCharacter damageInitiator, float damage)
+	{
+
+	}
+
+	protected virtual void AddRatingOnHit()
+	{
+
 	}
 
 	public bool CheckIfCharacterIsInAir()

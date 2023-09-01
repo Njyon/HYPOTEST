@@ -27,6 +27,9 @@ public class AttackAnimationData
 [Serializable]
 public class AttackAnimationExtraData
 {
+	public float Damage = 10;
+	public float Rating = 10;
+	public float discharge = 10;
 	public float maxVerticalMovement;
 	public float maxHorizontalMovement;
 	public Vector3 flyAwayDirection;

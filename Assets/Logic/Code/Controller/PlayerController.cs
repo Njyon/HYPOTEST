@@ -6,7 +6,7 @@ public class PlayerController : ControllerBase
 {
     [HideInInspector] public PlayerInputs playerInputs;
 	CameraController camController;
-	GameCharacter gameCharacter;
+	PlayerGameCharacter gameCharacter;
 
 	//DebugStuff
 	bool bForcedFrameRate = false;
@@ -22,7 +22,7 @@ public class PlayerController : ControllerBase
 
 	private void SetupGameCharacter(GameObject pawn)
 	{
-		gameCharacter = pawn.AddComponent<GameCharacter>();
+		gameCharacter = pawn.AddComponent<PlayerGameCharacter>();
 		gameCharacter.CharacterData = characterData;
 		gameCharacter.IsPlayerCharacter = true;
 		gameCharacter.CustomAwake();

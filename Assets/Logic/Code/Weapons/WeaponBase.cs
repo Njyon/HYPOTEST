@@ -50,6 +50,9 @@ public abstract class WeaponBase
 	protected List<GameObject> hitObjects;
 	EAttackAnimType attackAnimType;
 	int comboIndexInSameAttack;
+	float charge = 0;
+	float chargeAfterTime = 0;
+	Ultra.Timer maxChargeAfterEquipTimer;
 
 	// Particle Save
 	List<List<ParticleSystem>> groundLightAttackParticleList;
@@ -74,6 +77,16 @@ public abstract class WeaponBase
 	public EAttackAnimType AttackAnimType { get { return attackAnimType; } }
 	public int ComboIndexInSameAttack { get { return comboIndexInSameAttack; } }	
 	public int AttackIndex { get { return attackIndex; } }
+	public float Charge { 
+		get { return charge; } 
+		set { 
+			value = Mathf.Clamp(value, 0, weaponData.MaxChargeAmount);
+			if (!MaxChargeAfterEquipTimer.IsRunning) 
+				charge = value; 
+			chargeAfterTime = value;
+		} 
+	}
+	public Ultra.Timer MaxChargeAfterEquipTimer { get { return maxChargeAfterEquipTimer; } }
 
 	public WeaponBase() { }
     public WeaponBase(GameCharacter gameCharacter, ScriptableWeapon weaponData)
@@ -81,7 +94,8 @@ public abstract class WeaponBase
         this.gameCharacter = gameCharacter;
         this.weaponData = weaponData;
 		hitObjects = new List<GameObject>();
-    }
+		maxChargeAfterEquipTimer = new Ultra.Timer();
+	}
 
 	public virtual void InitWeapon()
 	{
@@ -115,6 +129,28 @@ public abstract class WeaponBase
 		SetUpHitDetectionMeshLogic();
 		gameCharacter.StateMachine.onStateChanged += OnGameCharacterStateChange;
 		defensiveActionIndex = 0;
+		if (Charge >= weaponData.MaxChargeAmount)
+		{
+			MaxChargeAfterEquipTimer.Start(weaponData.TimeAfterEqupingMaxChargedWeapon);
+			MaxChargeAfterEquipTimer.onTimerFinished += OnMaxChargeAfterEquipTimerFinished;
+		}
+
+	}
+
+	public virtual void UnEquipWeapon()
+	{
+		GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.WeaponReady);
+		MaxChargeAfterEquipTimer.onTimerFinished -= OnMaxChargeAfterEquipTimerFinished;
+		if (MaxChargeAfterEquipTimer.IsRunning)
+		{
+			MaxChargeAfterEquipTimer.Stop();
+			OnMaxChargeAfterEquipTimerFinished();
+		}
+		GameObject.Destroy(spawnedWeapon);
+		GameObject.Destroy(spawnedWeaponBones);
+		if (gameCharacter.CombatComponent.HitDetectionColliderScript != null) gameCharacter.CombatComponent.HitDetectionColliderScript.onOverlapEnter -= WeaponColliderEnter;
+		if (gameCharacter.CombatComponent.HitDetectionColliderScript != null) gameCharacter.CombatComponent.HitDetectionColliderScript.onOverlapExit -= WeaponColliderExit;
+
 	}
 
 	private void SpawnVisualWeaponMesh()
@@ -188,20 +224,11 @@ public abstract class WeaponBase
 		gameCharacter.CombatComponent.HitDetectionColliderScript.onOverlapExit += WeaponColliderExit;
 	}
 
-	public virtual void UnEquipWeapon()
-	{
-		GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.WeaponReady);
-        GameObject.Destroy(spawnedWeapon);
-        GameObject.Destroy(spawnedWeaponBones);
-		if (gameCharacter.CombatComponent.HitDetectionColliderScript != null) gameCharacter.CombatComponent.HitDetectionColliderScript.onOverlapEnter -= WeaponColliderEnter;
-		if (gameCharacter.CombatComponent.HitDetectionColliderScript != null) gameCharacter.CombatComponent.HitDetectionColliderScript.onOverlapExit -= WeaponColliderExit;
-
-	}
-
     public virtual void UpdateWeapon(float deltaTime)
 	{
-		HitDetection();
+		MaxChargeAfterEquipTimer.Update(deltaTime);
 
+		HitDetection();
 	}
 
 	private void HitDetection()
@@ -775,5 +802,10 @@ public abstract class WeaponBase
 
 			Ultra.Utilities.DrawArrow(enemyCharacter.MovementComponent.CharacterCenter, enemyCharacter.MovementComponent.MovementVelocity.normalized, 5f, Color.magenta, 10f, 100, DebugAreas.Combat);
 		}
+	}
+
+	void OnMaxChargeAfterEquipTimerFinished()
+	{
+		Charge = chargeAfterTime;
 	}
 }

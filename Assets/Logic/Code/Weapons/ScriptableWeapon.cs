@@ -10,6 +10,8 @@ public class ScriptableWeapon : ScriptableObject
 	[HideInInspector] public string WeaponClassName;
 	[HideInInspector] public WeaponBase Weapon;
 	public ScriptableWeaponMeshData WeaponMeshData;
+	public float MaxChargeAmount = 100;
+	public float TimeAfterEqupingMaxChargedWeapon = 3f;
 
 
 }

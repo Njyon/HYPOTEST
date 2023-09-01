@@ -67,6 +67,11 @@ namespace Ultra
 			currentTime = 0;
 		}
 
+		public void Stop()
+		{
+			IsPaused = true;
+		}
+
 		public void AddTime(float value)
 		{
 			this.time += value;

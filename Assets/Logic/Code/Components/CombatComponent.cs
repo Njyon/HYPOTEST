@@ -18,6 +18,9 @@ public class CombatComponent
 	public delegate void OnWeaponChanged(WeaponBase newWeapon, WeaponBase oldWeapon);
 	public OnWeaponChanged onWeaponChanged;
 
+	public delegate void OnAttack(ref ShelfList<AttackAnimationData> lastAttacks);
+	public OnAttack onAttack;
+
 	GameCharacter gameCharacter;
 	ScriptableWeapon[] weapons = new ScriptableWeapon[4];
 	WeaponBase currentWeapon;
@@ -38,7 +41,9 @@ public class CombatComponent
 	MeshRenderer hitDetectionMeshRenderer;
 	float flyAwayTime = 1f;
 	ShelfList<AttackAnimationData> previousAttacks;
+	int equipedWeapons = 0;
 
+	public ScriptableWeapon[] Weapons { get { return  weapons; } }
 	public Ultra.Timer AttackTimer { get { return attackTimer; } }
 	public Ultra.Timer DefensiveTimer { get { return defensiveTimer; } }
 	public Ultra.Timer FlyAwayTimer { get { return flyAwayTimer; } }
@@ -53,6 +58,7 @@ public class CombatComponent
 	public MeshRenderer HitDetectionMeshRenderer { get { return hitDetectionMeshRenderer; } }
 	public float FlyAwayTime { get { return flyAwayTime; } set { flyAwayTime = value; } }
 	public ShelfList<AttackAnimationData> PreviousAttacks { get { return previousAttacks; } }
+	public int EquipedWeapons { get { return equipedWeapons; } }	
 
 	public WeaponBase NextWeapon
 	{
@@ -171,6 +177,7 @@ public class CombatComponent
 
 	void InitWeapons()
 	{
+		equipedWeapons = 0;
 		equipedWeaponAmount = gameCharacter.GameCharacterData.Weapons.Count;
 		for (int i = 0; i < gameCharacter.GameCharacterData.Weapons.Count; i++)
 		{
@@ -182,6 +189,7 @@ public class CombatComponent
 				if (weaponArray[j].GetType().Name == weapons[i].WeaponClassName)
 				{
 					weapons[i].Weapon = Activator.CreateInstance(weaponArray[j].GetType(), gameCharacter, weapons[i]) as WeaponBase;
+					equipedWeapons++;
 					break;
 				}
 			}
@@ -254,6 +262,7 @@ public class CombatComponent
 		if (newAttack != null)
 		{
 			previousAttacks.Add(newAttack);
+			if (onAttack != null) onAttack(ref previousAttacks);
 		}
 	}
 

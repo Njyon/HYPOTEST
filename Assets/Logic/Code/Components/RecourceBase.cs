@@ -25,8 +25,10 @@ public class RecourceBase
 
 	public float CurrentValue { 
 		get { return currentValue; } 
-		private set
+		protected set
 		{
+			value = Mathf.Clamp(value, MinValue, MaxValue);
+
 			if (currentValue == value) return;
 			float oldestValue = currentValue;
 			currentValue = value;
@@ -34,8 +36,8 @@ public class RecourceBase
 		}
 	}
 	public float MaxValue { 
-		get { return maxValue; } 
-		private set
+		get { return maxValue; }
+		protected set
 		{ 
 			if (maxValue == value ) return;
 			float oldMaxValue = maxValue;
@@ -44,8 +46,8 @@ public class RecourceBase
 		}
 	}
 	public float MinValue { 
-		get { return minValue; } 
-		private set
+		get { return minValue; }
+		protected set
 		{
 			if (minValue == value) return;
 			float oldMinValue = minValue;
@@ -55,7 +57,7 @@ public class RecourceBase
 	}
 	public float ValueChangePerSecond {
 		get { return valueChangePerSecond; }
-		private set
+		protected set
 		{
 			if (valueChangePerSecond == value) return;
 			float oldValueChangePerSecond = valueChangePerSecond;
@@ -91,7 +93,7 @@ public class RecourceBase
 
 	public virtual void Update(float deltaTime)
 	{
-		CurrentValue = Mathf.Clamp(CurrentValue + (ValueChangePerSecond * deltaTime), MinValue, MaxValue);
+		AddCurrentValue(ValueChangePerSecond * deltaTime);
 		
 		if (maxValueTimer.IsRunning)
 		{
@@ -107,7 +109,7 @@ public class RecourceBase
 		}
 	}
 
-	public void AddCurrentValue(float value)
+	public virtual void AddCurrentValue(float value)
 	{
 		CurrentValue += value;
 	}
