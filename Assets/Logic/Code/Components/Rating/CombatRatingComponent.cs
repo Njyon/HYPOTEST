@@ -19,6 +19,7 @@ public class CombatRatingComponent : RecourceBase
 		get { return currentStyleRankIndex; } 
 		set
 		{
+			if (styleRanks == null || styleRanks.Count <= 0) return;
 			if (currentStyleRankIndex != value)
 			{
 				int oldValue = currentStyleRankIndex;
@@ -52,7 +53,8 @@ public class CombatRatingComponent : RecourceBase
 	public void Init(PlayerGameCharacter gameCharacter)
 	{
 		this.gameCharacter = gameCharacter;
-		NextStyleRankLevelUp = styleRanks[0].PointsToLevelUp;
+		if (styleRanks != null && styleRanks.Count > 0)
+			NextStyleRankLevelUp = styleRanks[0].PointsToLevelUp;
 	}
 
 	public override void Update(float deltaTime)

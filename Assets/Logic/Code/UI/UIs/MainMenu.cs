@@ -1,19 +1,28 @@
+using MoreMountains.Feedbacks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class MainMenu : UIBase
 {
+	[SerializeField] MMF_Player fadeIn;
+	[SerializeField] MMF_Player fadeOut;
 
 	void Awake()
 	{
 		LoadedUI();
+		fadeIn.Initialization();
+		fadeOut.Initialization();
+	}
 
+	void Start()
+	{
+		fadeIn.PlayFeedbacks();
 	}
 
 	public void PlayButtonPressed()
 	{
-
+		UIManager.Instance.LoadGameModeSelection();
 	}
 
 	public void SettingButtonPressed()
@@ -33,7 +42,7 @@ public class MainMenu : UIBase
 
 	void StartRemovingMainMenu()
 	{
-		RemovingMainMenu();
+		fadeOut.PlayFeedbacks();
 	}
 
 	public void RemovingMainMenu()

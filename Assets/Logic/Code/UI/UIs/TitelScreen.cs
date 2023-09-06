@@ -18,17 +18,24 @@ public class TitelScreen : UIBase
     async void Awake()
     {
         LoadedUI();
+		fadeIn.Initialization();
+		fadeOut.Initialization();
 
 		titel.alpha = 0f;
         pressText.alpha = 0f;
-        fadeIn.PlayFeedbacks();
 
         await new WaitForSeconds(0.1f);
 
         InputSystem.onAnyButtonPress.CallOnce(ButtonPressed);
     }
 
-    void ButtonPressed(InputControl e)
+	void Start()
+	{
+		fadeIn.PlayFeedbacks();
+
+	}
+
+	void ButtonPressed(InputControl e)
 	{
 		UIManager.Instance.LoadMainMenu();
 	}

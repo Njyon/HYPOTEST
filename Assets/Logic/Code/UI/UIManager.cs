@@ -4,9 +4,9 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public struct UIs
+public struct UIStackELement
 {
-	public UIs(string name, UIBase uiClass)
+	public UIStackELement(string name, UIBase uiClass)
 	{
 		this.name = name;
 		this.uiClass = uiClass;
@@ -18,22 +18,32 @@ public struct UIs
 
 public class UIManager : Singelton<UIManager>
 {
-	public delegate void SceneEvent();
+	public delegate void SceneLoadEvent();
 
 	[Header("SceneNames")]
 	[SerializeField] string titelScreenName = "TitelScreen";
 	[SerializeField] string mainMenuName = "MainMenu";
 	[SerializeField] string startSceneName = "StartScene";
+	[SerializeField] string gameModeSelectionName = "GameModeSelector";
+	[SerializeField] string difficultySelectionName = "DifficultySelection";
+	[SerializeField] string loadingScreenName = "LoadingScreen";
 
 
-	Stack<UIs> uiStack = new Stack<UIs>();
+	Stack<UIStackELement> uiStack = new Stack<UIStackELement>();
 
-	public Stack<UIs> UIStack { get { return uiStack; } }	
+	public Stack<UIStackELement> UIStack { get { return uiStack; } }	
 
 	bool showTitelScreen = true;
 
 	void Awake()
 	{
+		// Might be wrong
+		Object[] lol = FindObjectsOfType<UIManager>();
+		if (lol.Length > 1)
+		{
+			GameObject.Destroy(this);
+		}
+
 		DontDestroyOnLoad(gameObject);
 		LoadTitelScreenIfWanted();
 	}
@@ -56,9 +66,9 @@ public class UIManager : Singelton<UIManager>
 		}
 	}
 
-	async private void LoadSceneAsync(string name, LoadSceneMode loadMode, SceneEvent sceneEvent)
+	async private void LoadSceneAsync(string name, LoadSceneMode loadMode, SceneLoadEvent sceneEvent)
 	{
-		UIs currentUI;
+		UIStackELement currentUI;
 		if (uiStack.TryPeek(out currentUI))
 		{
 			if (currentUI.uiClass != null)
@@ -74,12 +84,12 @@ public class UIManager : Singelton<UIManager>
 		{
 			var asyncOperation = SceneManager.LoadSceneAsync(name, LoadSceneMode.Additive);
 			asyncOperation.completed += (e) => { if (sceneEvent != null) sceneEvent(); };
-			uiStack.Push(new UIs(name, null));
+			uiStack.Push(new UIStackELement(name, null));
 		}
 	}
 
 
-	private void UnloadScene(string sceneName, UnloadSceneOptions unloadOptions, SceneEvent sceneEvent)
+	private void UnloadScene(string sceneName, UnloadSceneOptions unloadOptions, SceneLoadEvent sceneEvent)
 	{
 		Scene titelScreenScene = SceneManager.GetSceneByName(sceneName);
 		if (titelScreenScene.isLoaded)
@@ -94,18 +104,29 @@ public class UIManager : Singelton<UIManager>
 		LoadSceneAsync(mainMenuName, LoadSceneMode.Additive, null);
 	}
 
-	public void RemoveMainMenu()
+	public void LoadGameModeSelection()
 	{
-		Scene mainMenuScene = SceneManager.GetSceneByName(mainMenuName);
-		if (mainMenuScene.isLoaded)
-		{
-			SceneManager.UnloadSceneAsync(mainMenuName, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
-		}
+		LoadSceneAsync(gameModeSelectionName, LoadSceneMode.Additive, null);
+	}
+
+	public void LoadDifficultySelection()
+	{
+		LoadSceneAsync(difficultySelectionName, LoadSceneMode.Additive, null);
+	}
+
+	public void LoadLoadingScreen()
+	{
+		LoadSceneAsync(loadingScreenName, LoadSceneMode.Additive, null);
+	}
+
+	public void UnloadLoadingScreen()
+	{
+		SceneManager.UnloadSceneAsync(loadingScreenName, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
 	}
 
 	public void UIBack()
 	{
-		UIs currentUI;
+		UIStackELement currentUI;
 		if (uiStack.TryPeek(out currentUI))
 		{
 			if (currentUI.uiClass == null) return;
