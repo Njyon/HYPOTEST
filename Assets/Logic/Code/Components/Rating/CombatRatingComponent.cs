@@ -6,6 +6,9 @@ using UnityEngine;
 
 public class CombatRatingComponent : RecourceBase
 {
+	public delegate void StyleRankingChanged(int newRankIndex, int oldRankIndex);
+	public StyleRankingChanged onStyleRankingChanged;
+
 	PlayerGameCharacter gameCharacter; 
 	List<StyleRankingScriptableObject> styleRanks = new List<StyleRankingScriptableObject>();
 	float NextStyleRankLevelUp = 0;
@@ -21,17 +24,20 @@ public class CombatRatingComponent : RecourceBase
 				int oldValue = currentStyleRankIndex;
 				currentStyleRankIndex = value;
 
+
 				if (oldValue > currentStyleRankIndex)
 				{
 					// RankDown
 					NextStyleRankLeveldown -= styleRanks[currentStyleRankIndex].PointsToLevelUp;
 					NextStyleRankLevelUp -= styleRanks[oldValue].PointsToLevelUp;
+					if (onStyleRankingChanged != null) onStyleRankingChanged(currentStyleRankIndex, oldValue);
 				}
 				else
 				{
 					// RankUp
 					NextStyleRankLeveldown += styleRanks[oldValue].PointsToLevelUp;
 					NextStyleRankLevelUp += styleRanks[currentStyleRankIndex].PointsToLevelUp;
+					if (onStyleRankingChanged != null) onStyleRankingChanged(currentStyleRankIndex, oldValue);
 				}
 
 				UpdateStyleRank();
@@ -96,6 +102,10 @@ public class CombatRatingComponent : RecourceBase
 		if (damage > 0)
 		{
 			CurrentValue = CurrentValue / 2;
+			foreach (ScriptableWeapon sWeapon in gameCharacter.CombatComponent.Weapons)
+			{
+				sWeapon.Weapon.Charge /= 2;
+			}
 			UpdateStyleRank();
 		}
 	}
