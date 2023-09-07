@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+[ExecuteInEditMode]
 public class SceneLoader : MonoBehaviour
 {
 	[SerializeField] List<string> scenes = new List<string>();
@@ -10,12 +12,20 @@ public class SceneLoader : MonoBehaviour
 
 	void Awake()
 	{
-		UIManager.Instance.LoadLoadingScreen();
+		if (Application.isPlaying)
+			UIManager.Instance.LoadLoadingScreen();
 		for(int i = 0; i < scenes.Count; i++)
 		{
-			asyncOperations.Add(SceneManager.LoadSceneAsync(scenes[i], LoadSceneMode.Additive));
-		}	
-		StartCoroutine(LoadScenes());
+			if (Application.isPlaying)
+			{
+				if (SceneManager.GetSceneByPath(scenes[i]).IsValid()) continue;
+				asyncOperations.Add(SceneManager.LoadSceneAsync(scenes[i], LoadSceneMode.Additive));
+			}
+			else
+				EditorSceneManager.OpenScene(scenes[i], OpenSceneMode.Additive);
+		}
+		if (Application.isPlaying)
+			StartCoroutine(LoadScenes());
 	}
 
 	void LoadingDone()
@@ -35,7 +45,8 @@ public class SceneLoader : MonoBehaviour
 			}
 			yield return new WaitForEndOfFrame();
 		}
-		LoadingDone();
+		if (Application.isPlaying)
+			LoadingDone();
 		yield return null;
 	}
 }

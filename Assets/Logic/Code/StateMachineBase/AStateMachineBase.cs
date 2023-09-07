@@ -128,6 +128,8 @@ public abstract class AStateMachineBase<T> : MonoBehaviour
 
 	public T GetCurrentStateType()
 	{
+		if (CurrentState == null)
+			return GetUnknownT();
 		return CurrentState.GetStateType();
 	}
 

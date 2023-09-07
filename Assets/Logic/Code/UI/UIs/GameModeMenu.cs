@@ -24,15 +24,18 @@ public class GameModeMenu : UIBase
 
 	public void OnStoryModusPressed()
     {
-        GameObject.Destroy(GameModeBase.Instance.gameObject);
-        StoryGameMode.Instance.Create();
+		Ultra.HypoUttilies.DeleteAllGameModes();
+		Ultra.HypoUttilies.CreateGameMode<StoryGameMode>();
+
         UIManager.Instance.LoadDifficultySelection();
     }
 
     public void OnTrainingModusPressed()
     {
-		GameObject.Destroy(GameModeBase.Instance);
-		TrainingGameMode.Instance.Create();
+		Ultra.HypoUttilies.DeleteAllGameModes();
+		Ultra.HypoUttilies.CreateGameMode<TrainingGameMode>();
+
+		SceneLoaderManager.Instance.LoadTrainingsMap();
 	}
 
 	public void Back()

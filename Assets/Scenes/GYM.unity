@@ -97,7 +97,8 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000004, guid: d790bb42bed927943a04c087e50938d6,
+    type: 2}
   m_LightingSettings: {fileID: 1952311889}
 --- !u!196 &4
 NavMeshSettings:
@@ -48301,6 +48302,10 @@ MonoBehaviour:
   maxZoom: 20
   zoomLimiter: 50
   minDistance: 0
+  TestDebugCameraShakeIndex: 0
+  cameraShakes: []
+  velocityVelx: {x: 0, y: 0, z: 0}
+  velocityVely: {x: 0, y: 0, z: 0}
 --- !u!114 &1988083888
 MonoBehaviour:
   m_ObjectHideFlags: 0

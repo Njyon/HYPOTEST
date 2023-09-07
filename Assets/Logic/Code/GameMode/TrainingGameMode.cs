@@ -6,6 +6,6 @@ public class TrainingGameMode : GameModeBase
 {
 	public override void Create()
 	{
-
+		base.Create();
 	}
 }

@@ -23,7 +23,17 @@ public class DifficultySelection : UIBase
 	public void SelectDifficulty(int difficulty)
 	{
 		GameDifficultyLevel difficultyLevel = (GameDifficultyLevel)difficulty;
-		GameModeBase.Instance.GameDifficultyLevel = difficultyLevel;
+		GameModeBase gameMode = Ultra.HypoUttilies.GetGameMode();
+		if (gameMode != null)
+			gameMode.GameDifficultyLevel = difficultyLevel;
+		else
+		{
+			Ultra.Utilities.Instance.DebugLogOnScreen("gameMode was null!", 10f, StringColor.Red);
+			Debug.Log(Ultra.Utilities.Instance.DebugErrorString("DifficultySelection", "SelectDifficulty", "GameMode was null!"));
+			return;
+		}
+
+		SceneLoaderManager.Instance.LoadStoryLevel01();
 	}
 
 	public override void StartRemovingUI()

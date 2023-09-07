@@ -12,7 +12,7 @@ public enum GameDifficultyLevel
 	HyppoliteMustDie
 }
 
-public class GameModeBase : Singelton<GameModeBase> 
+public class GameModeBase : MonoBehaviour
 {
 
 	PlayerGameCharacter playerCharacter;

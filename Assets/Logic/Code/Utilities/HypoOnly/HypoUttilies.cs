@@ -191,5 +191,40 @@ namespace Ultra
 
 			return mostPointingObject;
 		}
+
+		public static T CreateGameMode<T> () where T : GameModeBase
+		{
+			var gameModeObj = new GameObject();
+			T gameMode = gameModeObj.AddComponent<T>();
+			gameModeObj.name = gameMode.name;
+			DontDestroyOnLoad(gameModeObj);
+			gameMode.Create();
+			return gameMode;
+		}
+
+		public static GameModeBase[] FindAllGameModes()
+		{
+			return FindObjectsOfType<GameModeBase>();
+		}
+
+		public static void DeleteAllGameModes()
+		{
+			GameModeBase[] gameModes = FindAllGameModes();
+			foreach (GameModeBase gameMode in gameModes)
+			{
+				GameObject.Destroy(gameMode.gameObject);
+			}
+		}
+
+		public static GameModeBase GetGameMode()
+		{
+			GameModeBase[] gameModes = FindAllGameModes();
+			if (gameModes != null && gameModes.Length > 0)
+			{
+				return gameModes[0];
+			}
+			Debug.Log(Ultra.Utilities.Instance.DebugErrorString("HypoUttilies", "GetGameMode", "GameMode was null!"));
+			return null;
+		}
 	}
 }

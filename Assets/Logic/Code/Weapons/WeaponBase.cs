@@ -641,7 +641,7 @@ public abstract class WeaponBase
 
 	void OnGameCharacterStateChange(IState<EGameCharacterState> newState, IState<EGameCharacterState> oldState)
 	{
-		if (oldState.GetStateType() == EGameCharacterState.Attack)
+		if (oldState?.GetStateType() == EGameCharacterState.Attack)
 		{
 			comboIndexInSameAttack = 0;
 		}

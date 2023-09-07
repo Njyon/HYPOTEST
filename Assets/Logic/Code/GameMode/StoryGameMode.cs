@@ -7,6 +7,6 @@ public class StoryGameMode : GameModeBase
 
 	public override void Create()
 	{
-
+		base.Create();
 	}
 }
