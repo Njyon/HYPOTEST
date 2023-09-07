@@ -55,9 +55,9 @@ MonoBehaviour:
     AfterOpaque: 1
     Source: 1
     NormalSamples: 2
-    Intensity: 6.7
+    Intensity: 1.54
     DirectLightingStrength: 1
-    Radius: 0.32
+    Radius: 0.2
     Samples: 0
     BlurQuality: 0
     Falloff: 90
@@ -91,7 +91,8 @@ MonoBehaviour:
   - {fileID: 2783305440137903104}
   - {fileID: -6065393214192590553}
   - {fileID: 2480174144034172846}
-  m_RendererFeatureMap: adc0de57c6d2eee500fcd41c8d49a0262761fcec0165d3abaeef43543e596b22
+  - {fileID: 4386303126015336764}
+  m_RendererFeatureMap: adc0de57c6d2eee500fcd41c8d49a0262761fcec0165d3abaeef43543e596b223c6154177447df3c
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
@@ -145,8 +146,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Active: 1
   settings:
-    resolutionScale: 0.334
-    intensity: 0.271
+    resolutionScale: 0.435
+    intensity: 0.308
     blurWidth: 0.134
 --- !u!114 &2783305440137903104
 MonoBehaviour:
@@ -163,3 +164,26 @@ MonoBehaviour:
   m_Active: 0
   settings: {fileID: 11400000, guid: ff3dfd77429d64938a26bd54c27dacd8, type: 2}
   _effectMaterial: {fileID: 0}
+--- !u!114 &4386303126015336764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1614fc811f8f184697d9bee70ab9fe5, type: 3}
+  m_Name: DecalRendererFeature
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  m_Settings:
+    technique: 0
+    maxDrawDistance: 1000
+    decalLayers: 0
+    dBufferSettings:
+      surfaceData: 2
+    screenSpaceSettings:
+      normalBlend: 0
+  m_CopyDepthPS: {fileID: 4800000, guid: d6dae50ee9e1bfa4db75f19f99355220, type: 3}
+  m_DBufferClear: {fileID: 4800000, guid: f056d8bd2a1c7e44e9729144b4c70395, type: 3}
