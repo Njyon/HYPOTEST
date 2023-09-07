@@ -226,5 +226,10 @@ namespace Ultra
 			Debug.Log(Ultra.Utilities.Instance.DebugErrorString("HypoUttilies", "GetGameMode", "GameMode was null!"));
 			return null;
 		}
+
+		public static PlayerGameCharacter GetPlayerGameCharacter()
+		{
+			return FindObjectOfType<PlayerGameCharacter>();
+		}
 	}
 }

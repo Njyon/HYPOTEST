@@ -131,7 +131,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 
 	protected void Update()
 	{
-		if (!isInitialized) return;
+		if (!IsInitialized) return;
 		freezTimer.Update(Time.deltaTime);
 
 		//movementInput.x = 1;

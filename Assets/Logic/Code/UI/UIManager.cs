@@ -19,6 +19,8 @@ public struct UIStackELement
 public class UIManager : Singelton<UIManager>
 {
 	public delegate void SceneLoadEvent();
+	public delegate void OnAllUisUnloaded();
+	public OnAllUisUnloaded onAllUIsUnloaded;
 
 	[Header("SceneNames")]
 	[SerializeField] string titelScreenName = "TitelScreen";
@@ -27,6 +29,7 @@ public class UIManager : Singelton<UIManager>
 	[SerializeField] string gameModeSelectionName = "GameModeSelector";
 	[SerializeField] string difficultySelectionName = "DifficultySelection";
 	[SerializeField] string loadingScreenName = "LoadingSceneUI";
+	[SerializeField] string playerUISceneName = "PlayerUISceneName";
 
 
 	Stack<UIStackELement> uiStack = new Stack<UIStackELement>();
@@ -124,6 +127,11 @@ public class UIManager : Singelton<UIManager>
 		UnloadScene(loadingScreenName, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects, null);
 	}
 
+	public void LoadPlayerUI(SceneLoadEvent sceneLoadEvent)
+	{
+		LoadSceneAsync(playerUISceneName, LoadSceneMode.Additive, sceneLoadEvent);
+	}
+
 	public void UIBack()
 	{
 		UIStackELement currentUI;
@@ -133,6 +141,25 @@ public class UIManager : Singelton<UIManager>
 			currentUI.uiClass.StartRemovingUI();
 			currentUI.uiClass.onRemoveUI += RemoveUI;
 		}
+	}
+
+	public void UnloadAll()
+	{
+		if (uiStack != null && uiStack.Count > 0)
+		{
+			UIStackELement uiElement = uiStack.Pop();
+			UnloadScene(uiElement.name, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects, UnloadAll);
+		}
+		else
+		{
+			AllUIsUnloaded();
+		}
+	}
+
+	void AllUIsUnloaded()
+	{
+		uiStack.Clear();
+		if (onAllUIsUnloaded != null) onAllUIsUnloaded();
 	}
 
 	void RemoveUI()
