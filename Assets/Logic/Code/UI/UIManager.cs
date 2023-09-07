@@ -68,20 +68,20 @@ public class UIManager : Singelton<UIManager>
 
 	async private void LoadSceneAsync(string name, LoadSceneMode loadMode, SceneLoadEvent sceneEvent)
 	{
-		UIStackELement currentUI;
-		if (uiStack.TryPeek(out currentUI))
-		{
-			if (currentUI.uiClass != null)
-			{
-				currentUI.uiClass.StartRemovingUI();
-				await new WaitUntil(() => currentUI.uiClass.CanBeRemoved());
-				UnloadScene(currentUI.name, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects, null);
-			}
-		}
-
 		Scene titelScreenScene = SceneManager.GetSceneByName(name);
 		if (!titelScreenScene.isLoaded)
 		{
+			UIStackELement currentUI;
+			if (uiStack.TryPeek(out currentUI))
+			{
+				if (currentUI.uiClass != null)
+				{
+					currentUI.uiClass.StartRemovingUI();
+					await new WaitUntil(() => currentUI.uiClass.CanBeRemoved());
+					UnloadScene(currentUI.name, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects, null);
+				}
+			}
+
 			var asyncOperation = SceneManager.LoadSceneAsync(name, LoadSceneMode.Additive);
 			asyncOperation.completed += (e) => { if (sceneEvent != null) sceneEvent(); };
 			uiStack.Push(new UIStackELement(name, null));
@@ -91,8 +91,8 @@ public class UIManager : Singelton<UIManager>
 
 	private void UnloadScene(string sceneName, UnloadSceneOptions unloadOptions, SceneLoadEvent sceneEvent)
 	{
-		Scene titelScreenScene = SceneManager.GetSceneByName(sceneName);
-		if (titelScreenScene.isLoaded)
+		Scene scene = SceneManager.GetSceneByName(sceneName);
+		if (scene.isLoaded)
 		{
 			var asyncOperation = SceneManager.UnloadSceneAsync(sceneName, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
 			asyncOperation.completed += (e) => { if (sceneEvent != null) sceneEvent(); };
@@ -121,7 +121,7 @@ public class UIManager : Singelton<UIManager>
 
 	public void UnloadLoadingScreen()
 	{
-		SceneManager.UnloadSceneAsync(loadingScreenName, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
+		UnloadScene(loadingScreenName, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects, null);
 	}
 
 	public void UIBack()

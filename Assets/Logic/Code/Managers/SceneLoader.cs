@@ -7,12 +7,13 @@ using UnityEngine.SceneManagement;
 [ExecuteInEditMode]
 public class SceneLoader : MonoBehaviour
 {
+	public bool isMasterLoader = true;
 	[SerializeField] List<string> scenes = new List<string>();
 	List<AsyncOperation> asyncOperations = new List<AsyncOperation>();
 
 	void Awake()
 	{
-		if (Application.isPlaying)
+		if (Application.isPlaying && isMasterLoader)
 			UIManager.Instance.LoadLoadingScreen();
 		for(int i = 0; i < scenes.Count; i++)
 		{
@@ -30,7 +31,10 @@ public class SceneLoader : MonoBehaviour
 
 	void LoadingDone()
 	{
-		UIManager.Instance.UnloadLoadingScreen();
+		if (Application.isPlaying)
+			UIManager.Instance.UnloadLoadingScreen();
+		if (isMasterLoader)
+			SceneManager.SetActiveScene(SceneManager.GetSceneByPath(scenes[0]));
 	}
 
 	IEnumerator LoadScenes()
@@ -45,8 +49,7 @@ public class SceneLoader : MonoBehaviour
 			}
 			yield return new WaitForEndOfFrame();
 		}
-		if (Application.isPlaying)
-			LoadingDone();
+		LoadingDone();
 		yield return null;
 	}
 }
