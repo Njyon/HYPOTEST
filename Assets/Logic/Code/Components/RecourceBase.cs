@@ -72,10 +72,10 @@ public class RecourceBase
 
 	public RecourceBase(float startValue, float maxValue = Mathf.Infinity, float minValue = 0, float defaultValueChangePerSecond = 0)
 	{
-		CurrentValue = startValue;
-		MaxValue = maxValue;
-		MinValue = minValue;
-		ValueChangePerSecond = defaultValueChangePerSecond;
+		this.currentValue = startValue;
+		this.maxValue = maxValue;
+		this.minValue = minValue;
+		this.valueChangePerSecond = defaultValueChangePerSecond;
 		maxValueTimer = new Ultra.Timer();
 		minValueTimer = new Ultra.Timer();
 		valueChangePerSecondTimer = new Ultra.Timer();

@@ -197,6 +197,42 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DebugButton01"",
+                    ""type"": ""Button"",
+                    ""id"": ""0dd15401-ac00-4757-af3b-831db3d8a727"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DebugButton02"",
+                    ""type"": ""Button"",
+                    ""id"": ""23da8185-0e66-4f3e-9c62-c749be2326e0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DebugButton03"",
+                    ""type"": ""Button"",
+                    ""id"": ""11079b2e-2335-47ab-811d-ceb9d4310ba7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DebugButton04"",
+                    ""type"": ""Button"",
+                    ""id"": ""958bc5ae-b887-4b88-a9bf-184e8f0ac0a4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -815,6 +851,50 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                     ""action"": ""DefensiveAction"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0841dc13-7a6a-43d0-abab-c1e7b597fce0"",
+                    ""path"": ""<Keyboard>/f5"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DebugButton01"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5c764819-4483-4637-8cc8-5848a9fce9c2"",
+                    ""path"": ""<Keyboard>/f6"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DebugButton02"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1dde9210-183c-4dfa-a28a-b5c3eaabbc33"",
+                    ""path"": ""<Keyboard>/f7"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DebugButton03"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e42cb13a-fa1e-484e-8025-0ac235f24ff9"",
+                    ""path"": ""<Keyboard>/f8"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DebugButton04"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -870,6 +950,10 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         m_Default_ForceFrameRate = m_Default.FindAction("ForceFrameRate", throwIfNotFound: true);
         m_Default_DebugPauseGame = m_Default.FindAction("DebugPauseGame", throwIfNotFound: true);
         m_Default_DebugSlomo = m_Default.FindAction("DebugSlomo", throwIfNotFound: true);
+        m_Default_DebugButton01 = m_Default.FindAction("DebugButton01", throwIfNotFound: true);
+        m_Default_DebugButton02 = m_Default.FindAction("DebugButton02", throwIfNotFound: true);
+        m_Default_DebugButton03 = m_Default.FindAction("DebugButton03", throwIfNotFound: true);
+        m_Default_DebugButton04 = m_Default.FindAction("DebugButton04", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -948,6 +1032,10 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
     private readonly InputAction m_Default_ForceFrameRate;
     private readonly InputAction m_Default_DebugPauseGame;
     private readonly InputAction m_Default_DebugSlomo;
+    private readonly InputAction m_Default_DebugButton01;
+    private readonly InputAction m_Default_DebugButton02;
+    private readonly InputAction m_Default_DebugButton03;
+    private readonly InputAction m_Default_DebugButton04;
     public struct DefaultActions
     {
         private @PlayerInputs m_Wrapper;
@@ -971,6 +1059,10 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         public InputAction @ForceFrameRate => m_Wrapper.m_Default_ForceFrameRate;
         public InputAction @DebugPauseGame => m_Wrapper.m_Default_DebugPauseGame;
         public InputAction @DebugSlomo => m_Wrapper.m_Default_DebugSlomo;
+        public InputAction @DebugButton01 => m_Wrapper.m_Default_DebugButton01;
+        public InputAction @DebugButton02 => m_Wrapper.m_Default_DebugButton02;
+        public InputAction @DebugButton03 => m_Wrapper.m_Default_DebugButton03;
+        public InputAction @DebugButton04 => m_Wrapper.m_Default_DebugButton04;
         public InputActionMap Get() { return m_Wrapper.m_Default; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1037,6 +1129,18 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @DebugSlomo.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnDebugSlomo;
                 @DebugSlomo.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnDebugSlomo;
                 @DebugSlomo.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnDebugSlomo;
+                @DebugButton01.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnDebugButton01;
+                @DebugButton01.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnDebugButton01;
+                @DebugButton01.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnDebugButton01;
+                @DebugButton02.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnDebugButton02;
+                @DebugButton02.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnDebugButton02;
+                @DebugButton02.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnDebugButton02;
+                @DebugButton03.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnDebugButton03;
+                @DebugButton03.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnDebugButton03;
+                @DebugButton03.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnDebugButton03;
+                @DebugButton04.started -= m_Wrapper.m_DefaultActionsCallbackInterface.OnDebugButton04;
+                @DebugButton04.performed -= m_Wrapper.m_DefaultActionsCallbackInterface.OnDebugButton04;
+                @DebugButton04.canceled -= m_Wrapper.m_DefaultActionsCallbackInterface.OnDebugButton04;
             }
             m_Wrapper.m_DefaultActionsCallbackInterface = instance;
             if (instance != null)
@@ -1098,6 +1202,18 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
                 @DebugSlomo.started += instance.OnDebugSlomo;
                 @DebugSlomo.performed += instance.OnDebugSlomo;
                 @DebugSlomo.canceled += instance.OnDebugSlomo;
+                @DebugButton01.started += instance.OnDebugButton01;
+                @DebugButton01.performed += instance.OnDebugButton01;
+                @DebugButton01.canceled += instance.OnDebugButton01;
+                @DebugButton02.started += instance.OnDebugButton02;
+                @DebugButton02.performed += instance.OnDebugButton02;
+                @DebugButton02.canceled += instance.OnDebugButton02;
+                @DebugButton03.started += instance.OnDebugButton03;
+                @DebugButton03.performed += instance.OnDebugButton03;
+                @DebugButton03.canceled += instance.OnDebugButton03;
+                @DebugButton04.started += instance.OnDebugButton04;
+                @DebugButton04.performed += instance.OnDebugButton04;
+                @DebugButton04.canceled += instance.OnDebugButton04;
             }
         }
     }
@@ -1141,5 +1257,9 @@ public partial class @PlayerInputs : IInputActionCollection2, IDisposable
         void OnForceFrameRate(InputAction.CallbackContext context);
         void OnDebugPauseGame(InputAction.CallbackContext context);
         void OnDebugSlomo(InputAction.CallbackContext context);
+        void OnDebugButton01(InputAction.CallbackContext context);
+        void OnDebugButton02(InputAction.CallbackContext context);
+        void OnDebugButton03(InputAction.CallbackContext context);
+        void OnDebugButton04(InputAction.CallbackContext context);
     }
 }

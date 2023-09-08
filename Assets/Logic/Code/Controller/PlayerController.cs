@@ -72,6 +72,11 @@ public class PlayerController : ControllerBase
 		playerInputs.Default.ForceFrameRate.performed += ctx => ForceFrameRate();
 		playerInputs.Default.DebugPauseGame.performed += ctx => DebugPauseGame();
 		playerInputs.Default.DebugSlomo.performed += ctx => DebugSlomo();
+
+		playerInputs.Default.DebugButton01.performed += ctx => DebugButton01();
+		playerInputs.Default.DebugButton02.performed += ctx => DebugButton02();
+		playerInputs.Default.DebugButton03.performed += ctx => DebugButton03();
+		playerInputs.Default.DebugButton04.performed += ctx => DebugButton04();
 	}
 
 	void HorizontalInput(float axis)
@@ -213,5 +218,26 @@ public class PlayerController : ControllerBase
 		{
 			Time.timeScale = 1f;
 		}
+	}
+
+	void DebugButton01()
+	{
+		gameCharacter.Health.AddCurrentValue(-10f);
+	}
+
+	void DebugButton02()
+	{
+		gameCharacter.Health.AddCurrentValue(10f);
+
+	}
+
+	void DebugButton03()
+	{
+
+	}
+
+	void DebugButton04()
+	{
+
 	}
 }
