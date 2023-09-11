@@ -11,13 +11,16 @@ public class CombatRatingComponent : RecourceBase
 
 	PlayerGameCharacter gameCharacter; 
 	List<StyleRankingScriptableObject> styleRanks = new List<StyleRankingScriptableObject>();
-	float NextStyleRankLevelUp = 0;
-	float NextStyleRankLeveldown = 0;
+	float nextStyleRankLevelUp = 0;
+	float nextStyleRankLeveldown = 0;
 	int currentStyleRankIndex = 0;
 
-	protected int CurrentStyleRankIndex { 
+	public List<StyleRankingScriptableObject> StyleRanks { get { return styleRanks; } }
+	public float NextStyleRankLevelUp { get { return nextStyleRankLevelUp; } }
+	public float NextStyleRankLeveldown { get { return nextStyleRankLeveldown; } }
+	public int CurrentStyleRankIndex { 
 		get { return currentStyleRankIndex; } 
-		set
+		protected set
 		{
 			if (styleRanks == null || styleRanks.Count <= 0) return;
 			if (currentStyleRankIndex != value)
@@ -29,17 +32,18 @@ public class CombatRatingComponent : RecourceBase
 				if (oldValue > currentStyleRankIndex)
 				{
 					// RankDown
-					NextStyleRankLeveldown -= styleRanks[currentStyleRankIndex].PointsToLevelUp;
-					NextStyleRankLevelUp -= styleRanks[oldValue].PointsToLevelUp;
+					nextStyleRankLeveldown -= styleRanks[currentStyleRankIndex].PointsToLevelUp;
+					nextStyleRankLevelUp -= styleRanks[oldValue].PointsToLevelUp;
 					if (onStyleRankingChanged != null) onStyleRankingChanged(currentStyleRankIndex, oldValue);
 				}
 				else
 				{
 					// RankUp
-					NextStyleRankLeveldown += styleRanks[oldValue].PointsToLevelUp;
-					NextStyleRankLevelUp += styleRanks[currentStyleRankIndex].PointsToLevelUp;
+					nextStyleRankLeveldown += styleRanks[oldValue].PointsToLevelUp;
+					nextStyleRankLevelUp += styleRanks[currentStyleRankIndex].PointsToLevelUp;
 					if (onStyleRankingChanged != null) onStyleRankingChanged(currentStyleRankIndex, oldValue);
 				}
+				ChangeValueChangePerSecond(0, styleRanks[currentStyleRankIndex].PointDecreaseStopTime, -styleRanks[currentStyleRankIndex].PointDecreasePerSecond);
 
 				UpdateStyleRank();
 			}
@@ -53,8 +57,9 @@ public class CombatRatingComponent : RecourceBase
 	public void Init(PlayerGameCharacter gameCharacter)
 	{
 		this.gameCharacter = gameCharacter;
+		styleRanks = GameAssets.Instance.styleRanks;
 		if (styleRanks != null && styleRanks.Count > 0)
-			NextStyleRankLevelUp = styleRanks[0].PointsToLevelUp;
+			nextStyleRankLevelUp = styleRanks[0].PointsToLevelUp;
 	}
 
 	public override void Update(float deltaTime)
@@ -73,11 +78,11 @@ public class CombatRatingComponent : RecourceBase
 
 	private void UpdateStyleRank()
 	{
-		if (CurrentValue >= NextStyleRankLevelUp)
+		if (CurrentValue >= nextStyleRankLevelUp)
 		{
 			CurrentStyleRankIndex++;
 		}
-		else if (CurrentValue < NextStyleRankLeveldown)
+		else if (CurrentValue < nextStyleRankLeveldown)
 		{
 			CurrentStyleRankIndex--;
 		}

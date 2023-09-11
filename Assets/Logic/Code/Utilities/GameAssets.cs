@@ -12,6 +12,7 @@ public class GameAssets : MonoBehaviour
         {
             if (instance == null)
             {
+                //  Path: "Assets/Resources/Prefab/GameAssets"
                 instance = (Instantiate(Resources.Load("Prefab/GameAssets")) as GameObject).GetComponent<GameAssets>();
             }
             return instance;
@@ -22,4 +23,5 @@ public class GameAssets : MonoBehaviour
     public Material debugMaterial;
     public GameObject ThrowSpear;
     public GameObject characterDetection;
+	public List<StyleRankingScriptableObject> styleRanks = new List<StyleRankingScriptableObject>();
 }
