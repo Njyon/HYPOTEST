@@ -29,7 +29,7 @@ public class UIManager : Singelton<UIManager>
 	[SerializeField] string gameModeSelectionName = "GameModeSelector";
 	[SerializeField] string difficultySelectionName = "DifficultySelection";
 	[SerializeField] string loadingScreenName = "LoadingSceneUI";
-	[SerializeField] string playerUISceneName = "PlayerUISceneName";
+	[SerializeField] string playerUISceneName = "PlayerUIScene";
 
 
 	Stack<UIStackELement> uiStack = new Stack<UIStackELement>();
