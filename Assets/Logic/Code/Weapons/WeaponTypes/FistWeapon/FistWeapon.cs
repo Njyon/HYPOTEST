@@ -143,7 +143,7 @@ public class FistWeapon : WeaponBase
 	{
         IDamage damageInterface = GetDamageInterface(hitObj);
         if (damageInterface == null) return;
-        damageInterface.DoDamage(GameCharacter, 10);
+        damageInterface.DoDamage(GameCharacter, GetDamage());
 
 		if (ComboIndexInSameAttack == 1)
 		{
@@ -157,7 +157,7 @@ public class FistWeapon : WeaponBase
 	{
 		IDamage damageInterface = GetDamageInterface(hitObj);
 		if (damageInterface == null) return;
-		damageInterface.DoDamage(GameCharacter, 10);
+		damageInterface.DoDamage(GameCharacter, GetDamage());
 		GameCharacter enemyCharacter = hitObj.GetComponent<GameCharacter>();
 		if (enemyCharacter == null) return;
 		if (enemyCharacter.CombatComponent != null) enemyCharacter.CombatComponent.HookedToCharacter = GameCharacter;
@@ -171,7 +171,7 @@ public class FistWeapon : WeaponBase
 	{
 		IDamage damageInterface = GetDamageInterface(hitObj);
 		if (damageInterface == null) return;
-		damageInterface.DoDamage(GameCharacter, 10);
+		damageInterface.DoDamage(GameCharacter, GetDamage());
 
 	}
 
@@ -179,7 +179,7 @@ public class FistWeapon : WeaponBase
 	{
 		IDamage damageInterface = GetDamageInterface(hitObj);
 		if (damageInterface == null) return;
-		damageInterface.DoDamage(GameCharacter, 10);
+		damageInterface.DoDamage(GameCharacter, GetDamage());
 
 		HeavyAttackLogic(hitObj);
 	}
@@ -202,7 +202,7 @@ public class FistWeapon : WeaponBase
 	{
 		IDamage damageInterface = GetDamageInterface(hitObj);
 		if (damageInterface == null) return;
-		damageInterface.DoDamage(GameCharacter, 10);
+		damageInterface.DoDamage(GameCharacter, GetDamage());
 
 		if (AttackIndex == 2)
 		{
@@ -217,7 +217,7 @@ public class FistWeapon : WeaponBase
 	{
 		IDamage damageInterface = GetDamageInterface(hitObj);
 		if (damageInterface == null) return;
-		damageInterface.DoDamage(GameCharacter, 10);
+		damageInterface.DoDamage(GameCharacter, GetDamage());
 
 		if (ComboIndexInSameAttack > 0)
 		{
@@ -245,7 +245,7 @@ public class FistWeapon : WeaponBase
 	{
 		IDamage damageInterface = GetDamageInterface(hitObj);
 		if (damageInterface == null) return;
-		damageInterface.DoDamage(GameCharacter, 10);
+		damageInterface.DoDamage(GameCharacter, GetDamage());
 
 		HeavyAttackLogic(hitObj);
 	}
@@ -314,7 +314,7 @@ public class FistWeapon : WeaponBase
 	{
 		IDamage damageInterface = GetDamageInterface(hitObject);
 		if (damageInterface == null) return;
-		damageInterface.DoDamage(GameCharacter, 10);
+		damageInterface.DoDamage(GameCharacter, GetDamage());
 
 		GameCharacter enemyCharacter = hitObject.GetComponent<GameCharacter>();
 		if (enemyCharacter == null) return;

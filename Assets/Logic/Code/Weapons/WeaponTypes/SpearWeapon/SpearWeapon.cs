@@ -100,14 +100,14 @@ public class SpearWeapon : WeaponBase
 	{
 		IDamage damageInterface = GetDamageInterface(hitObj);
 		if (damageInterface == null) return;
-		damageInterface.DoDamage(GameCharacter, 10);
+		damageInterface.DoDamage(GameCharacter, GetDamage());
 	}
 
 	public override void GroundUpAttackHit(GameObject hitObj)
 	{
 		IDamage damageInterface = GetDamageInterface(hitObj);
 		if (damageInterface == null) return;
-		damageInterface.DoDamage(GameCharacter, 10);
+		damageInterface.DoDamage(GameCharacter, GetDamage());
 
 		if (!groundUpAttackhit)
 		{
@@ -119,7 +119,7 @@ public class SpearWeapon : WeaponBase
 	{
 		IDamage damageInterface = GetDamageInterface(hitObj);
 		if (damageInterface == null) return;
-		damageInterface.DoDamage(GameCharacter, 10);
+		damageInterface.DoDamage(GameCharacter, GetDamage());
 
 		GameCharacter enemyCharacter = hitObj.GetComponent<GameCharacter>();
 		if (enemyCharacter == null) return;
@@ -130,7 +130,7 @@ public class SpearWeapon : WeaponBase
 	{
 		IDamage damageIterface = hitObj.GetComponent<IDamage>();
 		if (damageIterface == null) return;
-		damageIterface.DoDamage(GameCharacter, 10);
+		damageIterface.DoDamage(GameCharacter, GetDamage());
 
 		if (AttackIndex == 2)
 		{
@@ -144,7 +144,7 @@ public class SpearWeapon : WeaponBase
 	{
 		IDamage damageInterface = GetDamageInterface(hitObj);
 		if (damageInterface == null) return;
-		damageInterface.DoDamage(GameCharacter, 10);
+		damageInterface.DoDamage(GameCharacter, GetDamage());
 
 		if (AttackIndex == 2)
 		{
@@ -158,7 +158,7 @@ public class SpearWeapon : WeaponBase
 	{
 		IDamage damageInterface = GetDamageInterface(hitObj);
 		if (damageInterface == null) return;
-		damageInterface.DoDamage(GameCharacter, 10);
+		damageInterface.DoDamage(GameCharacter, GetDamage());
 		GameCharacter enemyCharacter = hitObj.GetComponent<GameCharacter>();
 		if (enemyCharacter == null || enemyCharacter.StateMachine == null || enemyCharacter.CombatComponent == null) return;
 		if (enemyCharacter.StateMachine.CanSwitchToStateOrIsState(EGameCharacterState.PullCharacterOnHorizontalLevel))
@@ -187,7 +187,7 @@ public class SpearWeapon : WeaponBase
 	{
 		IDamage damageInterface = GetDamageInterface(hitObj);
 		if (damageInterface == null) return;
-		damageInterface.DoDamage(GameCharacter, 10);
+		damageInterface.DoDamage(GameCharacter, GetDamage());
 
 		GameCharacter enemyCharacter = hitObj.GetComponent<GameCharacter>();
 		if (enemyCharacter == null) return;
@@ -248,7 +248,7 @@ public class SpearWeapon : WeaponBase
 	{
 		IDamage damageInterface = GetDamageInterface(hitObject);
 		if (damageInterface == null) return;
-		damageInterface.DoDamage(GameCharacter, 10);
+		damageInterface.DoDamage(GameCharacter, GetDamage());
 	}
 
 	public override void PostAttackStateLogic(float deltaTime)
@@ -368,7 +368,7 @@ public class SpearWeapon : WeaponBase
 		hitgameCharacter.CombatComponent.MoveToPosition = GameCharacter.transform.position + GameCharacter.transform.forward * 1f;
 
 		hitgameCharacter.StateMachine.RequestStateChange(EGameCharacterState.MoveToPosition);
-		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].DefensiveAction.Count > 0) DefensiveActionAimLogic(ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].DefensiveAction, EAnimationType.Trigger);
+		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].DefensiveAction.Count > 0) DefensiveActionAimLogic(ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].DefensiveAction, EAnimationType.Trigger, false);
 		
 	}
 

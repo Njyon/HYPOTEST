@@ -32,6 +32,7 @@ public class PlayerGameCharacter : GameCharacter
 		if (!IsInitialized) return;
 		base.Update();
 		combatRatingComponent?.Update(Time.deltaTime);
+		Ultra.Utilities.Instance.DebugLogOnScreen("Current StyleRank => " + combatRatingComponent.CurrentValue, 0f, StringColor.Red);
 
 	}
 
@@ -47,10 +48,10 @@ public class PlayerGameCharacter : GameCharacter
 		combatRatingComponent.OnGotHit(damageInitiator, damage);
 	}
 
-	protected override void AddRatingOnHit()
+	protected override void AddRatingOnHit(float damage)
 	{
-		base.AddRatingOnHit();
-		combatRatingComponent.AddRatingOnHit();
+		base.AddRatingOnHit(damage);
+		combatRatingComponent.AddRatingOnHit(damage);
 
 	}
 

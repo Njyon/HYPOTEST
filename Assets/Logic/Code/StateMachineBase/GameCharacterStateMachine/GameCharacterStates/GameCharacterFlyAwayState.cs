@@ -16,6 +16,8 @@ public class GameCharacterFlyAwayState : AGameCharacterState
 
 		GameCharacter.CombatComponent.FlyAwayTimer.onTimerFinished += OnTimerFinished;
 		GameCharacter.CombatComponent.FlyAwayTimer.Start(GameCharacter.CombatComponent.FlyAwayTime);
+		GameCharacter.MovementComponent.StopGravityInterp();
+		GameCharacter.MovementComponent.VariableGravityMultiplierOverTime = 1;
 
 		GameCharacter.AnimController.FlyAway = true;
 	}

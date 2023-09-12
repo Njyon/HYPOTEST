@@ -82,6 +82,7 @@ public class GameCharacterHookedToCharacterState : AGameCharacterState
 	public override void EndState(EGameCharacterState newState)
 	{
 		GameCharacter.MovementComponent.UseGravity = true;
+		GameCharacter.MovementComponent.InterpGravityUp();
 
 	}
 

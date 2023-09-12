@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 public enum EAttackType
 {
@@ -13,10 +14,21 @@ public enum EAttackType
 	AttackDown
 }
 
+public enum EComboChangeType
+{
+	Add,
+	TimerEnds,
+	Break,
+}
+
 public class CombatComponent
 {
 	public delegate void OnWeaponChanged(WeaponBase newWeapon, WeaponBase oldWeapon);
 	public OnWeaponChanged onWeaponChanged;
+	public OnWeaponChanged onNextWeapon;
+
+	public delegate void OnComboCountChanged(int newComboCount, int oldColboCount, EComboChangeType type);
+	public OnComboCountChanged onComboCountChanged;
 
 	public delegate void OnAttack(ref ShelfList<AttackAnimationData> lastAttacks);
 	public OnAttack onAttack;
@@ -42,6 +54,10 @@ public class CombatComponent
 	float flyAwayTime = 1f;
 	ShelfList<AttackAnimationData> previousAttacks;
 	int equipedWeapons = 0;
+	int comboCount = 0;
+	Ultra.Timer comboTimer = new Ultra.Timer();
+	float comboTime = 2f;
+
 
 	public ScriptableWeapon[] Weapons { get { return  weapons; } }
 	public Ultra.Timer AttackTimer { get { return attackTimer; } }
@@ -59,6 +75,7 @@ public class CombatComponent
 	public float FlyAwayTime { get { return flyAwayTime; } set { flyAwayTime = value; } }
 	public ShelfList<AttackAnimationData> PreviousAttacks { get { return previousAttacks; } }
 	public int EquipedWeapons { get { return equipedWeapons; } }	
+	public int ComboCount { get { return comboCount; } }
 
 	public WeaponBase NextWeapon
 	{
@@ -67,7 +84,10 @@ public class CombatComponent
 		{
 			if (nextWeapon == value) return;
 
+			WeaponBase oldNextWeapon = nextWeapon;
 			nextWeapon = value;
+
+			if (onNextWeapon != null) onNextWeapon(nextWeapon, oldNextWeapon);
 		}
 	}
 
@@ -139,6 +159,8 @@ public class CombatComponent
 		attackTimer = new Ultra.Timer(0f, true);
 		defensiveTimer = new Ultra.Timer(0f, true);
 		flyAwayTimer = new Ultra.Timer(0f, true);
+		comboTimer = new Ultra.Timer(comboTime, true);
+		comboTimer.onTimerFinished += OnComboTimerFinished;
 
 		gameCharacter.StateMachine.onStateChanged += OnStateChanged;
 	}
@@ -148,6 +170,7 @@ public class CombatComponent
 		if (attackTimer != null) attackTimer.Update(deltaTime);
 		if (defensiveTimer != null) defensiveTimer.Update(deltaTime);
 		if (flyAwayTimer != null) flyAwayTimer.Update(deltaTime);
+		if (comboTimer != null) comboTimer.Update(deltaTime);
 		if (CurrentWeapon != null) CurrentWeapon.UpdateWeapon(deltaTime);
 
 		if (NextWeapon != null)
@@ -303,5 +326,31 @@ public class CombatComponent
 				gameCharacter.FreezTimeOverride = freezTime;
 			}
 		}
+	}
+
+	public void AddCombo()
+	{
+		SetCombo(ComboCount + 1, EComboChangeType.Add);
+		comboTimer.Start(comboTime);
+	}
+
+	void OnComboTimerFinished()
+	{
+		SetCombo(0, EComboChangeType.TimerEnds);
+	}
+
+	public void ComboBreak()
+	{
+		SetCombo(0, EComboChangeType.Break);
+	}
+
+	void SetCombo(int newCombo, EComboChangeType type)
+	{
+		if (newCombo == comboCount) return;
+
+		int oldComboCount = comboCount;
+		comboCount = newCombo;
+
+		if (onComboCountChanged != null) onComboCountChanged(comboCount, oldComboCount, type);
 	}
 }

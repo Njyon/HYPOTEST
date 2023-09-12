@@ -10,7 +10,7 @@ public class ScriptableWeapon : ScriptableObject
 	[HideInInspector] public string WeaponClassName;
 	[HideInInspector] public WeaponBase Weapon;
 	public ScriptableWeaponMeshData WeaponMeshData;
-	public float MaxChargeAmount = 100;
+	public float MaxChargeAmount = 1000;
 	public float TimeAfterEqupingMaxChargedWeapon = 3f;
 	public GameObject UIElement;
 	public Sprite WeaponImage;
