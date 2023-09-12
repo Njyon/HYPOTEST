@@ -12,6 +12,8 @@ public class ScriptableWeapon : ScriptableObject
 	public ScriptableWeaponMeshData WeaponMeshData;
 	public float MaxChargeAmount = 100;
 	public float TimeAfterEqupingMaxChargedWeapon = 3f;
+	public GameObject UIElement;
+	public Sprite WeaponImage;
 
 
 }

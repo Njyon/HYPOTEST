@@ -9,6 +9,7 @@ public class PlayerGameCharacter : GameCharacter
 	PlayerUI playerUI;
 
 	public PlayerUI PlayerUI { get { return playerUI; } }
+	public CombatRatingComponent CombatRatingComponent { get { return combatRatingComponent; } }
 
 	protected override void Awake()
 	{
