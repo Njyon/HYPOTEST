@@ -61,6 +61,7 @@ public class GameCharacterMoveToPositionState : AGameCharacterState
 	{
 		GameCharacter.AnimController.InFreez = false;
 		GameCharacter.MovementComponent.UseGravity = true;
+		GameCharacter.MovementComponent.InterpGravityUp();
 		GameCharacter.MovementComponent.MovementVelocity = Vector3.zero;
 		if (GameCharacter.CombatComponent.HookedToCharacter != null) GameCharacter.CombatComponent.HookedToCharacter.CharacterMoveToPositionStateAbort(GameCharacter);
 		GameCharacter.MovementComponent.onMoveCollisionFlag -= OnMoveCollisionFlag;

@@ -1,7 +1,6 @@
 using MoreMountains.Feedbacks;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,7 +21,14 @@ public class PlayerUI : UIBase
 
 	[Header("Weapons")]
 	[SerializeField] List<GameObject> weaponAnkers;
-	List<WeaponVisualizer> weaponUIs = new List<WeaponVisualizer>(); 
+	List<WeaponVisualizer> weaponUIs = new List<WeaponVisualizer>();
+
+	[Header("Combo")]
+	[SerializeField] TMPro.TextMeshProUGUI comboText;
+	[SerializeField] MMF_Player comboAddFeedback;
+	[SerializeField] MMF_Player comboEndFeedback;
+	[SerializeField] MMF_Player comboBreakFeedback;
+	[SerializeField] MMF_Player comboShowFeedback;
 
 	PlayerGameCharacter gameCharacter;
 
@@ -33,6 +39,7 @@ public class PlayerUI : UIBase
 		SetRankImage();
 		gameCharacter.CombatRatingComponent.onStyleRankingChanged += OnStyleRankingChanged;
 		gameCharacter.CombatRatingComponent.onCurrentValueChange += OnStyleValueChanged;
+		gameCharacter.CombatComponent.onComboCountChanged += OnComboCountChanged;
 		InitHealthbar();
 
 		for (int i = 0; i < gameCharacter.CombatComponent.Weapons.Length; i++)
@@ -40,9 +47,11 @@ public class PlayerUI : UIBase
 			if (gameCharacter.CombatComponent.Weapons[i] == null) continue;
 			GameObject uiElement = GameObject.Instantiate(gameCharacter.CombatComponent.Weapons[i].UIElement, weaponAnkers[i].transform);
 			WeaponVisualizer weaponVisualizer = uiElement.GetComponent<WeaponVisualizer>();
-			weaponVisualizer.InitWeaponVisualizer(gameCharacter.CombatComponent.Weapons[i].Weapon, i);
+			weaponVisualizer.InitWeaponVisualizer(gameCharacter.CombatComponent.Weapons[i].Weapon, gameCharacter);
 			weaponUIs.Add(weaponVisualizer);
 		}
+
+		comboText.alpha = 0f;
 	}
 
 	void OnDestroy()
@@ -150,5 +159,25 @@ public class PlayerUI : UIBase
 	void OnStyleValueChanged(float newValue, float oldValue)
 	{
 		SetRankImageFill();
+	}
+
+	void OnComboCountChanged(int newComboCount, int oldComboCount, EComboChangeType type)
+	{
+		switch(type)
+		{
+			case EComboChangeType.Break:
+				if (oldComboCount == 0) return;
+				comboBreakFeedback?.PlayFeedbacks();
+					break;
+			case EComboChangeType.TimerEnds:
+				if (oldComboCount == 0) return;
+				comboEndFeedback?.PlayFeedbacks();
+					break;
+			default:
+				comboText.text = newComboCount + "x";
+				comboAddFeedback?.PlayFeedbacks();
+				if (oldComboCount == 0) comboShowFeedback?.PlayFeedbacks();
+				break;
+		}
 	}
 }

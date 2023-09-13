@@ -1,10 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using Unity.VisualScripting.Antlr3.Runtime.Collections;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public enum EExplicitAttackType
 {
@@ -36,7 +33,10 @@ public enum EAttackAnimType
 
 public abstract class WeaponBase
 {
-    GameCharacter gameCharacter;
+	public delegate void OnChargeValueChanged(float newCharge, float oldCharge);
+	public OnChargeValueChanged onChargeValueChanged;
+
+	GameCharacter gameCharacter;
     ScriptableWeapon weaponData;
     GameObject spawnedWeapon;
     GameObject spawnedWeaponBones;
@@ -81,8 +81,13 @@ public abstract class WeaponBase
 		get { return charge; } 
 		set { 
 			value = Mathf.Clamp(value, 0, weaponData.MaxChargeAmount);
-			if (!MaxChargeAfterEquipTimer.IsRunning) 
+			if (!MaxChargeAfterEquipTimer.IsRunning)
+			{
+				float oldChargeValue = charge;
 				charge = value; 
+
+				if (onChargeValueChanged != null) onChargeValueChanged(charge, oldChargeValue);
+			}
 			chargeAfterTime = value;
 		} 
 	}
@@ -404,9 +409,9 @@ public abstract class WeaponBase
 		currentAttack = attackList[attackIndex];
 	}
 
-	void GetDefensiveAnimation(ref List<AttackAnimationData> defensiveList)
+	void GetDefensiveAnimation(ref List<AttackAnimationData> defensiveList, bool updateAttackType = true)
 	{
-		currentAttackType = EExplicitAttackType.DefensiveAction;
+		if (updateAttackType) currentAttackType = EExplicitAttackType.DefensiveAction;
 		defensiveActionIndex++;
 		if (defensiveList == null || defensiveList.Count <= 0) return;
 		defensiveActionIndex = defensiveActionIndex % defensiveList.Count;
@@ -465,9 +470,9 @@ public abstract class WeaponBase
 		return currentDefensiveAction;
 	}
 
-	protected AttackAnimationData DefensiveActionAimLogic(ref List<AttackAnimationData> defensiveList, EAnimationType animType)
+	protected AttackAnimationData DefensiveActionAimLogic(ref List<AttackAnimationData> defensiveList, EAnimationType animType, bool upDateAttackType = true)
 	{
-		GetDefensiveAnimation(ref defensiveList);
+		GetDefensiveAnimation(ref defensiveList, upDateAttackType);
 		AimBlendSpace(ref defensiveList, animType);
 		gameCharacter.PluginStateMachine.AddPluginState(EPluginCharacterState.Aim);
 		gameCharacter.StateMachine.RequestStateChange(EGameCharacterState.DefensiveAction);
@@ -807,5 +812,12 @@ public abstract class WeaponBase
 	void OnMaxChargeAfterEquipTimerFinished()
 	{
 		Charge = chargeAfterTime;
+	}
+
+	protected virtual float GetDamage()
+	{
+		float chargeValue = Ultra.Utilities.Remap(Charge, 0, weaponData.MaxChargeAmount, 0.2f, 1f);
+		//Ultra.Utilities.Instance.DebugLogOnScreen("Damage => " + CurrentAttack.extraData.Damage, 1f, StringColor.Magenta);
+		return chargeValue * CurrentAttack.extraData.Damage;
 	}
 }

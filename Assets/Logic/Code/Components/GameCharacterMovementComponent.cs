@@ -482,6 +482,11 @@ public class GameCharacterMovementComponent : MonoBehaviour
 		return true;
 	}
 
+	public void StopGravityInterp()
+	{
+		StopCoroutine(InterpGravity(0));
+	}
+
 	public void InterpGravityUp(float time = 1f)
 	{
 		StopCoroutine(InterpGravity(time));

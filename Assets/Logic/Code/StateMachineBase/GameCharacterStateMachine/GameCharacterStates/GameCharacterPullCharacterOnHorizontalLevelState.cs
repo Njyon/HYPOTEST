@@ -69,6 +69,7 @@ public class GameCharacterPullCharacterOnHorizontalLevelState : AGameCharacterSt
 	{
 		GameCharacter.MovementComponent.onMoveCollisionFlag -= OnMoveCollisionFlag;
 		GameCharacter.MovementComponent.UseGravity = true;
+		GameCharacter.MovementComponent.InterpGravityUp();
 		GameCharacter.MovementComponent.SetLayerToDefault();
 	}
 

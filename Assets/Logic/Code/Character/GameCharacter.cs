@@ -249,6 +249,9 @@ public class GameCharacter : MonoBehaviour , IDamage
 	{
 		Ultra.Utilities.Instance.DebugLogOnScreen(name + " got Damaged by: " + damageInitiator.name + ", Damage = " + damage, 2f, StringColor.Red, 200, DebugAreas.Combat);
 		Health.AddCurrentValue(-damage);
+		damageInitiator.combatComponent.AddCombo();
+		CombatComponent.ComboBreak();
+
 		if (CombatComponent.CanRequestFreez())
 		{
 			if (StateMachine.GetCurrentStateType() == EGameCharacterState.Freez)
@@ -263,7 +266,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 		
 		animController.TriggerAdditiveHit();
 		OnDamaged(damageInitiator, damage);
-		damageInitiator.AddRatingOnHit();
+		damageInitiator.AddRatingOnHit(damage);
 	}
 
 	protected virtual void OnDamaged(GameCharacter damageInitiator, float damage)
@@ -271,7 +274,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 
 	}
 
-	protected virtual void AddRatingOnHit()
+	protected virtual void AddRatingOnHit(float damage)
 	{
 
 	}
