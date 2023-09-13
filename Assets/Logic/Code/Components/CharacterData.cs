@@ -5,6 +5,12 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+public enum RigType
+{
+	Unknown,
+	Dummy,
+}
+
 public class GameCharacterData : MonoBehaviour
 {
 	[Header("MovementData")]
@@ -59,6 +65,9 @@ public class GameCharacterData : MonoBehaviour
 	[Header("Data")]
 	[SerializeField] SkinnedMeshRenderer meshRenderer;
 
+	[Header("RigType")]
+	[SerializeField] RigType rigType = RigType.Unknown;
+
 	public float MaxMovementSpeed { get { return maxMovementSpeed; } }
 	public float MovmentGravity { get { return movmentGravity; } }
 	public float Acceleration { get { return acceleration; } }	
@@ -101,4 +110,6 @@ public class GameCharacterData : MonoBehaviour
 	public int CombatAttackListLenght { get { return combatAttackListLenght; } }
 
 	public SkinnedMeshRenderer MeshRenderer { get { return meshRenderer; } }
+
+	public RigType RigType { get {  return rigType; } }
 }
