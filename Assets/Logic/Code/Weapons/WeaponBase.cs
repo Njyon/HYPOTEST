@@ -216,6 +216,10 @@ public abstract class WeaponBase
 					spawnedWeapon.transform.rotation = Quaternion.Euler(spawnedWeapon.transform.rotation.eulerAngles + WeaponData.WeaponMeshData.WeaponRotationEuler);
 					spawnedWeapon.transform.localScale = WeaponData.WeaponMeshData.WeaponScale;
 					break;
+				case EWeaponHandType.NoHands:
+					if (weaponData.WeaponMeshData.WeaponMesh == null) break;
+					spawnedWeapon = GameObject.Instantiate(WeaponData.WeaponMeshData.WeaponMesh, gameCharacter.transform);
+					break;
 				default:
 					break;
 			}

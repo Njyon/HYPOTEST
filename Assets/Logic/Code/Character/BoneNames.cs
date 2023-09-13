@@ -1,0 +1,82 @@
+using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.XR;
+
+
+public static class DummyCharacterBones
+{
+	public static string root = "root";
+	public static string rootX = "root.x";
+	public static string spine_01X = "spine_01.x";
+	public static string spine_02X = "spine_02.x";
+	public static string neckX = "neck.x";
+	public static string headX = "head.x";
+	public static string shoulderL = "shoulder.l";
+	public static string arm_stretchL = "arm_stretch.l";
+	public static string arm_twistL = "arm_twist.l";
+	public static string forearm_stretchL = "forearm_stretch.l";
+	public static string forearm_twistL = "forearm_twist.l";
+	public static string handL = "hand.l";
+	public static string index1_baseL = "index1_base.l";
+	public static string index1L = "index1.l";
+	public static string index2L = "index2.l";
+	public static string index3L = "index3.l";
+	public static string middle1_baseL = "middle1_base.l";
+	public static string middle1L = "middle1.l";
+	public static string middle2L = "middle2.l";
+	public static string middle3L = "middle3.l";
+	public static string pinky1_baseL = "pinky1_base.l";
+	public static string pinky1L = "pinky1.l";
+	public static string pinky2L = "pinky2.l";
+	public static string pinky3L = "pinky3.l";
+	public static string ring1_baseL = "ring1_base.l";
+	public static string ring1L = "ring1.l";
+	public static string ring2L = "ring2.l";
+	public static string ring3L = "ring3.l";
+	public static string thumb1L = "thumb1.l";
+	public static string thumb2L = "thumb2.l";
+	public static string thumb3L = "thumb3.l";
+	public static string weaponL = "weapon.l";
+	public static string shoulderR = "shoulder.r";
+	public static string arm_stretchR = "arm_stretch.r";
+	public static string arm_twistR = "arm_twist.r";
+	public static string forearm_stretchR = "forearm_stretch.r";
+	public static string forearm_twistR = "forearm_twist.r";
+	public static string handR = "hand.r";
+	public static string index1_baseR = "index1_base.r";
+	public static string index1R = "index1.r";
+	public static string index2R = "index2.r";
+	public static string index3R = "index3.r";
+	public static string middle1_baseR = "middle1_base.r";
+	public static string middle1R = "middle1.r";
+	public static string middle2R = "middle2.r";
+	public static string middle3R = "middle3.r";
+	public static string pinky1_baseR = "pinky1_base.r";
+	public static string pinky1R = "pinky1.r";
+	public static string pinky2R = "pinky2.r";
+	public static string pinky3R = "pinky3.r";
+	public static string ring1_baseR = "ring1_base.r";
+	public static string ring1R = "ring1.r";
+	public static string ring2R = "ring2.r";
+	public static string ring3R = "ring3.r";
+	public static string thumb1R = "thumb1.r";
+	public static string thumb2R = "thumb2.r";
+	public static string thumb3R = "thumb3.r";
+	public static string weaponR = "weapon.r";
+	public static string thigh_stretchL = "thigh_stretch.l";
+	public static string leg_stretchL = "leg_stretch.l";
+	public static string footL = "foot.l";
+	public static string toes_01L = "toes_01.l";
+	public static string leg_twistL = "leg_twist.l";
+	public static string thigh_twistL = "thigh_twist.l";
+	public static string thigh_stretchR = "thigh_stretch.r";
+	public static string leg_stretchR = "leg_stretch.r";
+	public static string footR = "foot.r";
+	public static string toes_01R = "toes_01.r";
+	public static string leg_twistR = "leg_twist.r";
+	public static string thigh_twistR = "thigh_twist.r";
+
+}
+

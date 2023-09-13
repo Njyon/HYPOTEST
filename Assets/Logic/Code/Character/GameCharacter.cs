@@ -14,6 +14,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 	ScriptableCharacter characterData;
 	CombatComponent combatComponent;
 	GameCharacterMovementComponent movementComponent;
+	RigDataComponent rigDataComponent;
 	Rigidbody rigidbody;
 	Vector2 movementInput;
 	int currentJumpAmount = 0;
@@ -51,6 +52,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 	public float FreezTimeOverride { get { return freezTimeOverride; } set { freezTimeOverride = value; } }	
 	public CharacterDetection CharacterDetection { get { return characterDetection; } }
 	public Vector3 LastDir { get { return lastDir; } set { lastDir = value; } }
+	public RigDataComponent RigDataComponent { get { return rigDataComponent; } }
 	public float CharacterRadiusTarget
 	{
 		get { return characterRadiusTarget; }
@@ -97,6 +99,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 
 	public virtual void CustomAwake()
 	{
+		rigDataComponent = gameObject.AddComponent<RigDataComponent>();
 		movementComponent = gameObject.GetComponent<GameCharacterMovementComponent>();
 		if (movementComponent == null) Debug.LogError("GameObject: " + name + " Does not have an GameCharacterMovementComponent Attached!");
 		eventComponent = new EventComponent();
