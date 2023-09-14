@@ -1191,6 +1191,83 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: -180, z: -150.609}
+--- !u!1 &1505616942
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1505616944}
+  - component: {fileID: 1505616943}
+  m_Layer: 0
+  m_Name: Test
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1505616943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1505616942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97672047d59919945853bfeb83fdc913, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BehaviorTreeAsset: {fileID: 11400000, guid: 5b13895354ef83d44aa265eb565486be, type: 2}
+  TickMode: 1
+  AutoEnable: 1
+  <OnEnabled>k__BackingField: 64
+  <OnDisabled>k__BackingField: 128
+  InitOption:
+    AsyncInit: 1
+    SharedMeta: 1
+    LazyInitSubtree: 0
+    UseGenerateCode: 0
+    DelayRandomFrame:
+      Enabled: 0
+      Value: 30
+  RunOption:
+    FrameInterval:
+      Enabled: 0
+      Value: 1
+    TimeInterval:
+      Enabled: 0
+      Value: 0.1
+    RealtimeInterval:
+      Enabled: 0
+      Value: 0.1
+    <Log>k__BackingField: 0
+    <Order>k__BackingField: 0
+    <OnSucceeded>k__BackingField: 0
+    <OnFailed>k__BackingField: 0
+  OverrideUnityObjectRef: []
+  OverrideVariables:
+    Table: []
+  references:
+    version: 2
+    RefIds: []
+--- !u!4 &1505616944
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1505616942}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.6859808, y: -4.165018, z: 6.107029}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 15
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1573478507
 GameObject:
   m_ObjectHideFlags: 0

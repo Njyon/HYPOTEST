@@ -1,0 +1,183 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 222ab640ecb54be459294968cc1449eb, type: 3}
+  m_Name: NodeGeneraotr
+  m_EditorClassIdentifier: 
+  OutputFolder: {fileID: 102900000, guid: 35de0703654dd0144955ac937e1eb5ad, type: 3}
+  MultiThreading: 1
+  Define:
+    Enabled: 0
+    Value: Test
+  Assemblys:
+  - Enabled: 0
+    Value: Assembly-CSharp
+  Types:
+  - Enabled: 1
+    Value: UnityEngine.Animation
+  - Enabled: 1
+    Value: UnityEngine.Animator
+  - Enabled: 1
+    Value: UnityEngine.AudioSource
+  - Enabled: 1
+    Value: UnityEngine.BoxCollider
+  - Enabled: 1
+    Value: UnityEngine.BoxCollider2D
+  - Enabled: 1
+    Value: UnityEngine.Camera
+  - Enabled: 1
+    Value: UnityEngine.CapsuleCollider
+  - Enabled: 1
+    Value: UnityEngine.CharacterController
+  - Enabled: 1
+    Value: UnityEngine.CircleCollider2D
+  - Enabled: 1
+    Value: UnityEngine.Collider
+  - Enabled: 1
+    Value: UnityEngine.GameObject
+  - Enabled: 1
+    Value: UnityEngine.Input
+  - Enabled: 1
+    Value: UnityEngine.Light
+  - Enabled: 1
+    Value: UnityEngine.Mathf
+  - Enabled: 1
+    Value: UnityEngine.AI.NavMeshAgent
+  - Enabled: 1
+    Value: UnityEngine.ParticleSystem
+  - Enabled: 1
+    Value: UnityEngine.Physics
+  - Enabled: 1
+    Value: UnityEngine.Physics2D
+  - Enabled: 1
+    Value: UnityEngine.PlayerPrefs
+  - Enabled: 1
+    Value: UnityEngine.Quaternion
+  - Enabled: 1
+    Value: UnityEngine.Renderer
+  - Enabled: 1
+    Value: UnityEngine.Rigidbody
+  - Enabled: 1
+    Value: UnityEngine.Rigidbody2D
+  - Enabled: 1
+    Value: UnityEngine.SphereCollider
+  - Enabled: 1
+    Value: UnityEngine.Time
+  - Enabled: 1
+    Value: UnityEngine.Playables.PlayableDirector
+  - Enabled: 1
+    Value: UnityEngine.Transform
+  - Enabled: 1
+    Value: UnityEngine.Vector2
+  - Enabled: 1
+    Value: UnityEngine.Vector2Int
+  - Enabled: 1
+    Value: UnityEngine.Vector3
+  - Enabled: 1
+    Value: UnityEngine.Vector3Int
+  - Enabled: 1
+    Value: UnityEngine.Vector4
+  - Enabled: 1
+    Value: UnityEngine.SceneManagement.SceneManager
+  IgnoreGeneratedClass:
+  - Input_IsJoystickPreconfigured_String
+  - Light_SetLightDirty
+  - Light_shadowAngle
+  - Light_shadowRadius
+  - Quaternion_Item
+  - Vector2_Item
+  - Vector2Int_Item
+  - Vector3_Item
+  - Vector3Int_Item
+  - Vector4_Item
+  - Vector4Int_Item
+  - Input_IsJoystickPreconfigured_String_Node
+  - Input_IsJoystickPreconfigured_String_Decorator
+  - Input_IsJoystickPreconfigured_String_Method_Decorator
+  - Light_SetLightDirty_Node
+  - Light_SetLightDirty_Decorator
+  - Light_shadowAngle_Decorator
+  - Light_shadowRadius_Decorator
+  - Quaternion_Item_Decorator
+  - Vector2_Item_Decorator
+  - Vector2Int_Item_Decorator
+  - Vector3_Item_Decorator
+  - Vector3Int_Item_Decorator
+  - Vector4_Item_Decorator
+  - Vector4Int_Item_Decorator
+  - ParticleSystem_GetParticles_NativeArray_1_Particle
+  - ParticleSystem_GetParticles_NativeArray_1_Particle_Int32_Int32
+  - ParticleSystem_GetParticles_NativeArray_1_Particle_Int32
+  - ParticleSystem_SetParticles_NativeArray_1_Particle
+  - ParticleSystem_SetParticles_NativeArray_1_Particle_Int32_Int32
+  - ParticleSystem_SetParticles_NativeArray_1_Particle_Int32
+  - ParticleSystem_GetParticles_NativeArray_1_Particle_Node
+  - ParticleSystem_GetParticles_NativeArray_1_Particle_Int32_Int32_Node
+  - ParticleSystem_GetParticles_NativeArray_1_Particle_Int32_Node
+  - ParticleSystem_SetParticles_NativeArray_1_Particle_Node
+  - ParticleSystem_SetParticles_NativeArray_1_Particle_Int32_Int32_Node
+  - ParticleSystem_SetParticles_NativeArray_1_Particle_Int32_Node
+  ObsoleteAPIInFuture:
+  - Physics2D_alwaysShowColliders
+  - Physics2D_contactArrowScale
+  - Physics2D_showColliderAABB
+  - Physics2D_showColliderContacts
+  - Physics2D_showColliderSleep
+  - Physics2D_velocityThreshold
+  - Physics_autoSimulation
+  - Physics_RebuildBroadphaseRegions_Bounds_Int32
+  - Physics2D_alwaysShowColliders_Decorator
+  - Physics2D_contactArrowScale_Decorator
+  - Physics2D_showColliderAABB_Decorator
+  - Physics2D_showColliderContacts_Decorator
+  - Physics2D_showColliderSleep_Decorator
+  - Physics2D_velocityThreshold_Decorator
+  - Physics_autoSimulation_Decorator
+  - Physics_RebuildBroadphaseRegions_Bounds_Int32_Node
+  - Physics2D_alwaysShowColliders_Get_Node
+  - Physics2D_alwaysShowColliders_Set_Node
+  - Physics2D_contactArrowScale_Get_Node
+  - Physics2D_contactArrowScale_Set_Node
+  - Physics2D_showColliderAABB_Get_Node
+  - Physics2D_showColliderAABB_Set_Node
+  - Physics2D_showColliderContacts_Get_Node
+  - Physics2D_showColliderContacts_Set_Node
+  - Physics2D_showColliderSleep_Get_Node
+  - Physics2D_showColliderSleep_Set_Node
+  - Physics2D_velocityThreshold_Get_Node
+  - Physics2D_velocityThreshold_Set_Node
+  - Physics_autoSimulation_Get_Node
+  - Physics_autoSimulation_Get_Node
+  ReplaceIcon:
+  - Type: UnityEngine.Input
+    IconPath: standaloneinputmodule icon
+    Icon: {fileID: 0}
+  - Type: UnityEngine.Mathf
+    IconPath: d_collabcreate icon
+    Icon: {fileID: 0}
+  - Type: UnityEngine.Time
+    IconPath: d_unityeditor.animationwindow@2x
+    Icon: {fileID: 0}
+  ReplaceCategory:
+  - oldValue: UnityEngine/AI
+    newValue: UnityEngine
+  - oldValue: UnityEngine/Playables
+    newValue: UnityEngine
+  - oldValue: UnityEngine/SceneManagement
+    newValue: UnityEngine
+  Field2GetNode: 1
+  Field2SetNode: 1
+  Field2Deco: 1
+  Proterty2GetNode: 1
+  Proterty2SetNode: 1
+  Proterty2Deco: 1
+  Method2Node: 1
+  Method2Deco: 1
