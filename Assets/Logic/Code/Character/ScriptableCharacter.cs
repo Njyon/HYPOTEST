@@ -1,3 +1,4 @@
+using Megumin.GameFramework.AI.BehaviorTree;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,4 +10,5 @@ public class ScriptableCharacter : ScriptableObject
 	public GameObject CharacterPrefab;
 	[HideInInspector] public string ControllerName;
 	public CharacterAnimationData CharacterAnimationData;
+	public BehaviorTreeAsset_1_1 behaviourTree;
 }

@@ -21,7 +21,7 @@ public class GameModeBase : MonoBehaviour
 	public PlayerGameCharacter PlayerGameCharacter 
 	{ 
 		get {
-			if (playerCharacter == null) playerCharacter = FindObjectOfType<PlayerGameCharacter>();
+			if (playerCharacter == null) playerCharacter = Ultra.HypoUttilies.GetPlayerGameCharacter();
 			return playerCharacter; 
 		} 
 	}

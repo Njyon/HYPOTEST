@@ -22,6 +22,16 @@ namespace Megumin.Binding
         [UnityEngine.SerializeReference]
         public List<IRefable> Table = new();
 
+        public bool Contains(string name)
+        {
+            foreach(IRefable item in Table)
+            {
+                if (item.RefName == name)
+                    return true;
+            }
+            return false;
+        }
+
         public bool TryGetParam(string name, out IRefable variable)
         {
             var first = Table.FirstOrDefault(elem => elem.RefName == name);

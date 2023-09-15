@@ -11,8 +11,11 @@ namespace Megumin.GameFramework.AI.BehaviorTree
 {
     public class BehaviorTreeRunner : MonoBehaviour
     {
-        //[field: SerializeField]
-        public BehaviorTree BehaviourTree { get; protected set; }
+        public delegate void OnBehaviourTreeInit();
+        public OnBehaviourTreeInit onBehaviourTreeInit;
+
+		//[field: SerializeField]
+		public BehaviorTree BehaviourTree { get; protected set; }
         public BehaviorTreeAsset_1_1 BehaviorTreeAsset;
         public TickMode TickMode = TickMode.Update;
 
@@ -111,7 +114,10 @@ namespace Megumin.GameFramework.AI.BehaviorTree
                 OverrideVariables?.ParseBinding(agent, true);
                 BehaviourTree.ParseAllBindable(agent);
 
-                if (InitOption.DelayRandomFrame.Enabled)
+                if (BehaviourTree != null && onBehaviourTreeInit != null) onBehaviourTreeInit();
+
+
+				if (InitOption.DelayRandomFrame.Enabled)
                 {
                     var wait = UnityEngine.Random.Range(0, InitOption.DelayRandomFrame);
                     await WaitFrames(wait);
@@ -122,7 +128,9 @@ namespace Megumin.GameFramework.AI.BehaviorTree
             {
                 BehaviorTreeManager.Instance.AddTree(BehaviourTree, TickMode);
                 BehaviourTree.IsRunning = true;
-            }
+
+				if (BehaviourTree != null && onBehaviourTreeInit != null) onBehaviourTreeInit();
+			}
 
             isIniting = false;
         }

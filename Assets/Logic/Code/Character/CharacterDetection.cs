@@ -40,7 +40,6 @@ public class CharacterDetection : MonoBehaviour
 	{
 		if (other.transform == this.transform.parent)
 		{
-			Debug.LogError("Should Never Happen!");
 			return;
 		}
 
