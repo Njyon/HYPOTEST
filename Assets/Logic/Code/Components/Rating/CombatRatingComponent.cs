@@ -116,6 +116,7 @@ public class CombatRatingComponent : RecourceBase
 			AddCurrentValue(-(CurrentValue / 2));
 			foreach (ScriptableWeapon sWeapon in gameCharacter.CombatComponent.Weapons)
 			{
+				if (sWeapon == null || sWeapon.Weapon == null) continue;
 				sWeapon.Weapon.Charge /= 2;
 			}
 			UpdateStyleRank();
