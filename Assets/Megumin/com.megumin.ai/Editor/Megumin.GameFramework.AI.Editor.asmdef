@@ -1,0 +1,32 @@
+{
+    "name": "Megumin.GameFramework.AI.Editor",
+    "rootNamespace": "Megumin.GameFramework.AI.Editor",
+    "references": [
+        "Megumin.Common",
+        "Megumin.Reflection",
+        "Megumin.GameFramework.AI",
+        "Unity.Settings.Editor",
+        "Megumin.Explosion4Unity",
+        "Megumin.Binding",
+        "Megumin.Binding.Editor",
+        "Megumin.Serialization",
+        "Megumin.Serialization.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.megumin.explosion4unity",
+            "expression": "4.0.0",
+            "define": "MEGUMIN_EXPLOSION4UNITY"
+        }
+    ],
+    "noEngineReferences": false
+}

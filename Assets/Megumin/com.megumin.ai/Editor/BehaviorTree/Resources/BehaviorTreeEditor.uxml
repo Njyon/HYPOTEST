@@ -1,0 +1,34 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Packages/com.megumin.ai/Editor/BehaviorTree/Resources/BehaviorTreeEditor.uss?fileID=7433441132597879392&amp;guid=132ed6f68d8f6db4d8135ba9b7ab7781&amp;type=3#BehaviorTreeEditor" />
+    <Style src="project://database/Packages/com.megumin.ai/Editor/BehaviorTree/Resources/BehaviorTreeNodeView.uss?fileID=7433441132597879392&amp;guid=2c83cb8392a86ce4fbab7c0424257963&amp;type=3#BehaviorTreeNodeView" />
+    <Style src="project://database/Packages/com.megumin.ai/Editor/BehaviorTree/Resources/BehaviorTreeDebug.uss?fileID=7433441132597879392&amp;guid=d7c2147ca3c887d42ae706c1b3c12ed2&amp;type=3#BehaviorTreeDebug" />
+    <Style src="project://database/Packages/com.megumin.ai/Editor/BehaviorTree/Resources/BehaviorTreeDecoratorView.uss?fileID=7433441132597879392&amp;guid=cb9b1b6b6642f954f8d6b3ea1d580658&amp;type=3#BehaviorTreeDecoratorView" />
+    <uie:Toolbar name="toolbar">
+        <uie:ToolbarButton text="Save Asset" display-tooltip-when-elided="true" name="saveAsset" class="topbar-button" />
+        <uie:ToolbarSpacer />
+        <uie:ToolbarMenu tabindex="-1" display-tooltip-when-elided="true" text="Save As..." name="saveAs" />
+        <uie:ToolbarSpacer />
+        <uie:ToolbarButton text="Show In Project" display-tooltip-when-elided="true" name="showInProject" class="topbar-button" />
+        <uie:ToolbarSpacer />
+        <uie:ToolbarMenu tabindex="-1" display-tooltip-when-elided="true" text="File" name="file" />
+        <uie:ToolbarMenu tabindex="-1" display-tooltip-when-elided="true" text="Edit" name="edit" />
+        <uie:ToolbarMenu tabindex="-1" display-tooltip-when-elided="true" text="Prefs" name="prefs" />
+        <uie:ToolbarSpacer />
+        <uie:ToolbarButton text="ShowTree" display-tooltip-when-elided="true" name="showTreeWapper" class="topbar-button" style="display: none;" />
+        <uie:ToolbarSpacer style="display: none;" />
+        <uie:ToolbarButton text="ReloadView" display-tooltip-when-elided="true" name="reloadView" class="topbar-button" />
+        <uie:ToolbarSpacer />
+        <Megumin.GameFramework.AI.BehaviorTree.Editor.UnityObjectView name="debugInstanceGameObject" />
+        <uie:ToolbarSpacer style="flex-grow: 1;" />
+        <uie:ToolbarToggle label="Variables" name="blackboard" class="topbar-button" />
+        <uie:ToolbarSpacer />
+        <uie:ToolbarToggle label="Graph Inspector" name="graphInspector" class="topbar-button" style="display: none;" />
+        <uie:ToolbarSpacer style="display: none;" />
+        <uie:ToolbarMenu tabindex="-1" display-tooltip-when-elided="true" text="Help" name="help" />
+    </uie:Toolbar>
+    <Megumin.GameFramework.AI.BehaviorTree.Editor.BehaviorTreeView name="behaviorTreeView" class="behaviorTreeView" />
+    <uie:Toolbar name="bottomBar" style="background-color: rgba(60, 60, 60, 0.25); position: absolute; bottom: 0; left: 0; right: 0; border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom-width: 1px; border-left-color: rgb(204, 126, 26); border-right-color: rgb(204, 126, 26); border-top-color: rgb(204, 126, 26); border-bottom-color: rgb(204, 126, 26); height: 28px; display: none;">
+        <ui:Label text="Label" display-tooltip-when-elided="true" name="debugInstanceName" style="flex-grow: 1; display: none;" />
+        <uie:ObjectField label="Object Field" name="debugInstanceGameObject" />
+    </uie:Toolbar>
+</ui:UXML>

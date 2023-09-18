@@ -1,6 +1,22 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+[Serializable]
+public class DummyRigOffsets
+{
+	public TransformOffsets ankleL;
+	public TransformOffsets ankleR;
+	public TransformOffsets gaunteltL;
+	public TransformOffsets gaunteltR;
+	public TransformOffsets lowerLegL;
+	public TransformOffsets lowerLegR;
+	public TransformOffsets midFeetL;
+	public TransformOffsets midFeetR;
+	public TransformOffsets toeL;
+	public TransformOffsets toeR;
+}
 
 public class EquipFistWeaponScript : MonoBehaviour
 {
@@ -14,6 +30,8 @@ public class EquipFistWeaponScript : MonoBehaviour
 	[SerializeField] GameObject midFeetR;
 	[SerializeField] GameObject toeL;
 	[SerializeField] GameObject toeR;
+
+	[SerializeField] DummyRigOffsets dummyOffsets;
 
 	GameCharacter gameCharacter;
 
@@ -60,26 +78,26 @@ public class EquipFistWeaponScript : MonoBehaviour
 
 	void EquitWeaponOnDummyRig()
 	{
-		SetUpObjectWithBone(ankleL, DummyCharacterBones.leg_twistL);
-		SetUpObjectWithBone(ankleR, DummyCharacterBones.leg_twistR);
-		SetUpObjectWithBone(gaunteltL, DummyCharacterBones.forearm_twistL);
-		SetUpObjectWithBone(gaunteltR, DummyCharacterBones.forearm_twistR);
-		SetUpObjectWithBone(lowerLegL, DummyCharacterBones.leg_stretchL);
-		SetUpObjectWithBone(lowerLegR, DummyCharacterBones.leg_stretchR);
-		SetUpObjectWithBone(midFeetL, DummyCharacterBones.footL);
-		SetUpObjectWithBone(midFeetR, DummyCharacterBones.footR);
-		SetUpObjectWithBone(toeL, DummyCharacterBones.toes_01L);
-		SetUpObjectWithBone(toeR, DummyCharacterBones.toes_01R);
+		SetUpObjectWithBone(ankleL, DummyCharacterBones.footL, dummyOffsets.ankleL);
+		SetUpObjectWithBone(ankleR, DummyCharacterBones.footR, dummyOffsets.ankleR);
+		SetUpObjectWithBone(gaunteltL, DummyCharacterBones.forearm_twistL, dummyOffsets.gaunteltL);
+		SetUpObjectWithBone(gaunteltR, DummyCharacterBones.forearm_twistR, dummyOffsets.gaunteltR);
+		SetUpObjectWithBone(lowerLegL, DummyCharacterBones.leg_stretchL, dummyOffsets.lowerLegL);
+		SetUpObjectWithBone(lowerLegR, DummyCharacterBones.leg_stretchR, dummyOffsets.lowerLegR);
+		SetUpObjectWithBone(midFeetL, DummyCharacterBones.footL, dummyOffsets.midFeetL);
+		SetUpObjectWithBone(midFeetR, DummyCharacterBones.footR, dummyOffsets.midFeetR);
+		SetUpObjectWithBone(toeL, DummyCharacterBones.toes_01L, dummyOffsets.toeL);
+		SetUpObjectWithBone(toeR, DummyCharacterBones.toes_01R, dummyOffsets.toeR);
 	}
 
-	private void SetUpObjectWithBone(GameObject obj, string boneName)
+	private void SetUpObjectWithBone(GameObject obj, string boneName, TransformOffsets offset)
 	{
 		Transform newParent = null;
 		if (gameCharacter.RigDataComponent.Bones.TryGetValue(boneName, out newParent))
 		{
 			obj.transform.parent = newParent;
-			obj.transform.localPosition = Vector3.zero;
-			obj.transform.localRotation = Quaternion.identity;
+			obj.transform.localPosition = offset.offset;
+			obj.transform.localEulerAngles = offset.eulerRotationOffset;
 		}
 		else
 		{

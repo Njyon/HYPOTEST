@@ -223,6 +223,15 @@ namespace Ultra
 			{
 				return gameModes[0];
 			}
+			// Backup for Editor modus
+			Ultra.Utilities.Instance.DebugLogOnScreen("Created Default GameMode backup!", 10f, StringColor.Red);
+			Debug.Log("Created Default GameMode backup!");
+			GameModeBase gamemode = CreateGameMode<StoryGameMode>();
+			gamemode.GameDifficultyLevel = GameDifficultyLevel.Normal;
+			if (gameModes != null)
+			{
+				return gamemode;
+			}
 			Debug.Log(Ultra.Utilities.Instance.DebugErrorString("HypoUttilies", "GetGameMode", "GameMode was null!"));
 			return null;
 		}
