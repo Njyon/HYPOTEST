@@ -2,6 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum HyppoliteTeam
+{
+	TeamPlayer,
+	TeamEnemy,
+}
+
 public abstract class ControllerBase : MonoBehaviour
 {
 	protected GameObject pawn;
@@ -17,4 +23,5 @@ public abstract class ControllerBase : MonoBehaviour
 		pawn = null;
 		characterData = null;
 	}
+	protected abstract void OnGameCharacterDied();
 }

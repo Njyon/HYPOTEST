@@ -24,4 +24,5 @@ public class GameAssets : MonoBehaviour
     public GameObject ThrowSpear;
     public GameObject characterDetection;
 	public List<StyleRankingScriptableObject> styleRanks = new List<StyleRankingScriptableObject>();
+    public GameObject EnemyInfo;
 }

@@ -28,8 +28,17 @@ public class PlayerController : ControllerBase
 		gameCharacter.CharacterData = characterData;
 		gameCharacter.IsPlayerCharacter = true;
 		gameCharacter.CustomAwake();
+		gameCharacter.Team = HyppoliteTeam.TeamPlayer;
 		GameCharacterMovementComponent movementComponent = pawn.GetComponent<GameCharacterMovementComponent>();
 		if (movementComponent != null) movementComponent.SetupGameCharacter(gameCharacter);
+
+		gameCharacter.onGameCharacterDied += OnGameCharacterDied;
+	}
+
+	protected override void OnGameCharacterDied()
+	{
+		playerInputs.Default.Disable();
+		gameCharacter?.EventComponent?.AddEvent(null);
 	}
 
 	private void SetupCamera(GameObject pawn)

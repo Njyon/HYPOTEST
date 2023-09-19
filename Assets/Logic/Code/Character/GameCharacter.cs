@@ -1,3 +1,4 @@
+using EasyButtons;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -5,6 +6,9 @@ using UnityEngine;
 
 public class GameCharacter : MonoBehaviour , IDamage
 {
+	public delegate void OnGameCharacterDied();
+	public OnGameCharacterDied onGameCharacterDied;
+
 	GameCharacterStateMachine stateMachine;
 	GameCharacterPluginStateMachine pluginStateMachine;
 	GameCharacterData gameCharacterData;
@@ -21,6 +25,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 	Vector3 lastDir;
 	bool isPlayerCharacter = false;
 	RecourceBase health;
+	StaggerComponent staggerComponent;
 	Quaternion rotationTarget;
 	Ultra.Timer freezTimer;
 	float freezTime = 1f;
@@ -28,6 +33,8 @@ public class GameCharacter : MonoBehaviour , IDamage
 	float characterRadiusTarget;
 	float characterHeightTarget;
 	CharacterDetection characterDetection;
+	bool isGameCharacterDead = false;
+	HyppoliteTeam team;
 
 	bool isInitialized = false;
 	public bool IsInitialized { get { return isInitialized; } }
@@ -46,6 +53,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 	public Rigidbody Rigidbody { get { return rigidbody; } }
 	public bool IsPlayerCharacter { get {  return isPlayerCharacter; } set { isPlayerCharacter = value; } }
 	public RecourceBase Health { get { return health; } }
+	public StaggerComponent StaggerComponent { get { return staggerComponent; } }
 	public Quaternion RotationTarget { get { return rotationTarget; } set { rotationTarget = value; } }
 	public Ultra.Timer FreezTimer { get { return freezTimer; } }
 	public float FreezTime { get { return freezTime; } }	
@@ -53,6 +61,12 @@ public class GameCharacter : MonoBehaviour , IDamage
 	public CharacterDetection CharacterDetection { get { return characterDetection; } }
 	public Vector3 LastDir { get { return lastDir; } set { lastDir = value; } }
 	public RigDataComponent RigDataComponent { get { return rigDataComponent; } }
+	public HyppoliteTeam Team { get { return team; } set { team = value; } }
+	public bool IsGameCharacterDead 
+	{ 
+		get { return isGameCharacterDead; } 
+		private set { isGameCharacterDead = value; }
+	}
 	public float CharacterRadiusTarget
 	{
 		get { return characterRadiusTarget; }
@@ -121,6 +135,8 @@ public class GameCharacter : MonoBehaviour , IDamage
 		health = new RecourceBase(gameCharacterData.Health, gameCharacterData.Health);
 		health.onCurrentValueChange += OnHealthValueChanged;
 
+		staggerComponent = new StaggerComponent(this, gameCharacterData.StaggerTime, gameCharacterData.MaxStaggerValue, gameCharacterData.MaxStaggerValue);
+
 		isInitialized = true;
 	}
 
@@ -148,6 +164,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 
 		animController.Update(Time.deltaTime);
 		if (Health != null) Health.Update(Time.deltaTime);
+		if (StaggerComponent != null) StaggerComponent.Update(Time.deltaTime);
 
 
 		
@@ -250,9 +267,14 @@ public class GameCharacter : MonoBehaviour , IDamage
 
 	public void DoDamage(GameCharacter damageInitiator, float damage)
 	{
+		if (damageInitiator != null)
+		{
+			if (CheckForSameTeam(damageInitiator.Team)) return;
+		}
 		Ultra.Utilities.Instance.DebugLogOnScreen(name + " got Damaged by: " + damageInitiator.name + ", Damage = " + damage, 2f, StringColor.Red, 200, DebugAreas.Combat);
 		Health.AddCurrentValue(-damage);
-		damageInitiator.combatComponent.AddCombo();
+		StaggerComponent.AddCurrentValue(-damage);
+		damageInitiator?.combatComponent.AddCombo();
 		CombatComponent.ComboBreak();
 
 		if (CombatComponent.CanRequestFreez())
@@ -269,7 +291,12 @@ public class GameCharacter : MonoBehaviour , IDamage
 		
 		animController.TriggerAdditiveHit();
 		OnDamaged(damageInitiator, damage);
-		damageInitiator.AddRatingOnHit(damage);
+		damageInitiator?.AddRatingOnHit(damage);
+	}
+
+	public bool CheckForSameTeam(HyppoliteTeam team)
+	{
+		return Team == team;
 	}
 
 	protected virtual void OnDamaged(GameCharacter damageInitiator, float damage)
@@ -359,7 +386,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 		if (newHealthAmount <= 0)
 		{
 			// Character Dead
-			Ultra.Utilities.Instance.DebugLogOnScreen(name + " Is Dead", 2f, StringColor.White, 200, DebugAreas.Combat);
+			GameCharacterDied();
 		}
 	}
 
@@ -393,5 +420,31 @@ public class GameCharacter : MonoBehaviour , IDamage
 	public void RotateToDir(Vector3 dir)
 	{
 		transform.rotation = Quaternion.LookRotation(dir.normalized, Vector3.up);
+	}
+
+	void GameCharacterDied()
+	{
+		Ultra.Utilities.Instance.DebugLogOnScreen(name + " Is Dead", 2f, StringColor.White, 200, DebugAreas.Combat);
+		IsGameCharacterDead = true;
+		if (onGameCharacterDied != null) onGameCharacterDied();
+		Animator.enabled = false;
+		MovementComponent.CapsuleCollider.enabled = false;
+		MovementComponent.UnityMovementController.enabled = false;
+
+		foreach (Rigidbody rBody in rigDataComponent.RegdollRigidBodys)
+		{
+			rBody.useGravity = true;
+			rBody.isKinematic = false;
+		}
+		foreach (Collider collider in rigDataComponent.Colliders)
+		{
+			collider.enabled = true;
+		}
+	}
+
+	[Button("Die")]
+	protected virtual void DieButton()
+	{
+		health.AddCurrentValue(-health.CurrentValue);
 	}
 }

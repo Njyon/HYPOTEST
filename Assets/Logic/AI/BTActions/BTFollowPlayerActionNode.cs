@@ -27,7 +27,7 @@ public class BTFollowPlayerActionNode : BTHyppoliteActionNodeBase
 			GameCharacter.HorizontalMovementInput(0);
 		}else
 		{
-			Vector3 dirToTarget = (TargetGameCharacter.transform.position - GameCharacter.transform.position).normalized;
+			Vector3 dirToTarget = checkWithHight ? (TargetGameCharacter.transform.position - GameCharacter.transform.position).normalized : (Ultra.Utilities.IgnoreAxis(TargetGameCharacter.transform.position, EAxis.YZ) - Ultra.Utilities.IgnoreAxis(GameCharacter.transform.position, EAxis.YZ)).normalized;
 			Vector3 dirToDestinationPoint = ((TargetGameCharacter.transform.position + (-dirToTarget) * minDistanceToTarget) - GameCharacter.transform.position).normalized;
 			GameCharacter.VerticalMovmentInput(dirToDestinationPoint.y);
 			GameCharacter.HorizontalMovementInput(dirToDestinationPoint.x);

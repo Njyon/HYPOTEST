@@ -1,3 +1,4 @@
+using EasyButtons;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -66,5 +67,11 @@ public class PlayerGameCharacter : GameCharacter
 		playerUI = FindObjectOfType<PlayerUI>();
 		if (playerUI != null)
 			playerUI.Init(this);
+	}
+
+	[Button("Die")]
+	protected override void DieButton()
+	{
+		base.DieButton();
 	}
 }

@@ -48,6 +48,17 @@ public class GameCharacterWeaponReadyPluginState : AGameCharacterPluginState
 
 	public override bool WantsToBeActive()
 	{
+		switch(GameCharacter.StateMachine.GetCurrentStateType())
+		{
+			case EGameCharacterState.Freez:
+			case EGameCharacterState.HookedToCharacter:
+			case EGameCharacterState.PullCharacterOnHorizontalLevel:
+			case EGameCharacterState.MoveToPosition:
+			case EGameCharacterState.FlyAway: 
+				return false;
+			default:
+				break;
+		}
 		return true;
 	}
 
