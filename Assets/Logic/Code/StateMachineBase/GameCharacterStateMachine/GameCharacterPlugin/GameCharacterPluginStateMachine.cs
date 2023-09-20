@@ -11,6 +11,7 @@ public enum EPluginCharacterState
 	WeaponReady,
 	Aim,
 	MovementOverride,
+	LookInVelocityDirection,
 }
 
 public class GameCharacterPluginStateMachine : PluginStateMachineBase<EPluginCharacterState>

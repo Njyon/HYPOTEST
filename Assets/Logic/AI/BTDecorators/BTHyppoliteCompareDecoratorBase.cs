@@ -50,16 +50,16 @@ public abstract class BTHyppoliteCompareDecoratorBase<T> : CompareDecorator<T> w
 				{
 					targetGameCharacter = gc.Value;
 				}
-				if (targetGameCharacter == null)
-				{
-					targetGameCharacter = Ultra.HypoUttilies.GetGameMode().PlayerGameCharacter;
-					Tree.Variable.TrySetValue<GameCharacter>("Target", targetGameCharacter);
-
-					if (targetGameCharacter == null)
-					{
-						Debug.Log("Target was null in Behaviour Tree, but still used BTHyppoliteActionNodeBase... something is fucked!");
-					}
-				}
+				//if (targetGameCharacter == null)
+				//{
+				//	targetGameCharacter = Ultra.HypoUttilies.GetGameMode().PlayerGameCharacter;
+				//	Tree.Variable.TrySetValue<GameCharacter>("Target", targetGameCharacter);
+				//
+				//	if (targetGameCharacter == null)
+				//	{
+				//		Debug.Log("Target was null in Behaviour Tree, but still used BTHyppoliteActionNodeBase... something is fucked!");
+				//	}
+				//}
 
 			}
 			return targetGameCharacter;
