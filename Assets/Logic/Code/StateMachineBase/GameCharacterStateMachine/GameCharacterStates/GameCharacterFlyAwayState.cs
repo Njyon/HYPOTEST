@@ -79,6 +79,7 @@ public class GameCharacterFlyAwayState : AGameCharacterState
 	{
 		Vector3 invertedMoveDir = GameCharacter.MovementComponent.MovementVelocity.normalized * -1;
 		invertedMoveDir = new Vector3(invertedMoveDir.x, 0f, 0f);
+		if (invertedMoveDir == Vector3.zero) return;
 		GameCharacter.transform.rotation = Quaternion.LookRotation(invertedMoveDir.normalized, Vector3.up);
 		SetFlyAwayDir();
 	}

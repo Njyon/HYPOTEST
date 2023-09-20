@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using static GameCharacterMovementComponent;
 
 public class FistWeapon : WeaponBase
 {
@@ -160,9 +159,13 @@ public class FistWeapon : WeaponBase
 		damageInterface.DoDamage(GameCharacter, GetDamage());
 		GameCharacter enemyCharacter = hitObj.GetComponent<GameCharacter>();
 		if (enemyCharacter == null) return;
-		if (enemyCharacter.CombatComponent != null) enemyCharacter.CombatComponent.HookedToCharacter = GameCharacter;
-		HookCharacterToCharacter(enemyCharacter);
-		if (enemyCharacter.StateMachine != null) enemyCharacter.StateMachine.RequestStateChange(EGameCharacterState.HookedToCharacter);
+
+		if (enemyCharacter.CombatComponent.CanGetHooked())
+		{
+			if (enemyCharacter.CombatComponent != null) enemyCharacter.CombatComponent.HookedToCharacter = GameCharacter;
+			HookCharacterToCharacter(enemyCharacter);
+			if (enemyCharacter.StateMachine != null) enemyCharacter.StateMachine.RequestStateChange(EGameCharacterState.HookedToCharacter);
+		}
 	}
 
 	
@@ -233,7 +236,7 @@ public class FistWeapon : WeaponBase
 		if (damageInterface == null) return;
 		GameCharacter enemyCharacter = hitObj.GetComponent<GameCharacter>();
 		if (enemyCharacter == null || enemyCharacter.StateMachine == null || enemyCharacter.CombatComponent == null) return;
-		if (enemyCharacter.StateMachine.CanSwitchToStateOrIsState(EGameCharacterState.HookedToCharacter))
+		if (enemyCharacter.CombatComponent.CanGetHooked() && enemyCharacter.StateMachine.CanSwitchToStateOrIsState(EGameCharacterState.HookedToCharacter))
 		{
 			enemyCharacter.CombatComponent.HookedToCharacter = GameCharacter;
 			HookCharacterToCharacter(enemyCharacter);

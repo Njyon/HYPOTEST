@@ -305,12 +305,26 @@ public class CombatComponent
 
 	public bool CanRequestFlyAway()
 	{
-		return true;
+		if (gameCharacter.IsGameCharacterDead) return false;
+		return gameCharacter.StaggerComponent.IsStaggerable;
 	}
 
 	public bool CanRequestFreez()
 	{
-		return true;
+		if (gameCharacter.IsGameCharacterDead) return false;
+		return gameCharacter.StaggerComponent.IsStaggerable;
+	}
+
+	public bool CanGetHooked()
+	{
+		if (gameCharacter.IsGameCharacterDead) return false;
+		return gameCharacter.StaggerComponent.IsStaggerable;
+	}
+
+	public bool CanRequestMoveTo()
+	{
+		if (gameCharacter.IsGameCharacterDead) return false;
+		return gameCharacter.StaggerComponent.IsStaggerable;
 	}
 
 	public void RequestFreez(float freezTime = 1f)

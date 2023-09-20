@@ -55,6 +55,10 @@ public class GameCharacterData : MonoBehaviour
 	[Header("Health")]
 	[SerializeField] float health = 100f;
 
+	[Header("Stagger")]
+	[SerializeField] float maxStaggerValue;
+	[SerializeField] float staggerTime = 3f;
+
 	[Header("Bones")]
 	[SerializeField] Transform root;
 
@@ -67,6 +71,9 @@ public class GameCharacterData : MonoBehaviour
 
 	[Header("RigType")]
 	[SerializeField] RigType rigType = RigType.Unknown;
+
+	[Header("Enemy")]
+	[SerializeField] Vector3 enemyInfoOffset = new Vector3(0, 5f, 0);
 
 	public float MaxMovementSpeed { get { return maxMovementSpeed; } }
 	public float MovmentGravity { get { return movmentGravity; } }
@@ -104,6 +111,9 @@ public class GameCharacterData : MonoBehaviour
 
 	public float Health { get { return health; } }
 
+	public float MaxStaggerValue { get { return maxStaggerValue; } }
+	public float StaggerTime { get { return staggerTime; } }
+
 	public Transform Root { get { return root; } }
 
 	public float CharacterDetectionRange { get { return characterDetectionRange; } }
@@ -112,4 +122,6 @@ public class GameCharacterData : MonoBehaviour
 	public SkinnedMeshRenderer MeshRenderer { get { return meshRenderer; } }
 
 	public RigType RigType { get {  return rigType; } }
+
+	public Vector3 EnemyInfoOffset { get { return enemyInfoOffset; } }
 }

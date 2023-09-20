@@ -10,6 +10,8 @@ public class AIControllerBase : ControllerBase
 	GameCharacter gameCharacter;
 	BehaviorTreeRunner btRunner;
 
+	EnemyInfo enemyInfo;
+
 	public override void BeginPosses(GameObject pawn, ScriptableCharacter characterData)
 	{
 		base.BeginPosses(pawn, characterData);
@@ -17,7 +19,7 @@ public class AIControllerBase : ControllerBase
 		SetupGameCharacter(pawn);
 	}
 
-	private void SetupGameCharacter(GameObject pawn)
+	async private void SetupGameCharacter(GameObject pawn)
 	{
 		gameCharacter = pawn.AddComponent<GameCharacter>();
 		gameCharacter.CharacterData = characterData;
@@ -31,6 +33,20 @@ public class AIControllerBase : ControllerBase
 			btRunner.onBehaviourTreeInit += InitCustomBehaviourTreeValues;
 			btRunner.EnableTree();
 		}
+
+		gameCharacter.onGameCharacterDied += OnGameCharacterDied;
+		gameCharacter.Team = HyppoliteTeam.TeamEnemy;
+
+		await new WaitUntil(() => UIManager.Instance.Canvas != null);
+		enemyInfo = UIManager.Instance.GetEnemyInfo(gameCharacter);
+	}
+
+	protected override void OnGameCharacterDied()
+	{
+		btRunner.DisableTree();
+		btRunner.enabled = false;
+
+		UIManager.Instance.ReturnEnemyInfo(enemyInfo);
 	}
 
 	protected virtual void InitBehaviourTreeValues()

@@ -31,12 +31,28 @@ public class UIManager : Singelton<UIManager>
 	[SerializeField] string loadingScreenName = "LoadingSceneUI";
 	[SerializeField] string playerUISceneName = "PlayerUIScene";
 
+	Canvas canvas;
+	public Canvas Canvas { 
+		get 
+		{ 
+			if (canvas == null)
+			{
+				canvas = FindObjectOfType<Canvas>();
+			}
+			return canvas; 
+		} 
+	}
 
 	Stack<UIStackELement> uiStack = new Stack<UIStackELement>();
 
 	public Stack<UIStackELement> UIStack { get { return uiStack; } }	
 
 	bool showTitelScreen = true;
+
+	Stack<EnemyInfo> enemyInfoStack;
+	bool NoMoreEnemyInfo => enemyInfoStack.Count <= 0;
+	bool IsEnemyStackInit => enemyInfoStack != null;
+	int enemyStackMinSize = 5;
 
 	void Awake()
 	{
@@ -167,5 +183,46 @@ public class UIManager : Singelton<UIManager>
 		uiStack.Peek().uiClass.onRemoveUI -= RemoveUI;
 		UnloadScene(uiStack.Pop().name, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects, null);
 		LoadSceneAsync(uiStack.Peek().name, LoadSceneMode.Additive, null);
+	}
+
+	public EnemyInfo GetEnemyInfo(GameCharacter character)
+	{
+		if (character == null) return null;
+		if (!IsEnemyStackInit) InitEnemyStack();
+	
+		if (NoMoreEnemyInfo)
+			SpawnEnemyInfo();
+		EnemyInfo enemyInfo = enemyInfoStack.Pop();
+		enemyInfo.gameObject.SetActive(true);
+		enemyInfo.Init(character);
+		return enemyInfo;
+	}
+
+	public void ReturnEnemyInfo(EnemyInfo enemyInfo)
+	{
+		enemyInfo.gameObject.SetActive(false);
+		enemyInfoStack.Push(enemyInfo);
+	}
+
+	void InitEnemyStack()
+	{
+		enemyInfoStack = new Stack<EnemyInfo>();
+		for (int i = 0; i < enemyStackMinSize; i++)
+		{
+			SpawnEnemyInfo();
+		}
+	}
+
+	private void SpawnEnemyInfo()
+	{
+		if (Canvas == null)
+		{
+			Debug.Log(Ultra.Utilities.Instance.DebugErrorString("UIManager", "InitEnemyInfo", "Canvas was null!"));
+			return;
+		}
+		GameObject enemyInfoObj = GameObject.Instantiate(GameAssets.Instance.EnemyInfo, Canvas.transform);
+		EnemyInfo enemyInfo = enemyInfoObj.GetComponent<EnemyInfo>();
+		enemyInfoStack.Push(enemyInfo);
+		enemyInfoObj.SetActive(false);
 	}
 }
