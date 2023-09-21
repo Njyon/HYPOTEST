@@ -22,11 +22,9 @@ public class GameCharacter : MonoBehaviour , IDamage
 	Rigidbody rigidbody;
 	Vector2 movementInput;
 	int currentJumpAmount = 0;
-	Vector3 lastDir;
 	bool isPlayerCharacter = false;
 	RecourceBase health;
 	StaggerComponent staggerComponent;
-	Quaternion rotationTarget;
 	Ultra.Timer freezTimer;
 	float freezTime = 1f;
 	float freezTimeOverride = 0f;
@@ -35,6 +33,8 @@ public class GameCharacter : MonoBehaviour , IDamage
 	CharacterDetection characterDetection;
 	bool isGameCharacterDead = false;
 	HyppoliteTeam team;
+	Quaternion rotationTarget;
+	Vector3 lastDir;
 
 	bool isInitialized = false;
 	public bool IsInitialized { get { return isInitialized; } }
@@ -54,13 +54,15 @@ public class GameCharacter : MonoBehaviour , IDamage
 	public bool IsPlayerCharacter { get {  return isPlayerCharacter; } set { isPlayerCharacter = value; } }
 	public RecourceBase Health { get { return health; } }
 	public StaggerComponent StaggerComponent { get { return staggerComponent; } }
-	public Quaternion RotationTarget { get { return rotationTarget; } set { rotationTarget = value; } }
 	public Ultra.Timer FreezTimer { get { return freezTimer; } }
 	public float FreezTime { get { return freezTime; } }	
 	public float FreezTimeOverride { get { return freezTimeOverride; } set { freezTimeOverride = value; } }	
 	public CharacterDetection CharacterDetection { get { return characterDetection; } }
-	public Vector3 LastDir { get { return lastDir; } set { lastDir = value; } }
 	public RigDataComponent RigDataComponent { get { return rigDataComponent; } }
+	public Quaternion RotationTarget { get { return rotationTarget; } set { rotationTarget = value; } }
+	public Vector3 LastDir { get { return lastDir; } set { lastDir = value; } }
+
+
 	public HyppoliteTeam Team { get { return team; } set { team = value; } }
 	public bool IsGameCharacterDead 
 	{ 
@@ -107,8 +109,6 @@ public class GameCharacter : MonoBehaviour , IDamage
 
 		freezTimer = new Ultra.Timer(freezTime, true);
 
-		// Set Default Data
-		lastDir = transform.right;
 	}
 
 	public virtual void CustomAwake()
@@ -127,6 +127,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 
 		GameObject characterDetectionObject = GameObject.Instantiate(GameAssets.Instance.characterDetection, transform);
 		characterDetection = characterDetectionObject.GetComponent<CharacterDetection>();
+		characterDetection.onOverlapEnter += OnCharacterDetectionOverlapEnter;
 		characterDetection.Collider.radius = gameCharacterData.CharacterDetectionRange;
 
 		animController.Start();
@@ -137,6 +138,8 @@ public class GameCharacter : MonoBehaviour , IDamage
 
 		staggerComponent = new StaggerComponent(this, gameCharacterData.StaggerTime, gameCharacterData.MaxStaggerValue, gameCharacterData.MaxStaggerValue);
 
+		PluginStateMachine.AddPluginState(EPluginCharacterState.LookInVelocityDirection);
+
 		isInitialized = true;
 	}
 
@@ -145,6 +148,11 @@ public class GameCharacter : MonoBehaviour , IDamage
 		if (health != null)
 		{
 			health.onCurrentValueChange -= OnHealthValueChanged;
+		}
+
+		if (characterDetection != null)
+		{
+			characterDetection.onOverlapEnter -= OnCharacterDetectionOverlapEnter;
 		}
 	}
 
@@ -160,7 +168,6 @@ public class GameCharacter : MonoBehaviour , IDamage
 		MovementComponent.CheckIfCharacterIsGrounded();
 		CombatComponent.UpdateComponent(Time.deltaTime);
 		MovementComponent.MoveCharacter();
-		RotateCharacterInVelocityDirection();
 
 		animController.Update(Time.deltaTime);
 		if (Health != null) Health.Update(Time.deltaTime);
@@ -185,33 +192,6 @@ public class GameCharacter : MonoBehaviour , IDamage
 		if (IsPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen("Current Ground Angle: " + MovementComponent.GetPossibleGroundAngle(), 0f, StringColor.Teal, 200, DebugAreas.Misc);
 	}
 
-	private void RotateCharacterInVelocityDirection()
-	{
-		switch (StateMachine.GetCurrentStateType())
-		{
-			case EGameCharacterState.Attack: case EGameCharacterState.AttackRecovery:
-			case EGameCharacterState.DefensiveAction: case EGameCharacterState.FlyAway:
-			case EGameCharacterState.MoveToPosition:
-				return;
-			default: break;
-		}
-
-		if (Mathf.Abs(MovementComponent.MovementVelocity.x) >= 0.2f) lastDir = new Vector3(MovementComponent.MovementVelocity.x, 0, 0);
-		if (lastDir == Vector3.zero) return;
-		rotationTarget = Quaternion.LookRotation(lastDir.normalized, Vector3.up);
-		Quaternion targetRot = Quaternion.Slerp(transform.rotation, rotationTarget, Time.deltaTime * gameCharacterData.RoationSpeed);
-		Vector3 dir = transform.rotation * Vector3.forward;
-		Vector3 cross = Vector3.Cross(lastDir.normalized, dir);
-		float sign = Mathf.Sign(cross.y);
-		if (Ultra.Utilities.IsNearlyEqual(cross, Vector3.zero, 0.2f))
-		{
-			sign = 0f;
-		}
-		// invert sign because of lerping rotation
-		animController.RotationTrarget = sign *-1;
-		transform.rotation = targetRot;
-		//Ultra.Utilities.DrawArrow(transform.position, targetRot * Vector3.forward, 10, Color.green);
-	}
 	
 
 	private void LateUpdate()
@@ -446,5 +426,10 @@ public class GameCharacter : MonoBehaviour , IDamage
 	protected virtual void DieButton()
 	{
 		health.AddCurrentValue(-health.CurrentValue);
+	}
+
+	protected virtual void OnCharacterDetectionOverlapEnter(GameCharacter other)
+	{
+		
 	}
 }

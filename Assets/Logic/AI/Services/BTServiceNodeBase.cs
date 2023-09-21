@@ -3,14 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BTHyppoliteActionNodeBase : BTActionNode
+public class BTServiceNodeBase : OneChildNode
 {
 	GameCharacter gameCharacter;
 	GameCharacter targetGameCharacter;
 
-	public GameCharacter GameCharacter { 
-		get 
-		{ 
+	public GameCharacter GameCharacter
+	{
+		get
+		{
 			if (gameCharacter == null)
 			{
 				if (Tree.Variable.TryGetParam<GameCharacter>("Self", out var gc))
@@ -25,19 +26,20 @@ public class BTHyppoliteActionNodeBase : BTActionNode
 						{
 							gameCharacter = go.Value.GetComponent<GameCharacter>();
 							Tree.Variable.TrySetValue<GameCharacter>("Self", gameCharacter);
-						}else
+						}
+						else
 						{
 							Debug.Log("Self and SelfObj was null in Behaviour Tree, but still used BTHyppoliteActionNodeBase... something is fucked!");
 						}
 					}
 				}
-			
 			}
-			return gameCharacter; 
-		} 
+			return gameCharacter;
+		}
 	}
 
-	public GameCharacter TargetGameCharacter { 
+	public GameCharacter TargetGameCharacter
+	{
 		get
 		{
 			if (targetGameCharacter == null)
@@ -58,7 +60,7 @@ public class BTHyppoliteActionNodeBase : BTActionNode
 				//}
 
 			}
-			return targetGameCharacter; 
-		} 
+			return targetGameCharacter;
+		}
 	}
 }

@@ -21,18 +21,19 @@ public class AIControllerBase : ControllerBase
 
 	async private void SetupGameCharacter(GameObject pawn)
 	{
-		gameCharacter = pawn.AddComponent<GameCharacter>();
+		gameCharacter = pawn.AddComponent<EnemyGameCharacter>();
 		gameCharacter.CharacterData = characterData;
-		gameCharacter.CustomAwake();
-		GameCharacterMovementComponent movementComponent = pawn.GetComponent<GameCharacterMovementComponent>();
-		if (movementComponent != null) movementComponent.SetupGameCharacter(gameCharacter);
 		if (characterData != null && characterData.behaviourTree != null)
 		{
 			btRunner = gameCharacter.AddComponent<BehaviorTreeRunner>();
 			InitBehaviourTreeValues();
 			btRunner.onBehaviourTreeInit += InitCustomBehaviourTreeValues;
-			btRunner.EnableTree();
 		}
+		gameCharacter.CustomAwake();
+		GameCharacterMovementComponent movementComponent = pawn.GetComponent<GameCharacterMovementComponent>();
+		if (movementComponent != null) movementComponent.SetupGameCharacter(gameCharacter);
+		
+		if (btRunner != null) btRunner.EnableTree();
 
 		gameCharacter.onGameCharacterDied += OnGameCharacterDied;
 		gameCharacter.Team = HyppoliteTeam.TeamEnemy;
@@ -64,7 +65,7 @@ public class AIControllerBase : ControllerBase
 
 		RefVar_GameCharacter targetRef = new RefVar_GameCharacter();
 		targetRef.RefName = "Target";
-		targetRef.Value = Ultra.HypoUttilies.GetGameMode().PlayerGameCharacter;
+		targetRef.Value = null;
 
 		if (!btRunner.BehaviourTree.Variable.Contains("Self"))
 			btRunner.BehaviourTree.InitAddVariable(selfVar);
