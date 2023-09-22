@@ -798,7 +798,8 @@ public abstract class WeaponBase
 	{
 		if (enemyCharacter.CombatComponent.CanRequestFlyAway())
 		{
-			enemyCharacter.StateMachine.RequestStateChange(EGameCharacterState.FlyAway);
+			//enemyCharacter.StateMachine.RequestStateChange(EGameCharacterState.FlyAway);
+			enemyCharacter.StateMachine.ForceStateChange(EGameCharacterState.FlyAway);
 			enemyCharacter.CombatComponent.FlyAwayTime = CurrentAttack.extraData.flyAwayTime;
 			if (Mathf.Sign(GameCharacter.transform.forward.x) < 0)
 			{

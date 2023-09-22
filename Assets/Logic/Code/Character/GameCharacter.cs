@@ -190,6 +190,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 		}
 		if (IsPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen("CurrentCharacterState: " + StateMachine.GetCurrentStateType().ToString(), 0f, StringColor.Teal, 100, DebugAreas.Movement);
 		if (IsPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen("Current Ground Angle: " + MovementComponent.GetPossibleGroundAngle(), 0f, StringColor.Teal, 200, DebugAreas.Misc);
+		if (!IsPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen("AICurrentCharacterState: " + StateMachine.GetCurrentStateType().ToString(), 0f, StringColor.Brown, 200, DebugAreas.AI);
 	}
 
 	

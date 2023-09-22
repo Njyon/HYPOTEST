@@ -131,9 +131,9 @@ public class AnimationController
 		private set {
 			if (rotationBlend != value)
 			{
-				if (Ultra.Utilities.IsNearlyEqual(value, 0, 0.001f)) value = 0;
-				rotationBlend = value;
-				gameCharacter.Animator.SetFloat(rotationBlendID, rotationBlend);
+				//if (Ultra.Utilities.IsNearlyEqual(value, 0, 0.001f)) value = 0;
+				//rotationBlend = value;
+				//gameCharacter.Animator.SetFloat(rotationBlendID, rotationBlend);
 			}
 		}
 	}

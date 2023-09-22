@@ -13,7 +13,8 @@ public enum DebugAreas
     Combat = 2,
     Animation = 4,
     Camera = 8,
-    Misc = 16,
+    AI = 16,
+    Misc = 32,
 }
 
 public enum EAxis

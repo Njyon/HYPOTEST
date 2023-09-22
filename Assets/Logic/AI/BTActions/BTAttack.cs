@@ -17,6 +17,7 @@ public class BTAttack : BTHyppoliteActionNodeBase
 
 	protected override void OnEnter(object options = null)
 	{
+		if (attackDone || attackStartet) return;
 		base.OnEnter(options);
 
 		if (GameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.Attack)
@@ -39,7 +40,7 @@ public class BTAttack : BTHyppoliteActionNodeBase
 		if (cantAttack && !attackStartet) return Status.Failed;
 		if (attackStartet) 
 			return  attackDone ? Status.Succeeded : Status.Running;
-		return Status.Failed;
+		return Status.Running;
 	}
 
 	protected override void OnExit(Status result, object options = null)
@@ -48,6 +49,19 @@ public class BTAttack : BTHyppoliteActionNodeBase
 
 		GameCharacter.HorizontalMovementInput(0);
 		GameCharacter.VerticalMovmentInput(0);
+
+		switch (result) 
+		{ 
+			case Status.Succeeded:
+			case Status.Failed:
+				attackDone = false;
+				attackStartet = false;
+				cantAttack = false;
+
+				GameCharacter.StateMachine.onStateChanged -= OnStateChanged;
+				break;
+			default: break;	
+		}
 	}
 
 	void OnStateChanged(IState<EGameCharacterState> newState, IState<EGameCharacterState> oldState)

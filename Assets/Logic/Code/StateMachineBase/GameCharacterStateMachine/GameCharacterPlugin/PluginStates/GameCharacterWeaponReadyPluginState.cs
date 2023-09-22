@@ -64,7 +64,8 @@ public class GameCharacterWeaponReadyPluginState : AGameCharacterPluginState
 
 	void OnGameCharacterStateChange(IState<EGameCharacterState> newState, IState<EGameCharacterState> oldState)
 	{
-		WeaponLayerBasedOnState(newState.GetStateType());
+		if (IsActive())
+			WeaponLayerBasedOnState(newState.GetStateType());
 	}
 
 	private void WeaponLayerBasedOnState(EGameCharacterState newState)
