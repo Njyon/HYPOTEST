@@ -14,6 +14,7 @@ public class JumpEvent : CharacterEvent
 			case EGameCharacterState.Attack: case EGameCharacterState.Freez: return false;
 			default: break;
 		}
+		if (gameCharacter.GameCharacterData.EnemyStepColliderScript.CanEnemyStep) return true;
 		if (gameCharacter.CurrentJumpAmount < gameCharacter.GameCharacterData.MaxJumps) return true;
 		return false;
 	}
@@ -25,6 +26,12 @@ public class JumpEvent : CharacterEvent
 
 	public override void StartEvent()
 	{
+		if (gameCharacter.GameCharacterData.EnemyStepColliderScript.CanEnemyStep)
+		{
+			gameCharacter.MovementComponent.EnemyStep();
+			Ultra.Utilities.Instance.DebugLogOnScreen("Succesfull EnemyStep", 2f, StringColor.White, 200, DebugAreas.Movement);
+		}
+
 		var jumpVelocity = Mathf.Sqrt(-2 * -gameCharacter.GameCharacterData.MovmentGravity * gameCharacter.GameCharacterData.JumpForce);
 		gameCharacter.MovementComponent.MovementVelocity = new Vector3(gameCharacter.MovementComponent.MovementVelocity.x, jumpVelocity, gameCharacter.MovementComponent.MovementVelocity.z);
 		gameCharacter.CurrentJumpAmount++;

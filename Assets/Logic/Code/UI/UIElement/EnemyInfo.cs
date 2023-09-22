@@ -24,6 +24,11 @@ public class EnemyInfo : MonoBehaviour
 		gameCharacter.Health.onCurrentValueChange += OnHealthValueChange;
 		gameCharacter.StaggerComponent.onCurrentValueChange += OnStaggerValueChange;
 		damageTimer.onTimerFinished += OnTimerFinished;
+
+		if (gameCharacter.StaggerComponent.MaxValue <= 0)
+		{
+			OnStaggerValueChange(gameCharacter.StaggerComponent.CurrentValue, 0);
+		}
 	}
 
 	private void OnDisable()
@@ -75,6 +80,11 @@ public class EnemyInfo : MonoBehaviour
 
 	void OnStaggerValueChange(float newValue, float oldValue)
 	{
+		if (gameCharacter.StaggerComponent.MaxValue <= 0)
+		{
+			staggerBar.fillAmount = 0;
+			return;
+        }
 		staggerBar.fillAmount = newValue / gameCharacter.StaggerComponent.MaxValue;
 	}
 }

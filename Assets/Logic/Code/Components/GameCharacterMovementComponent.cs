@@ -472,6 +472,11 @@ public class GameCharacterMovementComponent : MonoBehaviour
 		}
 	}
 
+	public void EnemyStep()
+	{
+		GroundReset();
+	}
+
 	public void GroundReset()
 	{
 		gameCharacter.CurrentJumpAmount = 0;
@@ -485,7 +490,8 @@ public class GameCharacterMovementComponent : MonoBehaviour
 
 	public void StopGravityInterp()
 	{
-		StopCoroutine(gravityCoroutine);
+		if (gravityCoroutine != null)
+			StopCoroutine(gravityCoroutine);
 	}
 
 	public void InterpGravityUp(float time = 1f)

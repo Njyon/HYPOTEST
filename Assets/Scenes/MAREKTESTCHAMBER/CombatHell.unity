@@ -376,7 +376,7 @@ Transform:
   m_GameObject: {fileID: 74542062}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.99960595, z: -0, w: -0.028071336}
-  m_LocalPosition: {x: 22.48, y: -0.61135054, z: 0.96}
+  m_LocalPosition: {x: 4.75, y: -0.61135054, z: -0.04}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -932,6 +932,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: DummyCharacterNew EnemyVersion 02
       objectReference: {fileID: 0}
+    - target: {fileID: 7877541686034229294, guid: 54f044c51f19d7649b8a406ff7697f33,
+        type: 3}
+      propertyPath: weapons.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7877541686034229294, guid: 54f044c51f19d7649b8a406ff7697f33,
+        type: 3}
+      propertyPath: weapons.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 97032131ea0fce44e8303aa40a9b6531,
+        type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

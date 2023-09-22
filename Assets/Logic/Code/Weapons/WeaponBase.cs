@@ -349,42 +349,58 @@ public abstract class WeaponBase
 
 	public virtual void GroundAttackHit(GameObject hitObj)
 	{
-
+		IDamage damageInterface = GetDamageInterface(hitObj);
+		if (damageInterface == null) return;
+		damageInterface.DoDamage(GameCharacter, GetDamage());
 	}
 
 	public virtual void GroundUpAttackHit(GameObject hitObj)
 	{
-
+		IDamage damageInterface = GetDamageInterface(hitObj);
+		if (damageInterface == null) return;
+		damageInterface.DoDamage(GameCharacter, GetDamage());
 	}
 
 	public virtual void GroundDownAttackHit(GameObject hitObj)
 	{
-
+		IDamage damageInterface = GetDamageInterface(hitObj);
+		if (damageInterface == null) return;
+		damageInterface.DoDamage(GameCharacter, GetDamage());
 	}
 
 	public virtual void GroundDirectionAttackHit(GameObject hitObj)
 	{
-
+		IDamage damageInterface = GetDamageInterface(hitObj);
+		if (damageInterface == null) return;
+		damageInterface.DoDamage(GameCharacter, GetDamage());
 	}
 
 	public virtual void AirAttackHit(GameObject hitObj)
 	{
-
+		IDamage damageInterface = GetDamageInterface(hitObj);
+		if (damageInterface == null) return;
+		damageInterface.DoDamage(GameCharacter, GetDamage());
 	}
 
 	public virtual void AirUpAttackHit(GameObject hitObj)
 	{
-
+		IDamage damageInterface = GetDamageInterface(hitObj);
+		if (damageInterface == null) return;
+		damageInterface.DoDamage(GameCharacter, GetDamage());
 	}
 
 	public virtual void AirDownAttackHit(GameObject hitObj)
 	{
-
+		IDamage damageInterface = GetDamageInterface(hitObj);
+		if (damageInterface == null) return;
+		damageInterface.DoDamage(GameCharacter, GetDamage());
 	}
 
 	public virtual void AirDirectionAttackHit(GameObject hitObj)
 	{
-
+		IDamage damageInterface = GetDamageInterface(hitObj);
+		if (damageInterface == null) return;
+		damageInterface.DoDamage(GameCharacter, GetDamage());
 	}
 
 	void SetUpWeaponAnimationData()
