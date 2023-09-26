@@ -106,9 +106,10 @@ public class GameCharacterMovementComponent : MonoBehaviour
 		unityMovementController.skinWidth = 0.01f;
 
 		characterLayerIndex = LayerMask.NameToLayer("Character");
-		defaultLayerMask = unityMovementController.excludeLayers;
 		moveThroughCharacterLayerMask = ExcludeLayerIsMask(defaultLayerMask, characterLayerIndex);
-	
+		defaultLayerMask = moveThroughCharacterLayerMask; //unityMovementController.excludeLayers;
+		SetLayerToDefault();
+
 		characterDefaultRadius = capsuleCollider.radius;
 		characterDefaultHeight = capsuleCollider.height;
 	}

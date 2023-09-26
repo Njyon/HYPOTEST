@@ -23,7 +23,7 @@ public enum EComboChangeType
 
 public class CombatComponent
 {
-	public delegate void OnWeaponChanged(WeaponBase newWeapon, WeaponBase oldWeapon);
+	public delegate void OnWeaponChanged(WeaponBase newWeapon, WeaponBase oldWeapon, GameCharacter gameCharacter);
 	public OnWeaponChanged onWeaponChanged;
 	public OnWeaponChanged onNextWeapon;
 
@@ -87,7 +87,7 @@ public class CombatComponent
 			WeaponBase oldNextWeapon = nextWeapon;
 			nextWeapon = value;
 
-			if (onNextWeapon != null) onNextWeapon(nextWeapon, oldNextWeapon);
+			if (onNextWeapon != null) onNextWeapon(nextWeapon, oldNextWeapon, gameCharacter);
 		}
 	}
 
@@ -103,7 +103,7 @@ public class CombatComponent
 			if (currentWeapon != null)
 			{
 				currentWeapon.EquipWeapon();
-				if (onWeaponChanged != null) onWeaponChanged(currentWeapon, oldWeapon);
+				if (onWeaponChanged != null) onWeaponChanged(currentWeapon, oldWeapon, gameCharacter);
 			}
 		}
 	}

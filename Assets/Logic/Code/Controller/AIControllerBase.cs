@@ -27,7 +27,7 @@ public class AIControllerBase : ControllerBase
 		{
 			btRunner = gameCharacter.AddComponent<BehaviorTreeRunner>();
 			InitBehaviourTreeValues();
-			btRunner.onBehaviourTreeInit += InitCustomBehaviourTreeValues;
+			btRunner.onBehaviourTreeInit += OnBehaviourTreeInit;
 		}
 		gameCharacter.CustomAwake();
 		GameCharacterMovementComponent movementComponent = pawn.GetComponent<GameCharacterMovementComponent>();
@@ -42,7 +42,7 @@ public class AIControllerBase : ControllerBase
 		enemyInfo = UIManager.Instance.GetEnemyInfo(gameCharacter);
 	}
 
-	protected override void OnGameCharacterDied()
+	protected override void OnGameCharacterDied(GameCharacter gameCharacter)
 	{
 		btRunner.DisableTree();
 		btRunner.enabled = false;
@@ -57,20 +57,31 @@ public class AIControllerBase : ControllerBase
 		btRunner.BehaviorTreeAsset = characterData.behaviourTree;
 	}
 
+	protected virtual void OnBehaviourTreeInit()
+	{
+		InitCustomBehaviourTreeValues();
+		AIManager.Instance.AddManagableAI(new HyppoliteManagableAI(gameCharacter, btRunner));
+	}
+
 	protected virtual void InitCustomBehaviourTreeValues()
 	{
-		RefVar_GameCharacter selfVar = new RefVar_GameCharacter();
-		selfVar.RefName = "Self";
-		selfVar.Value = null;
-
-		RefVar_GameCharacter targetRef = new RefVar_GameCharacter();
-		targetRef.RefName = "Target";
-		targetRef.Value = null;
-
 		if (!btRunner.BehaviourTree.Variable.Contains("Self"))
+		{
+			RefVar_GameCharacter selfVar = new RefVar_GameCharacter();
+			selfVar.RefName = "Self";
+			selfVar.Value = null;
+
 			btRunner.BehaviourTree.InitAddVariable(selfVar);
+		}
+
 		if (!btRunner.BehaviourTree.Variable.Contains("Target"))
+		{
+			RefVar_GameCharacter targetRef = new RefVar_GameCharacter();
+			targetRef.RefName = "Target";
+			targetRef.Value = null;
+
 			btRunner.BehaviourTree.InitAddVariable(targetRef);
+		}
 
 		//btRunner.BehaviourTree.ParseAllBindable(btRunner.BehaviourTree.Agent);
 	}

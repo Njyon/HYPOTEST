@@ -24,7 +24,7 @@ public class WeaponVisualizer : MonoBehaviour
 		if (weapon != null && weapon.WeaponData.WeaponImage != null)
 			weaponImage.sprite = weapon.WeaponData.WeaponImage;
 
-		OnNextWeapon(gameCharacter.CombatComponent.NextWeapon != null ? gameCharacter.CombatComponent.NextWeapon : gameCharacter.CombatComponent.CurrentWeapon, null);
+		OnNextWeapon(gameCharacter.CombatComponent.NextWeapon != null ? gameCharacter.CombatComponent.NextWeapon : gameCharacter.CombatComponent.CurrentWeapon, null, gameCharacter);
 		SetWeaponChargeFill();
 	}
 
@@ -45,7 +45,7 @@ public class WeaponVisualizer : MonoBehaviour
 
 	}
 
-	void OnNextWeapon(WeaponBase newWeapon, WeaponBase oldWeapon)
+	void OnNextWeapon(WeaponBase newWeapon, WeaponBase oldWeapon, GameCharacter gameCharacter)
 	{
 		if (newWeapon == null) return;
 		if (newWeapon == weapon) HightLightUI();

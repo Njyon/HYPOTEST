@@ -2,6 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum EWeaponType
+{
+	Melee,
+	Ranged,
+}
+
 [CreateAssetMenu(fileName = "New Weapon", menuName = "Assets/Weapons/Weapon")]
 public class ScriptableWeapon : ScriptableObject
 {
@@ -10,6 +16,7 @@ public class ScriptableWeapon : ScriptableObject
 	[HideInInspector] public string WeaponClassName;
 	[HideInInspector] public WeaponBase Weapon;
 	public ScriptableWeaponMeshData WeaponMeshData;
+	public EWeaponType WeaponType;
 	public float MaxChargeAmount = 1000;
 	public float TimeAfterEqupingMaxChargedWeapon = 3f;
 	public GameObject UIElement;

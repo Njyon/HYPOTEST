@@ -23,5 +23,5 @@ public abstract class ControllerBase : MonoBehaviour
 		pawn = null;
 		characterData = null;
 	}
-	protected abstract void OnGameCharacterDied();
+	protected abstract void OnGameCharacterDied(GameCharacter gameCharacter);
 }
