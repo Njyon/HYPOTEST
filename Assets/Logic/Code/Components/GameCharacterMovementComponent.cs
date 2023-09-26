@@ -37,6 +37,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	float movementOverrideTime;
 	Vector3 movementOverride;
 	float variableGravityMultiplierOverTime = 1;
+	Coroutine gravityCoroutine;
 
 	CapsuleCollider capsuleCollider;
 	public CapsuleCollider CapsuleCollider { get { return capsuleCollider; } }
@@ -471,6 +472,11 @@ public class GameCharacterMovementComponent : MonoBehaviour
 		}
 	}
 
+	public void EnemyStep()
+	{
+		GroundReset();
+	}
+
 	public void GroundReset()
 	{
 		gameCharacter.CurrentJumpAmount = 0;
@@ -484,13 +490,17 @@ public class GameCharacterMovementComponent : MonoBehaviour
 
 	public void StopGravityInterp()
 	{
-		StopCoroutine(InterpGravity(0));
+		if (gravityCoroutine != null)
+			StopCoroutine(gravityCoroutine);
 	}
 
 	public void InterpGravityUp(float time = 1f)
 	{
-		StopCoroutine(InterpGravity(time));
-		StartCoroutine(InterpGravity(time));
+		if (gameCharacter.gameObject.activeInHierarchy)
+		{
+			if (gravityCoroutine != null) StopCoroutine(gravityCoroutine);
+			gravityCoroutine = StartCoroutine(InterpGravity(time));
+		}
 	}
 
 	IEnumerator InterpGravity(float time)

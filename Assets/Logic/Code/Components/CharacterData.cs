@@ -30,6 +30,7 @@ public class GameCharacterData : MonoBehaviour
 	[SerializeField] int maxJumps = 3;
 	[SerializeField] float jumpForce = 100f;
 	[SerializeField] float gravityMultiplier = 1f;
+	[SerializeField] EnemyStepColliderScript enemyStepColliderScript;
 
 	[Header("Sliding")]
 	[SerializeField] float maxSlidingSpeed = 10f;
@@ -90,6 +91,7 @@ public class GameCharacterData : MonoBehaviour
 	public int MaxJumps { get { return maxJumps; } }
 	public float JumpForce { get { return jumpForce; } }
 	public float GravityMultiplier { get { return gravityMultiplier; } }
+	public EnemyStepColliderScript EnemyStepColliderScript { get { return enemyStepColliderScript; } }	
 
 	public float MaxSlidingSpeed { get { return maxSlidingSpeed; } }
 	public float SlidingAcceleration { get { return slidingAcceleration; } }
