@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+[Icon("d_UnityEditor.GameView@2x")]
 public class AIControllerBase : ControllerBase
 {
 	GameCharacter gameCharacter;
@@ -40,6 +41,13 @@ public class AIControllerBase : ControllerBase
 
 		await new WaitUntil(() => UIManager.Instance.Canvas != null);
 		enemyInfo = UIManager.Instance.GetEnemyInfo(gameCharacter);
+	}
+
+	protected void OnDestroy()
+	{
+		if (btRunner != null) btRunner.onBehaviourTreeInit -= OnBehaviourTreeInit;
+		if (gameCharacter != null) gameCharacter.onGameCharacterDied -= OnGameCharacterDied;
+
 	}
 
 	protected override void OnGameCharacterDied(GameCharacter gameCharacter)

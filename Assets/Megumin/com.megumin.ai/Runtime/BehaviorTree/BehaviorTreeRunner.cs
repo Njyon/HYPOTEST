@@ -129,7 +129,7 @@ namespace Megumin.GameFramework.AI.BehaviorTree
                 BehaviorTreeManager.Instance.AddTree(BehaviourTree, TickMode);
                 BehaviourTree.IsRunning = true;
 
-				if (BehaviourTree != null && onBehaviourTreeInit != null) onBehaviourTreeInit();
+				//if (BehaviourTree != null && onBehaviourTreeInit != null) onBehaviourTreeInit();
 			}
 
             isIniting = false;

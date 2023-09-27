@@ -40,6 +40,12 @@ public class AIManager : Singelton<AIManager>
 	NativeArray<float> distances;
 	JobHandle jobHandle;
 	HyppoliteManagableAI[] sortedMeleeAIs;
+	int meleeCharacterAttackAmount = 1;
+
+	public int MeleeCharacterAttackAmount { get { return meleeCharacterAttackAmount; } }
+	public int ManagableAIsCount { get { return managableAIs.Count; } }
+	public int MeleeAIsCount { get { return meleeAIs.Count; } }
+	public int MeleeAIsThatCanAttackCount { get { return meleeAIsThatCanAttack.Count; } }
 
 	private void Awake()
 	{
@@ -57,7 +63,7 @@ public class AIManager : Singelton<AIManager>
 	private void PrepareDistanceCalculationJobForMeleeAIs()
 	{
 		distances = new NativeArray<float>(meleeAIs.Count, Allocator.Persistent);
-		sortedMeleeAIs = new HyppoliteManagableAI[meleeAIs.Count];
+		sortedMeleeAIs = meleeAIs.ToArray();
 
 		var job = new CalculateDistancesJob
 		{
@@ -69,7 +75,6 @@ public class AIManager : Singelton<AIManager>
 		for (int i = 0; i < meleeAIs.Count; i++)
 		{
 			job.otherPositions[i] = meleeAIs[i].gameCharacter.transform.position;
-			sortedMeleeAIs[i] = meleeAIs[i];
 		}
 
 		jobHandle = job.Schedule(meleeAIs.Count, 32);
@@ -89,12 +94,11 @@ public class AIManager : Singelton<AIManager>
 
 	private void SetCanAttackFlagOnValidAIsAndRemoveOnOld()
 	{
-		int meleeCharacterAttackAmount = 1;
 		List<HyppoliteManagableAI> newMeleeAIs = new List<HyppoliteManagableAI>();
 		for (int i = 0; i < meleeCharacterAttackAmount; i++)
 		{
 			if (i >= meleeAIs.Count) break;
-			newMeleeAIs.Add(meleeAIs[i]);
+			newMeleeAIs.Add(sortedMeleeAIs[i]);
 		}
 		foreach (HyppoliteManagableAI ai in newMeleeAIs)
 		{

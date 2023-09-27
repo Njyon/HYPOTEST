@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 
+[Icon("d_UnityEditor.GameView@2x")]
 public class PlayerController : ControllerBase
 {
     [HideInInspector] public PlayerInputs playerInputs;
