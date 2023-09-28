@@ -1,5 +1,6 @@
 using Megumin.GameFramework.AI;
 using Megumin.GameFramework.AI.BehaviorTree;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,6 +16,14 @@ public class BTFollowPlayerActionNode : BTHyppoliteActionNodeBase
 
 	protected override Status OnTick(BTNode from, object options = null)
 	{
+		// Dont Change Input when in these states!
+		switch (GameCharacter.StateMachine.GetCurrentStateType())
+		{
+			case EGameCharacterState.Attack:
+				return Status.Running;
+			default: break;
+		}
+
 		float distance;
 		if (checkWithHight)
 			distance = Vector3.Distance(GameCharacter.transform.position, TargetGameCharacter.transform.position);
@@ -27,8 +36,20 @@ public class BTFollowPlayerActionNode : BTHyppoliteActionNodeBase
 			GameCharacter.HorizontalMovementInput(0);
 		}else
 		{
-			Vector3 dirToTarget = checkWithHight ? (TargetGameCharacter.transform.position - GameCharacter.transform.position).normalized : (Ultra.Utilities.IgnoreAxis(TargetGameCharacter.transform.position, EAxis.YZ) - Ultra.Utilities.IgnoreAxis(GameCharacter.transform.position, EAxis.YZ)).normalized;
-			Vector3 dirToDestinationPoint = ((TargetGameCharacter.transform.position + (-dirToTarget) * minDistanceToTarget) - GameCharacter.transform.position).normalized;
+			Vector3 dirToTarget = checkWithHight ? (TargetGameCharacter.transform.position - GameCharacter.transform.position) : (Ultra.Utilities.IgnoreAxis(TargetGameCharacter.transform.position, EAxis.YZ) - Ultra.Utilities.IgnoreAxis(GameCharacter.transform.position, EAxis.YZ));
+			Vector3 dirToDestinationPoint = ((TargetGameCharacter.transform.position + (-dirToTarget.normalized) * minDistanceToTarget) - GameCharacter.transform.position).normalized;
+
+			Ultra.Utilities.DrawArrow(GameCharacter.MovementComponent.CharacterCenter, dirToTarget.normalized, dirToTarget.magnitude, Color.green, 0f);
+			RaycastHit[] hits = Physics.RaycastAll(GameCharacter.MovementComponent.CharacterCenter, dirToTarget.normalized, dirToTarget.magnitude, LayerMask.NameToLayer("Character"), QueryTriggerInteraction.Collide);
+			foreach (RaycastHit hit in hits)
+			{
+				if (hit.collider == null || hit.collider.gameObject == GameObject || hit.collider.gameObject == TargetGameCharacter) continue;
+				Ultra.Utilities.DrawWireSphere(hit.point, 1f, Color.magenta, 10f, 200, DebugAreas.AI);
+				dirToDestinationPoint = ((hit.point + (-dirToTarget.normalized) * minDistanceToTarget) - GameCharacter.transform.position).normalized;
+			}
+
+			Ultra.Utilities.Instance.DebugLogOnScreen("Hits Count = " + hits.Length, 0f, StringColor.Teal, 100, DebugAreas.AI);
+
 			GameCharacter.VerticalMovmentInput(dirToDestinationPoint.y);
 			GameCharacter.HorizontalMovementInput(dirToDestinationPoint.x);
 		}

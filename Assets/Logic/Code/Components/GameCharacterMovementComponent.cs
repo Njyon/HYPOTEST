@@ -106,9 +106,9 @@ public class GameCharacterMovementComponent : MonoBehaviour
 		unityMovementController.skinWidth = 0.01f;
 
 		characterLayerIndex = LayerMask.NameToLayer("Character");
-		defaultLayerMask = unityMovementController.excludeLayers;
 		moveThroughCharacterLayerMask = ExcludeLayerIsMask(defaultLayerMask, characterLayerIndex);
-	
+		defaultLayerMask = moveThroughCharacterLayerMask;// unityMovementController.excludeLayers;
+
 		characterDefaultRadius = capsuleCollider.radius;
 		characterDefaultHeight = capsuleCollider.height;
 	}
@@ -155,6 +155,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 		gameCharacter = character;
 		gameCharacter.CharacterRadiusTarget = capsuleCollider.radius;
 		gameCharacter.CharacterHeightTarget = capsuleCollider.height;
+		SetLayerToDefault();
 	}
 
 	void RequestMove(Vector3 moveRequestVector)

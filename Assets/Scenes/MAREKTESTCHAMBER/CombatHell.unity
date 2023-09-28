@@ -366,7 +366,7 @@ MonoBehaviour:
   spawnableCharacterData: {fileID: 11400000, guid: 281f7dc6c6d078f4d812c65686904734,
     type: 2}
   index: 0
-  autoSpawn: 0
+  autoSpawn: 1
 --- !u!4 &74542064
 Transform:
   m_ObjectHideFlags: 0
@@ -641,6 +641,11 @@ PrefabInstance:
     - target: {fileID: 1978228724601692337, guid: 86332de1ed30b784793c06564d56c577,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3096090789722574659, guid: 86332de1ed30b784793c06564d56c577,
+        type: 3}
+      propertyPath: m_ExcludeLayers.m_Bits
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

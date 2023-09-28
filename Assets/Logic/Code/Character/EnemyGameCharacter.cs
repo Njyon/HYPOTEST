@@ -2,6 +2,7 @@ using Megumin.GameFramework.AI.BehaviorTree;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Megumin.GameFramework.AI.BehaviorTree.BehaviorTreeRunner;
 
 public class EnemyGameCharacter : GameCharacter
 {
@@ -16,7 +17,11 @@ public class EnemyGameCharacter : GameCharacter
 	{
 		btRunner = GetComponent<BehaviorTreeRunner>();
 		base.CustomAwake();
-		btRunner.onBehaviourTreeInit += OnBehaviourTreeInit;
+
+		if (btRunner.BehaviourTree != null)
+			OnBehaviourTreeInit();
+		else 
+			btRunner.onBehaviourTreeInit += OnBehaviourTreeInit;
 	}
 
 	new protected void Update()
@@ -27,6 +32,8 @@ public class EnemyGameCharacter : GameCharacter
 
 	new protected void OnDestroy()
 	{
+		if (btRunner != null) 
+			btRunner.onBehaviourTreeInit -= OnBehaviourTreeInit;
 		base.OnDestroy();
 	}
 

@@ -6,8 +6,9 @@ using UnityEngine;
 
 public class GameCharacter : MonoBehaviour , IDamage
 {
-	public delegate void OnGameCharacterDied();
+	public delegate void OnGameCharacterDied(GameCharacter gameCharacter);
 	public OnGameCharacterDied onGameCharacterDied;
+	public OnGameCharacterDied onGameCharacterDestroyed;
 
 	GameCharacterStateMachine stateMachine;
 	GameCharacterPluginStateMachine pluginStateMachine;
@@ -154,6 +155,8 @@ public class GameCharacter : MonoBehaviour , IDamage
 		{
 			characterDetection.onOverlapEnter -= OnCharacterDetectionOverlapEnter;
 		}
+
+		if (onGameCharacterDestroyed != null) onGameCharacterDestroyed(this);
 	}
 
 	protected void Update()
@@ -407,7 +410,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 	{
 		Ultra.Utilities.Instance.DebugLogOnScreen(name + " Is Dead", 2f, StringColor.White, 200, DebugAreas.Combat);
 		IsGameCharacterDead = true;
-		if (onGameCharacterDied != null) onGameCharacterDied();
+		if (onGameCharacterDied != null) onGameCharacterDied(this);
 		Animator.enabled = false;
 		MovementComponent.CapsuleCollider.enabled = false;
 		MovementComponent.UnityMovementController.enabled = false;

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 
+[Icon("d_UnityEditor.GameView@2x")]
 public class PlayerController : ControllerBase
 {
     [HideInInspector] public PlayerInputs playerInputs;
@@ -35,10 +36,10 @@ public class PlayerController : ControllerBase
 		gameCharacter.onGameCharacterDied += OnGameCharacterDied;
 	}
 
-	protected override void OnGameCharacterDied()
+	protected override void OnGameCharacterDied(GameCharacter gameCharacter)
 	{
 		playerInputs.Default.Disable();
-		gameCharacter?.EventComponent?.AddEvent(null);
+		this.gameCharacter?.EventComponent?.AddEvent(null);
 	}
 
 	private void SetupCamera(GameObject pawn)
