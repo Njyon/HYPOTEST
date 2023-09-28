@@ -75,6 +75,7 @@ public class GameCharacterData : MonoBehaviour
 
 	[Header("Enemy")]
 	[SerializeField] Vector3 enemyInfoOffset = new Vector3(0, 5f, 0);
+	[SerializeField] float minCharacterDistance = 1f;
 
 	public float MaxMovementSpeed { get { return maxMovementSpeed; } }
 	public float MovmentGravity { get { return movmentGravity; } }
@@ -126,4 +127,5 @@ public class GameCharacterData : MonoBehaviour
 	public RigType RigType { get {  return rigType; } }
 
 	public Vector3 EnemyInfoOffset { get { return enemyInfoOffset; } }
+	public float MinCharacterDistance { get { return minCharacterDistance; } }
 }
