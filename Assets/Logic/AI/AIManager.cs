@@ -5,10 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.Burst;
 using Unity.Collections;
-using Unity.Collections.LowLevel.Unsafe;
 using Unity.Jobs;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.TextCore.Text;
 
 public class HyppoliteManagableAI
 {
@@ -26,6 +26,14 @@ public class HyppoliteManagableAI
 
 			this.btr.BehaviourTree.InitAddVariable(canMeleeAttack);
 		}
+		if (!this.btr.BehaviourTree.Variable.Contains("MovementTarget"))
+		{
+			RefVar_Vector3 movementTarget = new RefVar_Vector3();
+			movementTarget.RefName = "MovementTarget";
+			movementTarget.value = Vector3.zero;
+
+			this.btr.BehaviourTree.InitAddVariable(movementTarget);
+		}
 	}
 
 	public GameCharacter gameCharacter;
@@ -40,21 +48,29 @@ public class AIManager : Singelton<AIManager>
 	NativeArray<float> distances;
 	JobHandle jobHandle;
 	HyppoliteManagableAI[] sortedMeleeAIs;
-	int meleeCharacterAttackAmount = 1;
+	[SerializeField] int meleeCharacterAttackAmount = 1;
+	GameModeBase gameMode;
 
 	public int MeleeCharacterAttackAmount { get { return meleeCharacterAttackAmount; } }
 	public int ManagableAIsCount { get { return managableAIs.Count; } }
 	public int MeleeAIsCount { get { return meleeAIs.Count; } }
 	public int MeleeAIsThatCanAttackCount { get { return meleeAIsThatCanAttack.Count; } }
+	GameModeBase GameMode {
+		get {
+			if (gameMode == null) 
+				gameMode = Ultra.HypoUttilies.GetGameMode();
+			return gameMode;
+		}
+	}
 
 	private void Awake()
 	{
-
+		SceneManager.sceneLoaded += OnSceneLoaded;
 	}
 
 	void Update()
 	{
-		if (Ultra.HypoUttilies.GetGameMode().PlayerGameCharacter == null) return;
+		if (GameMode.PlayerGameCharacter == null) return;
 		if (managableAIs.Count <= 0) return;
 
 		PrepareDistanceCalculationJobForMeleeAIs();
@@ -82,22 +98,66 @@ public class AIManager : Singelton<AIManager>
 
 	void LateUpdate()
 	{
+		if (GameMode.PlayerGameCharacter == null) return;
+		if (managableAIs.Count <= 0) return;
+
 		if (jobHandle != null)
 			jobHandle.Complete();
 		if (distances != null)
 		{
 			SortDistanceNativeArray();
 			SetCanAttackFlagOnValidAIsAndRemoveOnOld();
+			OrderLeftAndRightMeleeAIsInARow();
+
 			distances.Dispose();
 		}
 	}
 
+	private void OrderLeftAndRightMeleeAIsInARow()
+	{
+		List<HyppoliteManagableAI> leftFromPlayerSortedAIList = new List<HyppoliteManagableAI>();
+		List<HyppoliteManagableAI> rightFromPlayerSortedAiList = new List<HyppoliteManagableAI>();
+
+		if (sortedMeleeAIs != null)
+		{
+			for (int i = 0; i < sortedMeleeAIs.Length; i++)
+			{
+				if (sortedMeleeAIs[i].gameCharacter.MovementComponent.CharacterCenter.x >= GameMode.PlayerGameCharacter.MovementComponent.CharacterCenter.x)
+					rightFromPlayerSortedAiList.Add(sortedMeleeAIs[i]);
+				else
+					leftFromPlayerSortedAIList.Add(sortedMeleeAIs[i]);
+			}
+
+			SetMovementTarget(leftFromPlayerSortedAIList, -1);
+			SetMovementTarget(rightFromPlayerSortedAiList, 1);
+		}
+	}
+
+	void SetMovementTarget(List<HyppoliteManagableAI> aiList, float xModifier)
+	{
+		for(int i = 0; i < aiList.Count; i++)
+		{
+			float minDistance = aiList[i].gameCharacter.MovementComponent.Radius + (i == 0 ? GameMode.PlayerGameCharacter.MovementComponent.Radius : aiList[i - 1].gameCharacter.MovementComponent.Radius);
+			minDistance += aiList[i].gameCharacter.GameCharacterData.MinCharacterDistance;
+			float newXLocationTarget = (i == 0 ? GameMode.PlayerGameCharacter.MovementComponent.CharacterCenter.x : aiList[i - 1].gameCharacter.MovementComponent.CharacterCenter.x) + xModifier * minDistance;
+
+			aiList[i].btr.BehaviourTree.Variable.TrySetValue<Vector3>("MovementTarget", new Vector3(newXLocationTarget, 0, 0));
+		}
+	}
+
+	void OnDestroy()
+	{
+		SceneManager.sceneLoaded += OnSceneLoaded;
+
+	}
+
 	private void SetCanAttackFlagOnValidAIsAndRemoveOnOld()
 	{
+		if (sortedMeleeAIs == null) return;
 		List<HyppoliteManagableAI> newMeleeAIs = new List<HyppoliteManagableAI>();
 		for (int i = 0; i < meleeCharacterAttackAmount; i++)
 		{
-			if (i >= meleeAIs.Count) break;
+			if (i >= sortedMeleeAIs.Length) break;
 			newMeleeAIs.Add(sortedMeleeAIs[i]);
 		}
 		foreach (HyppoliteManagableAI ai in newMeleeAIs)
@@ -108,7 +168,7 @@ public class AIManager : Singelton<AIManager>
 		List<HyppoliteManagableAI> oldMeleeAIs = meleeAIsThatCanAttack.Except(newMeleeAIs).ToList();
 		foreach (HyppoliteManagableAI oldAI in oldMeleeAIs)
 		{
-			if (oldAI.gameCharacter != null || oldAI.gameCharacter.IsGameCharacterDead) continue;
+			if (oldAI.gameCharacter == null || oldAI.gameCharacter.IsGameCharacterDead) continue;
 			oldAI.btr.BehaviourTree.Variable.TrySetValue<bool>("CanMeleeAttack", false);
 		}
 	}
@@ -157,7 +217,7 @@ public class AIManager : Singelton<AIManager>
 			if (meleeAIs.Contains(ai)) meleeAIs.Remove(ai);
 		}
 		else
-			Debug.Log("How can AI be null, lol!");
+			Debug.Log(Ultra.Utilities.Instance.DebugErrorString("AIManager", "RemoveGameCharacterFromAIListsAndUnsubscribeToEvents", "How can AI be null, lol!"));
 	}
 
 	void OnGameCharacterDied(GameCharacter gameCharacter)
@@ -196,11 +256,20 @@ public class AIManager : Singelton<AIManager>
 		}
 	}
 
+	void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+	{
+		if (mode == LoadSceneMode.Single)
+		{
+			Destroy(this.gameObject);
+		}
+	}
+
 
 	[BurstCompile]
 	private struct CalculateDistancesJob : IJobParallelFor
 	{
 		public Vector3 targetPosition;
+		[DeallocateOnJobCompletionAttribute]
 		[ReadOnly] public NativeArray<Vector3> otherPositions;
 		public NativeArray<float> distances;
 

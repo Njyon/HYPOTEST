@@ -26,7 +26,7 @@ public class BTAttack : BTHyppoliteActionNodeBase
 			return;
 		}
 
-		Vector3 dir = (TargetGameCharacter.transform.position - GameCharacter.transform.position).normalized;
+		Vector3 dir = (TargetGameCharacter.MovementComponent.CharacterCenter - GameCharacter.MovementComponent.CharacterCenter).normalized;
 		GameCharacter.HorizontalMovementInput(dir.x);
 		GameCharacter.VerticalMovmentInput(dir.y);
 		
@@ -38,6 +38,11 @@ public class BTAttack : BTHyppoliteActionNodeBase
 	protected override Status OnTick(BTNode from, object options = null)
 	{
 		if (cantAttack && !attackStartet) return Status.Failed;
+
+		Vector3 dir = (TargetGameCharacter.MovementComponent.CharacterCenter  - GameCharacter.MovementComponent.CharacterCenter).normalized;
+		GameCharacter.HorizontalMovementInput(dir.x);
+		GameCharacter.VerticalMovmentInput(dir.y);
+
 		if (attackStartet) 
 			return  attackDone ? Status.Succeeded : Status.Running;
 		return Status.Running;
