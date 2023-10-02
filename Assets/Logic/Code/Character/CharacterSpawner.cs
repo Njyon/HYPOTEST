@@ -32,25 +32,7 @@ public class CharacterSpawner : MonoBehaviour
 
 	private void SpawnController()
 	{
-		ControllerBase[] controllers = Ultra.Utilities.GetAll<ControllerBase>().ToArray();
-		for (int i = 0; i < controllers.Length; i++)
-		{
-			if (controllers[i].GetType().Name == spawnableCharacterData.ControllerName)
-			{
-				GameObject controller = new GameObject(spawnableCharacterData.ControllerName);
-				controller.transform.position = Vector3.zero;
-				controller.transform.rotation = Quaternion.identity;
-				Component comp = controller.AddComponent(controllers[i].GetType());
-				ControllerBase controllerBase = (ControllerBase)comp;
-				if (!controllerBase)
-				{
-					Debug.LogError("Controller could not be created correctly. GameObject => " + controller.name);
-					return;
-				}
-				controllerBase.BeginPosses(characterToSpawn, spawnableCharacterData);
-				break;
-			}
-		}
+		Ultra.HypoUttilies.Instance.SpawnController(characterToSpawn, spawnableCharacterData);
 	}
 
 	private void SpawnCharacterIntoWorld()

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Ultra;
 using UnityEditor;
 using UnityEngine;
@@ -239,6 +240,30 @@ namespace Ultra
 		public static PlayerGameCharacter GetPlayerGameCharacter()
 		{
 			return FindObjectOfType<PlayerGameCharacter>();
+		}
+		public ControllerBase SpawnController(GameObject characterToControll, ScriptableCharacter characterData)
+		{
+			ControllerBase controllerBase = null;
+			ControllerBase[] controllers = Ultra.Utilities.GetAll<ControllerBase>().ToArray();
+			for (int i = 0; i < controllers.Length; i++)
+			{
+				if (controllers[i].GetType().Name == characterData.ControllerName)
+				{
+					GameObject controller = new GameObject(characterData.ControllerName);
+					controller.transform.position = Vector3.zero;
+					controller.transform.rotation = Quaternion.identity;
+					Component comp = controller.AddComponent(controllers[i].GetType());
+					controllerBase = (ControllerBase)comp;
+					if (controllerBase == null)
+					{
+						Debug.LogError("Controller could not be created correctly. GameObject => " + controller.name);
+						return controllerBase;
+					}
+					controllerBase.BeginPosses(characterToControll, characterData);
+					break;
+				}
+			}
+			return controllerBase;
 		}
 	}
 }
