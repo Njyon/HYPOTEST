@@ -42,7 +42,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	CapsuleCollider capsuleCollider;
 	public CapsuleCollider CapsuleCollider { get { return capsuleCollider; } }
 	public float StepHeight { get { return stepHight; } }
-	public Vector3 CharacterCenter { get { return transform.position + capsuleCollider.center; } }
+	public Vector3 CharacterCenter { get { return transform.position + (capsuleCollider != null ? capsuleCollider.center : Vector3.zero); } }
 	public NullableHit PossibleGround { get { return predictedLandingPoint; } set { predictedLandingPoint = value; } }
 	public NullableHit RayCastGroundHit { get { return rayCastGroundHit; } set { rayCastGroundHit = value; } }
 	public bool IsGrounded { get { return isGrounded && !IsInJump; } }

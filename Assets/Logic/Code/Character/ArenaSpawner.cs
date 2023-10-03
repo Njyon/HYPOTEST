@@ -36,7 +36,7 @@ public class ArenaSpawner : MonoBehaviour
 	[SerializeField] int maxSpawnEnemies = 5;
 	public UnityEvent onStartSpawningEvent;
 	public UnityEvent onLastEnemyKilledEvent;
-	List<GameCharacter> spawnedGameCharacters;
+	List<GameCharacter> spawnedGameCharacters = new List<GameCharacter>();
 
 	int spawnIndex = 0;
 	bool startedSpawning = false;
@@ -55,12 +55,13 @@ public class ArenaSpawner : MonoBehaviour
 
 	private void Start()
 	{
-		GameDifficultyLevel difficultyLevel = gameMode.GameDifficultyLevel;
+		GameDifficultyLevel difficultyLevel = GameMode.GameDifficultyLevel;
 		if (spawnDataBasedOnDifficulty.Count <= (int)difficultyLevel)
 		{
-			difficultyLevel = (GameDifficultyLevel)spawnDataBasedOnDifficulty.Count;
+			difficultyLevel = (GameDifficultyLevel)spawnDataBasedOnDifficulty.Count - 1;
 		}
-		dataToSpawn = spawnDataBasedOnDifficulty[(int)difficultyLevel];
+		if (spawnDataBasedOnDifficulty.Count > 0)
+			dataToSpawn = spawnDataBasedOnDifficulty[(int)difficultyLevel];
 	}
 
 	public void StartSpawningCharacters()
@@ -75,7 +76,7 @@ public class ArenaSpawner : MonoBehaviour
 
 	void SpawnCharacters()
 	{	
-		for (int i = spawnedGameCharacters.Count - 1; i < maxSpawnEnemies; i++) 
+		for (int i = spawnedGameCharacters.Count > 0 ? spawnedGameCharacters.Count - 1 : 0; i < maxSpawnEnemies; i++) 
 		{
 			// Horrible solution but my brain is to fried to find a bettert way right now
 			// Try to not to restart the spawning index when here. (Foreach restarts the index everytime it hits here)
@@ -184,5 +185,10 @@ public class ArenaSpawner : MonoBehaviour
 	{
 		if (onLastEnemyKilled != null) onLastEnemyKilled();
 		onLastEnemyKilledEvent.Invoke();
+	}
+
+	private void OnDrawGizmos()
+	{
+		Gizmos.DrawIcon(transform.position, "SpanwerImage", true);
 	}
 }

@@ -35,12 +35,12 @@ public class UIManager : Singelton<UIManager>
 	public Canvas Canvas { 
 		get 
 		{ 
-			if (canvas == null)
-			{
-				canvas = FindObjectOfType<Canvas>();
-			}
 			return canvas; 
 		} 
+		set
+		{
+			canvas = value;
+		}
 	}
 
 	Stack<UIStackELement> uiStack = new Stack<UIStackELement>();

@@ -2,21 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterDetection : MonoBehaviour
+public class CharacterDetection<T> : MonoBehaviour
 {
-	public delegate void OnOverlapEnter(GameCharacter other);
+	public delegate void OnOverlapEnter(T other);
 	public OnOverlapEnter onOverlapEnter;
-	public delegate void OnOverlapExit(GameCharacter other);
+	public delegate void OnOverlapExit(T other);
 	public OnOverlapExit onOverlapExit;
 
-	[SerializeField] SphereCollider collider;
-	public SphereCollider Collider { get { return collider; } }
+	[SerializeField] Collider collider;
+	public Collider Collider { get { return collider; } }
 
-	public List<GameCharacter> OverlappingGameCharacter = new List<GameCharacter>();
+	public List<T> OverlappingGameCharacter = new List<T>();
 
 	public void Awake()
 	{
-		if (collider == null) collider.GetComponent<SphereCollider>();
+		if (collider == null) collider.GetComponent<Collider>();
 		if (collider == null)
 		{
 			Debug.LogError(Ultra.Utilities.Instance.DebugErrorString("CharacterDetection", "Awake", "Collider on CharacterDectection was null!"));
@@ -28,11 +28,12 @@ public class CharacterDetection : MonoBehaviour
 	{
 		if (other.transform == this.transform.parent) return;
 
-		GameCharacter gameCharacter = other.gameObject.GetComponent<GameCharacter>();
-		if (gameCharacter != null && !OverlappingGameCharacter.Contains(gameCharacter))
+		T template = other.gameObject.GetComponent<T>();
+		if (template != null && !OverlappingGameCharacter.Contains(template))
 		{
-			OverlappingGameCharacter.Add(gameCharacter);
-			if (onOverlapEnter != null) onOverlapEnter(gameCharacter);
+			OverlappingGameCharacter.Add(template);
+			OnTriggerEnterCall(template);
+			if (onOverlapEnter != null) onOverlapEnter(template);
 		}
 	}
 
@@ -43,11 +44,22 @@ public class CharacterDetection : MonoBehaviour
 			return;
 		}
 
-		GameCharacter gameCharacter = other.gameObject.GetComponent<GameCharacter>();
-		if (gameCharacter != null)
+		T template = other.gameObject.GetComponent<T>();
+		if (template != null)
 		{
-			OverlappingGameCharacter.Remove(gameCharacter);
-			if (onOverlapExit != null) onOverlapExit(gameCharacter);
+			OverlappingGameCharacter.Remove(template);
+			OnTriggerExitCall(template);
+			if (onOverlapExit != null) onOverlapExit(template);
 		}
+	}
+
+	protected virtual void OnTriggerEnterCall(T collider)
+	{
+
+	}
+
+	protected virtual void OnTriggerExitCall(T collider)
+	{
+
 	}
 }

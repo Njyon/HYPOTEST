@@ -45,6 +45,7 @@ public class SceneLoader : MonoBehaviour
 			loading = false;
 			foreach(AsyncOperation asyncOperation in asyncOperations)
 			{
+				if (asyncOperation == null) { loading = true; continue; }
 				if (!asyncOperation.isDone) loading = true;
 			}
 			yield return new WaitForEndOfFrame();
