@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterDetection<T> : MonoBehaviour
+public class CharacterDetection<T> : MonoBehaviour where T : GameCharacter
 {
 	public delegate void OnOverlapEnter(T other);
 	public OnOverlapEnter onOverlapEnter;

@@ -72,19 +72,39 @@ public class GameCharacterStateMachine : AStateMachineBase<EGameCharacterState>
 
 	protected override bool CreateState(EGameCharacterState stateType, out IState<EGameCharacterState> newState)
 	{
-		var stateTypes = Assembly.GetExecutingAssembly().GetTypes()
-		.Where(t => t.BaseType == typeof(AGameCharacterState))
-		.ToList();
-
-		var stateClass = stateTypes.FirstOrDefault(t => t.Name == "GameCharacter" + stateType.ToString() + "State");
-
-		if (stateClass == null)
+		newState = null;
+		switch (stateType)
 		{
-			newState = null;
-			return false;
+			case EGameCharacterState.Unknown: newState = null; break;
+			case EGameCharacterState.Standing: newState = new GameCharacterStandingState(this, this.gameCharacter); break;
+			case EGameCharacterState.Moving: newState = new GameCharacterMovingState(this, this.gameCharacter); break;
+			case EGameCharacterState.InAir: newState = new GameCharacterInAirState(this, this.gameCharacter); break;
+			case EGameCharacterState.Sliding: newState = new GameCharacterSlidingState(this, this.gameCharacter); break;
+			case EGameCharacterState.Attack: newState = new GameCharacterAttackState(this, this.gameCharacter); break;
+			case EGameCharacterState.AttackRecovery: newState = new GameCharacterAttackRecoveryState(this, this.gameCharacter); break;
+			case EGameCharacterState.DefensiveAction: newState = new GameCharacterDefensiveActionState(this, this.gameCharacter); break;
+			case EGameCharacterState.MoveToPosition: newState = new GameCharacterMoveToPositionState(this, this.gameCharacter); break;
+			case EGameCharacterState.Freez: newState = new GameCharacterFreezState(this, this.gameCharacter); break;
+			case EGameCharacterState.FlyAway: newState = new GameCharacterFlyAwayState(this, this.gameCharacter); break;
+			case EGameCharacterState.PullCharacterOnHorizontalLevel: newState = new GameCharacterPullCharacterOnHorizontalLevelState(this, this.gameCharacter); break;
+			case EGameCharacterState.HookedToCharacter: newState = new GameCharacterHookedToCharacterState(this, this.gameCharacter); break;
+			default:
+				Ultra.Utilities.Instance.DebugErrorString("GameCharacterStateMaschine", "CreateState", "GameCharacterState has no Implimentation!");
+				break;
 		}
-
-		newState = Activator.CreateInstance(stateClass, this, gameCharacter) as AGameCharacterState;
+		//var stateTypes = Assembly.GetExecutingAssembly().GetTypes()
+		//.Where(t => t.BaseType == typeof(AGameCharacterState))
+		//.ToList();
+		//
+		//var stateClass = stateTypes.FirstOrDefault(t => t.Name == "GameCharacter" + stateType.ToString() + "State");
+		//
+		//if (stateClass == null)
+		//{
+		//	newState = null;
+		//	return false;
+		//}
+		//
+		//newState = Activator.CreateInstance(stateClass, this, gameCharacter) as AGameCharacterState;
 
 		return newState != null;
 	}

@@ -26,19 +26,30 @@ public class GameCharacterPluginStateMachine : PluginStateMachineBase<EPluginCha
 
 	protected override bool CreatePluginState(EPluginCharacterState stateType, out IPluginState<EPluginCharacterState> newPluginState)
 	{
-		var stateTypes = Assembly.GetExecutingAssembly().GetTypes()
-			.Where(t => t.BaseType == typeof(AGameCharacterPluginState))
-			.ToList();
-
-		var stateClass = stateTypes.FirstOrDefault(t => t.Name == "GameCharacter" + stateType.ToString() + "PluginState");
-
-		if (stateClass == null)
+		newPluginState = null;
+		switch (stateType)
 		{
-			newPluginState = null;
-			return false;
+			case EPluginCharacterState.WeaponReady: newPluginState = new GameCharacterWeaponReadyPluginState(this.gameCharacter, this); break;
+			case EPluginCharacterState.Aim: newPluginState = new GameCharacterAimPluginState(this.gameCharacter, this); break;
+			case EPluginCharacterState.MovementOverride: newPluginState = new GameCharacterMovementOverridePluginState(this.gameCharacter, this); break;
+			case EPluginCharacterState.LookInVelocityDirection: newPluginState = new GameCharacterLookInVelocityDirectionPluginState(this.gameCharacter, this); break;
+			default:
+				Ultra.Utilities.Instance.DebugErrorString("GameCharacterPluginStateMaschine", "CreatePluginState", "PluginState has no Implementation!");
+				break;
 		}
-
-		newPluginState = Activator.CreateInstance(stateClass, gameCharacter, this) as AGameCharacterPluginState;
+		//var stateTypes = Assembly.GetExecutingAssembly().GetTypes()
+		//	.Where(t => t.BaseType == typeof(AGameCharacterPluginState))
+		//	.ToList();
+		//
+		//var stateClass = stateTypes.FirstOrDefault(t => t.Name == "GameCharacter" + stateType.ToString() + "PluginState");
+		//
+		//if (stateClass == null)
+		//{
+		//	newPluginState = null;
+		//	return false;
+		//}
+		//
+		//newPluginState = Activator.CreateInstance(stateClass, gameCharacter, this) as AGameCharacterPluginState;
 
 		return newPluginState != null;
 	}

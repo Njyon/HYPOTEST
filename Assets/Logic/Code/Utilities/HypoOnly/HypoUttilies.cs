@@ -241,28 +241,52 @@ namespace Ultra
 		{
 			return FindObjectOfType<PlayerGameCharacter>();
 		}
+
+		public ControllerBase GetController(string controllerName)
+		{
+			ControllerBase controller = null;
+			switch (controllerName)
+			{
+				case "AIControllerBase": controller = new AIControllerBase(); break;
+				case "PlayerController": controller = new PlayerController(); break;
+				default:
+					Ultra.Utilities.Instance.DebugErrorString("HyppoUttilies", "GetController", "Unvalid Controller name, maybe forgot to Add case?");
+					break;
+			}
+			return controller;
+		}
 		public ControllerBase SpawnController(GameObject characterToControll, ScriptableCharacter characterData)
 		{
-			ControllerBase controllerBase = null;
-			ControllerBase[] controllers = Ultra.Utilities.GetAll<ControllerBase>().ToArray();
-			for (int i = 0; i < controllers.Length; i++)
+			ControllerBase controller = GetController(characterData.ControllerName);
+			Component comp = characterToControll.AddComponent(controller.GetType());
+			ControllerBase controllerBase = (ControllerBase)comp;
+			if (controllerBase == null)
 			{
-				if (controllers[i].GetType().Name == characterData.ControllerName)
-				{
-					GameObject controller = new GameObject(characterData.ControllerName);
-					controller.transform.position = Vector3.zero;
-					controller.transform.rotation = Quaternion.identity;
-					Component comp = controller.AddComponent(controllers[i].GetType());
-					controllerBase = (ControllerBase)comp;
-					if (controllerBase == null)
-					{
-						Debug.LogError("Controller could not be created correctly. GameObject => " + controller.name);
-						return controllerBase;
-					}
-					controllerBase.BeginPosses(characterToControll, characterData);
-					break;
-				}
+				Debug.LogError("Controller could not be created correctly. GameObject => " + controller.name);
+				return controllerBase;
 			}
+			controllerBase.BeginPosses(characterToControll, characterData);
+
+			//ControllerBase controllerBase = null;
+			//ControllerBase[] controllers = Ultra.Utilities.GetAll<ControllerBase>().ToArray();
+			//for (int i = 0; i < controllers.Length; i++)
+			//{
+			//	if (controllers[i].GetType().Name == characterData.ControllerName)
+			//	{
+			//		GameObject controller = new GameObject(characterData.ControllerName);
+			//		controller.transform.position = Vector3.zero;
+			//		controller.transform.rotation = Quaternion.identity;
+			//		Component comp = controller.AddComponent(controllers[i].GetType());
+			//		controllerBase = (ControllerBase)comp;
+			//		if (controllerBase == null)
+			//		{
+			//			Debug.LogError("Controller could not be created correctly. GameObject => " + controller.name);
+			//			return controllerBase;
+			//		}
+			//		controllerBase.BeginPosses(characterToControll, characterData);
+			//		break;
+			//	}
+			//}
 			return controllerBase;
 		}
 	}

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Mathematics;
 using UnityEditor;
 using UnityEngine;
 
@@ -34,7 +35,7 @@ namespace Ultra {
 		public GUIStyle style = new GUIStyle();
 		public int debugLevel = 100;
 		public DebugAreas debugAreas = (DebugAreas)(-1);
-
+		double debugTimeSlice = new();
 
 		void Awake()
 		{
@@ -61,7 +62,7 @@ namespace Ultra {
 		/// <returns></returns>
 		public string DebugLogString(string className, string functionCaller, string information)
 		{
-			return "[" + StringColor.Teal + className + "::" + functionCaller + StringColor.EndColor + "]" + StringColor.Blue + information + StringColor.EndColor;
+			return "[" + StringColor.Blue + className + "::" + functionCaller + StringColor.EndColor + "]" + StringColor.Teal + information + StringColor.EndColor;
 		}
 		/// <summary>
 		/// Debugs a error message on the screen for 10 seconds
@@ -687,6 +688,16 @@ namespace Ultra {
 			Bounds bounds = new Bounds(boundsCenter, boundsRanges * 2); // Erstelle Bounding Box
 
 			return bounds.Contains(pointToCheck); // Überprüfe, ob der Punkt in der Bounding Box liegt
+		}
+
+		public void DebugPrintTimeAndElapsedSinceLast(string message)
+		{
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+			var newTimeSlice = Time.realtimeSinceStartupAsDouble;
+			var timeSliceDelta = math.abs(debugTimeSlice - newTimeSlice);
+			Debug.Log(DebugLogString("Utilities", "DebugPrintTimeAndElapsedSinceLast", message + "| Delta: " + timeSliceDelta + ". New TimeSlice: " + newTimeSlice + ". OldTimeSlice: " + debugTimeSlice));
+			debugTimeSlice = newTimeSlice;
+#endif
 		}
 	}
 }

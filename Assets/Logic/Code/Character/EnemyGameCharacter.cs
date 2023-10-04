@@ -18,10 +18,13 @@ public class EnemyGameCharacter : GameCharacter
 		btRunner = GetComponent<BehaviorTreeRunner>();
 		base.CustomAwake();
 
-		if (btRunner.BehaviourTree != null)
-			OnBehaviourTreeInit();
-		else 
-			btRunner.onBehaviourTreeInit += OnBehaviourTreeInit;
+		if (btRunner != null)
+		{
+			if (btRunner.BehaviourTree != null)
+				OnBehaviourTreeInit();
+			else
+				btRunner.onBehaviourTreeInit += OnBehaviourTreeInit;
+		}
 	}
 
 	new protected void Update()

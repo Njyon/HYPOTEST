@@ -11,6 +11,8 @@ public class PlayerController : ControllerBase
 	CameraController camController;
 	PlayerGameCharacter gameCharacter;
 
+	public CharacterSpawner spawner;
+
 	//DebugStuff
 	bool bForcedFrameRate = false;
 
@@ -243,7 +245,7 @@ public class PlayerController : ControllerBase
 
 	void DebugButton03()
 	{
-
+		spawner.Spawn();
 	}
 
 	void DebugButton04()

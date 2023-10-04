@@ -27,8 +27,8 @@ public class AIControllerBase : ControllerBase
 		if (characterData != null && characterData.behaviourTree != null)
 		{
 			btRunner = gameCharacter.AddComponent<BehaviorTreeRunner>();
-			InitBehaviourTreeValues();
 			btRunner.onBehaviourTreeInit += OnBehaviourTreeInit;
+			InitBehaviourTreeValues();
 		}
 		gameCharacter.CustomAwake();
 		GameCharacterMovementComponent movementComponent = pawn.GetComponent<GameCharacterMovementComponent>();
@@ -52,8 +52,11 @@ public class AIControllerBase : ControllerBase
 
 	protected override void OnGameCharacterDied(GameCharacter gameCharacter)
 	{
-		btRunner.DisableTree();
-		btRunner.enabled = false;
+		if (btRunner != null)
+		{
+			btRunner.DisableTree();
+			btRunner.enabled = false;
+		}
 
 		UIManager.Instance.ReturnEnemyInfo(enemyInfo);
 	}

@@ -122,6 +122,7 @@ public class AIManager : Singelton<AIManager>
 		{
 			for (int i = 0; i < sortedMeleeAIs.Length; i++)
 			{
+				if (sortedMeleeAIs[i].gameCharacter.MovementComponent == null || GameMode.PlayerGameCharacter.MovementComponent == null) continue;
 				if (sortedMeleeAIs[i].gameCharacter.MovementComponent.CharacterCenter.x >= GameMode.PlayerGameCharacter.MovementComponent.CharacterCenter.x)
 					rightFromPlayerSortedAiList.Add(sortedMeleeAIs[i]);
 				else
