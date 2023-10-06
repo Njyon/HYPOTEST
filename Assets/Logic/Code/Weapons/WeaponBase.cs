@@ -410,6 +410,7 @@ public abstract class WeaponBase
 
 	protected IDamage GetDamageInterface(GameObject obj)
 	{
+		if (obj == null) return null;	
 		return obj.GetComponent<IDamage>();
 	}
 

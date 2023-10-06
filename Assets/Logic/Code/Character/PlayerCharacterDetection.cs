@@ -8,14 +8,11 @@ public class PlayerCharacterDetection : CharacterDetection<PlayerGameCharacter>
 	public UnityEvent onPlayerEnterEvent;
 	public UnityEvent onPlayerExitEvent;
 
-	public CharacterSpawner spawner;
-
 	protected override void OnTriggerEnterCall(PlayerGameCharacter player)
 	{
 		base.OnTriggerEnterCall(player);
 		player.onGameCharacterDied += OnPlayerDied;
 		onPlayerEnterEvent.Invoke();
-		spawner.Spawn();
 	}
 
 	protected override void OnTriggerExitCall(PlayerGameCharacter player)

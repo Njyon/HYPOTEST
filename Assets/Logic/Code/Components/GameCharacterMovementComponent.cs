@@ -438,13 +438,13 @@ public class GameCharacterMovementComponent : MonoBehaviour
 
 	public void SetLayerToDefault()
 	{
-		gameCharacter.Rigidbody.excludeLayers = defaultLayerMask;
+		//gameCharacter.Rigidbody.excludeLayers = defaultLayerMask;
 		unityMovementController.excludeLayers = defaultLayerMask;
 	}
 
 	public void MoveThroughCharacterLayer()
 	{
-		gameCharacter.Rigidbody.excludeLayers = moveThroughCharacterLayerMask;
+		//gameCharacter.Rigidbody.excludeLayers = moveThroughCharacterLayerMask;
 		unityMovementController.excludeLayers = moveThroughCharacterLayerMask;
 	}
 

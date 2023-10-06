@@ -25,10 +25,9 @@ public class EnemyInfo : MonoBehaviour
 		gameCharacter.StaggerComponent.onCurrentValueChange += OnStaggerValueChange;
 		damageTimer.onTimerFinished += OnTimerFinished;
 
-		if (gameCharacter.StaggerComponent.MaxValue <= 0)
-		{
-			OnStaggerValueChange(gameCharacter.StaggerComponent.CurrentValue, 0);
-		}
+		OnHealthValueChange(gameCharacter.Health.CurrentValue, 0);
+		damageText.text = 0.ToString("F3");
+		OnStaggerValueChange(gameCharacter.StaggerComponent.CurrentValue, 0);
 	}
 
 	private void OnDisable()

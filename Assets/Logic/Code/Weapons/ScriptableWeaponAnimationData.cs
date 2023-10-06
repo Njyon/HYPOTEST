@@ -27,6 +27,16 @@ public class AttackAnimationData
 [Serializable]
 public class AttackAnimationExtraData
 {
+	AttackAnimationExtraData()
+	{
+		Damage = 10f;
+		Rating = 10f;
+		discharge = 100f;
+		flyAwayTime = 1f;
+		freezTime = 1f;
+		stopMovingRange = 1f;
+	}
+
 	public float Damage = 10;
 	public float Rating = 10;
 	public float discharge = 100;
@@ -39,6 +49,7 @@ public class AttackAnimationExtraData
 	public float timeValue;
 	public float flyAwayTime = 1f;
 	public float freezTime = 1f;
+	public float stopMovingRange = 1f;
 }
 
 [Serializable]

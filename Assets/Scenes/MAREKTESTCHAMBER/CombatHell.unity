@@ -751,6 +751,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1862273907}
     m_Modifications:
+    - target: {fileID: 483579400, guid: 86332de1ed30b784793c06564d56c577, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2039933539, guid: 86332de1ed30b784793c06564d56c577, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -866,9 +870,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnDataBasedOnDifficulty:
-  - charactersToSpawn:
+  - maxSpawnEnemies: 5
+    charactersToSpawn:
     - character: {fileID: 11400000, guid: 281f7dc6c6d078f4d812c65686904734, type: 2}
-      spawnAmount: 3
+      spawnAmount: 20
       maxOnField: 2
   randomSpawnLocations:
   - {fileID: 1432680749}
@@ -876,7 +881,6 @@ MonoBehaviour:
   characterSpecificSpawnPoints:
     keys: []
     values: []
-  maxSpawnEnemies: 5
   onStartSpawningEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -1463,27 +1467,27 @@ PrefabInstance:
     - target: {fileID: 4544094773583281612, guid: ab268788f591bb14eafc889667f5423a,
         type: 3}
       propertyPath: onPlayerEnterEvent.m_PersistentCalls.m_Calls.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4544094773583281612, guid: ab268788f591bb14eafc889667f5423a,
         type: 3}
       propertyPath: onPlayerEnterEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 537641615}
     - target: {fileID: 4544094773583281612, guid: ab268788f591bb14eafc889667f5423a,
         type: 3}
       propertyPath: onPlayerEnterEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: 
+      value: StartSpawningCharacters
       objectReference: {fileID: 0}
     - target: {fileID: 4544094773583281612, guid: ab268788f591bb14eafc889667f5423a,
         type: 3}
       propertyPath: onPlayerEnterEvent.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: 
+      value: ArenaSpawner, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 4544094773583281612, guid: ab268788f591bb14eafc889667f5423a,
         type: 3}
       propertyPath: onPlayerEnterEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: 
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 5049289504178916081, guid: ab268788f591bb14eafc889667f5423a,
         type: 3}
