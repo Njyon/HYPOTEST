@@ -206,16 +206,31 @@ public class CombatComponent
 		{
 			if (i >= 4) break;
 			weapons[i] = gameCharacter.GameCharacterData.Weapons[i];
-			WeaponBase[] weaponArray = Ultra.Utilities.GetAll<WeaponBase>().ToArray();
-			for (int j = 0; j < weaponArray.Length; j++)
+
+			switch (weapons[i].WeaponClassName)
 			{
-				if (weaponArray[j].GetType().Name == weapons[i].WeaponClassName)
-				{
-					weapons[i].Weapon = Activator.CreateInstance(weaponArray[j].GetType(), gameCharacter, weapons[i]) as WeaponBase;
-					equipedWeapons++;
+				case "FistWeapon": weapons[i].Weapon = new FistWeapon(gameCharacter, weapons[i]); break;
+				case "SpearWeapon": weapons[i].Weapon = new SpearWeapon(gameCharacter, weapons[i]); break;
+				case "SwordWeapon": weapons[i].Weapon = new SwordWeapon(gameCharacter, weapons[i]); break;
+				default:
+					Ultra.Utilities.Instance.DebugErrorString("CombatComponent", "InitWeapons", "No Valid Weapon Implementation Found!");
 					break;
-				}
 			}
+			if (weapons[i].Weapon != null)
+			{
+				equipedWeapons++;
+			}
+
+			//WeaponBase[] weaponArray = Ultra.Utilities.GetAll<WeaponBase>().ToArray();
+			//for (int j = 0; j < weaponArray.Length; j++)
+			//{
+			//	if (weaponArray[j].GetType().Name == weapons[i].WeaponClassName)
+			//	{
+			//		weapons[i].Weapon = Activator.CreateInstance(weaponArray[j].GetType(), gameCharacter, weapons[i]) as WeaponBase;
+			//		equipedWeapons++;
+			//		break;
+			//	}
+			//}
 		}
 		if (weapons.Length >= 1 && weapons[0] != null && weapons[0].Weapon != null)
 		{

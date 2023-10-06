@@ -1,14 +1,17 @@
 using Megumin.Binding;
 using Megumin.GameFramework.AI.BehaviorTree;
+using Megumin.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TextCore.Text;
+using static Megumin.GameFramework.AI.BehaviorTree.BehaviorTreeRunner;
 
 public class HyppoliteManagableAI
 {
@@ -50,11 +53,25 @@ public class AIManager : Singelton<AIManager>
 	HyppoliteManagableAI[] sortedMeleeAIs;
 	[SerializeField] int meleeCharacterAttackAmount = 1;
 	GameModeBase gameMode;
+	GameObject btrParent = null;
+
+	Stack<BehaviorTreeRunner> behaviorTreeRunners;
+	public bool NoMoreBehaviorTrees => behaviorTreeRunners.Count <= 0;
+	public bool IsBehaviorTreeStackInit => behaviorTreeRunners != null;
+	int behaviorStackMinSize = 10;
 
 	public int MeleeCharacterAttackAmount { get { return meleeCharacterAttackAmount; } }
 	public int ManagableAIsCount { get { return managableAIs.Count; } }
 	public int MeleeAIsCount { get { return meleeAIs.Count; } }
 	public int MeleeAIsThatCanAttackCount { get { return meleeAIsThatCanAttack.Count; } }
+	GameObject BTRParent {
+		get {
+			if (btrParent == null) {
+				btrParent = new GameObject("AIs");
+			}
+			return btrParent;
+		}
+	}
 	GameModeBase GameMode {
 		get {
 			if (gameMode == null) 
@@ -101,7 +118,7 @@ public class AIManager : Singelton<AIManager>
 		if (GameMode.PlayerGameCharacter == null) return;
 		if (managableAIs.Count <= 0) return;
 
-		if (jobHandle != null)
+		if (!jobHandle.IsUnityNull())
 			jobHandle.Complete();
 		if (distances != null)
 		{
@@ -122,6 +139,7 @@ public class AIManager : Singelton<AIManager>
 		{
 			for (int i = 0; i < sortedMeleeAIs.Length; i++)
 			{
+				if (sortedMeleeAIs[i].gameCharacter.MovementComponent == null || GameMode.PlayerGameCharacter.MovementComponent == null) continue;
 				if (sortedMeleeAIs[i].gameCharacter.MovementComponent.CharacterCenter.x >= GameMode.PlayerGameCharacter.MovementComponent.CharacterCenter.x)
 					rightFromPlayerSortedAiList.Add(sortedMeleeAIs[i]);
 				else
@@ -264,18 +282,67 @@ public class AIManager : Singelton<AIManager>
 		}
 	}
 
-
-	[BurstCompile]
-	private struct CalculateDistancesJob : IJobParallelFor
+	public BehaviorTreeRunner GetBehaviorTreeRunner(GameCharacter gameCharacter, ScriptableCharacter characterData, OnBehaviourTreeInit onBTRInit)
 	{
-		public Vector3 targetPosition;
-		[DeallocateOnJobCompletionAttribute]
-		[ReadOnly] public NativeArray<Vector3> otherPositions;
-		public NativeArray<float> distances;
+		if (gameCharacter == null) return null;
+		if (!IsBehaviorTreeStackInit) InitBehaviorTreeStack();
+		if (NoMoreBehaviorTrees)
+			SpawnBehaviorTreeRunner();
 
-		public void Execute(int index)
+		BehaviorTreeRunner btr = behaviorTreeRunners.Pop();
+		btr.BehaviorTreeAsset = characterData.behaviourTree;
+		btr.onBehaviourTreeInit += onBTRInit;
+		btr.EnableTree();
+		return btr;
+	}
+	
+	public void ReturnBehaviorTreeRunner(BehaviorTreeRunner btr)
+	{
+		btr.DisableTree();
+		behaviorTreeRunners.Push(btr);
+	}
+
+	public void InitBehaviorTreeStack()
+	{
+		TypeCache.CacheAllTypes();
+		behaviorTreeRunners = new Stack<BehaviorTreeRunner>();
+		for (int i = 0; i < behaviorStackMinSize; i++)
 		{
-			distances[index] = Vector3.Distance(targetPosition, otherPositions[index]);
+			SpawnBehaviorTreeRunner(i);
 		}
+	}
+
+	void SpawnBehaviorTreeRunner(int index = -1)
+	{
+		GameObject go = new GameObject("BehaviorTreeRunner_" + behaviorTreeRunners.Count);
+		go.transform.parent = BTRParent.transform;
+		BehaviorTreeRunner btr = go.AddComponent<BehaviorTreeRunner>();
+		btr.RunOption = new Megumin.GameFramework.AI.RunOption();
+		btr.InitOption = new Megumin.GameFramework.AI.InitOption();
+		btr.InitOption.DelayRandomFrame = new(true, 15);
+		if (index >= 0)
+		{
+			if (GameAssets.Instance.BehaviorTrees.Count > index)
+			{
+				btr.BehaviorTreeAsset = GameAssets.Instance.BehaviorTrees[index];
+				btr.EnableTree();
+			}
+		}
+		btr.DisableTree();
+		behaviorTreeRunners.Push(btr);
+	}
+}
+
+[BurstCompile]
+public struct CalculateDistancesJob : IJobParallelFor
+{
+	public Vector3 targetPosition;
+	[DeallocateOnJobCompletionAttribute]
+	[ReadOnly] public NativeArray<Vector3> otherPositions;
+	public NativeArray<float> distances;
+
+	public void Execute(int index)
+	{
+		distances[index] = Vector3.Distance(targetPosition, otherPositions[index]);
 	}
 }

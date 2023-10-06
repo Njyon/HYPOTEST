@@ -60,19 +60,29 @@ public class CameraStateMachine : AStateMachineBase<ECameraStates>
 
 	protected override bool CreateState(ECameraStates stateType, out IState<ECameraStates> newState)
 	{
-		var stateTypes = Assembly.GetExecutingAssembly().GetTypes()
-			.Where(t => t.BaseType == typeof(ACameraState))
-			.ToList();
-
-		var stateClass = stateTypes.FirstOrDefault(t => t.Name == stateType.ToString() + "CameraState");
-
-		if (stateClass == null)
+		newState = null;
+		switch (stateType)
 		{
-			newState = null;
-			return false;
+			case ECameraStates.Unknown: break;
+				case ECameraStates.Default: newState = new DefaultCameraState(this, camController, camController.GameCharacter); break;
+				case ECameraStates.MultipleTarget: newState = new MultiTargetCamerState(this, camController, camController.GameCharacter); break;
+			default:
+				Ultra.Utilities.Instance.DebugErrorString("CamerStateMaschine", "CreateState", "Camera State has no valid Implementation!");
+				break;
 		}
-
-		newState = Activator.CreateInstance(stateClass, this, camController, camController.GameCharacter) as ACameraState;
+		//var stateTypes = Assembly.GetExecutingAssembly().GetTypes()
+		//	.Where(t => t.BaseType == typeof(ACameraState))
+		//	.ToList();
+		//
+		//var stateClass = stateTypes.FirstOrDefault(t => t.Name == stateType.ToString() + "CameraState");
+		//
+		//if (stateClass == null)
+		//{
+		//	newState = null;
+		//	return false;
+		//}
+		//
+		//newState = Activator.CreateInstance(stateClass, this, camController, camController.GameCharacter) as ACameraState;
 
 		return newState != null;
 	}

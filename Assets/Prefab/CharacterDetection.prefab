@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7474091353433867958}
   - component: {fileID: 4629497430102566131}
-  - component: {fileID: 4474841794317564197}
   - component: {fileID: 6207150083279374621}
+  - component: {fileID: 6102493462312869952}
   m_Layer: 10
   m_Name: CharacterDetection
   m_TagString: Untagged
@@ -55,20 +55,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4474841794317564197
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7474091353433867959}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44618e85b660de847a6a73f2863ab64d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  collider: {fileID: 4629497430102566131}
-  OverlappingGameCharacter: []
 --- !u!54 &6207150083279374621
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -96,3 +82,17 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!114 &6102493462312869952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7474091353433867959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f21126f6b97d1144b3676a5b923a787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collider: {fileID: 4629497430102566131}
+  OverlappingGameCharacter: []

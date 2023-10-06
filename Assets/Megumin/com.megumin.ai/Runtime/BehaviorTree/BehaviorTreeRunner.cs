@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Megumin.Binding;
 using Megumin.Serialization;
 using UnityEngine;
+using UnityEngine.Profiling;
 using UnityEngine.Serialization;
 
 namespace Megumin.GameFramework.AI.BehaviorTree
@@ -104,35 +105,32 @@ namespace Megumin.GameFramework.AI.BehaviorTree
                     }
                 }
 
-                //声明一个临时变量，方式闭包捕获gameObject，造成在非主线程访问gameObject。
-                //防止 UnityException: get_gameObject can only be called from the main thread.
-                var agent = gameObject;
+				//声明一个临时变量，方式闭包捕获gameObject，造成在非主线程访问gameObject。
+				//防止 UnityException: get_gameObject can only be called from the main thread.
+				var agent = gameObject;
                 BehaviourTree = await BehaviorTreeAsset.InstantiateAsync(InitOption, refFinder);
                 BehaviourTree.RunOption = RunOption;
                 BehaviourTree.InstanceName = gameObject.name;
                 BehaviourTree.BindAgent(agent);
                 OverrideVariables?.ParseBinding(agent, true);
-                BehaviourTree.ParseAllBindable(agent);
-
-                if (BehaviourTree != null && onBehaviourTreeInit != null) onBehaviourTreeInit();
-
+                BehaviourTree.ParseAllBindable(agent); 
 
 				if (InitOption.DelayRandomFrame.Enabled)
                 {
-                    var wait = UnityEngine.Random.Range(0, InitOption.DelayRandomFrame);
+                    var wait = UnityEngine.Random.Range(2, InitOption.DelayRandomFrame);
                     await WaitFrames(wait);
                 }
+
+                if (BehaviourTree != null && onBehaviourTreeInit != null) onBehaviourTreeInit();
             }
 
             if (BehaviourTree != null)
             {
                 BehaviorTreeManager.Instance.AddTree(BehaviourTree, TickMode);
                 BehaviourTree.IsRunning = true;
-
-				//if (BehaviourTree != null && onBehaviourTreeInit != null) onBehaviourTreeInit();
 			}
 
-            isIniting = false;
+			isIniting = false;
         }
 
         public void DisableTree()

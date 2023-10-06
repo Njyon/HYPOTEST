@@ -15,6 +15,8 @@ public class PlayerGameCharacter : GameCharacter
 	protected override void Awake()
 	{
 		base.Awake();
+		if (!AIManager.Instance.IsBehaviorTreeStackInit) AIManager.Instance.InitBehaviorTreeStack();
+
 		combatRatingComponent = new CombatRatingComponent(0);
 		combatRatingComponent.Init(this);
 

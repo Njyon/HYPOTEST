@@ -7,6 +7,7 @@ using static Megumin.GameFramework.AI.BehaviorTree.BehaviorTreeRunner;
 public class EnemyGameCharacter : GameCharacter
 {
 	BehaviorTreeRunner btRunner;
+	public BehaviorTreeRunner BTRunner { get { return btRunner; } set { btRunner = value; } }
 
 	protected override void Awake()
 	{
@@ -15,13 +16,15 @@ public class EnemyGameCharacter : GameCharacter
 
 	public override void CustomAwake()
 	{
-		btRunner = GetComponent<BehaviorTreeRunner>();
 		base.CustomAwake();
 
-		if (btRunner.BehaviourTree != null)
-			OnBehaviourTreeInit();
-		else 
-			btRunner.onBehaviourTreeInit += OnBehaviourTreeInit;
+		if (btRunner != null)
+		{
+			if (btRunner.BehaviourTree != null)
+				OnBehaviourTreeInit();
+			else
+				btRunner.onBehaviourTreeInit += OnBehaviourTreeInit;
+		}
 	}
 
 	new protected void Update()
@@ -42,7 +45,7 @@ public class EnemyGameCharacter : GameCharacter
 		if (other != null && other.IsPlayerCharacter && btRunner != null && btRunner.BehaviourTree != null)
 		{
 			btRunner.BehaviourTree.Variable.TryGetParam<GameCharacter>("Target", out var gameCharacterRef);
-			if (gameCharacterRef.Value == null)
+			if (gameCharacterRef != null && gameCharacterRef.Value == null)
 				btRunner.BehaviourTree.Variable.TrySetValue<GameCharacter>("Target", other);
 		}
 	}

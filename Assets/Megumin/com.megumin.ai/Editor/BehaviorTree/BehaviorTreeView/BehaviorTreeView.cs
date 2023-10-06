@@ -5,6 +5,7 @@ using Megumin.GameFramework.AI.Editor;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.Profiling;
 using UnityEngine.UIElements;
 
 namespace Megumin.GameFramework.AI.BehaviorTree.Editor
@@ -340,15 +341,15 @@ namespace Megumin.GameFramework.AI.BehaviorTree.Editor
             if (force || Tree == null)
             {
                 if (EditorWindow.IsDebugMode)
-                {
-                    SOTree.Tree = EditorWindow.DebugInstance;
-                }
+				{
+					SOTree.Tree = EditorWindow.DebugInstance;
+				}
                 else
                 {
                     if (EditorWindow.CurrentAsset != null)
-                    {
-                        SOTree.Tree = EditorWindow.CurrentAsset.Instantiate(editorInitOption);
-                    }
+					{
+						SOTree.Tree = EditorWindow.CurrentAsset.Instantiate(editorInitOption);
+					}
                     else
                     {
                         return;
@@ -363,19 +364,19 @@ namespace Megumin.GameFramework.AI.BehaviorTree.Editor
                 this.LogMethodName();
             }
 
-            DeleteElements(graphElements.ToList().Where(elem => elem is BehaviorTreeNodeView || elem is Edge));
+			DeleteElements(graphElements.ToList().Where(elem => elem is BehaviorTreeNodeView || elem is Edge));
 
-            //赋值viewDataKey 后会自动保存布局和缩放。
-            viewDataKey = Tree.GUID;
+			//赋值viewDataKey 后会自动保存布局和缩放。
+			viewDataKey = Tree.GUID;
 
-            foreach (var node in Tree.AllNodes)
+			foreach (var node in Tree.AllNodes)
             {
                 var nodeViwe = CreateNodeView(node);
                 this.AddElement(nodeViwe);
-            }
+			}
 
-            //连接View父子关系
-            foreach (var node in Tree.AllNodes)
+			//连接View父子关系
+			foreach (var node in Tree.AllNodes)
             {
                 if (node is BTParentNode parentNode)
                 {
@@ -386,30 +387,30 @@ namespace Megumin.GameFramework.AI.BehaviorTree.Editor
                         childview.ConnectParentNodeView(view);
                     }
                 }
-            }
+			}
 
-            //重载后WrappSONode 会重新创建，Inspector显示的对象已经过时。
-            //if (Selection.activeObject is NodeWrapper oldActiveNode)
-            //{
-            //    var view = GetNodeByGuid(oldActiveNode.Node.GUID) as BehaviorTreeNodeView;
-            //    Selection.activeObject = view.SONode;
-            //}
+			//重载后WrappSONode 会重新创建，Inspector显示的对象已经过时。
+			//if (Selection.activeObject is NodeWrapper oldActiveNode)
+			//{
+			//    var view = GetNodeByGuid(oldActiveNode.Node.GUID) as BehaviorTreeNodeView;
+			//    Selection.activeObject = view.SONode;
+			//}
 
-            //for (int i = 0; i < Selection.objects.Length; i++)
-            //{
-            //    var obj = Selection.objects[i];
-            //    if (obj is NodeWrapper oldNode)
-            //    {
-            //        var view = GetNodeByGuid(oldNode.Node.GUID) as BehaviorTreeNodeView;
-            //        Selection.objects[i] = view.SONode;
-            //    }
-            //}
+			//for (int i = 0; i < Selection.objects.Length; i++)
+			//{
+			//    var obj = Selection.objects[i];
+			//    if (obj is NodeWrapper oldNode)
+			//    {
+			//        var view = GetNodeByGuid(oldNode.Node.GUID) as BehaviorTreeNodeView;
+			//        Selection.objects[i] = view.SONode;
+			//    }
+			//}
 
-            Blackboard?.ReloadView(force);
+			Blackboard?.ReloadView(force);
 
-            //this.RepaintInspectorWindows();
+			//this.RepaintInspectorWindows();
 
-            LoadVersion = SOTree.ChangeVersion;
+			LoadVersion = SOTree.ChangeVersion;
         }
 
         public void ReloadAllNodeView()

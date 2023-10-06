@@ -101,7 +101,7 @@ PrefabInstance:
     - target: {fileID: 1170870102689315339, guid: 86332de1ed30b784793c06564d56c577,
         type: 3}
       propertyPath: m_Name
-      value: DummyCharacterNew EnemyVersion 02
+      value: DummyCharacterNew EnemyVersion
       objectReference: {fileID: 0}
     - target: {fileID: 1325711971099118396, guid: 86332de1ed30b784793c06564d56c577,
         type: 3}
@@ -675,9 +675,40 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5871210591813294166, guid: 86332de1ed30b784793c06564d56c577,
         type: 3}
+      propertyPath: drag
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5871210591813294166, guid: 86332de1ed30b784793c06564d56c577,
+        type: 3}
+      propertyPath: health
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 5871210591813294166, guid: 86332de1ed30b784793c06564d56c577,
+        type: 3}
+      propertyPath: acceleration
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5871210591813294166, guid: 86332de1ed30b784793c06564d56c577,
+        type: 3}
+      propertyPath: maxMovementSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5871210591813294166, guid: 86332de1ed30b784793c06564d56c577,
+        type: 3}
       propertyPath: enemyInfoOffset.y
       value: 90
       objectReference: {fileID: 0}
+    - target: {fileID: 5871210591813294166, guid: 86332de1ed30b784793c06564d56c577,
+        type: 3}
+      propertyPath: weapons.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5871210591813294166, guid: 86332de1ed30b784793c06564d56c577,
+        type: 3}
+      propertyPath: weapons.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 97032131ea0fce44e8303aa40a9b6531,
+        type: 2}
     - target: {fileID: 5947000781106229074, guid: 86332de1ed30b784793c06564d56c577,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

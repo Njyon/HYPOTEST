@@ -81,13 +81,13 @@ namespace Megumin.GameFramework.AI.BehaviorTree
                 return;
             }
 
-            if (AllTree.Contains(tree) == false)
+			if (AllTree.Contains(tree) == false)
             {
                 AllTree.Add(tree);
-            }
+			}
 
 
-            if ((tickMode & TickMode.Update) != 0)
+			if ((tickMode & TickMode.Update) != 0)
             {
                 if (UpdateTree.Contains(tree) == false)
                 {
@@ -97,9 +97,9 @@ namespace Megumin.GameFramework.AI.BehaviorTree
             else
             {
                 UpdateTree.Remove(tree);
-            }
+			}
 
-            if ((tickMode & TickMode.FixedUpdate) != 0)
+			if ((tickMode & TickMode.FixedUpdate) != 0)
             {
                 if (FixedUpdateTree.Contains(tree) == false)
                 {
@@ -109,9 +109,9 @@ namespace Megumin.GameFramework.AI.BehaviorTree
             else
             {
                 FixedUpdateTree.Remove(tree);
-            }
+			}
 
-            if ((tickMode & TickMode.LateUpdate) != 0)
+			if ((tickMode & TickMode.LateUpdate) != 0)
             {
                 if (LateUpdateTree.Contains(tree) == false)
                 {
@@ -121,10 +121,10 @@ namespace Megumin.GameFramework.AI.BehaviorTree
             else
             {
                 LateUpdateTree.Remove(tree);
-            }
+			}
 
-            TreeDebugger?.AddDebugInstanceTree(tree);
-        }
+			TreeDebugger?.AddDebugInstanceTree(tree);
+		}
 
         List<BehaviorTree> needRemoveTree = new();
         public void RemoveTree(BehaviorTree tree)

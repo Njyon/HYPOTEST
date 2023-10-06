@@ -4,11 +4,12 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 [Icon("d_UnityEditor.GameView@2x")]
 public class AIControllerBase : ControllerBase
 {
-	GameCharacter gameCharacter;
+	EnemyGameCharacter gameCharacter;
 	BehaviorTreeRunner btRunner;
 
 	EnemyInfo enemyInfo;
@@ -22,22 +23,28 @@ public class AIControllerBase : ControllerBase
 
 	async private void SetupGameCharacter(GameObject pawn)
 	{
+		Profiler.BeginSample("Init new GameCharacter");
 		gameCharacter = pawn.AddComponent<EnemyGameCharacter>();
 		gameCharacter.CharacterData = characterData;
 		if (characterData != null && characterData.behaviourTree != null)
 		{
-			btRunner = gameCharacter.AddComponent<BehaviorTreeRunner>();
-			InitBehaviourTreeValues();
-			btRunner.onBehaviourTreeInit += OnBehaviourTreeInit;
+			btRunner = AIManager.Instance.GetBehaviorTreeRunner(gameCharacter, characterData, OnBehaviourTreeInit);
+
+			//btRunner = gameCharacter.AddComponent<BehaviorTreeRunner>();
+			//btRunner.onBehaviourTreeInit += OnBehaviourTreeInit;
+			//InitBehaviourTreeValues();
 		}
+		gameCharacter.BTRunner = btRunner;
 		gameCharacter.CustomAwake();
 		GameCharacterMovementComponent movementComponent = pawn.GetComponent<GameCharacterMovementComponent>();
 		if (movementComponent != null) movementComponent.SetupGameCharacter(gameCharacter);
 		
-		if (btRunner != null) btRunner.EnableTree();
+		//if (btRunner != null) btRunner.EnableTree();
 
 		gameCharacter.onGameCharacterDied += OnGameCharacterDied;
 		gameCharacter.Team = HyppoliteTeam.TeamEnemy;
+
+		Profiler.EndSample();
 
 		await new WaitUntil(() => UIManager.Instance.Canvas != null);
 		enemyInfo = UIManager.Instance.GetEnemyInfo(gameCharacter);
@@ -52,8 +59,11 @@ public class AIControllerBase : ControllerBase
 
 	protected override void OnGameCharacterDied(GameCharacter gameCharacter)
 	{
-		btRunner.DisableTree();
-		btRunner.enabled = false;
+		if (btRunner != null)
+		{
+			btRunner.DisableTree();
+			btRunner.enabled = false;
+		}
 
 		UIManager.Instance.ReturnEnemyInfo(enemyInfo);
 	}
@@ -82,6 +92,8 @@ public class AIControllerBase : ControllerBase
 			btRunner.BehaviourTree.InitAddVariable(selfVar);
 		}
 
+		btRunner.BehaviourTree.Variable.TrySetValue<GameCharacter>("Self", gameCharacter);
+
 		if (!btRunner.BehaviourTree.Variable.Contains("Target"))
 		{
 			RefVar_GameCharacter targetRef = new RefVar_GameCharacter();
@@ -90,7 +102,5 @@ public class AIControllerBase : ControllerBase
 
 			btRunner.BehaviourTree.InitAddVariable(targetRef);
 		}
-
-		//btRunner.BehaviourTree.ParseAllBindable(btRunner.BehaviourTree.Agent);
 	}
 }

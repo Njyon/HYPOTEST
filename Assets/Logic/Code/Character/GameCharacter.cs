@@ -31,7 +31,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 	float freezTimeOverride = 0f;
 	float characterRadiusTarget;
 	float characterHeightTarget;
-	CharacterDetection characterDetection;
+	GameCharacterDetection characterDetection;
 	bool isGameCharacterDead = false;
 	HyppoliteTeam team;
 	Quaternion rotationTarget;
@@ -58,7 +58,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 	public Ultra.Timer FreezTimer { get { return freezTimer; } }
 	public float FreezTime { get { return freezTime; } }	
 	public float FreezTimeOverride { get { return freezTimeOverride; } set { freezTimeOverride = value; } }	
-	public CharacterDetection CharacterDetection { get { return characterDetection; } }
+	public GameCharacterDetection CharacterDetection { get { return characterDetection; } }
 	public RigDataComponent RigDataComponent { get { return rigDataComponent; } }
 	public Quaternion RotationTarget { get { return rotationTarget; } set { rotationTarget = value; } }
 	public Vector3 LastDir { get { return lastDir; } set { lastDir = value; } }
@@ -127,12 +127,13 @@ public class GameCharacter : MonoBehaviour , IDamage
 		combatComponent = new CombatComponent(this);
 
 		GameObject characterDetectionObject = GameObject.Instantiate(GameAssets.Instance.characterDetection, transform);
-		characterDetection = characterDetectionObject.GetComponent<CharacterDetection>();
+		characterDetection = characterDetectionObject.GetComponent<GameCharacterDetection>();
 		characterDetection.onOverlapEnter += OnCharacterDetectionOverlapEnter;
-		characterDetection.Collider.radius = gameCharacterData.CharacterDetectionRange;
+		SphereCollider sphereCollider = characterDetection.Collider as SphereCollider;
+		if (sphereCollider != null) sphereCollider.radius = gameCharacterData.CharacterDetectionRange;
 
-		animController.Start();
-		combatComponent.StartComponent();
+		if (animController != null) animController.Start();
+		if (combatComponent != null) combatComponent.StartComponent();
 
 		health = new RecourceBase(gameCharacterData.Health, gameCharacterData.Health);
 		health.onCurrentValueChange += OnHealthValueChanged;
@@ -169,7 +170,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 		MovementComponent.CalculateVelocity();
 		MovementComponent.AddGravityOnMovementVelocity();
 		MovementComponent.CheckIfCharacterIsGrounded();
-		CombatComponent.UpdateComponent(Time.deltaTime);
+		CombatComponent?.UpdateComponent(Time.deltaTime);
 		MovementComponent.MoveCharacter();
 
 		animController.Update(Time.deltaTime);
@@ -410,10 +411,11 @@ public class GameCharacter : MonoBehaviour , IDamage
 	{
 		Ultra.Utilities.Instance.DebugLogOnScreen(name + " Is Dead", 2f, StringColor.White, 200, DebugAreas.Combat);
 		IsGameCharacterDead = true;
-		if (onGameCharacterDied != null) onGameCharacterDied(this);
 		Animator.enabled = false;
 		MovementComponent.CapsuleCollider.enabled = false;
 		MovementComponent.UnityMovementController.enabled = false;
+
+		GameObject.Destroy(gameObject, 3f);
 
 		foreach (Rigidbody rBody in rigDataComponent.RegdollRigidBodys)
 		{
@@ -424,6 +426,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 		{
 			collider.enabled = true;
 		}
+		if (onGameCharacterDied != null) onGameCharacterDied(this);
 	}
 
 	[Button("Die")]
