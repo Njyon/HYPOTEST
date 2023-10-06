@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Megumin.GameFramework.AI.Editor;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 namespace Megumin.GameFramework.AI.BehaviorTree.Editor
 {
@@ -25,21 +26,22 @@ namespace Megumin.GameFramework.AI.BehaviorTree.Editor
         }
 
         public void AddDebugInstanceTree(BehaviorTree tree)
-        {
-            if (tree == null)
+		{
+			if (tree == null)
             {
                 return;
             }
 
             if (EditorApplication.isPlaying)
-            {
-                if (BehaviorTreeEditor.AllActiveEditor.Any(elem => elem.DebugInstance == tree))
+			{
+				if (BehaviorTreeEditor.AllActiveEditor.Any(elem => elem.DebugInstance == tree))
                 {
                     return;
-                }
+				}
 
-                //在所有打开的编辑器中找到 空闲的，符合当前tree的编辑器
-                foreach (var item in BehaviorTreeEditor.AllActiveEditor)
+				Profiler.BeginSample("Add Debug Tree Instance Foreach thing");
+				//在所有打开的编辑器中找到 空闲的，符合当前tree的编辑器
+				foreach (var item in BehaviorTreeEditor.AllActiveEditor)
                 {
                     if (item.CurrentAsset.AssetObject == tree.Asset.AssetObject)
                     {
@@ -48,16 +50,19 @@ namespace Megumin.GameFramework.AI.BehaviorTree.Editor
 
                         }
                         else
-                        {
-                            item.BeginDebug(tree);
-                        }
+						{
+							Profiler.BeginSample("Tree Begin Debug");
+							item.BeginDebug(tree);
+							Profiler.EndSample();
+						}
                     }
-                }
-            }
+				}
+				Profiler.EndSample();
+			}
             else
-            {
-                BehaviorTreeEditor.OnOpenAsset(tree.Asset);
-            }
+			{
+				BehaviorTreeEditor.OnOpenAsset(tree.Asset);
+			}
         }
 
         public void StopDebug()
@@ -85,22 +90,23 @@ namespace Megumin.GameFramework.AI.BehaviorTree.Editor
             this.LogMethodName();
             IsDebugMode = true;
             DebugInstance = tree;
-            rootVisualElement.SetToClassList(UssClassConst.debugMode, IsDebugMode);
-            var so = TreeView.CreateSOWrapperIfNull();
+
+			rootVisualElement.SetToClassList(UssClassConst.debugMode, IsDebugMode);
+			var so = TreeView.CreateSOWrapperIfNull();
             so.Tree = tree;
 
-            if (DebugInstanceGameObject != null)
+			if (DebugInstanceGameObject != null)
             {
                 if (tree.Agent is UnityEngine.Object agentObj)
                 {
                     DebugInstanceGameObject.Value = agentObj;
                 }
-            }
+			}
 
-            TreeView.ReloadView(true);
-            OnPostTick();
-            UpdateTitle();
-        }
+			TreeView.ReloadView(true);
+			OnPostTick();
+			UpdateTitle();
+		}
 
         internal void EndDebug()
         {

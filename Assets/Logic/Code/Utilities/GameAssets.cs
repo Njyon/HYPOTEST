@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Megumin.GameFramework.AI.BehaviorTree;
 
 public class GameAssets : MonoBehaviour
 {
@@ -25,4 +26,5 @@ public class GameAssets : MonoBehaviour
     public GameObject characterDetection;
 	public List<StyleRankingScriptableObject> styleRanks = new List<StyleRankingScriptableObject>();
     public GameObject EnemyInfo;
+    public List<BehaviorTreeAsset_1_1> BehaviorTrees = new List<BehaviorTreeAsset_1_1>();
 }

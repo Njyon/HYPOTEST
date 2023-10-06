@@ -103,65 +103,46 @@ public class GameCharacter : MonoBehaviour , IDamage
 
 	protected virtual void Awake()
 	{
-		//Ultra.Utilities.Instance.DebugPrintTimeAndElapsedSinceLast("GameCharacter Awake Start");
 		animator = gameObject.GetComponent<Animator>();
 		if (animator == null) Debug.LogError("GameObject: " + name + " Does not have an Animator Attached!");
 		rigidbody = gameObject.GetComponent<Rigidbody>();
 		if (rigidbody == null) Debug.LogError("GameObject: " + name + " Does not have an Rigibody Attached!");
 
 		freezTimer = new Ultra.Timer(freezTime, true);
-		//Ultra.Utilities.Instance.DebugPrintTimeAndElapsedSinceLast("GameCharacter Awake End");
 
 	}
 
 	public virtual void CustomAwake()
 	{
-		//.Utilities.Instance.DebugPrintTimeAndElapsedSinceLast("GameCharacter CustomAwake Start");
 		rigDataComponent = gameObject.AddComponent<RigDataComponent>();
-		//Ultra.Utilities.Instance.DebugPrintTimeAndElapsedSinceLast("GameCharacter RigDataComponent Finished");
 		movementComponent = gameObject.GetComponent<GameCharacterMovementComponent>();
 		if (movementComponent == null) Debug.LogError("GameObject: " + name + " Does not have an GameCharacterMovementComponent Attached!");
-		//Ultra.Utilities.Instance.DebugPrintTimeAndElapsedSinceLast("GameCharacter GameCharacterMovementComponent Finished");
 		eventComponent = new EventComponent();
-		//Ultra.Utilities.Instance.DebugPrintTimeAndElapsedSinceLast("GameCharacter EventComponent Finished");
 		gameCharacterData = gameObject.GetComponent<GameCharacterData>();
 		if (!gameCharacterData) gameObject.AddComponent<GameCharacterData>();
-		//Ultra.Utilities.Instance.DebugPrintTimeAndElapsedSinceLast("GameCharacter GameCharacterData Finished");
 		stateMachine = gameObject.AddComponent<GameCharacterStateMachine>();
-		//Ultra.Utilities.Instance.DebugPrintTimeAndElapsedSinceLast("GameCharacter GameCharacterStateMachine Finished");
 		pluginStateMachine = gameObject.AddComponent<GameCharacterPluginStateMachine>();
 		pluginStateMachine.Init(this);
-		//Ultra.Utilities.Instance.DebugPrintTimeAndElapsedSinceLast("GameCharacter GameCharacterPluginStateMachine Finished");
 		animController = new AnimationController(this);
-		//Ultra.Utilities.Instance.DebugPrintTimeAndElapsedSinceLast("GameCharacter AnimationController Finished");
 		combatComponent = new CombatComponent(this);
-		//Ultra.Utilities.Instance.DebugPrintTimeAndElapsedSinceLast("GameCharacter CombatComponent Finished");
 
 		GameObject characterDetectionObject = GameObject.Instantiate(GameAssets.Instance.characterDetection, transform);
 		characterDetection = characterDetectionObject.GetComponent<GameCharacterDetection>();
 		characterDetection.onOverlapEnter += OnCharacterDetectionOverlapEnter;
 		SphereCollider sphereCollider = characterDetection.Collider as SphereCollider;
 		if (sphereCollider != null) sphereCollider.radius = gameCharacterData.CharacterDetectionRange;
-		//Ultra.Utilities.Instance.DebugPrintTimeAndElapsedSinceLast("GameCharacter GameCharacterDetection Finished");
 
 		if (animController != null) animController.Start();
-		//Ultra.Utilities.Instance.DebugPrintTimeAndElapsedSinceLast("GameCharacter animController.Start Finished");
 		if (combatComponent != null) combatComponent.StartComponent();
-		//Ultra.Utilities.Instance.DebugPrintTimeAndElapsedSinceLast("GameCharacter combatComponent.StartComponent Finished");
 
 		health = new RecourceBase(gameCharacterData.Health, gameCharacterData.Health);
 		health.onCurrentValueChange += OnHealthValueChanged;
-		//Ultra.Utilities.Instance.DebugPrintTimeAndElapsedSinceLast("GameCharacter RecourceBase Health Finished");
 
 		staggerComponent = new StaggerComponent(this, gameCharacterData.StaggerTime, gameCharacterData.MaxStaggerValue, gameCharacterData.MaxStaggerValue);
-		//Ultra.Utilities.Instance.DebugPrintTimeAndElapsedSinceLast("GameCharacter StaggerComponent Finished");
 
 		PluginStateMachine.AddPluginState(EPluginCharacterState.LookInVelocityDirection);
-		//Ultra.Utilities.Instance.DebugPrintTimeAndElapsedSinceLast("GameCharacter AddPluginState LookInVelDir Finished");
 
 		isInitialized = true;
-
-		//Ultra.Utilities.Instance.DebugPrintTimeAndElapsedSinceLast("GameCharacter End");
 	}
 
 	protected void OnDestroy()
@@ -430,7 +411,6 @@ public class GameCharacter : MonoBehaviour , IDamage
 	{
 		Ultra.Utilities.Instance.DebugLogOnScreen(name + " Is Dead", 2f, StringColor.White, 200, DebugAreas.Combat);
 		IsGameCharacterDead = true;
-		if (onGameCharacterDied != null) onGameCharacterDied(this);
 		Animator.enabled = false;
 		MovementComponent.CapsuleCollider.enabled = false;
 		MovementComponent.UnityMovementController.enabled = false;
@@ -446,6 +426,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 		{
 			collider.enabled = true;
 		}
+		if (onGameCharacterDied != null) onGameCharacterDied(this);
 	}
 
 	[Button("Die")]
@@ -458,6 +439,4 @@ public class GameCharacter : MonoBehaviour , IDamage
 	{
 		
 	}
-
-
 }

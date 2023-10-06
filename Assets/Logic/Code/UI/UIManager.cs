@@ -87,8 +87,8 @@ public class UIManager : Singelton<UIManager>
 
 	async private void LoadSceneAsync(string name, LoadSceneMode loadMode, SceneLoadEvent sceneEvent)
 	{
-		Scene titelScreenScene = SceneManager.GetSceneByName(name);
-		if (!titelScreenScene.isLoaded)
+		Scene sceneToBeLoaded = SceneManager.GetSceneByName(name);
+		if (!sceneToBeLoaded.isLoaded)
 		{
 			UIStackELement currentUI;
 			if (uiStack.TryPeek(out currentUI))
@@ -101,7 +101,7 @@ public class UIManager : Singelton<UIManager>
 				}
 			}
 
-			var asyncOperation = SceneManager.LoadSceneAsync(name, LoadSceneMode.Additive);
+			var asyncOperation = SceneManager.LoadSceneAsync(name, loadMode);
 			asyncOperation.completed += (e) => { if (sceneEvent != null) sceneEvent(); };
 			uiStack.Push(new UIStackELement(name, null));
 		}
@@ -200,8 +200,10 @@ public class UIManager : Singelton<UIManager>
 
 	public void ReturnEnemyInfo(EnemyInfo enemyInfo)
 	{
+		if (enemyInfo == null) return;
 		enemyInfo.gameObject.SetActive(false);
-		enemyInfoStack.Push(enemyInfo);
+		if (IsEnemyStackInit)
+			enemyInfoStack.Push(enemyInfo);
 	}
 
 	void InitEnemyStack()
@@ -217,7 +219,7 @@ public class UIManager : Singelton<UIManager>
 	{
 		if (Canvas == null)
 		{
-			Debug.Log(Ultra.Utilities.Instance.DebugErrorString("UIManager", "InitEnemyInfo", "Canvas was null!"));
+			Ultra.Utilities.Instance.DebugErrorString("UIManager", "InitEnemyInfo", "Canvas was null!");
 			return;
 		}
 		GameObject enemyInfoObj = GameObject.Instantiate(GameAssets.Instance.EnemyInfo, Canvas.transform);

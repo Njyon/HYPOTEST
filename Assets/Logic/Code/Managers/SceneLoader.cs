@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+#if UNITY_EDITOR
+using UnityEditor.SceneManagement;
+#endif
 
 [ExecuteInEditMode]
 public class SceneLoader : MonoBehaviour
@@ -22,8 +24,10 @@ public class SceneLoader : MonoBehaviour
 				if (SceneManager.GetSceneByPath(scenes[i]).IsValid()) continue;
 				asyncOperations.Add(SceneManager.LoadSceneAsync(scenes[i], LoadSceneMode.Additive));
 			}
+#if UNITY_EDITOR
 			else
 				EditorSceneManager.OpenScene(scenes[i], OpenSceneMode.Additive);
+#endif
 		}
 		if (Application.isPlaying)
 			StartCoroutine(LoadScenes());
