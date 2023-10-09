@@ -630,15 +630,32 @@ namespace Ultra {
 			Vector3 value = position + Vector3.up * ((hightDirection / 2) - Math.Sign(hightDirection) * radius);
 			return value;
 		}
-		public static bool CapsulCast(Vector3 capsulCenter, float capsulHeight, float radius, Vector3 direction, out RaycastHit hit, Color debugColor, int debugLevel = 100, DebugAreas debugAreas = DebugAreas.Misc) {
+		public static bool CapsulCast(Vector3 capsulCenter, float capsulHeight, float radius, Vector3 direction, out RaycastHit hit, Color debugColor, int debugLevel = 100, DebugAreas debugAreas = DebugAreas.Misc, int layerMask = -5, QueryTriggerInteraction triggerInteraction = QueryTriggerInteraction.UseGlobal) {
 			// IF Application is Playing check is needed to be able to use the funtion out of playmodus
 			if (Application.isPlaying) DrawCapsule(capsulCenter, Quaternion.identity, capsulHeight, radius, debugColor.WithAlpha(0.2f), 0f, debugLevel, debugAreas);
-			bool value = Physics.CapsuleCast(GetCapsuleSphere(capsulCenter, capsulHeight, radius), GetCapsuleSphere(capsulCenter, -capsulHeight, radius), radius, direction, out hit, direction.magnitude);
+			bool value = Physics.CapsuleCast(GetCapsuleSphere(capsulCenter, capsulHeight, radius), GetCapsuleSphere(capsulCenter, -capsulHeight, radius), radius, direction, out hit, direction.magnitude, layerMask, triggerInteraction);
 			if (Application.isPlaying) 
 			{
 				if (value) DrawArrow(capsulCenter, hit.point - capsulCenter, Vector3.Distance(capsulCenter, hit.point), debugColor, 0, debugLevel, debugAreas);
 				else DrawCapsule(capsulCenter + direction, Quaternion.identity, capsulHeight, radius, debugColor.WithAlpha(0.5f), 0f, debugLevel, debugAreas);
 			}
+			return value;
+		}
+
+		public static RaycastHit[] CapsulCastAll(Vector3 capsulCenter, float capsulHeight, float radius, Vector3 direction, Color debugColor, int debugLevel = 100, DebugAreas debugAreas = DebugAreas.Misc, int layerMask = -5, QueryTriggerInteraction triggerInteraction = QueryTriggerInteraction.UseGlobal)
+		{
+			// IF Application is Playing check is needed to be able to use the funtion out of playmodus
+			if (Application.isPlaying) DrawCapsule(capsulCenter, Quaternion.identity, capsulHeight, radius, debugColor.WithAlpha(0.2f), 0f, debugLevel, debugAreas);
+			RaycastHit[] value = Physics.CapsuleCastAll(GetCapsuleSphere(capsulCenter, capsulHeight, radius), GetCapsuleSphere(capsulCenter, -capsulHeight, radius), radius, direction, direction.magnitude, layerMask, triggerInteraction);
+			if (Application.isPlaying)
+			{
+				foreach (RaycastHit hit in value)
+				{
+					if (hit.collider != null) DrawArrow(capsulCenter, hit.point - capsulCenter, Vector3.Distance(capsulCenter, hit.point), debugColor, 0, debugLevel, debugAreas);
+				}
+				DrawCapsule(capsulCenter + direction, Quaternion.identity, capsulHeight, radius, debugColor.WithAlpha(0.5f), 0f, debugLevel, debugAreas);
+			}
+
 			return value;
 		}
 

@@ -10,10 +10,12 @@ public class BTAttack : BTHyppoliteActionNodeBase
 {
 	[Header("AttackData")]
 	public EAttackType AttackType;
+	public bool canAttackInAir = false;
 
 	bool attackDone = false;
 	bool attackStartet = false;
 	bool cantAttack = false;
+
 
 	protected override void OnEnter(object options = null)
 	{
@@ -30,8 +32,20 @@ public class BTAttack : BTHyppoliteActionNodeBase
 		GameCharacter.HorizontalMovementInput(dir.x);
 		GameCharacter.VerticalMovmentInput(dir.y);
 		
-		GameCharacter.CombatComponent.Attack(AttackType);
-		attackStartet = true;
+		if (canAttackInAir && !GameCharacter.MovementComponent.IsGrounded)
+		{
+			GameCharacter.CombatComponent.Attack(AttackType);
+			attackStartet = true;
+		}
+		else if (GameCharacter.MovementComponent.IsGrounded)
+		{
+			GameCharacter.CombatComponent.Attack(AttackType);
+			attackStartet = true;
+		}else
+		{
+			cantAttack = true;
+		}
+
 		GameCharacter.StateMachine.onStateChanged += OnStateChanged;
 	}
 

@@ -22,7 +22,6 @@ public class PlayerGameCharacter : GameCharacter
 
 		UIManager.Instance.onAllUIsUnloaded += OnAllUIsUnloaded;
 		UIManager.Instance.UnloadAll();
-
 	}
 
 	public override void CustomAwake()

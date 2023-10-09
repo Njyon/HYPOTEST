@@ -21,6 +21,7 @@ public class CharacterSpawnData
 [Serializable]
 public class SpawnData
 {
+	public int maxSpawnEnemies = 5;
 	public List<CharacterSpawnData> charactersToSpawn;
 }
 
@@ -33,7 +34,6 @@ public class ArenaSpawner : MonoBehaviour
 	[SerializeField] List<SpawnData> spawnDataBasedOnDifficulty;
 	[SerializeField] List<GameObject> randomSpawnLocations;
 	[SerializeField] SerializableCharacterDictionary<string, GameObject> characterSpecificSpawnPoints;
-	[SerializeField] int maxSpawnEnemies = 5;
 	public UnityEvent onStartSpawningEvent;
 	public UnityEvent onLastEnemyKilledEvent;
 	List<GameCharacter> spawnedGameCharacters = new List<GameCharacter>();
@@ -76,21 +76,21 @@ public class ArenaSpawner : MonoBehaviour
 
 	void SpawnCharacters()
 	{	
-		for (int i = spawnedGameCharacters.Count > 0 ? spawnedGameCharacters.Count - 1 : 0; i < maxSpawnEnemies; i++) 
+		for (int i = spawnedGameCharacters.Count > 0 ? spawnedGameCharacters.Count - 1 : 0; i < dataToSpawn.maxSpawnEnemies; i++) 
 		{
 			// Horrible solution but my brain is to fried to find a bettert way right now
 			// Try to not to restart the spawning index when here. (Foreach restarts the index everytime it hits here)
 			bool started = true;
-			int startIndex = spawnIndex;
+			int startIndex = Math.Min(spawnIndex, dataToSpawn.charactersToSpawn.Count - 1);
 			for (int j = startIndex; j < dataToSpawn.charactersToSpawn.Count; j++)
 			{
 				if (j == startIndex && !started)
 					break;
 				if (started) started = false;
 
-				var data = dataToSpawn.charactersToSpawn[spawnIndex];
+				var data = dataToSpawn.charactersToSpawn[j];
 
-				if (spawnedGameCharacters.Count > maxSpawnEnemies) break;
+				if (spawnedGameCharacters.Count > dataToSpawn.maxSpawnEnemies) break;
 				if (data.CurrentlySpawned >= data.spawnAmount) { spawnIndex++; continue; } 
 				if (data.CurrentlyAlive >= data.maxOnField) { spawnIndex++; continue; }
 

@@ -115,6 +115,8 @@ public class UIManager : Singelton<UIManager>
 		{
 			var asyncOperation = SceneManager.UnloadSceneAsync(sceneName, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
 			asyncOperation.completed += (e) => { if (sceneEvent != null) sceneEvent(); };
+		} else {
+			sceneEvent();
 		}
 	}
 

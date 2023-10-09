@@ -12,6 +12,8 @@ public class GameCharacterAttackState : AGameCharacterState
 	float currentYPosAnimCurve;
 	Quaternion newDir;
 	Ultra.Timer backupTimer = null;
+	int layerMask;
+
 	public GameCharacterAttackState(GameCharacterStateMachine stateMachine, GameCharacter gameCharacter) : base (stateMachine, gameCharacter)
 	{
 		backupTimer = new Ultra.Timer();
@@ -22,7 +24,9 @@ public class GameCharacterAttackState : AGameCharacterState
 	{
 		backupTimer.Start(5f);
 
-		switch(GameCharacter.CombatComponent.CurrentWeapon.AttackAnimType)
+		layerMask = LayerMask.GetMask("Character");
+
+		switch (GameCharacter.CombatComponent.CurrentWeapon.AttackAnimType)
 		{
 			case EAttackAnimType.Combat3Blend: 
 				GameCharacter.AnimController.InCombat3Blend = true;
@@ -95,10 +99,61 @@ public class GameCharacterAttackState : AGameCharacterState
 
 		GameCharacter.CombatComponent.CurrentWeapon.PreAttackStateLogic(deltaTime);
 		RotateCharacter(newDir);
-
-		CombatMovement(deltaTime, initYVelocity, initXVelocity, ref lerpTimeY, ref lerpTimeX, ref currentYPosAnimCurve);
+		CheckIfCharacterShouldMoveWithRootMotion(deltaTime);
 
 		GameCharacter.CombatComponent.CurrentWeapon.PostAttackStateLogic(deltaTime);
+	}
+
+	private void CheckIfCharacterShouldMoveWithRootMotion(float deltaTime)
+	{
+		// Maybe Fix This check sometime pretty lazy
+		if (GameCharacter.AnimController.GetUpMovementCurve == 0)
+		{
+			bool isValidHit;
+			RaycastHit validHit;
+			CheckIfACharacterIsToCloseToMoveTo(out isValidHit, out validHit);
+			if (!isValidHit)
+			{
+				CombatMovement(deltaTime, initYVelocity, initXVelocity, ref lerpTimeY, ref lerpTimeX, ref currentYPosAnimCurve);
+			}
+			else
+			{
+				GameCharacter.MovementComponent.MovementVelocity = Vector3.zero;
+				//Debug.Log("Collided with object => " + validHit.transform.name);
+			}
+		}
+		else
+		{
+			CombatMovement(deltaTime, initYVelocity, initXVelocity, ref lerpTimeY, ref lerpTimeX, ref currentYPosAnimCurve);
+		}
+	}
+
+	private void CheckIfACharacterIsToCloseToMoveTo(out bool isValidHit, out RaycastHit validHit)
+	{
+		float lenght = GameCharacter.CombatComponent.CurrentWeapon.CurrentAttack.extraData.stopMovingRange;
+		Vector3 currentDir = Vector3.zero;
+		if (GameCharacter.MovementInput.x != 0)
+		{
+			currentDir = new Vector3(GameCharacter.MovementInput.x, 0, 0);
+		}
+		else
+		{
+			currentDir = GameCharacter.transform.forward;
+		}
+		currentDir = currentDir * lenght;
+		RaycastHit[] hits = Ultra.Utilities.CapsulCastAll(GameCharacter.MovementComponent.CharacterCenter, GameCharacter.MovementComponent.Height, GameCharacter.MovementComponent.Radius, currentDir, Color.red, 100, DebugAreas.Combat, layerMask, QueryTriggerInteraction.Ignore);
+
+		isValidHit = false;
+		validHit = new();
+		foreach (RaycastHit hit in hits)
+		{
+			if (hit.collider == null) continue;
+			if (hit.collider.gameObject == GameCharacter.gameObject) continue;
+			if (hit.collider.transform.parent == GameCharacter.transform) continue;
+			isValidHit = true;
+			validHit = hit;
+			break;
+		}
 	}
 
 	public override void FixedExecuteState(float deltaTime)
