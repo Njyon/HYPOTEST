@@ -62,6 +62,7 @@ public class GameCharacterData : MonoBehaviour
 
 	[Header("Bones")]
 	[SerializeField] Transform root;
+	[SerializeField] string headBoneName = "head.x";
 
 	[Header("Combat")]
 	[SerializeField] float characterDetectionRange = 30f;
@@ -70,19 +71,22 @@ public class GameCharacterData : MonoBehaviour
 	[Header("Data")]
 	[SerializeField] SkinnedMeshRenderer meshRenderer;
 
-	[Header("RigType")]
+	[Header("Rig")]
 	[SerializeField] RigType rigType = RigType.Unknown;
 
 	[Header("Enemy")]
 	[SerializeField] Vector3 enemyInfoOffset = new Vector3(0, 5f, 0);
 	[SerializeField] float minCharacterDistance = 1f;
 
+	[Header("Feedback")]
+	[SerializeField] Vector3 attackFeedbackOffset = Vector3.zero;
+
 	public float MaxMovementSpeed { get { return maxMovementSpeed; } }
 	public float MovmentGravity { get { return movmentGravity; } }
-	public float Acceleration { get { return acceleration; } }	
-	public float Drag { get { return drag; } }	
+	public float Acceleration { get { return acceleration; } }
+	public float Drag { get { return drag; } }
 	public float InAirControll { get { return inAirControll; } }
-	public float SlopStrenghIncrease {  get { return slopStrenghIncrease; } }
+	public float SlopStrenghIncrease { get { return slopStrenghIncrease; } }
 	public float SlopStrenghDecrease { get { return slopStrenghDecrease; } }
 	public float MaxSlopAngle { get { return maxSlopAngle; } }
 	public float RoationSpeed { get { return roationSpeed; } }
@@ -92,7 +96,7 @@ public class GameCharacterData : MonoBehaviour
 	public int MaxJumps { get { return maxJumps; } }
 	public float JumpForce { get { return jumpForce; } }
 	public float GravityMultiplier { get { return gravityMultiplier; } }
-	public EnemyStepColliderScript EnemyStepColliderScript { get { return enemyStepColliderScript; } }	
+	public EnemyStepColliderScript EnemyStepColliderScript { get { return enemyStepColliderScript; } }
 
 	public float MaxSlidingSpeed { get { return maxSlidingSpeed; } }
 	public float SlidingAcceleration { get { return slidingAcceleration; } }
@@ -118,14 +122,17 @@ public class GameCharacterData : MonoBehaviour
 	public float StaggerTime { get { return staggerTime; } }
 
 	public Transform Root { get { return root; } }
+	public string HeadBoneName { get { return headBoneName; } }
 
 	public float CharacterDetectionRange { get { return characterDetectionRange; } }
 	public int CombatAttackListLenght { get { return combatAttackListLenght; } }
 
 	public SkinnedMeshRenderer MeshRenderer { get { return meshRenderer; } }
 
-	public RigType RigType { get {  return rigType; } }
+	public RigType RigType { get { return rigType; } }
 
 	public Vector3 EnemyInfoOffset { get { return enemyInfoOffset; } }
 	public float MinCharacterDistance { get { return minCharacterDistance; } }
+
+	public Vector3 AttackFeedbackOffset { get { return attackFeedbackOffset; } }
 }

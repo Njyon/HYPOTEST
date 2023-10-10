@@ -30,6 +30,9 @@ public class CombatComponent
 	public delegate void OnComboCountChanged(int newComboCount, int oldColboCount, EComboChangeType type);
 	public OnComboCountChanged onComboCountChanged;
 
+	public delegate void OnCharacterDamagedCharacter(GameCharacter attackingCharacter,  GameCharacter damageCharacter, float damage);
+	public OnCharacterDamagedCharacter onCharacterDamagedCharacter;
+
 	public delegate void OnAttack(ref ShelfList<AttackAnimationData> lastAttacks);
 	public OnAttack onAttack;
 
@@ -381,5 +384,10 @@ public class CombatComponent
 		comboCount = newCombo;
 
 		if (onComboCountChanged != null) onComboCountChanged(comboCount, oldComboCount, type);
+	}
+
+	public void CharacterDidDamageTo(GameCharacter damagedCharacter, float damage)
+	{
+		if (onCharacterDamagedCharacter != null) onCharacterDamagedCharacter(gameCharacter, damagedCharacter, damage);
 	}
 }

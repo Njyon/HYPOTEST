@@ -50,6 +50,16 @@ public class ArenaSpawner : MonoBehaviour
 			return gameMode; 
 		} 
 	}
+
+	int SpawnIndex { get { return spawnIndex; }  
+		set {
+			spawnIndex = value;
+			if (dataToSpawn != null && spawnIndex >= dataToSpawn.charactersToSpawn.Count)
+			{
+				spawnIndex = 0;
+			}
+		}
+	}
 	SpawnData dataToSpawn;
 	bool finishedSpawning = false;
 
@@ -81,7 +91,7 @@ public class ArenaSpawner : MonoBehaviour
 			// Horrible solution but my brain is to fried to find a bettert way right now
 			// Try to not to restart the spawning index when here. (Foreach restarts the index everytime it hits here)
 			bool started = true;
-			int startIndex = Math.Min(spawnIndex, dataToSpawn.charactersToSpawn.Count - 1);
+			int startIndex = SpawnIndex;
 			for (int j = startIndex; j < dataToSpawn.charactersToSpawn.Count; j++)
 			{
 				if (j == startIndex && !started)
@@ -91,20 +101,19 @@ public class ArenaSpawner : MonoBehaviour
 				var data = dataToSpawn.charactersToSpawn[j];
 
 				if (spawnedGameCharacters.Count > dataToSpawn.maxSpawnEnemies) break;
-				if (data.CurrentlySpawned >= data.spawnAmount) { spawnIndex++; continue; } 
-				if (data.CurrentlyAlive >= data.maxOnField) { spawnIndex++; continue; }
+				if (data.CurrentlySpawned >= data.spawnAmount) { SpawnIndex++; continue; } 
+				if (data.CurrentlyAlive >= data.maxOnField) { SpawnIndex++; continue; }
 
 				Vector3 spawnLocation = Vector3.zero;
 				Quaternion spawnRotation = Quaternion.identity;
 				DeterminSpawnLocation(data, out spawnLocation, out spawnRotation);
 				SpawnGameCharacterAndController(data, spawnLocation, spawnRotation);
 
-				spawnIndex++;
-				if (spawnIndex >= dataToSpawn.charactersToSpawn.Count)
+				if (SpawnIndex + 1 >= dataToSpawn.charactersToSpawn.Count)
 				{
-					spawnIndex = 0;
 					j = 0;	
 				}
+				SpawnIndex++;
 			}
 			//foreach (CharacterSpawnData data in dataToSpawn.charactersToSpawn)
 			//{

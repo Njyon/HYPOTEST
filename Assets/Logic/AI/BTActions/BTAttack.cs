@@ -10,6 +10,7 @@ public class BTAttack : BTHyppoliteActionNodeBase
 {
 	[Header("AttackData")]
 	public EAttackType AttackType;
+	public bool showFeedback = true;
 	public bool canAttackInAir = false;
 
 	bool attackDone = false;
@@ -35,11 +36,17 @@ public class BTAttack : BTHyppoliteActionNodeBase
 		if (canAttackInAir && !GameCharacter.MovementComponent.IsGrounded)
 		{
 			GameCharacter.CombatComponent.Attack(AttackType);
+			if (showFeedback)
+				GameCharacter.ShowAttackFeedback();
+
 			attackStartet = true;
 		}
 		else if (GameCharacter.MovementComponent.IsGrounded)
 		{
 			GameCharacter.CombatComponent.Attack(AttackType);
+			if (showFeedback)
+				GameCharacter.ShowAttackFeedback();
+
 			attackStartet = true;
 		}else
 		{

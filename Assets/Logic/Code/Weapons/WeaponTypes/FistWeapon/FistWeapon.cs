@@ -50,11 +50,16 @@ public class FistWeapon : WeaponBase
 	public override void EquipWeapon()
     {
         base.EquipWeapon();
-    }
+		// Only Track when not Equiped for teleport in air reset
+		GameCharacter.CombatComponent.onCharacterDamagedCharacter -= OnCharacterDamagedCharacter;
+
+	}
 
     public override void UnEquipWeapon()
     {
         base.UnEquipWeapon();
+		// Only Track when not Equiped for teleport in air reset
+		GameCharacter.CombatComponent.onCharacterDamagedCharacter += OnCharacterDamagedCharacter;
 		GameCharacter.GameCharacterData.MeshRenderer.enabled = true;
 		GameCharacter.MovementComponent.ActivateStepup();
 		GameCharacter.MovementComponent.SetLayerToDefault();
@@ -458,5 +463,13 @@ public class FistWeapon : WeaponBase
 	{
 		if (defensiveShouldMove) return false;
 		return base.CanLeaveDefensiveState();
+	}
+
+	void OnCharacterDamagedCharacter(GameCharacter attackingCharacter, GameCharacter damageCharacter, float damage)
+	{
+		if (damage > 0)
+		{
+			if (!canTeleport) canTeleport = true;
+		}
 	}
 }
