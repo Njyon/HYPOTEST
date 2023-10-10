@@ -94,7 +94,7 @@ public class CombatRatingComponent : RecourceBase
 		AttackAnimationData newestAttack = gameCharacter.CombatComponent.PreviousAttacks[0];
 		int numberOfLastAttackInList = gameCharacter.CombatComponent.PreviousAttacks.ContainedItemNum(newestAttack);
 		//float rating = newestAttack.extraData.Rating / numberOfLastAttackInList;
-		float rating = Mathf.Clamp(((damage * gameCharacter.CombatComponent.ComboCount) / numberOfLastAttackInList) / 5, 10, int.MaxValue);
+		float rating = Mathf.Clamp(((gameCharacter.CombatComponent.CurrentWeapon.CurrentAttack.extraData.Rating * gameCharacter.CombatComponent.ComboCount) / numberOfLastAttackInList) / 5, 10, int.MaxValue);
 
 
 		gameCharacter.CombatComponent.CurrentWeapon.Charge -= newestAttack.extraData.discharge;
@@ -117,7 +117,7 @@ public class CombatRatingComponent : RecourceBase
 			foreach (ScriptableWeapon sWeapon in gameCharacter.CombatComponent.Weapons)
 			{
 				if (sWeapon == null || sWeapon.Weapon == null) continue;
-				sWeapon.Weapon.Charge /= 2;
+				sWeapon.Weapon.Charge -= 200;
 			}
 			UpdateStyleRank();
 		}

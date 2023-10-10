@@ -841,7 +841,7 @@ public abstract class WeaponBase
 
 	protected virtual float GetDamage()
 	{
-		float chargeValue = Ultra.Utilities.Remap(Charge, 0, weaponData.MaxChargeAmount, 0.5f, 1f);
+		float chargeValue = Ultra.Utilities.Remap(Charge, 0, weaponData.MaxChargeAmount, 0.1f, 1f);
 		//Ultra.Utilities.Instance.DebugLogOnScreen("Damage => " + CurrentAttack.extraData.Damage, 1f, StringColor.Magenta);
 		return chargeValue * CurrentAttack.extraData.Damage;
 	}
