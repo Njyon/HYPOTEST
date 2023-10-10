@@ -180,14 +180,26 @@ public class AIManager : Singelton<AIManager>
 		}
 		foreach (HyppoliteManagableAI ai in newMeleeAIs)
 		{
-			ai.btr.BehaviourTree.Variable.TrySetValue<bool>("CanMeleeAttack", true);
+			//ai.btr.BehaviourTree.Variable.TrySetValue<bool>("CanMeleeAttack", true);
 			if (!meleeAIsThatCanAttack.Contains(ai)) meleeAIsThatCanAttack.Add(ai);
 		}
 		List<HyppoliteManagableAI> oldMeleeAIs = meleeAIsThatCanAttack.Except(newMeleeAIs).ToList();
 		foreach (HyppoliteManagableAI oldAI in oldMeleeAIs)
 		{
+			if (oldAI.gameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.Attack && newMeleeAIs.Count > 0)
+			{
+				HyppoliteManagableAI ai = newMeleeAIs[newMeleeAIs.Count - 1];
+				meleeAIsThatCanAttack.Remove(ai);
+				continue;
+			}
+
 			if (oldAI.gameCharacter == null || oldAI.gameCharacter.IsGameCharacterDead) continue;
 			oldAI.btr.BehaviourTree.Variable.TrySetValue<bool>("CanMeleeAttack", false);
+			meleeAIsThatCanAttack.Remove(oldAI);
+		}
+		foreach (HyppoliteManagableAI ai in meleeAIsThatCanAttack)
+		{
+			ai.btr.BehaviourTree.Variable.TrySetValue<bool>("CanMeleeAttack", true);
 		}
 	}
 

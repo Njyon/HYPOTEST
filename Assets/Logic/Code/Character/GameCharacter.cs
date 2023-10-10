@@ -259,8 +259,9 @@ public class GameCharacter : MonoBehaviour , IDamage
 		Ultra.Utilities.Instance.DebugLogOnScreen(name + " got Damaged by: " + damageInitiator.name + ", Damage = " + damage, 2f, StringColor.Red, 200, DebugAreas.Combat);
 		Health.AddCurrentValue(-damage);
 		StaggerComponent.AddCurrentValue(-damage);
-		damageInitiator?.combatComponent.AddCombo();
+		damageInitiator?.CombatComponent.AddCombo();
 		CombatComponent.ComboBreak();
+		damageInitiator?.CombatComponent.CharacterDidDamageTo(damageInitiator, damage);
 
 		if (CombatComponent.CanRequestFreez())
 		{
@@ -438,5 +439,10 @@ public class GameCharacter : MonoBehaviour , IDamage
 	protected virtual void OnCharacterDetectionOverlapEnter(GameCharacter other)
 	{
 		
+	}
+
+	public virtual void ShowAttackFeedback()
+	{
+
 	}
 }

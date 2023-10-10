@@ -13,7 +13,7 @@ public class CombatRatingComponent : RecourceBase
 	float nextStyleRankLevelUp = 0;
 	float nextStyleRankLeveldown = 0;
 	int currentStyleRankIndex = 0;
-	float x = 0.2f;
+	float limiter = 0.2f;
 
 	public List<StyleRankingScriptableObject> StyleRanks { get { return styleRanks; } }
 	public float NextStyleRankLevelUp { get { return nextStyleRankLevelUp; } }
@@ -103,7 +103,8 @@ public class CombatRatingComponent : RecourceBase
 		{
 			if (weapon == null || weapon.Weapon == null) continue;
 			if (weapon.Weapon == gameCharacter.CombatComponent.CurrentWeapon) continue;
-			float chargeDelta = Mathf.Clamp((CurrentValue * x) / (gameCharacter.CombatComponent.EquipedWeapons - 1), 50, 200);
+			// was X in drawing, limits the Value of craking up to hard, Clamp tries to cap low and highs
+			float chargeDelta = Mathf.Clamp((CurrentValue * limiter) / (gameCharacter.CombatComponent.EquipedWeapons - 1), 50, 200);
 			//Ultra.Utilities.Instance.DebugLogOnScreen("ChargeDelta => " + chargeDelta, 1f, StringColor.Random());
 			weapon.Weapon.Charge += chargeDelta;
 		}

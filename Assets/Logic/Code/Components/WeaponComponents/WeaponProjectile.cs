@@ -117,7 +117,7 @@ public class WeaponProjectile : MonoBehaviour
 	{
 		if (other.transform == this.transform) return;
 		GameCharacter otherChracter = other.GetComponent<GameCharacter>();
-		if (otherChracter != null && otherChracter == gameCharacterOwner) return;
+		if (otherChracter == null || otherChracter == gameCharacterOwner) return;
 
 		if (hit) return; 
 		hit = true;
@@ -128,7 +128,7 @@ public class WeaponProjectile : MonoBehaviour
 		}
 		if (lerpToCharacter)
 		{
-			transform.position = otherChracter.MovementComponent.CharacterCenter + -transform.forward * 1.5f;
+ 			transform.position = otherChracter.MovementComponent.CharacterCenter + -transform.forward * 1.5f;
 		}
 		capsuleCollider.enabled = false;
 
