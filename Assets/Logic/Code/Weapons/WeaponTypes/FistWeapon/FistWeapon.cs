@@ -41,7 +41,13 @@ public class FistWeapon : WeaponBase
 		backupFallTimer.onTimerFinished += OnBackupTimerFinished;
 	}
 
-    public override void EquipWeapon()
+	public override void InitWeapon()
+	{
+		base.InitWeapon();
+
+	}
+
+	public override void EquipWeapon()
     {
         base.EquipWeapon();
     }

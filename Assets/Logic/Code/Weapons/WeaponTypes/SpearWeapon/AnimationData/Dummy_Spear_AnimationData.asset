@@ -42,7 +42,7 @@ MonoBehaviour:
     - {fileID: 8879091116122474129, guid: f3f9164d70091c540896d86f4404dd90, type: 3}
     extraData:
       Damage: 10
-      Rating: 10
+      Rating: 100
       discharge: 100
       maxVerticalMovement: 0
       maxHorizontalMovement: 0
@@ -53,6 +53,7 @@ MonoBehaviour:
       timeValue: 0
       flyAwayTime: 1
       freezTime: 1
+      stopMovingRange: 1
   - clip: {fileID: 8046919964131971997, guid: be82d1ddb92926642b2399c3ef9a446f, type: 3}
     data:
       showProperties: 1
@@ -82,7 +83,7 @@ MonoBehaviour:
     - {fileID: 1024023815955427625, guid: 23c09f94d36567f4782a0ef308409d7c, type: 3}
     extraData:
       Damage: 10
-      Rating: 10
+      Rating: 100
       discharge: 100
       maxVerticalMovement: 0
       maxHorizontalMovement: 0
@@ -93,6 +94,7 @@ MonoBehaviour:
       timeValue: 0
       flyAwayTime: 1
       freezTime: 1
+      stopMovingRange: 1
   - clip: {fileID: 6166596392337147653, guid: 9318622427445ec4492672b5d4b3a3b1, type: 3}
     data:
       showProperties: 1
@@ -122,7 +124,7 @@ MonoBehaviour:
     - {fileID: 1048237185546698715, guid: 19a0399fe5f4e61479bff443c9f3f77d, type: 3}
     extraData:
       Damage: 10
-      Rating: 10
+      Rating: 100
       discharge: 100
       maxVerticalMovement: 0
       maxHorizontalMovement: 0
@@ -133,6 +135,7 @@ MonoBehaviour:
       timeValue: 0
       flyAwayTime: 1
       freezTime: 1
+      stopMovingRange: 1
   GroundUpAttacks:
   - clip: {fileID: -1119112359194581809, guid: 06f7574fb6659cd4eb6440d1a04592b8, type: 3}
     data:
@@ -164,7 +167,7 @@ MonoBehaviour:
     particleList: []
     extraData:
       Damage: 10
-      Rating: 10
+      Rating: 100
       discharge: 100
       maxVerticalMovement: 0
       maxHorizontalMovement: 0
@@ -175,6 +178,7 @@ MonoBehaviour:
       timeValue: 0.3
       flyAwayTime: 1
       freezTime: 1
+      stopMovingRange: 1
   GroundDownAttacks:
   - clip: {fileID: 1473241261528966758, guid: 9d7c59bbae41cc24681e3f166d0ed69c, type: 3}
     data:
@@ -204,7 +208,7 @@ MonoBehaviour:
     particleList: []
     extraData:
       Damage: 10
-      Rating: 10
+      Rating: 100
       discharge: 100
       maxVerticalMovement: 0
       maxHorizontalMovement: 0
@@ -215,6 +219,7 @@ MonoBehaviour:
       timeValue: 0
       flyAwayTime: 1
       freezTime: 1
+      stopMovingRange: 1
   GroundDirectionAttacks:
   - clip: {fileID: 2627670795686304268, guid: 687793d9d3fe2d44294c486954f8e852, type: 3}
     data:
@@ -244,7 +249,7 @@ MonoBehaviour:
     particleList: []
     extraData:
       Damage: 10
-      Rating: 10
+      Rating: 100
       discharge: 100
       maxVerticalMovement: 0
       maxHorizontalMovement: 0
@@ -255,6 +260,7 @@ MonoBehaviour:
       timeValue: 0
       flyAwayTime: 1
       freezTime: 1
+      stopMovingRange: 1
   - clip: {fileID: -7646546996469568585, guid: 7a8c92ef42c5a524081cc31df7e83138, type: 3}
     data:
       showProperties: 1
@@ -294,6 +300,7 @@ MonoBehaviour:
       timeValue: 0
       flyAwayTime: 1
       freezTime: 1
+      stopMovingRange: 1
   - clip: {fileID: 5837612541032910741, guid: 4fd8c38ebcab2d341a43bb8b9922b682, type: 3}
     data:
       showProperties: 1
@@ -322,8 +329,8 @@ MonoBehaviour:
     particleList: []
     extraData:
       Damage: 10
-      Rating: 10
-      discharge: 10
+      Rating: 100
+      discharge: 100
       maxVerticalMovement: 0
       maxHorizontalMovement: 0
       flyAwayDirection: {x: 0, y: 0, z: 10}
@@ -333,6 +340,7 @@ MonoBehaviour:
       timeValue: 0
       flyAwayTime: 0.4
       freezTime: 1
+      stopMovingRange: 1
   AirAttacks:
   - clip: {fileID: 9092464123665011279, guid: fd4b63c59db259d4bacf310f8b0ecda9, type: 3}
     data:
@@ -362,7 +370,7 @@ MonoBehaviour:
     particleList: []
     extraData:
       Damage: 10
-      Rating: 10
+      Rating: 100
       discharge: 100
       maxVerticalMovement: 0
       maxHorizontalMovement: 0
@@ -373,6 +381,7 @@ MonoBehaviour:
       timeValue: 0
       flyAwayTime: 1
       freezTime: 1
+      stopMovingRange: 1
   - clip: {fileID: 3844352405855424136, guid: 0a101a921b675484b87202da56a8eac0, type: 3}
     data:
       showProperties: 0
@@ -401,8 +410,8 @@ MonoBehaviour:
     particleList: []
     extraData:
       Damage: 10
-      Rating: 10
-      discharge: 10
+      Rating: 100
+      discharge: 100
       maxVerticalMovement: 0
       maxHorizontalMovement: 0
       flyAwayDirection: {x: 0, y: 0, z: 0}
@@ -412,6 +421,7 @@ MonoBehaviour:
       timeValue: 0
       flyAwayTime: 1
       freezTime: 1
+      stopMovingRange: 1
   - clip: {fileID: 653991229959314192, guid: b6de031bbeb110b489c0979b287d5994, type: 3}
     data:
       showProperties: 0
@@ -440,8 +450,8 @@ MonoBehaviour:
     particleList: []
     extraData:
       Damage: 10
-      Rating: 10
-      discharge: 10
+      Rating: 100
+      discharge: 100
       maxVerticalMovement: 0
       maxHorizontalMovement: 0
       flyAwayDirection: {x: 0, y: 0, z: 70}
@@ -451,6 +461,7 @@ MonoBehaviour:
       timeValue: 0
       flyAwayTime: 1
       freezTime: 0.5
+      stopMovingRange: 1
   AirUpAttacks:
   - clip: {fileID: -8959185288226890029, guid: 1ec725da02131154fa314ed3cec83dcb, type: 3}
     data:
@@ -480,7 +491,7 @@ MonoBehaviour:
     particleList: []
     extraData:
       Damage: 10
-      Rating: 10
+      Rating: 100
       discharge: 100
       maxVerticalMovement: 0
       maxHorizontalMovement: 0
@@ -491,6 +502,7 @@ MonoBehaviour:
       timeValue: 0
       flyAwayTime: 1
       freezTime: 1
+      stopMovingRange: 1
   AirDownAttacks:
   - clip: {fileID: -7975973549715124236, guid: a5cbccb0f66c24644a13264621143710, type: 3}
     data:
@@ -522,7 +534,7 @@ MonoBehaviour:
     particleList: []
     extraData:
       Damage: 10
-      Rating: 10
+      Rating: 100
       discharge: 100
       maxVerticalMovement: 0
       maxHorizontalMovement: 0
@@ -533,6 +545,7 @@ MonoBehaviour:
       timeValue: 0
       flyAwayTime: 1
       freezTime: 1
+      stopMovingRange: 1
   AirDirectionAttacks:
   - clip: {fileID: -8595696173719005526, guid: d5861c742538ece41ba0060432996db8, type: 3}
     data:
@@ -562,7 +575,7 @@ MonoBehaviour:
     particleList: []
     extraData:
       Damage: 10
-      Rating: 10
+      Rating: 100
       discharge: 100
       maxVerticalMovement: 0
       maxHorizontalMovement: 0
@@ -573,6 +586,7 @@ MonoBehaviour:
       timeValue: 0
       flyAwayTime: 1
       freezTime: 1
+      stopMovingRange: 1
   DefensiveAction:
   - clip: {fileID: 0}
     data:
@@ -608,7 +622,7 @@ MonoBehaviour:
     particleList: []
     extraData:
       Damage: 10
-      Rating: 10
+      Rating: 100
       discharge: 100
       maxVerticalMovement: 0
       maxHorizontalMovement: 0
@@ -619,6 +633,7 @@ MonoBehaviour:
       timeValue: 0
       flyAwayTime: 1
       freezTime: 1
+      stopMovingRange: 1
   HandType: 1
   WeaponReadyPose: {fileID: 8247377969438304865, guid: 45559a67ce8bc1b459718cc4ddb18506,
     type: 3}
