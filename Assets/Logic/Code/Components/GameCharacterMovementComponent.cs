@@ -344,9 +344,9 @@ public class GameCharacterMovementComponent : MonoBehaviour
 				IsGroundedIntern = false;
 				return;
 			}
-
+			
 			Vector3 castOrigin = new Vector3(groundHitCapsul.point.x, groundHitCapsul.point.y + 1f, groundHitCapsul.point.z);
-			if (Physics.Raycast(castOrigin, groundHitCapsul.point - castOrigin, out groundHitRayCast, Vector3.Distance(castOrigin, groundHitCapsul.point) + 0.1f))
+			if (Physics.Raycast(castOrigin, groundHitCapsul.point - castOrigin, out groundHitRayCast, Vector3.Distance(castOrigin, groundHitCapsul.point) + 0.1f, gameCharacter.IgnoreCharacterLayer, QueryTriggerInteraction.UseGlobal))
 				RayCastGroundHit = new NullableHit(groundHitRayCast);
 			else
 				RayCastGroundHit = null;

@@ -76,6 +76,7 @@ public class GameCharacterWeaponReadyPluginState : AGameCharacterPluginState
 			case EGameCharacterState.Attack:
 			case EGameCharacterState.AttackRecovery:
 			case EGameCharacterState.DefensiveAction:
+			case EGameCharacterState.Dodge:
 				GameCharacter.AnimController.InterpSpineLayerWeight(0, GameCharacter.CombatComponent.CurrentWeapon.WeaponData.AnimationData[GameCharacter.CharacterData.Name].WeaponReadyInterpSpeed * 2);
 				GameCharacter.AnimController.InterpLegLayerWeight(0, GameCharacter.CombatComponent.CurrentWeapon.WeaponData.AnimationData[GameCharacter.CharacterData.Name].WeaponReadyInterpSpeed * 2);
 				GameCharacter.AnimController.InterpHeadLayerWeight(0, GameCharacter.CombatComponent.CurrentWeapon.WeaponData.AnimationData[GameCharacter.CharacterData.Name].WeaponReadyInterpSpeed * 2);

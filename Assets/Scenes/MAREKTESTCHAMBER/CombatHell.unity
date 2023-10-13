@@ -829,6 +829,16 @@ PrefabInstance:
       propertyPath: health
       value: 1000
       objectReference: {fileID: 0}
+    - target: {fileID: 5871210591813294166, guid: 86332de1ed30b784793c06564d56c577,
+        type: 3}
+      propertyPath: dodgeSpeed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5871210591813294166, guid: 86332de1ed30b784793c06564d56c577,
+        type: 3}
+      propertyPath: dodgeDistance
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1221,7 +1231,7 @@ MonoBehaviour:
   spawnableCharacterData: {fileID: 11400000, guid: 60a72c065bb99f5429507e0841eb030c,
     type: 2}
   index: 4
-  autoSpawn: 1
+  autoSpawn: 0
 --- !u!4 &820882756
 Transform:
   m_ObjectHideFlags: 0
@@ -2269,7 +2279,7 @@ Transform:
   m_GameObject: {fileID: 1862273905}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -37.47, y: -0.61135054, z: 0}
+  m_LocalPosition: {x: 0.51, y: -0.61135054, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

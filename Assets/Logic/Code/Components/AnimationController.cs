@@ -50,6 +50,7 @@ public class AnimationController
 	int combat3BlendDirIndex;
 	int inCombat3BlendStateAIndex;
 	int combat3BlendTreeAStateIndex;
+	int inDodgeIndex;
 
 	float minMalkSpeed;
 	bool startWalkRunBlendInterp = true;
@@ -450,6 +451,19 @@ public class AnimationController
 			}
 		}
 	}
+	bool inDodge = false;
+	public bool InDodge
+	{
+		get { return inDodge; }
+		set
+		{
+			if (inDodge != value)
+			{
+				inDodge = value;
+				gameCharacter.Animator.SetBool(inDodgeIndex, inDodge);
+			}
+		}
+	}
 
 	bool blockRotation = false;
 	public bool BlockRotation { get { return blockRotation; } set { blockRotation = value; } }
@@ -506,6 +520,7 @@ public class AnimationController
 		combat3BlendDirIndex = Animator.StringToHash("Combat3BlendDir");
 		inCombat3BlendStateAIndex = Animator.StringToHash("InCombat3BlendAState");
 		combat3BlendTreeAStateIndex = Animator.StringToHash("Combat3BlendTreeA");
+		inDodgeIndex = Animator.StringToHash("inDodge");
 
 		overrideController = new AnimatorOverrideController(gameCharacter.Animator.runtimeAnimatorController);
 

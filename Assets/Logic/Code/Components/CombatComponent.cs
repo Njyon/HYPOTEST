@@ -390,4 +390,9 @@ public class CombatComponent
 	{
 		if (onCharacterDamagedCharacter != null) onCharacterDamagedCharacter(gameCharacter, damagedCharacter, damage);
 	}
+
+	public void Dodge()
+	{
+		gameCharacter.StateMachine.RequestStateChange(EGameCharacterState.Dodge);
+	}
 }

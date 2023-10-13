@@ -18,6 +18,7 @@ public class AttackEvent : CharacterEvent
 	{
 		if (gameCharacter.MovementComponent.IsInJump) return false;
 		if (gameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.Attack) return false;
+		if (gameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.Dodge) return false;
 		return gameCharacter?.StateMachine?.CurrentState?.UpdateState(0, EGameCharacterState.Attack) == EGameCharacterState.Attack;
 	}
 

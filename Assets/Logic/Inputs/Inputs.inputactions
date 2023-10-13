@@ -211,6 +211,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Dodge",
+                    "type": "Button",
+                    "id": "281770ef-810d-45cc-8eef-37a1162350ea",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -732,39 +741,6 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "Shift Left Mouse Button",
-                    "id": "e0aff06f-b1ab-474e-89b2-0fa32fc85a68",
-                    "path": "OneModifier",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "HeavyAttack",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "modifier",
-                    "id": "4e04f530-4b4d-4f07-87f4-14b9daa6cca1",
-                    "path": "<Keyboard>/shift",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard and Mouse",
-                    "action": "HeavyAttack",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "binding",
-                    "id": "0244dfe9-90cd-4609-845e-b4a0ffe915f6",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard and Mouse",
-                    "action": "HeavyAttack",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
                     "name": "Alt Left Mouse Button",
                     "id": "0a8ba838-183c-4a68-b6b6-3cda78deeb19",
                     "path": "OneModifier",
@@ -871,6 +847,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "DebugButton04",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4627d5d3-69cd-4b58-be76-bdaf8c103cd4",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard and Mouse",
+                    "action": "Dodge",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

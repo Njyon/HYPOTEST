@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -81,6 +82,7 @@ public class PlayerController : ControllerBase
 		playerInputs.Default.Attack.performed += ctx => Attack();
 		playerInputs.Default.HeavyAttack.performed += ctx => HeavyAttack();
 		playerInputs.Default.DefensiveAction.performed += ctx => DefensiveAction();
+		playerInputs.Default.Dodge.performed += ctx => Dodge();
 		playerInputs.Default.ForceFrameRate.performed += ctx => ForceFrameRate();
 		playerInputs.Default.DebugPauseGame.performed += ctx => DebugPauseGame();
 		playerInputs.Default.DebugSlomo.performed += ctx => DebugSlomo();
@@ -164,7 +166,10 @@ public class PlayerController : ControllerBase
 	{
 		gameCharacter?.EventComponent?.AddEvent(new DefensiveEvent(gameCharacter));
 	}
-
+	void Dodge()
+	{
+		gameCharacter?.EventComponent?.AddEvent(new DodgeEvent(gameCharacter));
+	}
 	void DebugUp()
 	{
 		Ultra.Utilities.Instance.debugLevel += 100;

@@ -45,7 +45,7 @@ public class DefaultCameraState : ACameraState
 
 		// Get the target's velocity and direction
 		Vector3 targetDirection = CameraController.Targets[0].MovementComponent.Velocity * (CameraController.LookAhead * CameraController.Speed);
-		Ultra.Utilities.DrawArrow(target, targetDirection, 1f, Color.blue);
+		//Ultra.Utilities.DrawArrow(target, targetDirection, 1f, Color.blue);
 
 		Vector3 newTargetLocation = new Vector3(target.x, target.y, CameraController.FinalCameraPosition.z);
 

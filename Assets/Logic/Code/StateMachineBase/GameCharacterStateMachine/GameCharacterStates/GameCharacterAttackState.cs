@@ -12,7 +12,6 @@ public class GameCharacterAttackState : AGameCharacterState
 	float currentYPosAnimCurve;
 	Quaternion newDir;
 	Ultra.Timer backupTimer = null;
-	int layerMask;
 
 	public GameCharacterAttackState(GameCharacterStateMachine stateMachine, GameCharacter gameCharacter) : base (stateMachine, gameCharacter)
 	{
@@ -23,8 +22,6 @@ public class GameCharacterAttackState : AGameCharacterState
     public override void StartState(EGameCharacterState oldState)
 	{
 		backupTimer.Start(5f);
-
-		layerMask = LayerMask.GetMask("Character");
 
 		switch (GameCharacter.CombatComponent.CurrentWeapon.AttackAnimType)
 		{
@@ -141,7 +138,7 @@ public class GameCharacterAttackState : AGameCharacterState
 			currentDir = GameCharacter.transform.forward;
 		}
 		currentDir = currentDir * lenght;
-		RaycastHit[] hits = Ultra.Utilities.CapsulCastAll(GameCharacter.MovementComponent.CharacterCenter, GameCharacter.MovementComponent.Height, GameCharacter.MovementComponent.Radius, currentDir, Color.red, 100, DebugAreas.Combat, layerMask, QueryTriggerInteraction.Ignore);
+		RaycastHit[] hits = Ultra.Utilities.CapsulCastAll(GameCharacter.MovementComponent.CharacterCenter, GameCharacter.MovementComponent.Height, GameCharacter.MovementComponent.Radius, currentDir, Color.red, 100, DebugAreas.Combat, GameCharacter.CharacterLayer, QueryTriggerInteraction.Ignore);
 
 		isValidHit = false;
 		validHit = new();

@@ -36,6 +36,8 @@ public class GameCharacter : MonoBehaviour , IDamage
 	HyppoliteTeam team;
 	Quaternion rotationTarget;
 	Vector3 lastDir;
+	int ignoreCharacterLayer;
+	int characterLayer;
 
 	bool isInitialized = false;
 	public bool IsInitialized { get { return isInitialized; } }
@@ -62,6 +64,8 @@ public class GameCharacter : MonoBehaviour , IDamage
 	public RigDataComponent RigDataComponent { get { return rigDataComponent; } }
 	public Quaternion RotationTarget { get { return rotationTarget; } set { rotationTarget = value; } }
 	public Vector3 LastDir { get { return lastDir; } set { lastDir = value; } }
+	public int IgnoreCharacterLayer { get { return ignoreCharacterLayer; } }
+	public int CharacterLayer { get { return characterLayer; } }
 
 
 	public HyppoliteTeam Team { get { return team; } set { team = value; } }
@@ -110,6 +114,8 @@ public class GameCharacter : MonoBehaviour , IDamage
 
 		freezTimer = new Ultra.Timer(freezTime, true);
 
+		ignoreCharacterLayer = LayerMask.GetMask("IgnoreCharacter");
+		characterLayer = LayerMask.GetMask("Character");
 	}
 
 	public virtual void CustomAwake()
