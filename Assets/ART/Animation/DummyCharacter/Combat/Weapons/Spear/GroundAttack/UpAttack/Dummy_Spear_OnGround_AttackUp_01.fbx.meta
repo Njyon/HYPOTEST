@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 9318622427445ec4492672b5d4b3a3b1
+guid: 6f444e6b17f5c1b4badf8da1604585cd
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -33,11 +33,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Dummy_LightAttack05_60fps_03
-      takeName: Dummy_LightAttack05_60fps_03
-      internalID: 6166596392337147653
+      name: Dummy_Spear_OnGround_AttackUp_01
+      takeName: Dummy_Spear_OnGround_AttackUp_01
+      internalID: -8758403428110221698
       firstFrame: 0
-      lastFrame: 55
+      lastFrame: 46
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -55,30 +55,66 @@ ModelImporter:
       heightFromFeet: 0
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
+      curves:
+      - name: UpMovement
+        curve:
+          serializedVersion: 2
+          curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.5294593
+            value: 0.0035734212
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 0.838758
+            value: 1.0041314
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1.005918
+            inSlope: 0
+            outSlope: 0
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          preInfinity: 3
+          postInfinity: 3
+          rotationOrder: 4
       events:
-      - time: 0.7732268
-        functionName: StartParticleEffect
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.7859178
+      - time: 0.46313366
         functionName: HitDetectionEventStart
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.8793614
+      - time: 0.67741936
         functionName: HitDetectionEventEnd
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.98011243
+      - time: 0.8478417
         functionName: AttackRecoveryEvent
         data: 
         objectReferenceParameter: {instanceID: 0}

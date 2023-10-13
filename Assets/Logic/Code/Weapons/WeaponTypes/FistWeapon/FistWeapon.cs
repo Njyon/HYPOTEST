@@ -63,6 +63,7 @@ public class FistWeapon : WeaponBase
 		GameCharacter.GameCharacterData.MeshRenderer.enabled = true;
 		GameCharacter.MovementComponent.ActivateStepup();
 		GameCharacter.MovementComponent.SetLayerToDefault();
+		UnHookAllHookedCharacerts();
 	}
 
     public override void UpdateWeapon(float deltaTime)

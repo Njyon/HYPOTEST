@@ -13,9 +13,12 @@ public class PlayerController : ControllerBase
 	PlayerGameCharacter gameCharacter;
 
 	public CharacterSpawner spawner;
+	AttackEvent holdAttack;
+	float defaultHoldTime = 0.4f;
 
 	//DebugStuff
 	bool bForcedFrameRate = false;
+	
 
 	public override void BeginPosses(GameObject pawn, ScriptableCharacter characterData)
 	{
@@ -24,6 +27,7 @@ public class PlayerController : ControllerBase
 		SetupDefaultPlayerInputs();
 		SetupGameCharacter(pawn);
 		SetupCamera(pawn);
+
 	}
 
 	private void SetupGameCharacter(GameObject pawn)
@@ -70,7 +74,7 @@ public class PlayerController : ControllerBase
 		playerInputs.Default.DebugLevelUp.performed += ctx => DebugUp();
 		playerInputs.Default.DebugLevelDown.performed += ctx => DebugDown();
 		playerInputs.Default.AllDebugAreasOn.performed += ctx => AllDebugAreasOn();
-		playerInputs.Default.AllDebugAreasOff.performed += ctx => AlDebugAreasOff();
+		playerInputs.Default.AllDebugAreasOff.performed += ctx => AllDebugAreasOff();
 
 		playerInputs.Default.WeaponOne.performed += ctx => EquipWeaponOne();
 		playerInputs.Default.WeaponTwo.performed += ctx => EquipWeaponTwo();
@@ -80,6 +84,7 @@ public class PlayerController : ControllerBase
 		playerInputs.Default.PreviousWeapon.performed += ctx => EquipPreviousWeapon();
 		//playerInputs.Default.ScrollThrouhWeapos.performed += ctx => Scroll(ctx.ReadValue<float>());
 		playerInputs.Default.Attack.performed += ctx => Attack();
+		playerInputs.Default.Attack.canceled += ctx => AttackEnd();
 		playerInputs.Default.HeavyAttack.performed += ctx => HeavyAttack();
 		playerInputs.Default.DefensiveAction.performed += ctx => DefensiveAction();
 		playerInputs.Default.Dodge.performed += ctx => Dodge();
@@ -142,21 +147,24 @@ public class PlayerController : ControllerBase
 		if (!hasDirection)
 		{
 			gameCharacter?.EventComponent?.AddEvent(new AttackEvent(gameCharacter, EAttackType.Default));
-			return;
 		}
 		else
 		{
 			if (movementVector.y > 0)
 			{
 				gameCharacter?.EventComponent?.AddEvent(new AttackEvent(gameCharacter, EAttackType.AttackUp));
-				return;
 			}
 			else
 			{
 				gameCharacter?.EventComponent?.AddEvent(new AttackEvent(gameCharacter, EAttackType.AttackDown));
-				return;
 			}
 		}
+		holdAttack = new AttackEvent(gameCharacter, EAttackType.AttackHorizontal, defaultHoldTime);
+		gameCharacter?.EventComponent?.AddHoldEvent(holdAttack);
+	}
+	void AttackEnd()
+	{
+		gameCharacter?.EventComponent?.RemoveHoldEvent(holdAttack);
 	}
 	void HeavyAttack()
 	{
@@ -182,7 +190,7 @@ public class PlayerController : ControllerBase
 	{
 		Ultra.Utilities.Instance.debugAreas = (DebugAreas)(-1);
 	}
-	void AlDebugAreasOff()
+	void AllDebugAreasOff()
 	{
 		Ultra.Utilities.Instance.debugAreas = 0;
 	}

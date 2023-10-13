@@ -16,7 +16,7 @@ public class GameCharacterDodgeState : AGameCharacterState
     public override void StartState(EGameCharacterState oldState)
 	{
 		startPosition = GameCharacter.transform.position;
-		Vector3 dir = GameCharacter.MovementInput.x > 0 ? new Vector3(GameCharacter.MovementInput.x, 0, 0) : GameCharacter.transform.forward;
+		Vector3 dir = Mathf.Abs(GameCharacter.MovementInput.x) > 0 ? new Vector3(GameCharacter.MovementInput.x, 0, 0) : GameCharacter.transform.forward;
 		targetPosition = GameCharacter.transform.position + dir * GameCharacter.GameCharacterData.DodgeDistance;
 
 		GameCharacter.MovementComponent.onMoveCollisionFlag += OnMoveCollisionFlag;

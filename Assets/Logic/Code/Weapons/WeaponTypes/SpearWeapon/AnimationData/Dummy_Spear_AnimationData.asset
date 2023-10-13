@@ -137,6 +137,47 @@ MonoBehaviour:
       freezTime: 1
       stopMovingRange: 1
   GroundUpAttacks:
+  - clip: {fileID: -8758403428110221698, guid: 6f444e6b17f5c1b4badf8da1604585cd, type: 3}
+    data:
+      showProperties: 1
+      hitDetectionType: 1
+      mesh: {fileID: 0}
+      offset: {x: 2, y: 0, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 2
+      boxDimensions: {x: 4, y: 2, z: 2}
+      capsulHeight: 0
+    holdAnimation: {fileID: 0}
+    triggerAnimation: {fileID: 0}
+    aimBlendTypes:
+      blendAnimations:
+        upAnimation: {fileID: 0}
+        midAnimation: {fileID: 0}
+        downAnimation: {fileID: 0}
+      blendHoldAnimations:
+        upAnimation: {fileID: 0}
+        midAnimation: {fileID: 0}
+        downAnimation: {fileID: 0}
+      blendTriggerAnimations:
+        upAnimation: {fileID: 0}
+        midAnimation: {fileID: 0}
+        downAnimation: {fileID: 0}
+    particleList: []
+    extraData:
+      Damage: 10
+      Rating: 100
+      discharge: 100
+      maxVerticalMovement: 4
+      maxHorizontalMovement: 0
+      flyAwayDirection: {x: 0, y: 0, z: 0}
+      flyAwayStrengh: 0
+      rangeValue: 0
+      speedValue: 30
+      timeValue: 0.3
+      flyAwayTime: 1
+      freezTime: 1
+      stopMovingRange: 1
+  GroundDownAttacks:
   - clip: {fileID: -1119112359194581809, guid: 06f7574fb6659cd4eb6440d1a04592b8, type: 3}
     data:
       showProperties: 1
@@ -144,7 +185,7 @@ MonoBehaviour:
       mesh: {fileID: 0}
       offset: {x: 2, y: 0, z: 0}
       scale: {x: 0, y: 0, z: 0}
-      radius: 2
+      radius: 4
       boxDimensions: {x: 4, y: 2, z: 2}
       capsulHeight: 0
     holdAnimation: {fileID: 657184749288887690, guid: 51a54053b0437b941b60599f71c30f38,
@@ -171,52 +212,11 @@ MonoBehaviour:
       discharge: 100
       maxVerticalMovement: 0
       maxHorizontalMovement: 0
-      flyAwayDirection: {x: 0, y: 0, z: 0}
-      flyAwayStrengh: 0
-      rangeValue: 0
-      speedValue: 30
-      timeValue: 0.3
-      flyAwayTime: 1
-      freezTime: 1
-      stopMovingRange: 1
-  GroundDownAttacks:
-  - clip: {fileID: 1473241261528966758, guid: 9d7c59bbae41cc24681e3f166d0ed69c, type: 3}
-    data:
-      showProperties: 1
-      hitDetectionType: 1
-      mesh: {fileID: 0}
-      offset: {x: 2, y: 2, z: 0}
-      scale: {x: 0, y: 0, z: 0}
-      radius: 2
-      boxDimensions: {x: 5, y: 2, z: 2}
-      capsulHeight: 0
-    holdAnimation: {fileID: 0}
-    triggerAnimation: {fileID: 0}
-    aimBlendTypes:
-      blendAnimations:
-        upAnimation: {fileID: 0}
-        midAnimation: {fileID: 0}
-        downAnimation: {fileID: 0}
-      blendHoldAnimations:
-        upAnimation: {fileID: 0}
-        midAnimation: {fileID: 0}
-        downAnimation: {fileID: 0}
-      blendTriggerAnimations:
-        upAnimation: {fileID: 0}
-        midAnimation: {fileID: 0}
-        downAnimation: {fileID: 0}
-    particleList: []
-    extraData:
-      Damage: 10
-      Rating: 100
-      discharge: 100
-      maxVerticalMovement: 0
-      maxHorizontalMovement: 0
       flyAwayDirection: {x: 0, y: 0, z: 90}
       flyAwayStrengh: 10
       rangeValue: 0
-      speedValue: 0
-      timeValue: 0
+      speedValue: 30
+      timeValue: 0.3
       flyAwayTime: 1
       freezTime: 1
       stopMovingRange: 1

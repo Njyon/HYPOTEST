@@ -51,19 +51,19 @@ public class SpearWeapon : WeaponBase
     }
     public override AttackAnimationData GroundUpAttack()    
     {
+		return base.GroundUpAttack();
+	}
+    public override AttackAnimationData GroundDownAttack()  
+    {
 		AttackAnimationData returnData = null;
 
-		returnData = base.GroundUpAttack();
+		returnData = base.GroundDownAttack();
 		GameCharacter.CombatComponent.AttackTimer.onTimerFinished += AttackTimerFinished;
 		groundUpAttackhit = false;
 		groundUpAttackMove = false;
 
 		return returnData;
 	}
-    public override AttackAnimationData GroundDownAttack()  
-    {
-        return base.GroundDownAttack();
-    }
     public override AttackAnimationData GroundDirectionAttack()   
     {
         return base.GroundDirectionAttack();
@@ -109,9 +109,14 @@ public class SpearWeapon : WeaponBase
 		if (damageInterface == null) return;
 		damageInterface.DoDamage(GameCharacter, GetDamage());
 
-		if (!groundUpAttackhit)
+		GameCharacter enemyCharacter = hitObj.GetComponent<GameCharacter>();
+		if (enemyCharacter == null) return;
+
+		if (enemyCharacter.CombatComponent.CanGetHooked())
 		{
-			GroundUpAttackEnd();
+			if (enemyCharacter.CombatComponent != null) enemyCharacter.CombatComponent.HookedToCharacter = GameCharacter;
+			HookCharacterToCharacter(enemyCharacter);
+			if (enemyCharacter.StateMachine != null) enemyCharacter.StateMachine.RequestStateChange(EGameCharacterState.HookedToCharacter);
 		}
 	}
 
@@ -121,9 +126,10 @@ public class SpearWeapon : WeaponBase
 		if (damageInterface == null) return;
 		damageInterface.DoDamage(GameCharacter, GetDamage());
 
-		GameCharacter enemyCharacter = hitObj.GetComponent<GameCharacter>();
-		if (enemyCharacter == null) return;
-		RequestFlyAway(enemyCharacter);
+		if (!groundUpAttackhit)
+		{
+			GroundDownAttackEnd();
+		}
 	}
 
 	public override void GroundDirectionAttackHit(GameObject hitObj)
@@ -202,16 +208,16 @@ public class SpearWeapon : WeaponBase
 			if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return;
 			if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks.Count > 0) HoldAttackAfterAttack(CurrentAttackType, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks);
 		}
-		else if (CurrentAttackType == EExplicitAttackType.GroundedUpAttack)
+		else if (CurrentAttackType == EExplicitAttackType.GroundedDownAttack)
 		{
 			GameCharacter.CombatComponent.AttackTimer.onTimerFinished -= AttackTimerFinished;
 			
 			if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return;
-			if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks.Count > 0) HoldAttackAfterAttack(CurrentAttackType, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundUpAttacks);
+			if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks.Count > 0) HoldAttackAfterAttack(CurrentAttackType, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundDownAttacks);
 			GameCharacter.HitDetectionEventStart(new AnimationEvent());
 			groundUpAttackMove = true;
 			groundUpTimer.Start(CurrentAttack.extraData.timeValue);
-			groundUpTimer.onTimerFinished += OnGroundUpTimerFinished;
+			groundUpTimer.onTimerFinished += OnGroundDownTimerFinished;
 		}
 	}
 
@@ -258,9 +264,9 @@ public class SpearWeapon : WeaponBase
 		{
 			UpdateAirDownAttack(deltaTime);
 		}
-		else if (CurrentAttackType == EExplicitAttackType.GroundedUpAttack)
+		else if (CurrentAttackType == EExplicitAttackType.GroundedDownAttack)
 		{
-			UpdateGroundUpAttack(deltaTime);
+			UpdateGroundDownAttack(deltaTime);
 		}
 	}
 
@@ -286,7 +292,7 @@ public class SpearWeapon : WeaponBase
 		}
 	}
 
-	void UpdateGroundUpAttack(float deltaTime)
+	void UpdateGroundDownAttack(float deltaTime)
 	{
 		if (groundUpAttackMove)
 		{
@@ -405,20 +411,21 @@ public class SpearWeapon : WeaponBase
 			GameObject.Destroy(defensiveSpear.gameObject);
 	}
 
-	void OnGroundUpTimerFinished()
+	void OnGroundDownTimerFinished()
 	{
-		groundUpTimer.onTimerFinished -= OnGroundUpTimerFinished;
+		groundUpTimer.onTimerFinished -= OnGroundDownTimerFinished;
 		if (!groundUpAttackhit)
 		{
-			GroundUpAttackEnd();
+			GroundDownAttackEnd();
 		}
 	}
 
-	void GroundUpAttackEnd()
+	void GroundDownAttackEnd()
 	{
 		groundUpAttackhit = true;
 		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return;
-		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks.Count > 0) TriggerAttack(CurrentAttackType, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundUpAttacks);
+		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks.Count > 0) TriggerAttack(CurrentAttackType, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundDownAttacks);
+		GameCharacter.AnimController.InAttack = false;
 		GameCharacter.AnimController.HoldAttack = false;
 		groundUpAttackMove = false;
 	}

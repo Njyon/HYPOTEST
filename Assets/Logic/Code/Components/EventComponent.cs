@@ -42,6 +42,7 @@ public class EventComponent
 	public delegate void OnCharacterEventTriggered(EGameCharacterEvent type);
 	public OnCharacterEventTriggered onCharacterEventTriggered;
 	
+	List<CharacterEvent> holdEvents = new();
 
 	public EventComponent()
 	{
@@ -55,7 +56,40 @@ public class EventComponent
 		//Ultra.Utilities.Instance.DebugLogOnScreen("New Event Added! " + newEvent.time.ToString(), 2f, StringColor.Lightblue, 100, DebugAreas.Combat);
 	}
 
+	public void AddHoldEvent(CharacterEvent newHoldEvent)
+	{
+		holdEvents.Add(newHoldEvent);
+	}
+
+	public void RemoveHoldEvent(CharacterEvent HoldEvent)
+	{
+		if (holdEvents.Contains(HoldEvent))
+		{
+			holdEvents.Remove(HoldEvent);
+		}
+	}
+
 	public void Update(float deltaTime)
+	{
+		ManageHoldEvents(deltaTime);
+		if (holdEvents.Count > 0)
+		{
+			for (int i = holdEvents.Count - 1; i >= 0; i--)
+			{
+				CharacterEvent holdEvent = holdEvents[i];
+				if (holdEvent.time <= 0 && holdEvent.CanBeExecuted())
+				{
+					holdEvent.StartEvent();
+					if (onCharacterEventTriggered != null) onCharacterEventTriggered(holdEvent.GetGameCharacterEvenetType());
+					RemoveHoldEvent(holdEvent);
+					return;
+				}
+			}
+		}
+		ExecuteEventIfPossible(deltaTime);
+	}
+
+	void ExecuteEventIfPossible(float deltaTime)
 	{
 		if (toBeEveluatedEvent != null)
 		{
@@ -69,10 +103,27 @@ public class EventComponent
 			}
 			else if (toBeEveluatedEvent.time <= 0)
 			{
-
 				//Ultra.Utilities.Instance.DebugLogOnScreen("RequestGone! " + ToBeEveluatedEvent.GetType().Name, 2f, StringColor.Lightblue, 100, DebugAreas.Combat);
 				toBeEveluatedEvent = null;
 			}
+		}
+	}
+
+	void ManageHoldEvents(float deltaTime)
+	{
+		List<CharacterEvent> removeHolds = new();
+		foreach (CharacterEvent holdEvent in holdEvents)
+		{
+			if (holdEvent == null)
+			{
+				removeHolds.Add(holdEvent);
+				continue;
+			}
+			holdEvent.time -= deltaTime;
+		}
+		foreach (CharacterEvent holdEvent in removeHolds)
+		{
+			RemoveHoldEvent(holdEvent);
 		}
 	}
 }
