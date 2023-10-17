@@ -16,14 +16,16 @@ public abstract class CharacterEvent
 {
 	public float time;
 	public GameCharacter gameCharacter;
+	public float inputTime;
 
 	public CharacterEvent(GameCharacter gameCharacter, float time = 0.2f)
 	{
 		this.time = time;
 		this.gameCharacter = gameCharacter;
+		inputTime = Time.time;
 	}
 
-	public abstract EGameCharacterEvent GetGameCharacterEvenetType();
+	public abstract EGameCharacterEvent GetCharacterEvenetType();
 	public abstract bool CanBeExecuted();
 	public abstract void StartEvent();
 }
@@ -43,6 +45,8 @@ public class EventComponent
 	public OnCharacterEventTriggered onCharacterEventTriggered;
 	
 	List<CharacterEvent> holdEvents = new();
+	public List<CharacterEvent> previousEventsOverTimeFrame = new List<CharacterEvent>();
+	float timeframeOfList = 5f;
 
 	public EventComponent()
 	{
@@ -53,6 +57,8 @@ public class EventComponent
 	public void AddEvent(CharacterEvent newEvent)
 	{
 		toBeEveluatedEvent = newEvent;
+		previousEventsOverTimeFrame.Add(newEvent);
+		ManagePreviousEvents();
 		//Ultra.Utilities.Instance.DebugLogOnScreen("New Event Added! " + newEvent.time.ToString(), 2f, StringColor.Lightblue, 100, DebugAreas.Combat);
 	}
 
@@ -80,13 +86,28 @@ public class EventComponent
 				if (holdEvent.time <= 0 && holdEvent.CanBeExecuted())
 				{
 					holdEvent.StartEvent();
-					if (onCharacterEventTriggered != null) onCharacterEventTriggered(holdEvent.GetGameCharacterEvenetType());
+					if (onCharacterEventTriggered != null) onCharacterEventTriggered(holdEvent.GetCharacterEvenetType());
 					RemoveHoldEvent(holdEvent);
 					return;
 				}
 			}
 		}
 		ExecuteEventIfPossible(deltaTime);
+	}
+
+	private void ManagePreviousEvents()
+	{
+		float currentTime = Time.time;
+		List<CharacterEvent> deleteEvents = new List<CharacterEvent>();
+		foreach (CharacterEvent characterEvent in previousEventsOverTimeFrame)
+		{
+			float time = currentTime - characterEvent.inputTime;
+			if (time >= timeframeOfList) deleteEvents.Add(characterEvent);
+		}
+		foreach (CharacterEvent characterEvent in deleteEvents)
+		{
+			previousEventsOverTimeFrame.Remove(characterEvent);
+		}
 	}
 
 	void ExecuteEventIfPossible(float deltaTime)
@@ -98,8 +119,9 @@ public class EventComponent
 			{
 				eveluatedEvent = toBeEveluatedEvent;
 				eveluatedEvent.StartEvent();
-				if (onCharacterEventTriggered != null) onCharacterEventTriggered(eveluatedEvent.GetGameCharacterEvenetType());
+				if (onCharacterEventTriggered != null) onCharacterEventTriggered(eveluatedEvent.GetCharacterEvenetType());
 				toBeEveluatedEvent = null;
+				ManagePreviousEvents();
 			}
 			else if (toBeEveluatedEvent.time <= 0)
 			{
@@ -109,7 +131,7 @@ public class EventComponent
 		}
 	}
 
-	void ManageHoldEvents(float deltaTime)
+	public void ManageHoldEvents(float deltaTime)
 	{
 		List<CharacterEvent> removeHolds = new();
 		foreach (CharacterEvent holdEvent in holdEvents)

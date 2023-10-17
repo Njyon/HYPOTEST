@@ -85,7 +85,6 @@ public class PlayerController : ControllerBase
 		//playerInputs.Default.ScrollThrouhWeapos.performed += ctx => Scroll(ctx.ReadValue<float>());
 		playerInputs.Default.Attack.performed += ctx => Attack();
 		playerInputs.Default.Attack.canceled += ctx => AttackEnd();
-		playerInputs.Default.HeavyAttack.performed += ctx => HeavyAttack();
 		playerInputs.Default.DefensiveAction.performed += ctx => DefensiveAction();
 		playerInputs.Default.Dodge.performed += ctx => Dodge();
 		playerInputs.Default.ForceFrameRate.performed += ctx => ForceFrameRate();
@@ -141,34 +140,32 @@ public class PlayerController : ControllerBase
 	}
 	void Attack()
 	{
+		CharacterEvent previousAttackEvent = GetFistEventOfType(EGameCharacterEvent.Attack, ref gameCharacter.EventComponent.previousEventsOverTimeFrame);
+
 		float directionTreshold = 0.5f;
 		Vector2 movementVector = gameCharacter.MovementInput;
 		bool hasDirection = Mathf.Abs(movementVector.y) > directionTreshold;
 		if (!hasDirection)
 		{
-			gameCharacter?.EventComponent?.AddEvent(new AttackEvent(gameCharacter, EAttackType.Default));
+			gameCharacter?.EventComponent?.AddEvent(new AttackEvent(gameCharacter, EAttackType.Default, previousAttackEvent != null ? previousAttackEvent.inputTime : -1));
 		}
 		else
 		{
 			if (movementVector.y > 0)
 			{
-				gameCharacter?.EventComponent?.AddEvent(new AttackEvent(gameCharacter, EAttackType.AttackUp));
+				gameCharacter?.EventComponent?.AddEvent(new AttackEvent(gameCharacter, EAttackType.AttackUp, previousAttackEvent != null ? previousAttackEvent.inputTime : -1));
 			}
 			else
 			{
-				gameCharacter?.EventComponent?.AddEvent(new AttackEvent(gameCharacter, EAttackType.AttackDown));
+				gameCharacter?.EventComponent?.AddEvent(new AttackEvent(gameCharacter, EAttackType.AttackDown, previousAttackEvent != null ? previousAttackEvent.inputTime : -1));
 			}
 		}
-		holdAttack = new AttackEvent(gameCharacter, EAttackType.AttackHorizontal, defaultHoldTime);
+		holdAttack = new AttackEvent(gameCharacter, EAttackType.AttackHorizontal, previousAttackEvent != null ? previousAttackEvent.inputTime : -1, defaultHoldTime);
 		gameCharacter?.EventComponent?.AddHoldEvent(holdAttack);
 	}
 	void AttackEnd()
 	{
 		gameCharacter?.EventComponent?.RemoveHoldEvent(holdAttack);
-	}
-	void HeavyAttack()
-	{
-		gameCharacter?.EventComponent?.AddEvent(new AttackEvent(gameCharacter, EAttackType.AttackHorizontal));
 	}
 	void DefensiveAction()
 	{
@@ -264,5 +261,17 @@ public class PlayerController : ControllerBase
 	void DebugButton04()
 	{
 
+	}
+
+	CharacterEvent GetFistEventOfType(EGameCharacterEvent eventType, ref List<CharacterEvent> list)
+	{
+		for (int i = list.Count - 1; i >= 0; i--)
+		{
+			if (list[i].GetCharacterEvenetType() == eventType)
+			{
+				return list[i];	
+			}
+		}
+		return null;
 	}
 }

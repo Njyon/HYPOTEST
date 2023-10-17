@@ -18,7 +18,7 @@ public class DefensiveEvent : CharacterEvent
 		return gameCharacter?.StateMachine?.CurrentState?.UpdateState(0, EGameCharacterState.DefensiveAction) == EGameCharacterState.DefensiveAction;
 	}
 
-	public override EGameCharacterEvent GetGameCharacterEvenetType()
+	public override EGameCharacterEvent GetCharacterEvenetType()
 	{
 		return EGameCharacterEvent.DefensiveAction;
 	}

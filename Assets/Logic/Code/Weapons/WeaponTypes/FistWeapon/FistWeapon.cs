@@ -71,36 +71,36 @@ public class FistWeapon : WeaponBase
         base.UpdateWeapon(deltaTime);
     }
 
-    public override AttackAnimationData GroundAttack()   
+    public override AttackAnimationData GroundAttack(float attackDeltaTime)   
     {
-        return base.GroundAttack();
+        return base.GroundAttack(attackDeltaTime);
     }
-    public override AttackAnimationData GroundUpAttack()    
+    public override AttackAnimationData GroundUpAttack(float attackDeltaTime)    
     {
-        return base.GroundUpAttack();
+        return base.GroundUpAttack(attackDeltaTime);
     }
-    public override AttackAnimationData GroundDownAttack()  
+    public override AttackAnimationData GroundDownAttack(float attackDeltaTime)  
     {
-        return base.GroundDownAttack();
+        return base.GroundDownAttack(attackDeltaTime);
     }
-    public override AttackAnimationData GroundDirectionAttack()   
+    public override AttackAnimationData GroundDirectionAttack(float attackDeltaTime)   
     {
-        return base.GroundDirectionAttack();
+        return base.GroundDirectionAttack(attackDeltaTime);
     }
 
-    public override AttackAnimationData AirAttack()  
+    public override AttackAnimationData AirAttack(float attackDeltaTime)  
     {
-        return base.AirAttack();
+        return base.AirAttack(attackDeltaTime);
     }
-    public override AttackAnimationData AirUpAttack()
+    public override AttackAnimationData AirUpAttack(float attackDeltaTime)
     {
-        return base.AirUpAttack();
+        return base.AirUpAttack(attackDeltaTime);
     }
-    public override AttackAnimationData AirDownAttack()
+    public override AttackAnimationData AirDownAttack(float attackDeltaTime)
 	{
 		AttackAnimationData returnData = null;
 		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return null;
-		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks.Count > 0) returnData = Attack3BlendLogic(EExplicitAttackType.AirDownAttack, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks, EAnimationType.Default);
+		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks.Count > 0) returnData = Attack3BlendLogic(EExplicitAttackType.AirDownAttack, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks, EAnimationType.Default, attackDeltaTime);
 
 		GameCharacter.CombatComponent.AttackTimer.onTimerFinished += AttackTimerFinished;
 		GameCharacter.MovementComponent.onCharacterGroundedChanged += OnCharacterGroundedChanged;
@@ -127,9 +127,9 @@ public class FistWeapon : WeaponBase
 
 		return returnData;
 	}
-    public override AttackAnimationData AirDirectionAttack() 
+    public override AttackAnimationData AirDirectionAttack(float attackDeltaTime) 
     {
-        return base.AirDirectionAttack();
+        return base.AirDirectionAttack(attackDeltaTime);
     }
 
 	public override AttackAnimationData DefensiveAction()
@@ -308,7 +308,7 @@ public class FistWeapon : WeaponBase
 		GameCharacter.AnimController.InCombat3Blend = false;
 
 		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return;
-		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks.Count > 0) TriggerAttack(CurrentAttackType, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks);
+		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks.Count > 0) TriggerAttack(CurrentAttackType, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks, -1);
 		GameCharacter.AnimController.HoldAttack = false;
 		GameCharacter.AnimController.InAttack = false;
 		GameCharacter.MovementComponent.SetLayerToDefault();

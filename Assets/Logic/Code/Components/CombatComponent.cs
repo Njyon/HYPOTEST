@@ -270,7 +270,7 @@ public class CombatComponent
 		SwitchWeapon(index);
 	}
 
-	public void Attack(EAttackType attackType)
+	public void Attack(EAttackType attackType, float deltaAttackTime = -1f)
 	{
 		if (NextWeapon != null)
 			UpdateWeapon();
@@ -282,20 +282,20 @@ public class CombatComponent
 		{
 			switch (attackType)
 			{
-				case EAttackType.Default: newAttack = CurrentWeapon?.GroundAttack(); break;
-				case EAttackType.AttackHorizontal: newAttack = CurrentWeapon?.GroundDirectionAttack(); break;
-				case EAttackType.AttackUp: newAttack = CurrentWeapon?.GroundUpAttack(); break;
-				case EAttackType.AttackDown: newAttack = CurrentWeapon?.GroundDownAttack(); break;
+				case EAttackType.Default: newAttack = CurrentWeapon?.GroundAttack(deltaAttackTime); break;
+				case EAttackType.AttackHorizontal: newAttack = CurrentWeapon?.GroundDirectionAttack(deltaAttackTime); break;
+				case EAttackType.AttackUp: newAttack = CurrentWeapon?.GroundUpAttack(deltaAttackTime); break;
+				case EAttackType.AttackDown: newAttack = CurrentWeapon?.GroundDownAttack(deltaAttackTime); break;
 				default: break;
 			}
 		}else
 		{
 			switch (attackType)
 			{
-				case EAttackType.Default: newAttack = CurrentWeapon?.AirAttack(); break;
-				case EAttackType.AttackHorizontal: newAttack = CurrentWeapon?.AirDirectionAttack(); break;
-				case EAttackType.AttackUp: newAttack = CurrentWeapon?.AirUpAttack(); break;
-				case EAttackType.AttackDown: newAttack = CurrentWeapon?.AirDownAttack(); break;
+				case EAttackType.Default: newAttack = CurrentWeapon?.AirAttack(deltaAttackTime); break;
+				case EAttackType.AttackHorizontal: newAttack = CurrentWeapon?.AirDirectionAttack(deltaAttackTime); break;
+				case EAttackType.AttackUp: newAttack = CurrentWeapon?.AirUpAttack(deltaAttackTime); break;
+				case EAttackType.AttackDown: newAttack = CurrentWeapon?.AirDownAttack(deltaAttackTime); break;
 				default: break;
 			}
 		}

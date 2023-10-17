@@ -45,43 +45,43 @@ public class SpearWeapon : WeaponBase
         base.UpdateWeapon(deltaTime);
     }
 
-    public override AttackAnimationData GroundAttack()   
+    public override AttackAnimationData GroundAttack(float attackDeltaTime)   
     {
-      	return base.GroundAttack();
+      	return base.GroundAttack(attackDeltaTime);
     }
-    public override AttackAnimationData GroundUpAttack()    
+    public override AttackAnimationData GroundUpAttack(float attackDeltaTime)    
     {
-		return base.GroundUpAttack();
+		return base.GroundUpAttack(attackDeltaTime);
 	}
-    public override AttackAnimationData GroundDownAttack()  
+    public override AttackAnimationData GroundDownAttack(float attackDeltaTime)  
     {
 		AttackAnimationData returnData = null;
 
-		returnData = base.GroundDownAttack();
+		returnData = base.GroundDownAttack(attackDeltaTime);
 		GameCharacter.CombatComponent.AttackTimer.onTimerFinished += AttackTimerFinished;
 		groundUpAttackhit = false;
 		groundUpAttackMove = false;
 
 		return returnData;
 	}
-    public override AttackAnimationData GroundDirectionAttack()   
+    public override AttackAnimationData GroundDirectionAttack(float attackDeltaTime)   
     {
-        return base.GroundDirectionAttack();
+        return base.GroundDirectionAttack(attackDeltaTime);
     }
 
-    public override AttackAnimationData AirAttack()  
+    public override AttackAnimationData AirAttack(float attackDeltaTime)  
     {
-        return base.AirAttack();
+        return base.AirAttack(attackDeltaTime);
     }
-    public override AttackAnimationData AirUpAttack()
+    public override AttackAnimationData AirUpAttack(float attackDeltaTime)
     {
-        return base.AirUpAttack();
+        return base.AirUpAttack(attackDeltaTime);
     }
-    public override AttackAnimationData AirDownAttack()  
+    public override AttackAnimationData AirDownAttack(float attackDeltaTime)  
     {
 		AttackAnimationData returnData = null;
 
-		returnData = base.AirDownAttack();
+		returnData = base.AirDownAttack(attackDeltaTime);
 		GameCharacter.CombatComponent.AttackTimer.onTimerFinished += AttackTimerFinished;
 		GameCharacter.MovementComponent.onMoveCollisionFlag += OnMoveCollisionFlag;
 		landed = false;
@@ -89,9 +89,9 @@ public class SpearWeapon : WeaponBase
 
 		return returnData;
 	}
-    public override AttackAnimationData AirDirectionAttack() 
+    public override AttackAnimationData AirDirectionAttack(float attackDeltaTime) 
     {
-        return base.AirDirectionAttack();
+        return base.AirDirectionAttack(attackDeltaTime);
 		//GameCharacter.MovementComponent.MoveThroughCharacterLayer();
 		//GameCharacter.CharacterHeightTarget = GameCharacter.CharacterHeightTarget / 2;
 	}
@@ -206,14 +206,14 @@ public class SpearWeapon : WeaponBase
 		{
 			GameCharacter.CombatComponent.AttackTimer.onTimerFinished -= AttackTimerFinished;
 			if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return;
-			if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks.Count > 0) HoldAttackAfterAttack(CurrentAttackType, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks);
+			if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks.Count > 0) HoldAttackAfterAttack(CurrentAttackType, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks, -1);
 		}
 		else if (CurrentAttackType == EExplicitAttackType.GroundedDownAttack)
 		{
 			GameCharacter.CombatComponent.AttackTimer.onTimerFinished -= AttackTimerFinished;
 			
 			if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return;
-			if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks.Count > 0) HoldAttackAfterAttack(CurrentAttackType, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundDownAttacks);
+			if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks.Count > 0) HoldAttackAfterAttack(CurrentAttackType, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundDownAttacks, -1);
 			GameCharacter.HitDetectionEventStart(new AnimationEvent());
 			groundUpAttackMove = true;
 			groundUpTimer.Start(CurrentAttack.extraData.timeValue);
@@ -240,7 +240,7 @@ public class SpearWeapon : WeaponBase
 		GameCharacter.CombatComponent.AttackTimer.onTimerFinished -= AttackTimerFinished;
 
 		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return;
-		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks.Count > 0) TriggerAttack(CurrentAttackType, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks);
+		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks.Count > 0) TriggerAttack(CurrentAttackType, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks, -1);
 		GameCharacter.AnimController.HoldAttack = false;
 		GameCharacter.AnimController.InAttack = false;
 
@@ -424,7 +424,7 @@ public class SpearWeapon : WeaponBase
 	{
 		groundUpAttackhit = true;
 		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return;
-		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks.Count > 0) TriggerAttack(CurrentAttackType, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundDownAttacks);
+		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks.Count > 0) TriggerAttack(CurrentAttackType, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundDownAttacks, -1);
 		GameCharacter.AnimController.InAttack = false;
 		GameCharacter.AnimController.HoldAttack = false;
 		groundUpAttackMove = false;

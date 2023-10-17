@@ -16,7 +16,7 @@ public class DodgeEvent : CharacterEvent
 		return gameCharacter?.StateMachine?.CurrentState?.UpdateState(0, EGameCharacterState.Dodge) == EGameCharacterState.Dodge;
 	}
 
-	public override EGameCharacterEvent GetGameCharacterEvenetType()
+	public override EGameCharacterEvent GetCharacterEvenetType()
 	{
 		return EGameCharacterEvent.Dodge;
 	}

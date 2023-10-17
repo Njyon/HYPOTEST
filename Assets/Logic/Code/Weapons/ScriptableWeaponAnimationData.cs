@@ -19,6 +19,8 @@ public class AttackAnimationData
 	public AttackAnimationHitDetectionData data;
 	public AnimationClip holdAnimation;
 	public AnimationClip triggerAnimation;
+	public SerializableDictionary<EExplicitAttackType, int> combatBranches;
+	public SerializableDictionary<EExplicitAttackType, int> timedCombatBrenches;
 	public AimBlendTypes aimBlendTypes;
 	public List<GameObject> particleList;
 	public AttackAnimationExtraData extraData;

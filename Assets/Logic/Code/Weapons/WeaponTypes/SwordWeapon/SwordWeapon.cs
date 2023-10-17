@@ -23,37 +23,37 @@ public class SwordWeapon : WeaponBase
 		base.UpdateWeapon(deltaTime);
 	}
 
-	public override AttackAnimationData GroundAttack()
+	public override AttackAnimationData GroundAttack(float attackDeltaTime)
 	{
-		return base.GroundAttack();
+		return base.GroundAttack(attackDeltaTime);
 	}
-	public override AttackAnimationData GroundUpAttack()
+	public override AttackAnimationData GroundUpAttack(float attackDeltaTime)
 	{
-		return base.GroundUpAttack();
+		return base.GroundUpAttack(attackDeltaTime);
 	}
-	public override AttackAnimationData GroundDownAttack()
+	public override AttackAnimationData GroundDownAttack(float attackDeltaTime)
 	{
-		return base.GroundDownAttack();
+		return base.GroundDownAttack(attackDeltaTime);
 	}
-	public override AttackAnimationData GroundDirectionAttack()
+	public override AttackAnimationData GroundDirectionAttack(float attackDeltaTime)
 	{
-		return base.GroundDirectionAttack();
+		return base.GroundDirectionAttack(attackDeltaTime);
 	}
 
-	public override AttackAnimationData AirAttack()
+	public override AttackAnimationData AirAttack(float attackDeltaTime)
 	{
-		return base.AirAttack();
+		return base.AirAttack(attackDeltaTime);
 	}
-	public override AttackAnimationData AirUpAttack()
+	public override AttackAnimationData AirUpAttack(float attackDeltaTime)
 	{
-		return base.AirUpAttack();
+		return base.AirUpAttack(attackDeltaTime);
 	}
-	public override AttackAnimationData AirDownAttack()
+	public override AttackAnimationData AirDownAttack(float attackDeltaTime)
 	{
-		return base.AirDownAttack();
+		return base.AirDownAttack(attackDeltaTime);
 	}
-	public override AttackAnimationData AirDirectionAttack()
+	public override AttackAnimationData AirDirectionAttack(float attackDeltaTime)
 	{
-		return base.AirDirectionAttack();
+		return base.AirDirectionAttack(attackDeltaTime);
 	}
 }
