@@ -29,7 +29,7 @@ public class SpearWeapon : WeaponBase
 		UnHookAllHookedCharacerts();
 		GameCharacter.RequestBestCharacterState();
 		GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.Aim);
-		SpawnedWeapon.SetActive(true);
+		SpawnedWeapon?.SetActive(true);
 
 		landed = false;
 		startFalling = false;

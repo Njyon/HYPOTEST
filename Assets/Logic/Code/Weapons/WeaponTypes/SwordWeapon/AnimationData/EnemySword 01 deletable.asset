@@ -25,6 +25,12 @@ MonoBehaviour:
       capsulHeight: 0
     holdAnimation: {fileID: 0}
     triggerAnimation: {fileID: 0}
+    combatBranches:
+      keys: 
+      values: 
+    timedCombatBrenches:
+      keys: 
+      values: 
     aimBlendTypes:
       blendAnimations:
         upAnimation: {fileID: 0}
@@ -53,6 +59,11 @@ MonoBehaviour:
       flyAwayTime: 0
       freezTime: 0
       stopMovingRange: 1
+    attackDataHolder:
+      attack: {fileID: 0}
+      attackInstance: {fileID: 0}
+      attackDataRef:
+        rid: 3239357387436195956
   - clip: {fileID: -8777931712289427824, guid: 98a8b764a21b0b04cb167c6681ea2179, type: 3}
     data:
       showProperties: 1
@@ -65,6 +76,12 @@ MonoBehaviour:
       capsulHeight: 0
     holdAnimation: {fileID: 0}
     triggerAnimation: {fileID: 0}
+    combatBranches:
+      keys: 
+      values: 
+    timedCombatBrenches:
+      keys: 
+      values: 
     aimBlendTypes:
       blendAnimations:
         upAnimation: {fileID: 0}
@@ -93,6 +110,11 @@ MonoBehaviour:
       flyAwayTime: 0
       freezTime: 0
       stopMovingRange: 1
+    attackDataHolder:
+      attack: {fileID: 0}
+      attackInstance: {fileID: 0}
+      attackDataRef:
+        rid: 3239357387436195957
   GroundUpAttacks: []
   GroundDownAttacks: []
   GroundDirectionAttacks: []
@@ -109,3 +131,18 @@ MonoBehaviour:
   HeadSpineLayerMovingWeight: 0.5
   ArmRMovingWeight: 0.8
   ArmLMovingWeight: 0.1
+  references:
+    version: 2
+    RefIds:
+    - rid: 3239357387436195956
+      type: {class: AttackData, ns: , asm: Assembly-CSharp}
+      data:
+        Damage: 10
+        Rating: 100
+        Discharge: 100
+    - rid: 3239357387436195957
+      type: {class: AttackData, ns: , asm: Assembly-CSharp}
+      data:
+        Damage: 10
+        Rating: 100
+        Discharge: 100

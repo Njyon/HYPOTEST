@@ -35,7 +35,6 @@ public class GameCharacterAttackState : AGameCharacterState
 				break;
 			default:
 				GameCharacter.AnimController.InAttack = true;
-				GameCharacter.CombatComponent.AttackTimer.Start(GameCharacter.CombatComponent.CurrentWeapon.CurrentAttack.clip.length); 
 				break;
 		}
 		//GameCharacter.MovementComponent.UseGravity = false;

@@ -100,30 +100,43 @@ public class FistWeapon : WeaponBase
 	{
 		AttackAnimationData returnData = null;
 		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return null;
-		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks.Count > 0) returnData = Attack3BlendLogic(EExplicitAttackType.AirDownAttack, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks, EAnimationType.Default, attackDeltaTime);
-
-		GameCharacter.CombatComponent.AttackTimer.onTimerFinished += AttackTimerFinished;
-		GameCharacter.MovementComponent.onCharacterGroundedChanged += OnCharacterGroundedChanged;
-
-		landed = false;
-		StartFalling = false;
-
-		Vector3 maxDir = (GameCharacter.transform.forward + Vector3.down).normalized;
-		GameCharacter target = Ultra.HypoUttilies.FindCHaracterNearestToDirectionWithMinAngel(GameCharacter.MovementComponent.CharacterCenter, Vector3.down, GameCharacter.transform.forward, 45f, ref GameCharacter.CharacterDetection.OverlappingGameCharacter);
-		GameCharacter.AnimController.Combat3BlendDir = 0f;
-		backupFallTimer.Start();
-		if (target == null)
+		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks.Count > 0)
 		{
-			targetDir = maxDir;
+			SetCurrentAttack(EExplicitAttackType.AirDownAttack, attackDeltaTime);
+			if (CurrentAttack.attackDataHolder.Attack != null)
+			{
+				CurrentAttack.attackDataHolder.Attack.Init(GameCharacter, this);
+				CurrentAttack.attackDataHolder.Attack.StartAttack();
+			}
+			returnData =  CurrentAttack;
+			//returnData = Attack3BlendLogic(EExplicitAttackType.AirDownAttack, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks, EAnimationType.Default, attackDeltaTime);
 		}else
 		{
-			// Aim towards feet for better results
-			targetDir = (target.transform.position - GameCharacter.MovementComponent.CharacterCenter).normalized;
-			float minDistance = GameCharacter.MovementComponent.Radius + target.MovementComponent.Radius + smashDownDistance;
-			Vector3 newTargetPos = target.transform.position + Ultra.Utilities.IgnoreAxis(targetDir * -1, EAxis.YZ).normalized * minDistance;
-			targetDir = (newTargetPos - GameCharacter.MovementComponent.CharacterCenter).normalized;
+			returnData = AirAttack(attackDeltaTime);
 		}
-		targetAngel = Vector3.Angle(targetDir, GameCharacter.transform.forward);
+
+		//GameCharacter.CombatComponent.AttackTimer.onTimerFinished += AttackTimerFinished;
+		//GameCharacter.MovementComponent.onCharacterGroundedChanged += OnCharacterGroundedChanged;
+		//
+		//landed = false;
+		//StartFalling = false;
+		//
+		//Vector3 maxDir = (GameCharacter.transform.forward + Vector3.down).normalized;
+		//GameCharacter target = Ultra.HypoUttilies.FindCHaracterNearestToDirectionWithMinAngel(GameCharacter.MovementComponent.CharacterCenter, Vector3.down, GameCharacter.transform.forward, 45f, ref GameCharacter.CharacterDetection.OverlappingGameCharacter);
+		//GameCharacter.AnimController.Combat3BlendDir = 0f;
+		//backupFallTimer.Start();
+		//if (target == null)
+		//{
+		//	targetDir = maxDir;
+		//}else
+		//{
+		//	// Aim towards feet for better results
+		//	targetDir = (target.transform.position - GameCharacter.MovementComponent.CharacterCenter).normalized;
+		//	float minDistance = GameCharacter.MovementComponent.Radius + target.MovementComponent.Radius + smashDownDistance;
+		//	Vector3 newTargetPos = target.transform.position + Ultra.Utilities.IgnoreAxis(targetDir * -1, EAxis.YZ).normalized * minDistance;
+		//	targetDir = (newTargetPos - GameCharacter.MovementComponent.CharacterCenter).normalized;
+		//}
+		//targetAngel = Vector3.Angle(targetDir, GameCharacter.transform.forward);
 
 		return returnData;
 	}
@@ -395,7 +408,7 @@ public class FistWeapon : WeaponBase
 		{
 			Vector3 velocity = GameCharacter.MovementComponent.MovementVelocity;
 			velocity = targetDir * speed;
-			GameCharacter.MovementComponent.MovementVelocity = velocity;
+			//GameCharacter.MovementComponent.MovementVelocity = velocity;
 		}
 	}
 

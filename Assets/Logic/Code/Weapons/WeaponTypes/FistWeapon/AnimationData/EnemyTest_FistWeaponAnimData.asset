@@ -23,7 +23,47 @@ MonoBehaviour:
       radius: 0.5
       boxDimensions: {x: 1, y: 1, z: 1}
       capsulHeight: 2
-    maxVerticalMovement: 0
+    holdAnimation: {fileID: 0}
+    triggerAnimation: {fileID: 0}
+    combatBranches:
+      keys: 
+      values: 
+    timedCombatBrenches:
+      keys: 
+      values: 
+    aimBlendTypes:
+      blendAnimations:
+        upAnimation: {fileID: 0}
+        midAnimation: {fileID: 0}
+        downAnimation: {fileID: 0}
+      blendHoldAnimations:
+        upAnimation: {fileID: 0}
+        midAnimation: {fileID: 0}
+        downAnimation: {fileID: 0}
+      blendTriggerAnimations:
+        upAnimation: {fileID: 0}
+        midAnimation: {fileID: 0}
+        downAnimation: {fileID: 0}
+    particleList: []
+    extraData:
+      Damage: 10
+      Rating: 10
+      discharge: 100
+      maxVerticalMovement: 0
+      maxHorizontalMovement: 0
+      flyAwayDirection: {x: 0, y: 0, z: 0}
+      flyAwayStrengh: 0
+      rangeValue: 0
+      speedValue: 0
+      timeValue: 0
+      flyAwayTime: 1
+      freezTime: 1
+      stopMovingRange: 1
+    attackDataHolder:
+      attack: {fileID: 0}
+      attackInstance: {fileID: 0}
+      attackDataRef:
+        rid: 3239357387436195953
   GroundUpAttacks:
   - clip: {fileID: -1511537027194615298, guid: cb676680cb3657a4fa28a2fc509e76b6, type: 3}
     data:
@@ -35,7 +75,47 @@ MonoBehaviour:
       radius: 1
       boxDimensions: {x: 0, y: 0, z: 0}
       capsulHeight: 0
-    maxVerticalMovement: 5
+    holdAnimation: {fileID: 0}
+    triggerAnimation: {fileID: 0}
+    combatBranches:
+      keys: 
+      values: 
+    timedCombatBrenches:
+      keys: 
+      values: 
+    aimBlendTypes:
+      blendAnimations:
+        upAnimation: {fileID: 0}
+        midAnimation: {fileID: 0}
+        downAnimation: {fileID: 0}
+      blendHoldAnimations:
+        upAnimation: {fileID: 0}
+        midAnimation: {fileID: 0}
+        downAnimation: {fileID: 0}
+      blendTriggerAnimations:
+        upAnimation: {fileID: 0}
+        midAnimation: {fileID: 0}
+        downAnimation: {fileID: 0}
+    particleList: []
+    extraData:
+      Damage: 10
+      Rating: 10
+      discharge: 100
+      maxVerticalMovement: 0
+      maxHorizontalMovement: 0
+      flyAwayDirection: {x: 0, y: 0, z: 0}
+      flyAwayStrengh: 0
+      rangeValue: 0
+      speedValue: 0
+      timeValue: 0
+      flyAwayTime: 1
+      freezTime: 1
+      stopMovingRange: 1
+    attackDataHolder:
+      attack: {fileID: 0}
+      attackInstance: {fileID: 0}
+      attackDataRef:
+        rid: 3239357387436195954
   GroundDownAttacks: []
   GroundDirectionAttacks: []
   AirAttacks:
@@ -49,10 +129,51 @@ MonoBehaviour:
       radius: 1
       boxDimensions: {x: 0, y: 0, z: 0}
       capsulHeight: 0
-    maxVerticalMovement: 0
+    holdAnimation: {fileID: 0}
+    triggerAnimation: {fileID: 0}
+    combatBranches:
+      keys: 
+      values: 
+    timedCombatBrenches:
+      keys: 
+      values: 
+    aimBlendTypes:
+      blendAnimations:
+        upAnimation: {fileID: 0}
+        midAnimation: {fileID: 0}
+        downAnimation: {fileID: 0}
+      blendHoldAnimations:
+        upAnimation: {fileID: 0}
+        midAnimation: {fileID: 0}
+        downAnimation: {fileID: 0}
+      blendTriggerAnimations:
+        upAnimation: {fileID: 0}
+        midAnimation: {fileID: 0}
+        downAnimation: {fileID: 0}
+    particleList: []
+    extraData:
+      Damage: 10
+      Rating: 10
+      discharge: 100
+      maxVerticalMovement: 0
+      maxHorizontalMovement: 0
+      flyAwayDirection: {x: 0, y: 0, z: 0}
+      flyAwayStrengh: 0
+      rangeValue: 0
+      speedValue: 0
+      timeValue: 0
+      flyAwayTime: 1
+      freezTime: 1
+      stopMovingRange: 1
+    attackDataHolder:
+      attack: {fileID: 0}
+      attackInstance: {fileID: 0}
+      attackDataRef:
+        rid: 3239357387436195955
   AirUpAttacks: []
   AirDownAttacks: []
   AirDirectionAttacks: []
+  DefensiveAction: []
   HandType: 0
   WeaponReadyPose: {fileID: 7400000, guid: 2d03847dc800f1c43a532bb5eddaf2f1, type: 2}
   WeaponReadyWeight: 1
@@ -60,3 +181,24 @@ MonoBehaviour:
   HeadSpineLayerMovingWeight: 0
   ArmRMovingWeight: 0
   ArmLMovingWeight: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 3239357387436195953
+      type: {class: AttackData, ns: , asm: Assembly-CSharp}
+      data:
+        Damage: 10
+        Rating: 100
+        Discharge: 100
+    - rid: 3239357387436195954
+      type: {class: AttackData, ns: , asm: Assembly-CSharp}
+      data:
+        Damage: 10
+        Rating: 100
+        Discharge: 100
+    - rid: 3239357387436195955
+      type: {class: AttackData, ns: , asm: Assembly-CSharp}
+      data:
+        Damage: 10
+        Rating: 100
+        Discharge: 100
