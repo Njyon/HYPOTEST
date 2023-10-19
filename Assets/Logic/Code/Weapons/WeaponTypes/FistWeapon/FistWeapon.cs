@@ -5,40 +5,17 @@ using UnityEngine;
 
 public class FistWeapon : WeaponBase
 {
-	bool landed = false;
-	bool startFalling = false;
-	Vector3 targetDir = Vector3.zero;
-	float speed = 40f;
-	float interpSpeed = 10f;
-	float targetAngel;
 	float teleportCharacterDistance = 0.5f;
-	float smashDownDistance = 0.2f;
-	Ultra.Timer backupFallTimer;
 	Vector3 defensiveMoveVector;
 	Vector3 defensiveMoveInput;
 	bool defensiveShouldMove = false;
 	bool canTeleport = true;
-
-	bool StartFalling { 
-		get { return startFalling; }
-		set
-		{
-			startFalling = value;
-			if (startFalling)
-			{
-				GameCharacter.MovementComponent.MoveThroughCharacterLayer();
-				HitDetectionStart();
-			}
-		}
-	}
 
 	GameCharacter targetTeleportCharacter;
 
 	public FistWeapon() { }
 	public FistWeapon(GameCharacter gameCharacter, ScriptableWeapon weaponData) : base (gameCharacter, weaponData)
 	{
-		backupFallTimer = new Ultra.Timer(0.4f, true);
-		backupFallTimer.onTimerFinished += OnBackupTimerFinished;
 	}
 
 	public override void InitWeapon()
@@ -98,47 +75,7 @@ public class FistWeapon : WeaponBase
     }
     public override AttackAnimationData AirDownAttack(float attackDeltaTime)
 	{
-		AttackAnimationData returnData = null;
-		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return null;
-		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks.Count > 0)
-		{
-			SetCurrentAttack(EExplicitAttackType.AirDownAttack, attackDeltaTime);
-			if (CurrentAttack.attackDataHolder.Attack != null)
-			{
-				CurrentAttack.attackDataHolder.Attack.Init(GameCharacter, this);
-				CurrentAttack.attackDataHolder.Attack.StartAttack();
-			}
-			returnData =  CurrentAttack;
-			//returnData = Attack3BlendLogic(EExplicitAttackType.AirDownAttack, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks, EAnimationType.Default, attackDeltaTime);
-		}else
-		{
-			returnData = AirAttack(attackDeltaTime);
-		}
-
-		//GameCharacter.CombatComponent.AttackTimer.onTimerFinished += AttackTimerFinished;
-		//GameCharacter.MovementComponent.onCharacterGroundedChanged += OnCharacterGroundedChanged;
-		//
-		//landed = false;
-		//StartFalling = false;
-		//
-		//Vector3 maxDir = (GameCharacter.transform.forward + Vector3.down).normalized;
-		//GameCharacter target = Ultra.HypoUttilies.FindCHaracterNearestToDirectionWithMinAngel(GameCharacter.MovementComponent.CharacterCenter, Vector3.down, GameCharacter.transform.forward, 45f, ref GameCharacter.CharacterDetection.OverlappingGameCharacter);
-		//GameCharacter.AnimController.Combat3BlendDir = 0f;
-		//backupFallTimer.Start();
-		//if (target == null)
-		//{
-		//	targetDir = maxDir;
-		//}else
-		//{
-		//	// Aim towards feet for better results
-		//	targetDir = (target.transform.position - GameCharacter.MovementComponent.CharacterCenter).normalized;
-		//	float minDistance = GameCharacter.MovementComponent.Radius + target.MovementComponent.Radius + smashDownDistance;
-		//	Vector3 newTargetPos = target.transform.position + Ultra.Utilities.IgnoreAxis(targetDir * -1, EAxis.YZ).normalized * minDistance;
-		//	targetDir = (newTargetPos - GameCharacter.MovementComponent.CharacterCenter).normalized;
-		//}
-		//targetAngel = Vector3.Angle(targetDir, GameCharacter.transform.forward);
-
-		return returnData;
+		return base.AirDownAttack(attackDeltaTime);
 	}
     public override AttackAnimationData AirDirectionAttack(float attackDeltaTime) 
     {
@@ -160,122 +97,47 @@ public class FistWeapon : WeaponBase
 	public override void AttackPhaseStart()
 	{
 		base.AttackPhaseStart();
-		StartFalling = true;
 	}
 
 	public override void GroundAttackHit(GameObject hitObj)
 	{
-        IDamage damageInterface = GetDamageInterface(hitObj);
-        if (damageInterface == null) return;
-        damageInterface.DoDamage(GameCharacter, GetDamage());
-
-		if (ComboIndexInSameAttack == 1)
-		{
-			GameCharacter enemyCharacter = hitObj.GetComponent<GameCharacter>();
-			if (enemyCharacter == null) return;
-			RequestFlyAway(enemyCharacter);
-		}
+		base.GroundAttackHit(hitObj);
 	}
 
 	public override void GroundUpAttackHit(GameObject hitObj)
 	{
-		IDamage damageInterface = GetDamageInterface(hitObj);
-		if (damageInterface == null) return;
-		damageInterface.DoDamage(GameCharacter, GetDamage());
-		GameCharacter enemyCharacter = hitObj.GetComponent<GameCharacter>();
-		if (enemyCharacter == null) return;
-
-		if (enemyCharacter.CombatComponent.CanGetHooked())
-		{
-			if (enemyCharacter.CombatComponent != null) enemyCharacter.CombatComponent.HookedToCharacter = GameCharacter;
-			HookCharacterToCharacter(enemyCharacter);
-			if (enemyCharacter.StateMachine != null) enemyCharacter.StateMachine.RequestStateChange(EGameCharacterState.HookedToCharacter);
-		}
+		base.GroundUpAttackHit(hitObj);
 	}
-
-	
 
 	public override void GroundDownAttackHit(GameObject hitObj)
 	{
-		IDamage damageInterface = GetDamageInterface(hitObj);
-		if (damageInterface == null) return;
-		damageInterface.DoDamage(GameCharacter, GetDamage());
-
+		base.GroundDownAttackHit(hitObj);
 	}
 
 	public override void GroundDirectionAttackHit(GameObject hitObj)
 	{
-		IDamage damageInterface = GetDamageInterface(hitObj);
-		if (damageInterface == null) return;
-		damageInterface.DoDamage(GameCharacter, GetDamage());
-
-		HeavyAttackLogic(hitObj);
-	}
-
-	private void HeavyAttackLogic(GameObject hitObj)
-	{
-		GameCharacter enemyCharacter = hitObj.GetComponent<GameCharacter>();
-		if (enemyCharacter == null) return;
-
-		if (ComboIndexInSameAttack == 2)
-		{	
-			RequestFlyAway(enemyCharacter);
-		}else
-		{
-			enemyCharacter.CombatComponent.RequestFreez();
-		}
+		base.GroundDirectionAttackHit(hitObj);
 	}
 
 	public override void AirAttackHit(GameObject hitObj)
 	{
-		IDamage damageInterface = GetDamageInterface(hitObj);
-		if (damageInterface == null) return;
-		damageInterface.DoDamage(GameCharacter, GetDamage());
-
-		if (AttackIndex == 2)
-		{
-			GameCharacter enemyCharacter = hitObj.GetComponent<GameCharacter>();
-			if (enemyCharacter == null) return;
-			RequestFlyAway(enemyCharacter);
-		}
+		base.AirAttackHit(hitObj);
 	}
 
 
 	public override void AirUpAttackHit(GameObject hitObj)
 	{
-		IDamage damageInterface = GetDamageInterface(hitObj);
-		if (damageInterface == null) return;
-		damageInterface.DoDamage(GameCharacter, GetDamage());
-
-		if (ComboIndexInSameAttack > 0)
-		{
-			GameCharacter enemyCharacter = hitObj.GetComponent<GameCharacter>();
-			if (enemyCharacter == null) return;
-			RequestFlyAway(enemyCharacter);
-		}
+		base.AirUpAttackHit(hitObj);
 	}
 
 	public override void AirDownAttackHit(GameObject hitObj)
 	{
-		IDamage damageInterface = GetDamageInterface(hitObj);
-		if (damageInterface == null) return;
-		GameCharacter enemyCharacter = hitObj.GetComponent<GameCharacter>();
-		if (enemyCharacter == null || enemyCharacter.StateMachine == null || enemyCharacter.CombatComponent == null) return;
-		if (enemyCharacter.CombatComponent.CanGetHooked() && enemyCharacter.StateMachine.CanSwitchToStateOrIsState(EGameCharacterState.HookedToCharacter))
-		{
-			enemyCharacter.CombatComponent.HookedToCharacter = GameCharacter;
-			HookCharacterToCharacter(enemyCharacter);
-			enemyCharacter.StateMachine.RequestStateChange(EGameCharacterState.HookedToCharacter);
-		}
+		base.AirDownAttackHit(hitObj);
 	}
 
 	public override void AirDirectionAttackHit(GameObject hitObj)
 	{
-		IDamage damageInterface = GetDamageInterface(hitObj);
-		if (damageInterface == null) return;
-		damageInterface.DoDamage(GameCharacter, GetDamage());
-
-		HeavyAttackLogic(hitObj);
+		base.AirDirectionAttackHit(hitObj);
 	}
 
 	public override void EndAttackStateLogic()
@@ -292,80 +154,11 @@ public class FistWeapon : WeaponBase
 		canTeleport = true;
 	}
 
-	void AttackTimerFinished()
-	{
-		if (CurrentAttackType == EExplicitAttackType.AirDownAttack)
-		{
-			GameCharacter.CombatComponent.AttackTimer.onTimerFinished -= AttackTimerFinished;
-			if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return;
-			if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks.Count > 0)
-			{
-				GameCharacter.AnimController.ApplyCombat3BlendTree(WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks[AttackIndex].aimBlendTypes.blendHoldAnimations);
-				GameCharacter.AnimController.InCombat3Blend = true;
-			}
-		}
-	}
-	void OnCharacterGroundedChanged(bool newState)
-	{
-		if (CurrentAttackType == EExplicitAttackType.AirDownAttack)
-		{
-			if (!landed) OnAirDownHitLanding();
-		}
-	}
-
-	void OnAirDownHitLanding()
-	{
-		landed = true;
-		GameCharacter.MovementComponent.onCharacterGroundedChanged -= OnCharacterGroundedChanged;
-		GameCharacter.CombatComponent.AttackTimer.onTimerFinished -= AttackTimerFinished;
-		GameCharacter.AnimController.InCombat3Blend = false;
-
-		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return;
-		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks.Count > 0) TriggerAttack(CurrentAttackType, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks, -1);
-		GameCharacter.AnimController.HoldAttack = false;
-		GameCharacter.AnimController.InAttack = false;
-		GameCharacter.MovementComponent.SetLayerToDefault();
-
-		CameraController.Instance.ShakeCamerea(2);
-
-		UnHookAllHookedCharacerts();
-
-		foreach (GameObject obj in hitObjects)
-		{
-			OnGroundAttackHit(obj);
-		}
-
-		HitDetectionEnd();
-	}
-
-	void OnGroundAttackHit(GameObject hitObject)
-	{
-		IDamage damageInterface = GetDamageInterface(hitObject);
-		if (damageInterface == null) return;
-		damageInterface.DoDamage(GameCharacter, GetDamage());
-
-		GameCharacter enemyCharacter = hitObject.GetComponent<GameCharacter>();
-		if (enemyCharacter == null) return;
-		RequestFlyAway(enemyCharacter);
-		FreezAfterPush(enemyCharacter);
-	}
-
-	async void FreezAfterPush(GameCharacter character)
-	{
-		await new WaitForSeconds(CurrentAttack.extraData.flyAwayTime);
-		character.CombatComponent.RequestFreez(CurrentAttack.extraData.freezTime);
-	}
-
 	public override void PostAttackStateLogic(float deltaTime)
 	{
 		base.PostAttackStateLogic(deltaTime);
-		backupFallTimer.Update(deltaTime);
-		if (CurrentAttackType == EExplicitAttackType.AirDownAttack)
-		{
-			GameCharacter.AnimController.Combat3BlendDir = Mathf.Lerp(GameCharacter.AnimController.Combat3BlendDir, Ultra.Utilities.Remap(targetAngel, 0, 180, 1, -1), deltaTime * interpSpeed);
-			UpdateAirDownAttack(deltaTime);
-		}
-		else if (CurrentAttackType == EExplicitAttackType.DefensiveAction)
+
+		if (CurrentAttackType == EExplicitAttackType.DefensiveAction)
 		{
 			if (defensiveShouldMove)
 			{
@@ -402,26 +195,10 @@ public class FistWeapon : WeaponBase
 		Ultra.Utilities.DrawArrow(GameCharacter.MovementComponent.CharacterCenter, dir.normalized, dir.magnitude, Color.cyan, 10f, 200, DebugAreas.Combat);
 	}
 
-	void UpdateAirDownAttack(float deltaTime)
-	{
-		if (!landed && StartFalling)
-		{
-			Vector3 velocity = GameCharacter.MovementComponent.MovementVelocity;
-			velocity = targetDir * speed;
-			//GameCharacter.MovementComponent.MovementVelocity = velocity;
-		}
-	}
-
-	void OnBackupTimerFinished()
-	{
-		if (!landed && !StartFalling)
-			StartFalling = true;
-	}
-
 	public override void DefensiveActionStart()
 	{
 		float angelTreshold = 5f;
-		targetTeleportCharacter = Ultra.HypoUttilies.FindCharactereNearestToDirectionTresholdWithRange(GameCharacter.MovementComponent.CharacterCenter, defensiveMoveVector.normalized.magnitude > 0 ? defensiveMoveVector.normalized : GameCharacter.transform.forward, angelTreshold, Ultra.Utilities.IgnoreAxis(defensiveMoveVector, EAxis.YZ).normalized.magnitude > 0 ? Ultra.Utilities.IgnoreAxis(defensiveMoveVector, EAxis.YZ).normalized : GameCharacter.transform.forward, CurrentDefensiveAction.extraData.rangeValue, ref GameCharacter.CharacterDetection.OverlappingGameCharacter);
+		//targetTeleportCharacter = Ultra.HypoUttilies.FindCharactereNearestToDirectionTresholdWithRange(GameCharacter.MovementComponent.CharacterCenter, defensiveMoveVector.normalized.magnitude > 0 ? defensiveMoveVector.normalized : GameCharacter.transform.forward, angelTreshold, Ultra.Utilities.IgnoreAxis(defensiveMoveVector, EAxis.YZ).normalized.magnitude > 0 ? Ultra.Utilities.IgnoreAxis(defensiveMoveVector, EAxis.YZ).normalized : GameCharacter.transform.forward, CurrentAction.extraData.rangeValue, ref GameCharacter.CharacterDetection.OverlappingGameCharacter);
 		Vector3 targetPosition = Vector3.zero;
 		if (targetTeleportCharacter != null)
 		{
@@ -434,7 +211,7 @@ public class FistWeapon : WeaponBase
 		}
 		else
 		{
-			targetPosition = GameCharacter.MovementComponent.CharacterCenter + (GameCharacter.MovementInput.normalized.magnitude > 0 ? new Vector3(GameCharacter.MovementInput.x, 0f, 0f) : GameCharacter.transform.forward)* (CurrentDefensiveAction.extraData.rangeValue / 2);
+			//targetPosition = GameCharacter.MovementComponent.CharacterCenter + (GameCharacter.MovementInput.normalized.magnitude > 0 ? new Vector3(GameCharacter.MovementInput.x, 0f, 0f) : GameCharacter.transform.forward) * (CurrentAction.extraData.rangeValue / 2);
 		}
 		defensiveMoveVector = targetPosition - GameCharacter.MovementComponent.CharacterCenter;
 		defensiveShouldMove = true;

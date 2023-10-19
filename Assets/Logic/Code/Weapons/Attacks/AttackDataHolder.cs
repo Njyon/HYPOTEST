@@ -5,59 +5,62 @@ using UnityEditor;
 using UnityEngine;
 
 [Serializable]
-public class AttackDataHolder
+public class ActionHolder
 {
-	public BaseAttack attack;
-	[HideInInspector]
-	public BaseAttack attackInstance;
-	[SerializeReference]
-	public AttackData attackDataRef;
+	public ClassInstance<ActionBase> action = new ClassInstance<ActionBase>();
 
-	public BaseAttack Attack { 
+	//public BaseAttack attack;
+	//[HideInInspector]
+	//public BaseAttack attackInstance;
+	//[SerializeReference]
+	//public AttackData attackDataRef;
+
+	public ActionBase Action { 
 		get 
 		{
-#if UNITY_EDITOR
-			if (!EditorApplication.isUpdating)
-			{
-#endif
-				if (attackInstance == null && attack != null)
-				{
-					attackInstance = (BaseAttack)Activator.CreateInstance(attack.GetType());
-					if (attackDataRef != null && attackInstance != null) attackInstance.SetData(attackDataRef);
-				}
-
-#if UNITY_EDITOR
-			}
-#endif
-			return attackInstance; 
+			return action.instance;
+//#if UNITY_EDITOR
+//			if (!EditorApplication.isUpdating)
+//			{
+//#endif
+//				if (attackInstance == null && attack != null)
+//				{
+//					attackInstance = (BaseAttack)Activator.CreateInstance(attack.GetType());
+//					if (attackDataRef != null && attackInstance != null) attackInstance.SetData(attackDataRef);
+//				}
+//
+//#if UNITY_EDITOR
+//			}
+//#endif
+//			return attackInstance; 
 		} 
 	}
 
-	public void SetAttackRef()
-	{
-#if UNITY_EDITOR
-		if (EditorApplication.isUpdating) return;
-#endif
-		if (attack != null)
-		{
-			if (attackInstance == null || attack.GetType() != attackInstance.GetType())
-				attackInstance = (BaseAttack)Activator.CreateInstance(attack.GetType());
-			if (attackDataRef != null)
-			{
-				if (attackDataRef.GetType() != attackInstance.GetAttackDataType())
-				{
-					attackDataRef = (AttackData)Activator.CreateInstance(attackInstance.GetAttackDataType());
-				}
-			}
-			else
-			{
-				attackDataRef = (AttackData)Activator.CreateInstance(attackInstance.GetAttackDataType());
-			}
-			
-			if (attackInstance != null)
-				attackInstance.SetData(attackDataRef);
-		}
-	}
+//	public void SetAttackRef()
+//	{
+//#if UNITY_EDITOR
+//		if (EditorApplication.isUpdating) return;
+//#endif
+//		if (attack != null)
+//		{
+//			if (attackInstance == null || attack.GetType() != attackInstance.GetType())
+//				attackInstance = (BaseAttack)Activator.CreateInstance(attack.GetType());
+//			if (attackDataRef != null)
+//			{
+//				if (attackDataRef.GetType() != attackInstance.GetAttackDataType())
+//				{
+//					attackDataRef = (AttackData)Activator.CreateInstance(attackInstance.GetAttackDataType());
+//				}
+//			}
+//			else
+//			{
+//				attackDataRef = (AttackData)Activator.CreateInstance(attackInstance.GetAttackDataType());
+//			}
+//			
+//			if (attackInstance != null)
+//				attackInstance.SetData(attackDataRef);
+//		}
+//	}
 }
 
 //[ExecuteInEditMode]

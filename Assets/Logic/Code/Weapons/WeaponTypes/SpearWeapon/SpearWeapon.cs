@@ -98,16 +98,22 @@ public class SpearWeapon : WeaponBase
 
 	public override void GroundAttackHit(GameObject hitObj)
 	{
+		base.GroundAttackHit(hitObj);
+		return;
+
 		IDamage damageInterface = GetDamageInterface(hitObj);
 		if (damageInterface == null) return;
-		damageInterface.DoDamage(GameCharacter, GetDamage());
+		damageInterface.DoDamage(GameCharacter, GetDamage(1));
 	}
 
 	public override void GroundUpAttackHit(GameObject hitObj)
 	{
+		base.GroundAttackHit(hitObj);
+		return;
+
 		IDamage damageInterface = GetDamageInterface(hitObj);
 		if (damageInterface == null) return;
-		damageInterface.DoDamage(GameCharacter, GetDamage());
+		damageInterface.DoDamage(GameCharacter, GetDamage(1));
 
 		GameCharacter enemyCharacter = hitObj.GetComponent<GameCharacter>();
 		if (enemyCharacter == null) return;
@@ -122,9 +128,12 @@ public class SpearWeapon : WeaponBase
 
 	public override void GroundDownAttackHit(GameObject hitObj)
 	{
+		base.GroundDownAttackHit(hitObj);
+		return;
+
 		IDamage damageInterface = GetDamageInterface(hitObj);
 		if (damageInterface == null) return;
-		damageInterface.DoDamage(GameCharacter, GetDamage());
+		damageInterface.DoDamage(GameCharacter, GetDamage(1));
 
 		if (!groundUpAttackhit)
 		{
@@ -134,37 +143,46 @@ public class SpearWeapon : WeaponBase
 
 	public override void GroundDirectionAttackHit(GameObject hitObj)
 	{
+		base.GroundDirectionAttackHit(hitObj);
+		return;
+
 		IDamage damageIterface = hitObj.GetComponent<IDamage>();
 		if (damageIterface == null) return;
-		damageIterface.DoDamage(GameCharacter, GetDamage());
+		damageIterface.DoDamage(GameCharacter, GetDamage(1));
 
 		if (AttackIndex == 2)
 		{
 			GameCharacter enemyCharacter = hitObj.GetComponent<GameCharacter>();
 			if (enemyCharacter == null) return;
-			RequestFlyAway(enemyCharacter);
+			//RequestFlyAway(enemyCharacter);
 		}
 	}
 
 	public override void AirAttackHit(GameObject hitObj)
 	{
+		base.AirAttackHit(hitObj);
+		return;
+
 		IDamage damageInterface = GetDamageInterface(hitObj);
 		if (damageInterface == null) return;
-		damageInterface.DoDamage(GameCharacter, GetDamage());
+		damageInterface.DoDamage(GameCharacter, GetDamage(1));
 
 		if (AttackIndex == 2)
 		{
 			GameCharacter enemyCharacter = hitObj.GetComponent<GameCharacter>();
 			if (enemyCharacter == null) return;
-			RequestFlyAway(enemyCharacter);
+			//RequestFlyAway(enemyCharacter);
 		}
 	}
 
 	public override void AirUpAttackHit(GameObject hitObj)
 	{
+		base.AirUpAttackHit(hitObj);
+		return;
+
 		IDamage damageInterface = GetDamageInterface(hitObj);
 		if (damageInterface == null) return;
-		damageInterface.DoDamage(GameCharacter, GetDamage());
+		damageInterface.DoDamage(GameCharacter, GetDamage(1));
 		GameCharacter enemyCharacter = hitObj.GetComponent<GameCharacter>();
 		if (enemyCharacter == null || enemyCharacter.StateMachine == null || enemyCharacter.CombatComponent == null) return;
 		if (enemyCharacter.StateMachine.CanSwitchToStateOrIsState(EGameCharacterState.PullCharacterOnHorizontalLevel))
@@ -177,6 +195,9 @@ public class SpearWeapon : WeaponBase
 
 	public override void AirDownAttackHit(GameObject hitObj)
 	{
+		base.AirDownAttackHit(hitObj);
+		return;
+
 		IDamage damageInterface = GetDamageInterface(hitObj);
 		if (damageInterface == null) return;
 		GameCharacter enemyCharacter = hitObj.GetComponent<GameCharacter>();
@@ -191,13 +212,16 @@ public class SpearWeapon : WeaponBase
 
 	public override void AirDirectionAttackHit(GameObject hitObj)
 	{
+		base.AirDirectionAttackHit(hitObj);
+		return;
+
 		IDamage damageInterface = GetDamageInterface(hitObj);
 		if (damageInterface == null) return;
-		damageInterface.DoDamage(GameCharacter, GetDamage());
+		damageInterface.DoDamage(GameCharacter, GetDamage(1));
 
 		GameCharacter enemyCharacter = hitObj.GetComponent<GameCharacter>();
 		if (enemyCharacter == null) return;
-		RequestFlyAway(enemyCharacter);
+		//RequestFlyAway(enemyCharacter);
 	}
 
 	void AttackTimerFinished()
@@ -216,7 +240,7 @@ public class SpearWeapon : WeaponBase
 			if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks.Count > 0) HoldAttackAfterAttack(CurrentAttackType, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundDownAttacks, -1);
 			GameCharacter.HitDetectionEventStart(new AnimationEvent());
 			groundUpAttackMove = true;
-			groundUpTimer.Start(CurrentAttack.extraData.timeValue);
+			groundUpTimer.Start(CurrentAction.extraData.timeValue);
 			groundUpTimer.onTimerFinished += OnGroundDownTimerFinished;
 		}
 	}
@@ -254,7 +278,7 @@ public class SpearWeapon : WeaponBase
 	{
 		IDamage damageInterface = GetDamageInterface(hitObject);
 		if (damageInterface == null) return;
-		damageInterface.DoDamage(GameCharacter, GetDamage());
+		damageInterface.DoDamage(GameCharacter, GetDamage(1));
 	}
 
 	public override void PostAttackStateLogic(float deltaTime)
@@ -287,7 +311,7 @@ public class SpearWeapon : WeaponBase
 		if (!landed && startFalling)
 		{
 			Vector3 velocity = GameCharacter.MovementComponent.MovementVelocity;
-			velocity = new Vector3(velocity.x, velocity.y - CurrentAttack.extraData.speedValue, velocity.z);
+			velocity = new Vector3(velocity.x, velocity.y - CurrentAction.extraData.speedValue, velocity.z);
 			GameCharacter.MovementComponent.MovementVelocity = velocity;
 		}
 	}
@@ -297,7 +321,7 @@ public class SpearWeapon : WeaponBase
 		if (groundUpAttackMove)
 		{
 			groundUpTimer.Update(deltaTime);
-			Vector3 velocity = GameCharacter.transform.forward.normalized * CurrentAttack.extraData.speedValue;
+			Vector3 velocity = GameCharacter.transform.forward.normalized * CurrentAction.extraData.speedValue;
 			GameCharacter.MovementComponent.MovementVelocity = velocity;
 		}
 	}

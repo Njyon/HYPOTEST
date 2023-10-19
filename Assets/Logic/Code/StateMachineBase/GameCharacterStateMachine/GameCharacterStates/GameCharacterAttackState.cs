@@ -27,11 +27,11 @@ public class GameCharacterAttackState : AGameCharacterState
 		{
 			case EAttackAnimType.Combat3Blend: 
 				GameCharacter.AnimController.InCombat3Blend = true;
-				GameCharacter.CombatComponent.AttackTimer.Start(GameCharacter.CombatComponent.CurrentWeapon.CurrentAttack.aimBlendTypes.blendAnimations.midAnimation.length); 
+				GameCharacter.CombatComponent.AttackTimer.Start(GameCharacter.CombatComponent.CurrentWeapon.CurrentAction.aimBlendTypes.blendAnimations.midAnimation.length); 
 				break;
 			case EAttackAnimType.AimBlendSpace: 
 				GameCharacter.AnimController.InAimBlendTree = true;
-				GameCharacter.CombatComponent.AttackTimer.Start(GameCharacter.CombatComponent.CurrentWeapon.CurrentAttack.aimBlendTypes.blendAnimations.midAnimation.length); 
+				GameCharacter.CombatComponent.AttackTimer.Start(GameCharacter.CombatComponent.CurrentWeapon.CurrentAction.aimBlendTypes.blendAnimations.midAnimation.length); 
 				break;
 			default:
 				GameCharacter.AnimController.InAttack = true;
@@ -126,7 +126,7 @@ public class GameCharacterAttackState : AGameCharacterState
 
 	private void CheckIfACharacterIsToCloseToMoveTo(out bool isValidHit, out RaycastHit validHit)
 	{
-		float lenght = GameCharacter.CombatComponent.CurrentWeapon.CurrentAttack.extraData.stopMovingRange;
+		float lenght = GameCharacter.CombatComponent.CurrentWeapon.CurrentAction.Action.GetStopMovingRange();
 		Vector3 currentDir = Vector3.zero;
 		if (GameCharacter.MovementInput.x != 0)
 		{

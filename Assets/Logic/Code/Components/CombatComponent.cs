@@ -395,4 +395,19 @@ public class CombatComponent
 	{
 		gameCharacter.StateMachine.RequestStateChange(EGameCharacterState.Dodge);
 	}
+
+	public async void FreezAfterPush(GameCharacter character, float waitTime, float freezTime)
+	{
+		await new WaitForSeconds(waitTime);
+		character.CombatComponent.RequestFreez(freezTime);
+	}
+
+	public void RequestFlyAway(float flyAwayTime)
+	{
+		if (FlyAwayTimer.IsRunning)
+			FlyAwayTimer.AddTime(flyAwayTime);
+		else 
+			FlyAwayTime = flyAwayTime;
+		gameCharacter.StateMachine.ForceStateChange(EGameCharacterState.FlyAway);
+	}
 }
