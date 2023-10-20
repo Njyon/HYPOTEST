@@ -58,6 +58,7 @@ public class SmashDownAttack3Blend : ActionBase
 		Weapon.Attack3BlendSpace(attackData.downAttack, EAnimationType.Default);
 		GameCharacter.StateMachine.RequestStateChange(EGameCharacterState.Attack);
 		Weapon.AttackAnimType = EAttackAnimType.Combat3Blend;
+		GameCharacter.CombatComponent.AttackTimer.Start(attackData.downAttack.midAnimation.length);
 
 		GameCharacter.CombatComponent.AttackTimer.onTimerFinished += AttackTimerFinished;
 		GameCharacter.MovementComponent.onCharacterGroundedChanged += OnCharacterGroundedChanged;

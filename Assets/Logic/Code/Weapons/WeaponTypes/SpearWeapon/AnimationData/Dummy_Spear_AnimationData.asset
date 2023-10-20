@@ -19,11 +19,11 @@ MonoBehaviour:
     clip: {fileID: 0}
     data:
       showProperties: 0
-      hitDetectionType: 0
+      hitDetectionType: 1
       mesh: {fileID: 0}
-      offset: {x: 0, y: 0, z: 0}
+      offset: {x: 1, y: 0, z: 0}
       scale: {x: 0, y: 0, z: 0}
-      radius: 0
+      radius: 1
       boxDimensions: {x: 0, y: 0, z: 0}
       capsulHeight: 0
     holdAnimation: {fileID: 0}
@@ -69,11 +69,11 @@ MonoBehaviour:
     clip: {fileID: 0}
     data:
       showProperties: 0
-      hitDetectionType: 0
+      hitDetectionType: 1
       mesh: {fileID: 0}
-      offset: {x: 0, y: 0, z: 0}
+      offset: {x: 1, y: 0, z: 0}
       scale: {x: 0, y: 0, z: 0}
-      radius: 0
+      radius: 1
       boxDimensions: {x: 0, y: 0, z: 0}
       capsulHeight: 0
     holdAnimation: {fileID: 0}
@@ -118,12 +118,12 @@ MonoBehaviour:
         rid: 3239357412136189965
     clip: {fileID: 0}
     data:
-      showProperties: 0
-      hitDetectionType: 0
+      showProperties: 1
+      hitDetectionType: 1
       mesh: {fileID: 0}
-      offset: {x: 0, y: 0, z: 0}
+      offset: {x: 1, y: 0, z: 0}
       scale: {x: 0, y: 0, z: 0}
-      radius: 0
+      radius: 1
       boxDimensions: {x: 0, y: 0, z: 0}
       capsulHeight: 0
     holdAnimation: {fileID: 0}
@@ -169,12 +169,12 @@ MonoBehaviour:
         rid: 3239357412136189966
     clip: {fileID: 0}
     data:
-      showProperties: 0
-      hitDetectionType: 0
+      showProperties: 1
+      hitDetectionType: 1
       mesh: {fileID: 0}
-      offset: {x: 0, y: 0, z: 0}
+      offset: {x: 1, y: 0, z: 0}
       scale: {x: 0, y: 0, z: 0}
-      radius: 0
+      radius: 1.5
       boxDimensions: {x: 0, y: 0, z: 0}
       capsulHeight: 0
     holdAnimation: {fileID: 0}
@@ -216,16 +216,16 @@ MonoBehaviour:
   GroundDownAttacks:
   - action:
       instance:
-        rid: -2
+        rid: 3239357430498852867
     clip: {fileID: 0}
     data:
-      showProperties: 0
-      hitDetectionType: 0
+      showProperties: 1
+      hitDetectionType: 2
       mesh: {fileID: 0}
-      offset: {x: 0, y: 0, z: 0}
+      offset: {x: 1, y: 0, z: 0}
       scale: {x: 0, y: 0, z: 0}
-      radius: 0
-      boxDimensions: {x: 0, y: 0, z: 0}
+      radius: 1
+      boxDimensions: {x: 2, y: 2, z: 1}
       capsulHeight: 0
     holdAnimation: {fileID: 0}
     triggerAnimation: {fileID: 0}
@@ -269,12 +269,12 @@ MonoBehaviour:
         rid: 3239357412136189967
     clip: {fileID: 0}
     data:
-      showProperties: 0
-      hitDetectionType: 0
+      showProperties: 1
+      hitDetectionType: 1
       mesh: {fileID: 0}
-      offset: {x: 0, y: 0, z: 0}
+      offset: {x: 1, y: 0, z: 0}
       scale: {x: 0, y: 0, z: 0}
-      radius: 0
+      radius: 1
       boxDimensions: {x: 0, y: 0, z: 0}
       capsulHeight: 0
     holdAnimation: {fileID: 0}
@@ -320,11 +320,11 @@ MonoBehaviour:
     clip: {fileID: 0}
     data:
       showProperties: 0
-      hitDetectionType: 0
+      hitDetectionType: 1
       mesh: {fileID: 0}
-      offset: {x: 0, y: 0, z: 0}
+      offset: {x: 1, y: 0, z: 0}
       scale: {x: 0, y: 0, z: 0}
-      radius: 0
+      radius: 1
       boxDimensions: {x: 0, y: 0, z: 0}
       capsulHeight: 0
     holdAnimation: {fileID: 0}
@@ -368,12 +368,12 @@ MonoBehaviour:
         rid: 3239357412136189969
     clip: {fileID: 0}
     data:
-      showProperties: 0
-      hitDetectionType: 0
+      showProperties: 1
+      hitDetectionType: 1
       mesh: {fileID: 0}
-      offset: {x: 0, y: 0, z: 0}
+      offset: {x: 1, y: 0, z: 0}
       scale: {x: 0, y: 0, z: 0}
-      radius: 0
+      radius: 1
       boxDimensions: {x: 0, y: 0, z: 0}
       capsulHeight: 0
     holdAnimation: {fileID: 0}
@@ -418,11 +418,11 @@ MonoBehaviour:
     clip: {fileID: 0}
     data:
       showProperties: 0
-      hitDetectionType: 0
+      hitDetectionType: 1
       mesh: {fileID: 0}
-      offset: {x: 0, y: 0, z: 0}
+      offset: {x: 1, y: 0, z: 0}
       scale: {x: 0, y: 0, z: 0}
-      radius: 0
+      radius: 1
       boxDimensions: {x: 0, y: 0, z: 0}
       capsulHeight: 0
     holdAnimation: {fileID: 0}
@@ -462,11 +462,110 @@ MonoBehaviour:
       freezTime: 0
       stopMovingRange: 0
   AirUpAttacks: []
-  AirDownAttacks: []
+  AirDownAttacks:
+  - action:
+      instance:
+        rid: 3239357430498852866
+    clip: {fileID: 0}
+    data:
+      showProperties: 1
+      hitDetectionType: 2
+      mesh: {fileID: 0}
+      offset: {x: 0, y: -1, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 0
+      boxDimensions: {x: 3, y: 2, z: 1}
+      capsulHeight: 0
+    holdAnimation: {fileID: 0}
+    triggerAnimation: {fileID: 0}
+    combatBranches:
+      keys: 
+      values: 
+    timedCombatBrenches:
+      keys: 
+      values: 
+    aimBlendTypes:
+      blendAnimations:
+        upAnimation: {fileID: 0}
+        midAnimation: {fileID: 0}
+        downAnimation: {fileID: 0}
+      blendHoldAnimations:
+        upAnimation: {fileID: 0}
+        midAnimation: {fileID: 0}
+        downAnimation: {fileID: 0}
+      blendTriggerAnimations:
+        upAnimation: {fileID: 0}
+        midAnimation: {fileID: 0}
+        downAnimation: {fileID: 0}
+    particleList: []
+    extraData:
+      Damage: 0
+      Rating: 0
+      discharge: 0
+      maxVerticalMovement: 0
+      maxHorizontalMovement: 0
+      flyAwayDirection: {x: 0, y: 0, z: 0}
+      flyAwayStrengh: 0
+      rangeValue: 0
+      speedValue: 0
+      timeValue: 0
+      flyAwayTime: 0
+      freezTime: 0
+      stopMovingRange: 0
   AirDirectionAttacks:
   - action:
       instance:
         rid: 3239357412136189971
+    clip: {fileID: 0}
+    data:
+      showProperties: 0
+      hitDetectionType: 1
+      mesh: {fileID: 0}
+      offset: {x: 1, y: 0, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 1.5
+      boxDimensions: {x: 0, y: 0, z: 0}
+      capsulHeight: 0
+    holdAnimation: {fileID: 0}
+    triggerAnimation: {fileID: 0}
+    combatBranches:
+      keys: 
+      values: 
+    timedCombatBrenches:
+      keys: 
+      values: 
+    aimBlendTypes:
+      blendAnimations:
+        upAnimation: {fileID: 0}
+        midAnimation: {fileID: 0}
+        downAnimation: {fileID: 0}
+      blendHoldAnimations:
+        upAnimation: {fileID: 0}
+        midAnimation: {fileID: 0}
+        downAnimation: {fileID: 0}
+      blendTriggerAnimations:
+        upAnimation: {fileID: 0}
+        midAnimation: {fileID: 0}
+        downAnimation: {fileID: 0}
+    particleList: []
+    extraData:
+      Damage: 0
+      Rating: 0
+      discharge: 0
+      maxVerticalMovement: 0
+      maxHorizontalMovement: 0
+      flyAwayDirection: {x: 0, y: 0, z: 0}
+      flyAwayStrengh: 0
+      rangeValue: 0
+      speedValue: 0
+      timeValue: 0
+      flyAwayTime: 0
+      freezTime: 0
+      stopMovingRange: 0
+  DefensiveAction:
+  - action:
+      instance:
+        rid: 3239357430498852868
     clip: {fileID: 0}
     data:
       showProperties: 0
@@ -513,7 +612,6 @@ MonoBehaviour:
       flyAwayTime: 0
       freezTime: 0
       stopMovingRange: 0
-  DefensiveAction: []
   HandType: 1
   WeaponReadyPose: {fileID: 8247377969438304865, guid: 45559a67ce8bc1b459718cc4ddb18506,
     type: 3}
@@ -525,8 +623,6 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 3239357412136189962
       type: {class: DefaultAttack, ns: , asm: Assembly-CSharp}
       data:
@@ -624,3 +720,55 @@ MonoBehaviour:
           kickDirection: {x: 0, y: 0, z: -90}
           stunTime: 1
           kickStrengh: 20
+    - rid: 3239357430498852866
+      type: {class: SmashDownAttack, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          downAttack: {fileID: -7975973549715124236, guid: a5cbccb0f66c24644a13264621143710,
+            type: 3}
+          downAttackHold: {fileID: 4578858030332881257, guid: 4050218c2d2c49f469c17d16cb50cff4,
+            type: 3}
+          downAttackTrigger: {fileID: -6555385410635006414, guid: 35b5316659127084580ec07d396003e5,
+            type: 3}
+          speed: 50
+    - rid: 3239357430498852867
+      type: {class: GapCloserAttack, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          gapCloserAttack: {fileID: -1119112359194581809, guid: 06f7574fb6659cd4eb6440d1a04592b8,
+            type: 3}
+          gapCloserAttackHold: {fileID: 657184749288887690, guid: 51a54053b0437b941b60599f71c30f38,
+            type: 3}
+          gapCloserAttackTrigger: {fileID: -126610233665706134, guid: 0a3c1197ce9287a4fab35fe9168e567f,
+            type: 3}
+          speed: 35
+          time: 0.4
+    - rid: 3239357430498852868
+      type: {class: SpearDefensiveAction, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          SpearDefensiveAction:
+            upAnimation: {fileID: -2472879079610024510, guid: d30c80c529d288a4983984f13aaf33a9,
+              type: 3}
+            midAnimation: {fileID: -6037509470384584022, guid: 5b582457b3a11e942b22f9b19acb06bd,
+              type: 3}
+            downAnimation: {fileID: 3651926353456285920, guid: ea639af1022afcd43b42230698e48e55,
+              type: 3}
+          SpearDefensiveActionPull:
+            upAnimation: {fileID: 2620652182607053306, guid: fef26c9ad23f02a418a7b1268a58b451,
+              type: 3}
+            midAnimation: {fileID: 2338490587018723093, guid: e986e8a6de31d0b4499325f6e3b9d1b0,
+              type: 3}
+            downAnimation: {fileID: 39100353750030542, guid: 97a9e834eb8aac54c89a1fa0fbe4d951,
+              type: 3}
+          ThrowSpear: {fileID: 4125002481947065072, guid: 30f7e1e18cb2f0b46a40690fa0186d0c,
+            type: 3}

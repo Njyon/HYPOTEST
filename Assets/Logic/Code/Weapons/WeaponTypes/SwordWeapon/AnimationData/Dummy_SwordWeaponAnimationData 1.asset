@@ -13,9 +13,12 @@ MonoBehaviour:
   m_Name: Dummy_SwordWeaponAnimationData 1
   m_EditorClassIdentifier: 
   GroundAttacks:
-  - clip: {fileID: -905761374526199732, guid: 36ec0328cb2e2ee4f92f81c87aebc79c, type: 3}
+  - action:
+      instance:
+        rid: 3239357430498852869
+    clip: {fileID: -905761374526199732, guid: 36ec0328cb2e2ee4f92f81c87aebc79c, type: 3}
     data:
-      showProperties: 1
+      showProperties: 0
       hitDetectionType: 1
       mesh: {fileID: 0}
       offset: {x: 1, y: 0, z: 0}
@@ -59,14 +62,12 @@ MonoBehaviour:
       flyAwayTime: 0
       freezTime: 0
       stopMovingRange: 1
-    attackDataHolder:
-      attack: {fileID: 0}
-      attackInstance: {fileID: 0}
-      attackDataRef:
-        rid: 3239357387436195959
-  - clip: {fileID: 2583038624686787489, guid: 5650b87ae188f5b4591c4c04190afb12, type: 3}
+  - action:
+      instance:
+        rid: 3239357430498852870
+    clip: {fileID: 2583038624686787489, guid: 5650b87ae188f5b4591c4c04190afb12, type: 3}
     data:
-      showProperties: 1
+      showProperties: 0
       hitDetectionType: 1
       mesh: {fileID: 0}
       offset: {x: 1, y: 0, z: 0}
@@ -110,11 +111,6 @@ MonoBehaviour:
       flyAwayTime: 0
       freezTime: 0
       stopMovingRange: 1
-    attackDataHolder:
-      attack: {fileID: 0}
-      attackInstance: {fileID: 0}
-      attackDataRef:
-        rid: 3239357387436195960
   GroundUpAttacks: []
   GroundDownAttacks: []
   GroundDirectionAttacks: []
@@ -134,15 +130,21 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 3239357387436195959
-      type: {class: AttackData, ns: , asm: Assembly-CSharp}
+    - rid: 3239357430498852869
+      type: {class: DefaultAttack, ns: , asm: Assembly-CSharp}
       data:
-        Damage: 10
-        Rating: 100
-        Discharge: 100
-    - rid: 3239357387436195960
-      type: {class: AttackData, ns: , asm: Assembly-CSharp}
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          attackAnimation: {fileID: -905761374526199732, guid: 36ec0328cb2e2ee4f92f81c87aebc79c,
+            type: 3}
+    - rid: 3239357430498852870
+      type: {class: DefaultAttack, ns: , asm: Assembly-CSharp}
       data:
-        Damage: 10
-        Rating: 100
-        Discharge: 100
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          attackAnimation: {fileID: 2583038624686787489, guid: 5650b87ae188f5b4591c4c04190afb12,
+            type: 3}

@@ -54,6 +54,7 @@ public abstract class WeaponBase
 	float charge = 0;
 	float chargeAfterTime = 0;
 	Ultra.Timer maxChargeAfterEquipTimer;
+	AttackAnimationData lastData;
 
 	// Particle Save
 	List<List<ParticleSystem>> groundLightAttackParticleList;
@@ -154,6 +155,9 @@ public abstract class WeaponBase
 		}
 		GameObject.Destroy(spawnedWeapon);
 		GameObject.Destroy(spawnedWeaponBones);
+
+		CurrentAction?.Action?.ActionInteruped();
+
 		if (gameCharacter.CombatComponent.HitDetectionColliderScript != null) gameCharacter.CombatComponent.HitDetectionColliderScript.onOverlapEnter -= WeaponColliderEnter;
 		if (gameCharacter.CombatComponent.HitDetectionColliderScript != null) gameCharacter.CombatComponent.HitDetectionColliderScript.onOverlapExit -= WeaponColliderExit;
 
@@ -255,7 +259,7 @@ public abstract class WeaponBase
 				{
 					gameCharacter.CombatComponent.HitDetectionGameObject.transform.position = gameCharacter.MovementComponent.CharacterCenter;
 					gameCharacter.CombatComponent.HitDetectionGameObject.transform.Translate(CurrentAction.data.offset);
-					Collider[] colliders = Physics.OverlapBox(gameCharacter.CombatComponent.HitDetectionGameObject.transform.position, CurrentAction.data.boxDimensions / 2);
+					Collider[] colliders = Physics.OverlapBox(gameCharacter.CombatComponent.HitDetectionGameObject.transform.position, CurrentAction.data.boxDimensions / 2, Quaternion.identity, GameCharacter.CharacterLayer, QueryTriggerInteraction.Ignore);
 					foreach (Collider collider in colliders)
 					{
 						WeaponColliderEnter(collider);
@@ -268,7 +272,7 @@ public abstract class WeaponBase
 				{
 					gameCharacter.CombatComponent.HitDetectionGameObject.transform.position = gameCharacter.MovementComponent.CharacterCenter;
 					gameCharacter.CombatComponent.HitDetectionGameObject.transform.Translate(CurrentAction.data.offset);
-					Collider[] colliders = Ultra.Utilities.OverlapCapsule(gameCharacter.CombatComponent.HitDetectionGameObject.transform.position, CurrentAction.data.capsulHeight, CurrentAction.data.radius);
+					Collider[] colliders = Ultra.Utilities.OverlapCapsule(gameCharacter.CombatComponent.HitDetectionGameObject.transform.position, CurrentAction.data.capsulHeight, CurrentAction.data.radius, GameCharacter.CharacterLayer, QueryTriggerInteraction.Ignore);
 					foreach (Collider collider in colliders)
 					{
 						WeaponColliderEnter(collider);
@@ -282,7 +286,7 @@ public abstract class WeaponBase
 				{
 					gameCharacter.CombatComponent.HitDetectionGameObject.transform.position = gameCharacter.MovementComponent.CharacterCenter;
 					gameCharacter.CombatComponent.HitDetectionGameObject.transform.Translate(CurrentAction.data.offset);
-					Collider[] colliders = Physics.OverlapSphere(gameCharacter.CombatComponent.HitDetectionGameObject.transform.position, CurrentAction.data.radius);
+					Collider[] colliders = Physics.OverlapSphere(gameCharacter.CombatComponent.HitDetectionGameObject.transform.position, CurrentAction.data.radius, GameCharacter.CharacterLayer, QueryTriggerInteraction.Ignore);
 					foreach (Collider collider in colliders)
 					{
 						WeaponColliderEnter(collider);
@@ -297,11 +301,7 @@ public abstract class WeaponBase
 	{
 		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return null;
 		SetCurrentAttack(EExplicitAttackType.GroundedDefaultAttack, attackDeltaTime);
-		if (CurrentAction.Action != null)
-		{
-			CurrentAction.Action.Init(GameCharacter, this);
-			CurrentAction.Action.StartAction();
-		}
+		CurrentAction?.Action?.StartAction();
 		return CurrentAction;
 		return BaseAttackLogic(EExplicitAttackType.GroundedDefaultAttack, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundAttacks, attackDeltaTime);
 	}
@@ -311,11 +311,7 @@ public abstract class WeaponBase
 		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundUpAttacks.Count > 0)
 		{
 			SetCurrentAttack(EExplicitAttackType.GroundedUpAttack, attackDeltaTime);
-			if (CurrentAction.Action != null)
-			{
-				CurrentAction.Action.Init(GameCharacter, this);
-				CurrentAction.Action.StartAction();
-			}
+			CurrentAction?.Action?.StartAction();
 			return CurrentAction;
 			return BaseAttackLogic(EExplicitAttackType.GroundedUpAttack, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundUpAttacks, attackDeltaTime);
 		}
@@ -327,11 +323,7 @@ public abstract class WeaponBase
 		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundDownAttacks.Count > 0)
 		{
 			SetCurrentAttack(EExplicitAttackType.GroundedDownAttack, attackDeltaTime);
-			if (CurrentAction.Action != null)
-			{
-				CurrentAction.Action.Init(GameCharacter, this);
-				CurrentAction.Action.StartAction();
-			}
+			CurrentAction?.Action?.StartAction();
 			return CurrentAction;
 			return BaseAttackLogic(EExplicitAttackType.GroundedDownAttack, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundDownAttacks, attackDeltaTime);
 		}
@@ -343,11 +335,7 @@ public abstract class WeaponBase
 		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundDirectionAttacks.Count > 0)
 		{
 			SetCurrentAttack(EExplicitAttackType.GroundedDirectionalAttack, attackDeltaTime);
-			if (CurrentAction.Action != null)
-			{
-				CurrentAction.Action.Init(GameCharacter, this);
-				CurrentAction.Action.StartAction();
-			}
+			CurrentAction?.Action?.StartAction();
 			return CurrentAction;
 			return BaseAttackLogic(EExplicitAttackType.GroundedDirectionalAttack, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundDirectionAttacks, attackDeltaTime);
 		}
@@ -358,11 +346,7 @@ public abstract class WeaponBase
 	{
 		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return null;
 		SetCurrentAttack(EExplicitAttackType.AirDefaultAttack, attackDeltaTime);
-		if (CurrentAction.Action != null)
-		{
-			CurrentAction.Action.Init(GameCharacter, this);
-			CurrentAction.Action.StartAction();
-		}
+		CurrentAction?.Action?.StartAction();
 		return CurrentAction;
 		return BaseAttackLogic(EExplicitAttackType.AirDefaultAttack, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirAttacks, attackDeltaTime);
 	}
@@ -372,11 +356,7 @@ public abstract class WeaponBase
 		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirUpAttacks.Count > 0)
 		{
 			SetCurrentAttack(EExplicitAttackType.AirUpAttack, attackDeltaTime);
-			if (CurrentAction.Action != null)
-			{
-				CurrentAction.Action.Init(GameCharacter, this);
-				CurrentAction.Action.StartAction();
-			}
+			CurrentAction?.Action?.StartAction();
 			return CurrentAction;
 			return BaseAttackLogic(EExplicitAttackType.AirUpAttack, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirUpAttacks, attackDeltaTime);
 		}
@@ -388,11 +368,7 @@ public abstract class WeaponBase
 		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks.Count > 0)
 		{
 			SetCurrentAttack(EExplicitAttackType.AirDownAttack, attackDeltaTime);
-			if (CurrentAction.Action != null)
-			{
-				CurrentAction.Action.Init(GameCharacter, this);
-				CurrentAction.Action.StartAction();
-			}
+			CurrentAction?.Action?.StartAction();
 			return CurrentAction;
 			return BaseAttackLogic(EExplicitAttackType.AirDownAttack, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks, attackDeltaTime);
 		}
@@ -404,11 +380,7 @@ public abstract class WeaponBase
 		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDirectionAttacks.Count > 0)
 		{
 			SetCurrentAttack(EExplicitAttackType.AirDirectionalAttack, attackDeltaTime);
-			if (CurrentAction.Action != null)
-			{
-				CurrentAction.Action.Init(GameCharacter, this);
-				CurrentAction.Action.StartAction();
-			}
+			CurrentAction?.Action?.StartAction();
 			return CurrentAction;
 			return BaseAttackLogic(EExplicitAttackType.AirDirectionalAttack, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDirectionAttacks, attackDeltaTime);
 		}
@@ -421,11 +393,7 @@ public abstract class WeaponBase
 		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].DefensiveAction.Count > 0)
 		{
 			SetCurrentDefensiveAction();
-			if (CurrentAction.Action != null)
-			{
-				CurrentAction.Action.Init(GameCharacter, this);
-				CurrentAction.Action.StartAction();
-			}
+			CurrentAction?.Action?.StartAction();
 			return currentDefensiveAction;
 			return DefensiceActionLogic(ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].DefensiveAction);
 		}
@@ -520,7 +488,10 @@ public abstract class WeaponBase
 
 		if (attackList == null || attackList.Count <= 0) return;
 		attackIndex = attackIndex % attackList.Count;
-		currentAttack = attackList[attackIndex];
+		AttackAnimationData newAttack = attackList[attackIndex];
+		currentAttack?.Action?.ActionInteruped();
+		currentAttack = newAttack;
+		currentAttack?.Action?.Init(GameCharacter, this);
 	}
 
 	bool CheckForAttackBrenchesInLastAttack(EExplicitAttackType explicitAttackType, bool updatedIndex, float attackDeltaTime)
@@ -556,7 +527,10 @@ public abstract class WeaponBase
 		defensiveActionIndex++;
 		if (defensiveList == null || defensiveList.Count <= 0) return;
 		defensiveActionIndex = defensiveActionIndex % defensiveList.Count;
-		currentDefensiveAction = defensiveList[defensiveActionIndex];
+		AttackAnimationData newDefensiveAction = defensiveList[defensiveActionIndex];
+		currentDefensiveAction?.Action?.ActionInteruped();
+		currentDefensiveAction = newDefensiveAction;
+		currentDefensiveAction?.Action?.Init(GameCharacter, this);
 	}
 
 	protected AttackAnimationData BaseAttackLogic(EExplicitAttackType explicitAttackType, ref List<AttackAnimationData> attackList, float attackDeltaTime)
@@ -662,8 +636,19 @@ public abstract class WeaponBase
 		switch (CurrentAttackType)
 		{
 			case EExplicitAttackType.DefensiveAction:
+				if (lastData != currentDefensiveAction)
+				{
+					lastData?.Action?.ActionInteruped();
+					lastData = currentDefensiveAction;
+				}
 				return currentDefensiveAction;
 			default:
+				if (lastData != currentAttack)
+				{
+					lastData?.Action?.ActionInteruped();
+					lastData = currentAttack;
+				}
+				lastData = currentAttack;
 				return currentAttack;
 		}
 	}
@@ -678,7 +663,7 @@ public abstract class WeaponBase
 			return;
 		}
 
-		//gameCharacter.AnimController.SetHoldAttack(CurrentAction.holdAnimation);
+		gameCharacter.AnimController.SetHoldAttack(CurrentAction.holdAnimation);
 		gameCharacter.CombatComponent.AttackTimer.IsPaused = true;
 
 		gameCharacter.AnimController.HoldAttack = true;
@@ -693,9 +678,9 @@ public abstract class WeaponBase
 			Debug.Log(Ultra.Utilities.Instance.DebugErrorString("WeaponBase", "TriggerAttack", "TriggerAnimation was null!"));
 			return;
 		}
-		//gameCharacter.AnimController.SetTriggerAttack(CurrentAction.triggerAnimation);
-		//gameCharacter.CombatComponent.AttackTimer.Start(CurrentAction.triggerAnimation.length);
-		//gameCharacter.AnimController.AttackTriggerTimer.Start(CurrentAction.triggerAnimation.length);
+		gameCharacter.AnimController.SetTriggerAttack(CurrentAction.triggerAnimation);
+		gameCharacter.CombatComponent.AttackTimer.Start(CurrentAction.triggerAnimation.length);
+		gameCharacter.AnimController.AttackTriggerTimer.Start(CurrentAction.triggerAnimation.length);
 
 		gameCharacter.AnimController.TriggerAttack = true;
 	}
@@ -756,7 +741,7 @@ public abstract class WeaponBase
 	protected virtual void WeaponColliderEnter(Collider other)
 	{
 		if (!IsHitDetecting) return;
-		if (other.gameObject == gameCharacter.gameObject) return;
+		if (other.gameObject == gameCharacter.gameObject || IsChildFromParent(other)) return;
 
 		GameCharacter possibleGameCharacter = other.GetComponent<GameCharacter>();
 		if (possibleGameCharacter != null && possibleGameCharacter.CheckForSameTeam(gameCharacter.Team)) return;
@@ -777,6 +762,21 @@ public abstract class WeaponBase
 			case EExplicitAttackType.AirUpAttack: AirUpAttackHit(other.gameObject); break;
 			default: break;
 		}
+	}
+
+	bool IsChildFromParent(Collider other)
+	{
+		Transform currentTransform = other.transform;
+
+		// Solange es ein übergeordnetes Transform gibt, setze currentTransform auf das übergeordnete Transform
+		while (currentTransform.parent != null)
+		{
+			currentTransform = currentTransform.parent;
+		}
+
+		if (currentTransform.gameObject == GameCharacter.gameObject)
+			return true;
+		return false;
 	}
 
 	protected virtual void WeaponColliderExit(Collider other)
@@ -961,5 +961,36 @@ public abstract class WeaponBase
 		float chargeValue = Ultra.Utilities.Remap(Charge, 0, weaponData.MaxChargeAmount, 0.1f, 1f);
 		//Ultra.Utilities.Instance.DebugLogOnScreen("Damage => " + CurrentAttack.extraData.Damage, 1f, StringColor.Magenta);
 		return chargeValue * damage;
+	}
+
+	public virtual void SetTriggerAttack(AnimationClip triggerAttack)
+	{
+		if (triggerAttack == null)
+		{
+			Ultra.Utilities.Instance.DebugErrorString("WeaponBase", "SetTriggerAttack", "Trigger Attack was null!");
+			return;
+		}
+		gameCharacter.AnimController.SetTriggerAttack(triggerAttack);
+		gameCharacter.CombatComponent.AttackTimer.Start(triggerAttack.length);
+		gameCharacter.AnimController.AttackTriggerTimer.Start(triggerAttack.length);
+
+		gameCharacter.AnimController.TriggerAttack = true;
+		gameCharacter.AnimController.HoldAttack = false;
+		gameCharacter.AnimController.InAttack = false;
+	}
+
+	public virtual void SetHoldAttack(AnimationClip holdAttack)
+	{
+		if (holdAttack == null)
+		{
+			Ultra.Utilities.Instance.DebugErrorString("WeaponBase", "SetHoldAttack", "Hold Attack was null!");
+			return;
+		}
+		gameCharacter.AnimController.SetHoldAttack(holdAttack);
+		gameCharacter.CombatComponent.AttackTimer.IsPaused = true;
+
+		gameCharacter.AnimController.HoldAttack = true;
+		gameCharacter.AnimController.TriggerAttack = false;
+		gameCharacter.AnimController.InAttack = false;
 	}
 }

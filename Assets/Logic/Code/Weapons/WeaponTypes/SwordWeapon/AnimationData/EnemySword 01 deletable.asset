@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: EnemySword 01 deletable
   m_EditorClassIdentifier: 
   GroundAttacks:
-  - clip: {fileID: 3825265526959575422, guid: f0db5cbde24f147469b29382d0a2c824, type: 3}
+  - action:
+      instance:
+        rid: 3239357430498852871
+    clip: {fileID: 3825265526959575422, guid: f0db5cbde24f147469b29382d0a2c824, type: 3}
     data:
       showProperties: 1
       hitDetectionType: 1
@@ -59,12 +62,10 @@ MonoBehaviour:
       flyAwayTime: 0
       freezTime: 0
       stopMovingRange: 1
-    attackDataHolder:
-      attack: {fileID: 0}
-      attackInstance: {fileID: 0}
-      attackDataRef:
-        rid: 3239357387436195956
-  - clip: {fileID: -8777931712289427824, guid: 98a8b764a21b0b04cb167c6681ea2179, type: 3}
+  - action:
+      instance:
+        rid: 3239357430498852872
+    clip: {fileID: -8777931712289427824, guid: 98a8b764a21b0b04cb167c6681ea2179, type: 3}
     data:
       showProperties: 1
       hitDetectionType: 1
@@ -110,11 +111,6 @@ MonoBehaviour:
       flyAwayTime: 0
       freezTime: 0
       stopMovingRange: 1
-    attackDataHolder:
-      attack: {fileID: 0}
-      attackInstance: {fileID: 0}
-      attackDataRef:
-        rid: 3239357387436195957
   GroundUpAttacks: []
   GroundDownAttacks: []
   GroundDirectionAttacks: []
@@ -134,15 +130,21 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 3239357387436195956
-      type: {class: AttackData, ns: , asm: Assembly-CSharp}
+    - rid: 3239357430498852871
+      type: {class: DefaultAttack, ns: , asm: Assembly-CSharp}
       data:
-        Damage: 10
-        Rating: 100
-        Discharge: 100
-    - rid: 3239357387436195957
-      type: {class: AttackData, ns: , asm: Assembly-CSharp}
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          attackAnimation: {fileID: 3825265526959575422, guid: f0db5cbde24f147469b29382d0a2c824,
+            type: 3}
+    - rid: 3239357430498852872
+      type: {class: DefaultAttack, ns: , asm: Assembly-CSharp}
       data:
-        Damage: 10
-        Rating: 100
-        Discharge: 100
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          attackAnimation: {fileID: -8777931712289427824, guid: 98a8b764a21b0b04cb167c6681ea2179,
+            type: 3}

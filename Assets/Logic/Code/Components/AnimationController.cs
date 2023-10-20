@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.Animations;
+using UnityEditor.Build;
 using UnityEngine;
 
 public class AnimationController
@@ -28,6 +30,7 @@ public class AnimationController
 	int inAttackIndex;
 	int attackAIndex;
 	int attackAStateIndex;
+	int attackBStateIndex;
 	int secondaryMotionLayerIndex;
 	int rotationLayerIndex;
 	int upMovementCurveIndex;
@@ -41,6 +44,7 @@ public class AnimationController
 	int inAimBlendTreeIndex;
 	int inAimBlendTreeAIndex;
 	int inAimBlendTreeAStateIndex;
+	int inAimBlendTreeBStateIndex;
 	int aimBlendIndex;
 	int inUpperBodyLayerAIndex;
 	int upperBodyLayerIndex;
@@ -49,8 +53,11 @@ public class AnimationController
 	int inCombat3BlendIndex;
 	int combat3BlendDirIndex;
 	int inCombat3BlendStateAIndex;
+	int inCombat3BlendStateBIndex;
 	int combat3BlendTreeAStateIndex;
 	int inDodgeIndex;
+	int attackTriggerStateIndex;
+	int attackHoldStateIndex;
 
 	float minMalkSpeed;
 	bool startWalkRunBlendInterp = true;
@@ -499,6 +506,7 @@ public class AnimationController
 		inAttackIndex = Animator.StringToHash("InAttack");
 		attackAIndex = Animator.StringToHash("AttackA");
 		attackAStateIndex = Animator.StringToHash("AttackAState");
+		attackBStateIndex = Animator.StringToHash("AttackBState");
 		secondaryMotionLayerIndex = gameCharacter.Animator.GetLayerIndex("SecondaryMotion");
 		upMovementCurveIndex = Animator.StringToHash("UpMovement");
 		hitTriggerIndex = Animator.StringToHash("HitTrigger");
@@ -512,6 +520,7 @@ public class AnimationController
 		inAimBlendTreeAIndex = Animator.StringToHash("InAimBlendTreeA");
 		aimBlendIndex = Animator.StringToHash("AimBlend");
 		inAimBlendTreeAStateIndex = Animator.StringToHash("AimBlendTreeA");
+		inAimBlendTreeBStateIndex = Animator.StringToHash("AimBlendTreeB");
 		inUpperBodyLayerAIndex = Animator.StringToHash("InUpperBodyLayerA");
 		upperBodyLayerIndex = gameCharacter.Animator.GetLayerIndex("UpperBodyLayer");
 		flyAwayIndex = Animator.StringToHash("FlyAway");
@@ -519,8 +528,11 @@ public class AnimationController
 		inCombat3BlendIndex = Animator.StringToHash("InCombat3Blend");
 		combat3BlendDirIndex = Animator.StringToHash("Combat3BlendDir");
 		inCombat3BlendStateAIndex = Animator.StringToHash("InCombat3BlendAState");
+		inCombat3BlendStateBIndex = Animator.StringToHash("InCombat3BlendBState");
 		combat3BlendTreeAStateIndex = Animator.StringToHash("Combat3BlendTreeA");
 		inDodgeIndex = Animator.StringToHash("inDodge");
+		attackTriggerStateIndex = Animator.StringToHash("Trigger");
+		attackHoldStateIndex = Animator.StringToHash("Hold");
 
 		overrideController = new AnimatorOverrideController(gameCharacter.Animator.runtimeAnimatorController);
 
@@ -698,6 +710,55 @@ public class AnimationController
 		if (animatorState.shortNameHash == stateIndex) state = true;
 		return state;
 	}
+
+	public bool IsInValidAttackState()
+	{
+		bool isAttackAState = IsInState(attackAStateIndex);
+		bool isAttackBState = IsInState(attackBStateIndex);
+	
+		return isAttackAState || isAttackBState;
+	}
+	public bool IsInValid3BlendAttackState()
+	{
+		bool isAttackAState = IsInState(inCombat3BlendStateAIndex);
+		bool isAttackBState = IsInState(inCombat3BlendStateBIndex);
+
+		return isAttackAState || isAttackBState;
+	}
+	public bool IsInValid3BlendAimState()
+	{
+		bool isAttackAState = IsInState(inAimBlendTreeAStateIndex, upperBodyLayerIndex);
+		bool isAttackBState = IsInState(inAimBlendTreeBStateIndex, upperBodyLayerIndex);
+
+		return isAttackAState || isAttackBState;
+	}
+	public bool IsInValidAttackHoldState()
+	{
+		return IsInState(attackHoldStateIndex);
+	}
+	public bool IsInValidAttackTriggerState()
+	{
+		return IsInState(attackTriggerStateIndex);
+	}
+	//
+	//public bool IsValidAttackAnimationData(bool isAState)
+	//{
+	//	var infos = gameCharacter.Animator.GetCurrentAnimatorClipInfo(0);
+	//	if (infos == null) return false;
+	//	if (infos[0].clip == null) return false;
+	//	Dictionary<string, AnimationClip> runtimeAnimations = GetAnimationsFromController(defaultController);
+	//	Dictionary<string, AnimationClip> overrideAnimations = GetAnimationsFromController(overrideController.runtimeAnimatorController as RuntimeAnimatorController);
+	//
+	//	string stateNameToCompare = isAState ? "AttackA" : "AttackB";
+	//
+	//
+	//	if (runtimeAnimations.ContainsKey(stateNameToCompare) && overrideAnimations.ContainsKey(stateNameToCompare))
+	//	{
+	//		AnimationClip runtimeClip = runtimeAnimations[stateNameToCompare];
+	//		AnimationClip overrideClip = overrideAnimations[stateNameToCompare];
+	//	}
+	//
+	//}
 
 	public void SetHoldAttack(AnimationClip holdClip)
 	{
