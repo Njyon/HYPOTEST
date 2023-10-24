@@ -17,23 +17,23 @@ public enum EWeaponHandType
 public class AttackAnimationData
 {
 	public ClassInstance<ActionBase> action = new ClassInstance<ActionBase>();
-	public AnimationClip clip;
-	public AttackAnimationHitDetectionData data;
-	public AnimationClip holdAnimation;
-	public AnimationClip triggerAnimation;
-	public SerializableDictionary<EExplicitAttackType, int> combatBranches;
-	public SerializableDictionary<EExplicitAttackType, int> timedCombatBrenches;
-	public AimBlendTypes aimBlendTypes;
-	public List<GameObject> particleList;
-	public AttackAnimationExtraData extraData;
+	private ActionBase actionCopie;
 
 	public ActionBase Action
 	{
 		get
 		{
-			return action.instance;
+			if (actionCopie == null)
+			{
+				actionCopie = action.instance.CreateCopy();
+			}
+			return actionCopie;
 		}
 	}
+	public AttackAnimationHitDetectionData data;
+	public SerializableDictionary<EExplicitAttackType, int> combatBranches;
+	public SerializableDictionary<EExplicitAttackType, int> timedCombatBrenches;
+	public List<GameObject> particleList;
 }
 
 [Serializable]

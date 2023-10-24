@@ -20,11 +20,9 @@ public class GameCharacterDefensiveActionState : AGameCharacterState
 		{
 			case EAttackAnimType.Combat3Blend:
 			case EAttackAnimType.AimBlendSpace:
-				//GameCharacter.CombatComponent.DefensiveTimer.Start(GameCharacter.CombatComponent.CurrentWeapon.CurrentAction.aimBlendTypes.blendAnimations.midAnimation.length);
 				break;
 			default:
 				GameCharacter.AnimController.InDefensiveAction = true;
-				GameCharacter.CombatComponent.DefensiveTimer.Start(GameCharacter.CombatComponent.CurrentWeapon.CurrentAction.clip.length);
 				break;
 		}
 		//GameCharacter.MovementComponent.UseGravity = false;

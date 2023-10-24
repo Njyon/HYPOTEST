@@ -12,6 +12,7 @@ public enum EPluginCharacterState
 	Aim,
 	MovementOverride,
 	LookInVelocityDirection,
+	DefensiveActionHold,
 }
 
 public class GameCharacterPluginStateMachine : PluginStateMachineBase<EPluginCharacterState>
@@ -33,6 +34,7 @@ public class GameCharacterPluginStateMachine : PluginStateMachineBase<EPluginCha
 			case EPluginCharacterState.Aim: newPluginState = new GameCharacterAimPluginState(this.gameCharacter, this); break;
 			case EPluginCharacterState.MovementOverride: newPluginState = new GameCharacterMovementOverridePluginState(this.gameCharacter, this); break;
 			case EPluginCharacterState.LookInVelocityDirection: newPluginState = new GameCharacterLookInVelocityDirectionPluginState(this.gameCharacter, this); break;
+			case EPluginCharacterState.DefensiveActionHold: newPluginState = new GameCharacterDefensiveActionHoldState(this.gameCharacter, this); break;
 			default:
 				Ultra.Utilities.Instance.DebugErrorString("GameCharacterPluginStateMaschine", "CreatePluginState", "PluginState has no Implementation!");
 				break;

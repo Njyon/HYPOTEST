@@ -34,7 +34,7 @@ public class GameCharacterAttackState : AGameCharacterState
 				break;
 			case EAttackAnimType.AimBlendSpace: 
 				GameCharacter.AnimController.InAimBlendTree = true;
-				GameCharacter.CombatComponent.AttackTimer.Start(GameCharacter.CombatComponent.CurrentWeapon.CurrentAction.aimBlendTypes.blendAnimations.midAnimation.length); 
+				//GameCharacter.CombatComponent.AttackTimer.Start(GameCharacter.CombatComponent.CurrentWeapon.CurrentAction.aimBlendTypes.blendAnimations.midAnimation.length); 
 				break;
 			default:
 				GameCharacter.AnimController.InAttack = true;

@@ -48,4 +48,11 @@ public class HookAttack : AttackBase
 	{
 		return attackData.Discharge;
 	}
+
+	public override ActionBase CreateCopy()
+	{
+		HookAttack copy = new HookAttack();
+		copy.attackData = attackData;
+		return copy;
+	}
 }

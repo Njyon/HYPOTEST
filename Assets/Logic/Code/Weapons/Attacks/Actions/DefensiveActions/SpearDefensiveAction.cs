@@ -15,7 +15,7 @@ public class SpearDefensiveAction : ActionBase
 	public SpearDefensiveActionData attackData;
 	SpearWeapon spearWeapon;
 
-	public override void Init(GameCharacter gameCharacter, WeaponBase weapon)
+	public override void Init(GameCharacter gameCharacter, WeaponBase weapon, InitAction action = null)
 	{
 		base.Init(gameCharacter, weapon);
 		spearWeapon = (SpearWeapon)weapon;
@@ -23,6 +23,11 @@ public class SpearDefensiveAction : ActionBase
 
 	public override void StartAction()
 	{
+		if (attackData.spearDefensiveAction == null)
+		{
+			Ultra.Utilities.Instance.DebugErrorString("SpearDefensiveAction", "StartAction", "AnimationData was null!");
+		}
+		GameCharacter.CombatComponent.DefensiveTimer.Start(attackData.spearDefensiveAction.midAnimation.length);
 		GameCharacter.AnimController.ApplyBlendTree(attackData.spearDefensiveAction);
 		GameCharacter.PluginStateMachine.AddPluginState(EPluginCharacterState.Aim);
 		GameCharacter.StateMachine.RequestStateChange(EGameCharacterState.DefensiveAction);
@@ -110,5 +115,12 @@ public class SpearDefensiveAction : ActionBase
 	{
 		base.ActionInteruped();
 		AfterDefensiveActionCleanUp();
+	}
+
+	public override ActionBase CreateCopy()
+	{
+		SpearDefensiveAction copy = new SpearDefensiveAction();
+		copy.attackData = attackData;
+		return copy;
 	}
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 using System.Linq;
+using static GameCharacterMovementComponent;
 
 public class GameCharacterMovementComponent : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	public OnMoveCollisionFlag onMoveCollisionFlag;
 	public delegate void OnCharacterGroundedChanged(bool newState);
 	public OnCharacterGroundedChanged onCharacterGroundedChanged;
+	public delegate void OnCharacterGroundReset();
+	public OnCharacterGroundReset onCharacterGroundReset;
 
 	[SerializeField] float stepHight = 0.5f;
 	[SerializeField] float maxWalkableSlopAngle = 45f;
@@ -481,7 +484,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	public void GroundReset()
 	{
 		gameCharacter.CurrentJumpAmount = 0;
-		gameCharacter.CombatComponent.CurrentWeapon?.GroundReset();
+		if (onCharacterGroundReset != null) onCharacterGroundReset();
 	}
 
 	public bool CanMovementOverride()

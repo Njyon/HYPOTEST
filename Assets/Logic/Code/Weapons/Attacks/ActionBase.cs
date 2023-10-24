@@ -7,24 +7,49 @@ using UnityEngine.Rendering;
 [Serializable]
 public abstract class ActionBase
 {
+	public delegate void InitAction();
+
 	GameCharacter gameCharacter;
 	WeaponBase weapon;
+	bool isActionInit = false;
 
 	public GameCharacter GameCharacter { get { return gameCharacter; } }
 	public WeaponBase Weapon { get { return weapon; } }
 
+	public bool IsActionInit { get { return isActionInit; } }
+
 	public ActionBase()
 	{
-
+		isActionInit = false;
 	}
 
-	public virtual void Init(GameCharacter gameCharacter, WeaponBase weapon)
+	/// <summary>
+	/// Set Important Data on runtime
+	/// </summary>
+	/// <param name="gameCharacter"></param>
+	/// <param name="weapon"></param>
+	/// <param name="initAction"> Only Execute Once</param>
+	public virtual void Init(GameCharacter gameCharacter, WeaponBase weapon, InitAction initAction = null)
 	{
-		this.gameCharacter = gameCharacter;
-		this.weapon = weapon;
+		if (!isActionInit)
+		{
+			this.gameCharacter = gameCharacter;
+			this.weapon = weapon;
+			this.gameCharacter.onGameCharacterDied += OnGameCharacterDied;
+			this.gameCharacter.onGameCharacterDestroyed += OnGameCharacterDestroyed;
+			
+
+			if (initAction != null)
+			{
+				initAction();
+			}
+			isActionInit = true;
+		}
 	}
 	public abstract void StartAction();
+	public abstract ActionBase CreateCopy();
 
+	public virtual void StartActionInHold() { }
 	public virtual void OnHit(GameObject hitObj) { }
 	public virtual void StartAttackStateLogic() { }
 	public virtual void PreAttackStateLogic(float deltaTime) { }
@@ -40,6 +65,7 @@ public abstract class ActionBase
 	public virtual void DefensiveActionStart() { }
 	public virtual void DefensiveActionEnd() { }
 	public virtual void GroundReset() { }
+	public virtual void ImplementUI() { }
 	/// <summary>
 	/// <para> Everything that needs to be cleaned up or managed after use in the action should be managed here. Its safer that EndAttackState or other funktions </para>
 	///
@@ -47,6 +73,24 @@ public abstract class ActionBase
 	/// <para> Can be called multiple times in a row </para>
 	/// </summary>
 	public virtual void ActionInteruped() { }
+	public virtual void OnGameCharacterDied(GameCharacter gameCharacter) {
+		if (this.gameCharacter != null) this.gameCharacter.onGameCharacterDied -= OnGameCharacterDied;
+	}
+	public virtual void OnGameCharacterDestroyed(GameCharacter gameCharacter)
+	{
+		if (this.gameCharacter != null) this.gameCharacter.onGameCharacterDestroyed -= OnGameCharacterDestroyed;
+		if (this.gameCharacter != null) this.gameCharacter.onGameCharacterDied -= OnGameCharacterDied;
+	}
+
+	public virtual bool HasUIImplementation()
+	{
+		return false;
+	}
+
+	public virtual bool HasAttackInputInHold()
+	{
+		return false;
+	}
 
 	public virtual float MaxVerticalMovement()
 	{

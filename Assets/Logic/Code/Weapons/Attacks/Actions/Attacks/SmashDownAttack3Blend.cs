@@ -45,7 +45,7 @@ public class SmashDownAttack3Blend : ActionBase
 			}
 		}
 	}
-	public override void Init(GameCharacter gameCharacter, WeaponBase weapon)
+	public override void Init(GameCharacter gameCharacter, WeaponBase weapon, InitAction action = null)
 	{
 		base.Init(gameCharacter, weapon);
 
@@ -207,5 +207,13 @@ public class SmashDownAttack3Blend : ActionBase
 	public override float GetActionDischarge()
 	{
 		return attackData.Discharge;
+	}
+
+	public override ActionBase CreateCopy()
+	{
+		SmashDownAttack3Blend copy = new SmashDownAttack3Blend();
+		copy.attackData = attackData;
+		copy.landingData = landingData;
+		return copy;
 	}
 }

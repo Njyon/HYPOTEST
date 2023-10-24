@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class SpearWeapon : WeaponBase
 {
-	//bool groundUpAttackhit = false;
-	//bool groundUpAttackMove = false;
-	//Ultra.Timer groundUpTimer = new Ultra.Timer();
 	WeaponProjectile defensiveSpear = null;
 	List<GameObject> thrownSpears = new List<GameObject>();
 
@@ -31,9 +28,6 @@ public class SpearWeapon : WeaponBase
 		GameCharacter.RequestBestCharacterState();
 		GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.Aim);
 		SpawnedWeapon?.SetActive(true);
-
-		//groundUpAttackhit = false;
-		//groundUpAttackMove = false;
 
 		if (defensiveSpear != null)
 			GameObject.Destroy(defensiveSpear.gameObject);
@@ -125,6 +119,7 @@ public class SpearWeapon : WeaponBase
 
 	public override void EndAttackStateLogic()
 	{
+		// Still needed?
 		GameCharacter.MovementComponent.SetLayerToDefault();
 		GameCharacter.MovementComponent.ResetCharacterCapsulToDefault();
 		SpawnedWeapon.SetActive(true);
@@ -142,86 +137,6 @@ public class SpearWeapon : WeaponBase
 
 	public override AttackAnimationData DefensiveAction()
 	{
-		AttackAnimationData returnData = null;
-		base.DefensiveAction();
-		//if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return null;
-		//if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].DefensiveAction.Count > 0) returnData = DefensiveActionAimLogic(ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].DefensiveAction, EAnimationType.Default);
-		//
-		//
-		//GameCharacter targetEnemy = Ultra.HypoUttilies.FindCharactereNearestToDirection(GameCharacter.MovementComponent.CharacterCenter, (GameCharacter.MovementInput.magnitude <= 0) ? GameCharacter.transform.forward : GameCharacter.MovementInput, ref GameCharacter.CharacterDetection.OverlappingGameCharacter);
-		//if (targetEnemy == null) return null;
-		//
-		//
-		//SpawnedWeapon.SetActive(false);
-		//GameObject throwSpear = GameObject.Instantiate(GameAssets.Instance.ThrowSpear);
-		//Vector3 spearDir = targetEnemy.MovementComponent.CharacterCenter - throwSpear.transform.position;
-		//throwSpear.transform.position = new Vector3(SpawnedWeaponBones.transform.position.x, SpawnedWeaponBones.transform.position.y, 0);
-		//throwSpear.transform.rotation = Quaternion.LookRotation(spearDir.normalized, Vector3.up);
-		//throwSpear.transform.eulerAngles = new Vector3(throwSpear.transform.eulerAngles.x, throwSpear.transform.eulerAngles.y, 90f);
-		//
-		//GameCharacter.CombatComponent.AimCharacter = targetEnemy;
-		//HookCharacterToCharacter(targetEnemy);
-		//GameCharacter.MovementComponent.MovementVelocity = Vector3.zero;
-		//
-		//
-		//defensiveSpear = throwSpear.GetComponent<WeaponProjectile>();
-		//defensiveSpear.onProjectileHit += DefensiveActionHit;
-		//defensiveSpear.Initialize(GameCharacter, throwSpear.transform.position, targetEnemy);
-
-		return returnData;
+		return base.DefensiveAction();
 	}
-
-	//void DefensiveActionHit(GameObject hitObj)
-	//{
-	//	GameCharacter hitgameCharacter = hitObj.GetComponent<GameCharacter>();
-	//	if (hitgameCharacter == null)
-	//	{
-	//		IDamage damageInterface = hitObj.GetComponent<IDamage>();
-	//		if (damageInterface != null) damageInterface.DoDamage(GameCharacter, 0);
-	//		return;
-	//	}
-	//
-	//	GameCharacter.CombatComponent.AimCharacter = hitgameCharacter;
-	//	HookCharacterToCharacter(hitgameCharacter);
-	//	GameCharacter.CombatComponent.HookedCharacters.Add(hitgameCharacter);
-	//	hitgameCharacter.CombatComponent.HookedToCharacter = GameCharacter;
-	//	hitgameCharacter.CombatComponent.MoveToPosition = GameCharacter.transform.position + GameCharacter.transform.forward * 1f;
-	//
-	//	hitgameCharacter.StateMachine.RequestStateChange(EGameCharacterState.MoveToPosition);
-	//	if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].DefensiveAction.Count > 0) DefensiveActionAimLogic(ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].DefensiveAction, EAnimationType.Trigger, false);
-	//	
-	//}
-
-	//public override void CharacterArrivedAtRequestedLocation(GameCharacter movedCharacter)
-	//{
-	//	AfterDefensiveActionCleanUp();
-	//}
-	
-	//public override void CharacterMoveToAbort(GameCharacter movedCharacter)
-	//{
-	//
-	//	AfterDefensiveActionCleanUp();
-	//}
-	
-	//public override void CharacterMoveToEnd(GameCharacter movedCharacter)
-	//{
-	//	AfterDefensiveActionCleanUp();
-	//}
-	
-	//public override void DefensiveActionEnd()
-	//{
-	//	base.DefensiveActionEnd();
-	//	AfterDefensiveActionCleanUp();
-	//}
-	
-	//private void AfterDefensiveActionCleanUp()
-	//{
-	//	GameCharacter.AnimController.InAimBlendTree = false;
-	//	UnHookAllHookedCharacerts();
-	//	GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.Aim);
-	//	GameCharacter.RequestBestCharacterState();
-	//	SpawnedWeapon.SetActive(true);
-	//	if (defensiveSpear != null)
-	//		GameObject.Destroy(defensiveSpear.gameObject);
-	//}
 }

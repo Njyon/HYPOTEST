@@ -39,4 +39,11 @@ public class DefaultAttack : AttackBase
 	{
 		return attackData.Discharge;
 	}
+
+	public override ActionBase CreateCopy()
+	{
+		DefaultAttack copy = new DefaultAttack();
+		copy.attackData = attackData;
+		return copy;
+	}
 }

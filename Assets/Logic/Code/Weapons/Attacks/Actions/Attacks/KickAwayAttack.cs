@@ -47,4 +47,11 @@ public class KickAwayAttack : AttackBase
 	{
 		return attackData.Discharge;
 	}
+
+	public override ActionBase CreateCopy()
+	{
+		KickAwayAttack copy = new KickAwayAttack();
+		copy.attackData = attackData;
+		return copy;
+	}
 }

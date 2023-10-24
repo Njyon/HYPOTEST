@@ -77,4 +77,11 @@ public class GapCloserAttack : AttackBase
 			GameCharacter.MovementComponent.MovementVelocity = velocity;
 		}
 	}
+
+	public override ActionBase CreateCopy()
+	{
+		GapCloserAttack copy = new GapCloserAttack();
+		copy.attackData = attackData;
+		return copy;
+	}
 }

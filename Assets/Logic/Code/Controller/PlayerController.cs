@@ -86,6 +86,7 @@ public class PlayerController : ControllerBase
 		playerInputs.Default.Attack.performed += ctx => Attack();
 		playerInputs.Default.Attack.canceled += ctx => AttackEnd();
 		playerInputs.Default.DefensiveAction.performed += ctx => DefensiveAction();
+		playerInputs.Default.DefensiveAction.canceled += ctx => DefensiveActionEnd();
 		playerInputs.Default.Dodge.performed += ctx => Dodge();
 		playerInputs.Default.ForceFrameRate.performed += ctx => ForceFrameRate();
 		playerInputs.Default.DebugPauseGame.performed += ctx => DebugPauseGame();
@@ -170,6 +171,11 @@ public class PlayerController : ControllerBase
 	void DefensiveAction()
 	{
 		gameCharacter?.EventComponent?.AddEvent(new DefensiveEvent(gameCharacter));
+		gameCharacter?.PluginStateMachine?.AddPluginState(EPluginCharacterState.DefensiveActionHold);
+	}
+	void DefensiveActionEnd()
+	{
+		gameCharacter?.PluginStateMachine?.RemovePluginState(EPluginCharacterState.DefensiveActionHold);
 	}
 	void Dodge()
 	{

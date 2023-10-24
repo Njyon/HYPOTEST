@@ -8,4 +8,9 @@ public class ActionNone : ActionBase
 	{
 
 	}
+
+	public override ActionBase CreateCopy()
+	{
+		return new ActionNone();
+	}
 }

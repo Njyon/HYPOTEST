@@ -105,4 +105,11 @@ public class SmashDownAttack : AttackBase
 	{
 		Weapon.UnHookAllHookedCharacerts();
 	}
+
+	public override ActionBase CreateCopy()
+	{
+		SmashDownAttack copy = new SmashDownAttack();
+		copy.attackData = attackData;
+		return copy;
+	}
 }
