@@ -111,9 +111,9 @@ public class SpearDefensiveAction : ActionBase
 			GameObject.Destroy(spearWeapon.DefensiveSpear.gameObject);
 	}
 
-	public override void ActionInteruped()
+	public override void ActionInterupted()
 	{
-		base.ActionInteruped();
+		base.ActionInterupted();
 		AfterDefensiveActionCleanUp();
 	}
 

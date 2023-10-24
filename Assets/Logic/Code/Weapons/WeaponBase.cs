@@ -141,12 +141,13 @@ public abstract class WeaponBase
 			MaxChargeAfterEquipTimer.Start(weaponData.TimeAfterEqupingMaxChargedWeapon);
 			MaxChargeAfterEquipTimer.onTimerFinished += OnMaxChargeAfterEquipTimerFinished;
 		}
-		if (WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name))
+		if (WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name) && gameCharacter.IsPlayerCharacter)
 		{
 			foreach(AttackAnimationData data in WeaponData.AnimationData[GameCharacter.CharacterData.Name].DefensiveAction)
 			{
 				if (data != null && data.Action != null && data.Action.HasUIImplementation())
 				{
+					data.Action.Init(gameCharacter, this);
 					data.Action.ImplementUI();
 					break;
 				}
@@ -166,7 +167,18 @@ public abstract class WeaponBase
 		GameObject.Destroy(spawnedWeapon);
 		GameObject.Destroy(spawnedWeaponBones);
 
-		CurrentAction?.Action?.ActionInteruped();
+		CurrentAction?.Action?.ActionInterupted();
+
+		if (WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name) && gameCharacter.IsPlayerCharacter)
+		{
+			foreach (AttackAnimationData data in WeaponData.AnimationData[GameCharacter.CharacterData.Name].DefensiveAction)
+			{
+				if (data != null && data.Action != null && data.Action.HasUIImplementation())
+				{
+					data.Action.RemoveUI();
+				}
+			}
+		}
 
 		if (gameCharacter.CombatComponent.HitDetectionColliderScript != null) gameCharacter.CombatComponent.HitDetectionColliderScript.onOverlapEnter -= WeaponColliderEnter;
 		if (gameCharacter.CombatComponent.HitDetectionColliderScript != null) gameCharacter.CombatComponent.HitDetectionColliderScript.onOverlapExit -= WeaponColliderExit;
@@ -524,7 +536,7 @@ public abstract class WeaponBase
 		if (attackList == null || attackList.Count <= 0) return false;
 		attackIndex = attackIndex % attackList.Count;
 		AttackAnimationData newAttack = attackList[attackIndex];
-		currentAttack?.Action?.ActionInteruped();
+		currentAttack?.Action?.ActionInterupted();
 		currentAttack = newAttack;
 		currentAttack?.Action?.Init(GameCharacter, this);
 		return true;
@@ -564,7 +576,7 @@ public abstract class WeaponBase
 		if (defensiveList == null || defensiveList.Count <= 0) return false;
 		defensiveActionIndex = defensiveActionIndex % defensiveList.Count;
 		AttackAnimationData newDefensiveAction = defensiveList[defensiveActionIndex];
-		currentDefensiveAction?.Action?.ActionInteruped();
+		currentDefensiveAction?.Action?.ActionInterupted();
 		currentDefensiveAction = newDefensiveAction;
 		currentDefensiveAction?.Action?.Init(GameCharacter, this);
 		return true;
@@ -613,14 +625,14 @@ public abstract class WeaponBase
 			case EExplicitAttackType.DefensiveAction:
 				if (lastData != currentDefensiveAction)
 				{
-					lastData?.Action?.ActionInteruped();
+					lastData?.Action?.ActionInterupted();
 					lastData = currentDefensiveAction;
 				}
 				return currentDefensiveAction;
 			default:
 				if (lastData != currentAttack)
 				{
-					lastData?.Action?.ActionInteruped();
+					lastData?.Action?.ActionInterupted();
 					lastData = currentAttack;
 				}
 				lastData = currentAttack;

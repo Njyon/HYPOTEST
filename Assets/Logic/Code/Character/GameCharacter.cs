@@ -262,28 +262,47 @@ public class GameCharacter : MonoBehaviour , IDamage
 		{
 			if (CheckForSameTeam(damageInitiator.Team)) return;
 		}
-		Ultra.Utilities.Instance.DebugLogOnScreen(name + " got Damaged by: " + damageInitiator.name + ", Damage = " + damage, 2f, StringColor.Red, 200, DebugAreas.Combat);
-		Health.AddCurrentValue(-damage);
-		StaggerComponent.AddCurrentValue(-damage);
-		damageInitiator?.CombatComponent.AddCombo();
-		CombatComponent.ComboBreak();
-		damageInitiator?.CombatComponent.CharacterDidDamageTo(damageInitiator, damage);
-
-		if (CombatComponent.CanRequestFreez())
+		if (PluginStateMachine.IsPluginStatePlugedIn(EPluginCharacterState.Parry)) 
 		{
-			if (StateMachine.GetCurrentStateType() == EGameCharacterState.Freez)
+			damage = 0;
+			CombatComponent.CurrentWeapon.CurrentAction.Action.SuccessfullParry(damageInitiator, damage);
+			return;
+		} else if(PluginStateMachine.IsPluginStatePlugedIn(EPluginCharacterState.Block))
+		{
+			if (damage > 0)
 			{
-				freezTimer.Start(freezTime);
-				AnimController.FreezA = !AnimController.FreezA;
-			}else if (StateMachine.GetCurrentStateType() == EGameCharacterState.InAir)
-			{
-				StateMachine.RequestStateChange(EGameCharacterState.Freez);
+				damage = damage / 2f;
+				CombatComponent.CurrentWeapon.CurrentAction.Action.SuccessfullBlock(damageInitiator, damage);
 			}
 		}
-		
-		animController.TriggerAdditiveHit();
-		OnDamaged(damageInitiator, damage);
-		damageInitiator?.AddRatingOnHit(damage);
+
+		Health.AddCurrentValue(-damage);
+		StaggerComponent.AddCurrentValue(-damage);
+		Ultra.Utilities.Instance.DebugLogOnScreen(name + " got Damaged by: " + damageInitiator.name + ", Damage = " + damage, 2f, StringColor.Red, 200, DebugAreas.Combat);
+	
+		if (damage > 0)
+		{
+			damageInitiator?.CombatComponent.AddCombo();
+			CombatComponent.ComboBreak();
+			damageInitiator?.CombatComponent.CharacterDidDamageTo(damageInitiator, damage);
+
+			if (CombatComponent.CanRequestFreez())
+			{
+				if (StateMachine.GetCurrentStateType() == EGameCharacterState.Freez)
+				{
+					freezTimer.Start(freezTime);
+					AnimController.FreezA = !AnimController.FreezA;
+				}
+				else if (StateMachine.GetCurrentStateType() == EGameCharacterState.InAir)
+				{
+					StateMachine.RequestStateChange(EGameCharacterState.Freez);
+				}
+			}
+
+			animController.TriggerAdditiveHit();
+			OnDamaged(damageInitiator, damage);
+			damageInitiator?.AddRatingOnHit(damage);
+		}
 	}
 
 	public bool CheckForSameTeam(HyppoliteTeam team)

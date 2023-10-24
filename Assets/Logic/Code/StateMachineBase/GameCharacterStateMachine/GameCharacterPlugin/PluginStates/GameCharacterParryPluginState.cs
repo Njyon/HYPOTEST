@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameCharacterDefensiveActionHoldState : AGameCharacterPluginState
+public class GameCharacterParryPluginState : AGameCharacterPluginState
 {
-	public GameCharacterDefensiveActionHoldState(GameCharacter gameCharacter, GameCharacterPluginStateMachine pluginStateMachine) : base (gameCharacter, pluginStateMachine)
+	public GameCharacterParryPluginState(GameCharacter gameCharacter, GameCharacterPluginStateMachine pluginStateMachine) : base (gameCharacter, pluginStateMachine)
 	{ }
 	
 	public override EPluginCharacterState GetStateType()
 	{
-		return EPluginCharacterState.DefensiveActionHold;
+		return EPluginCharacterState.Parry;
 	}
 
     public override void Active()

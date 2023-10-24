@@ -117,4 +117,14 @@ public abstract class PluginStateMachineBase<T> : MonoBehaviour
 		else
 			return true;
 	}
+
+	/// <summary>
+	/// A fast check if the State exists in the Dictionary
+	/// </summary>
+	/// <param name="stateType"> The state type of the state that should be checkt </param>
+	/// <returns></returns>
+	public bool ContainsPluginState(T stateType)
+	{
+		return DictionaryOfPluginStates.ContainsKey(stateType);
+	}
 }

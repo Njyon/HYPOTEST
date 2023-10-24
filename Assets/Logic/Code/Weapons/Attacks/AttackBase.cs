@@ -6,7 +6,7 @@ public abstract class AttackBase : ActionBase
 {
 	public override void Init(GameCharacter gameCharacter, WeaponBase weapon, InitAction action = null)
 	{
-		base.Init(gameCharacter, weapon);
+		base.Init(gameCharacter, weapon, action);
 
 	}
 

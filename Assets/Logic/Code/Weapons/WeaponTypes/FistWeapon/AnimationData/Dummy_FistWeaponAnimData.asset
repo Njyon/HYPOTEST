@@ -272,12 +272,12 @@ MonoBehaviour:
       instance:
         rid: 3239357499048984579
     data:
-      showProperties: 0
-      hitDetectionType: 0
+      showProperties: 1
+      hitDetectionType: 1
       mesh: {fileID: 0}
-      offset: {x: 0, y: 0, z: 0}
+      offset: {x: 1, y: 0, z: 0}
       scale: {x: 0, y: 0, z: 0}
-      radius: 0
+      radius: 1.5
       boxDimensions: {x: 0, y: 0, z: 0}
       capsulHeight: 0
     combatBranches:
@@ -462,5 +462,16 @@ MonoBehaviour:
           Damage: 10
           Rating: 100
           Discharge: 100
-          defensiveAction: {fileID: 0}
-          defensiveActionHold: {fileID: 0}
+          defensiveAction: {fileID: 2578224585427505389, guid: 67cc6116e5cb439499f6bbcf9954cae1,
+            type: 3}
+          defensiveActionHold: {fileID: 4969365560786418264, guid: 683c04e7d50c934429c9d4b421fa40eb,
+            type: 3}
+          counterAttack: {fileID: 311396034716669421, guid: 57bf47e7cb6a2d847a0ef13121cfbf3a,
+            type: 3}
+          uiELement: {fileID: 7221905412587384954, guid: 0574b3332dde5504497c74df02e157a1,
+            type: 3}
+          parryParticleEffect: {fileID: 8857593053734190051, guid: 0bbb321d962a2b144b98ae40bd07c2b1,
+            type: 3}
+          blockParticleEffect: {fileID: 8857593053734190051, guid: f8625e8e32db4b94eb52cfbd9a0027ef,
+            type: 3}
+          parryTime: 0.3

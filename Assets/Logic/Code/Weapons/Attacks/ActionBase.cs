@@ -66,13 +66,16 @@ public abstract class ActionBase
 	public virtual void DefensiveActionEnd() { }
 	public virtual void GroundReset() { }
 	public virtual void ImplementUI() { }
+	public virtual void RemoveUI() { }
+	public virtual void SuccessfullParry(GameCharacter damageInitiator, float damage) { }
+	public virtual void SuccessfullBlock(GameCharacter damageInitiator, float damage) { }
 	/// <summary>
 	/// <para> Everything that needs to be cleaned up or managed after use in the action should be managed here. Its safer that EndAttackState or other funktions </para>
 	///
 	/// <remarks> Gets Called when a newer action gets Set </remarks>
 	/// <para> Can be called multiple times in a row </para>
 	/// </summary>
-	public virtual void ActionInteruped() { }
+	public virtual void ActionInterupted() { }
 	public virtual void OnGameCharacterDied(GameCharacter gameCharacter) {
 		if (this.gameCharacter != null) this.gameCharacter.onGameCharacterDied -= OnGameCharacterDied;
 	}
