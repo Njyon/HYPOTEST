@@ -836,7 +836,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5871210591813294166, guid: 86332de1ed30b784793c06564d56c577,
         type: 3}
+      propertyPath: strideInterp
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5871210591813294166, guid: 86332de1ed30b784793c06564d56c577,
+        type: 3}
       propertyPath: dodgeDistance
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5871210591813294166, guid: 86332de1ed30b784793c06564d56c577,
+        type: 3}
+      propertyPath: walkRunInterp
       value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1231,7 +1241,7 @@ MonoBehaviour:
   spawnableCharacterData: {fileID: 11400000, guid: 60a72c065bb99f5429507e0841eb030c,
     type: 2}
   index: 4
-  autoSpawn: 1
+  autoSpawn: 0
 --- !u!4 &820882756
 Transform:
   m_ObjectHideFlags: 0
@@ -1597,6 +1607,12 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 820882756}
     m_Modifications:
+    - target: {fileID: 332289235551208634, guid: 581c7f390c370ae408e3b11b81c1ad7c,
+        type: 3}
+      propertyPath: weapons.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 97032131ea0fce44e8303aa40a9b6531,
+        type: 2}
     - target: {fileID: 3230938088941717855, guid: 581c7f390c370ae408e3b11b81c1ad7c,
         type: 3}
       propertyPath: m_LocalPosition.x

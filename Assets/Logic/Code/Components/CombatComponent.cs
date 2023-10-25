@@ -210,6 +210,8 @@ public class CombatComponent
 			if (i >= 4) break;
 			weapons[i] = gameCharacter.GameCharacterData.Weapons[i];
 
+			if (weapons[i] == null) continue;
+
 			switch (weapons[i].WeaponClassName)
 			{
 				case "FistWeapon": weapons[i].Weapon = new FistWeapon(gameCharacter, weapons[i]); break;

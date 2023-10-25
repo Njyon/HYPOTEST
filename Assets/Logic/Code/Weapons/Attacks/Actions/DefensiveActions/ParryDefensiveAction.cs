@@ -13,6 +13,12 @@ public class ParryDefensiveActionData : AttackData
 	public GameObject parryParticleEffect;
 	public GameObject blockParticleEffect;
 	public float parryTime = 0.3f;
+	public float addParryTimeOnParry = 0.1f;
+	public float parryPoints = 20;
+	public float blockPoints = -10;
+	public float rotSpeed = 10;
+	public float damageMinMultiplier = 0.5f;
+	public float damageMaxMultiplier = 3;
 }
 
 public class ParryDefensiveAction : AttackBase
@@ -24,6 +30,23 @@ public class ParryDefensiveAction : AttackBase
 	UpdateHelper updateHelper;
 	ParticleSystemPool parryEffectPool;
 	ParticleSystemPool blockEffectPool;
+	float currentParryValue;
+	bool didHitSomething = false;
+	Quaternion newDir;
+
+	float CurrentParryValue
+	{
+		get { return currentParryValue; } 
+		set {
+			value = Mathf.Clamp(value, 0, 100);
+			if (currentParryValue != value)
+			{
+				currentParryValue = value;
+				if (ui != null)
+					ui.SetBarFillValue(Unity.Mathematics.math.remap(0, 100, 0, 1, currentParryValue));
+			}
+		}
+	}
 
 	public override void Init(GameCharacter gameCharacter, WeaponBase weapon, InitAction initAction = null)
 	{
@@ -37,8 +60,8 @@ public class ParryDefensiveAction : AttackBase
 			parryTimer = new Ultra.Timer();
 			parryTimer.onTimerFinished += OnParryTimerFinished;
 
-			parryEffectPool = new ParticleSystemPool(attackData.parryParticleEffect, new GameObject(gameCharacter.name + " ParryEffect Holder"));
-			blockEffectPool = new ParticleSystemPool(attackData.blockParticleEffect, new GameObject(gameCharacter.name + " BlockEffect Holder"));
+			parryEffectPool = new ParticleSystemPool(attackData.parryParticleEffect, new GameObject(gameCharacter.name + " ParryEffect Holder"), 2);
+			blockEffectPool = new ParticleSystemPool(attackData.blockParticleEffect, new GameObject(gameCharacter.name + " BlockEffect Holder"), 2);
 		});
 	}
 
@@ -51,7 +74,7 @@ public class ParryDefensiveAction : AttackBase
 		Weapon.AttackAnimType = EAttackAnimType.Default;
 		GameCharacter.AnimController.SetDefensiveAction(attackData.defensiveAction);
 
-		Debug.Log("StartAction");
+		newDir = GameCharacter.transform.rotation;
 	}
 
 	public override void SuccessfullParry(GameCharacter damageInitiator, float damage)
@@ -59,6 +82,11 @@ public class ParryDefensiveAction : AttackBase
 		ParticleSystem ps = parryEffectPool.GetValue();
 		ps.transform.position = GameCharacter.MovementComponent.CharacterCenter;
 		ps.transform.LookAt(damageInitiator.MovementComponent.CharacterCenter.IgnoreAxis(EAxis.Z));
+		parryTimer.AddTime(attackData.addParryTimeOnParry);
+
+		newDir = Quaternion.LookRotation(damageInitiator.MovementComponent.CharacterCenter.IgnoreAxis(EAxis.YZ) - GameCharacter.MovementComponent.CharacterCenter.IgnoreAxis(EAxis.YZ), Vector3.up);
+
+		CurrentParryValue += attackData.parryPoints;
 	}
 
 
@@ -67,27 +95,36 @@ public class ParryDefensiveAction : AttackBase
 		ParticleSystem ps = blockEffectPool.GetValue();
 		ps.transform.position = GameCharacter.MovementComponent.CharacterCenter;
 		ps.transform.LookAt(damageInitiator.MovementComponent.CharacterCenter.IgnoreAxis(EAxis.Z));
+
+		newDir = Quaternion.LookRotation(damageInitiator.MovementComponent.CharacterCenter.IgnoreAxis(EAxis.YZ) - GameCharacter.MovementComponent.CharacterCenter.IgnoreAxis(EAxis.YZ), Vector3.up);
+
+		CurrentParryValue += attackData.blockPoints;
 	}
 
 	public override void StartActionInHold()
 	{
 		RemoveParryBlockStates();
 		StartAttack(attackData.counterAttack);
-
-		Debug.Log("StartActionInHold");
+		GameCharacter.AnimController.InAttack = true;
+		parryTimer.Stop();
+		GameCharacter.StateMachine.RemoveLazyState(EGameCharacterState.DefensiveAction);
+		didHitSomething = false;
 	}
 
 	public override void OnHit(GameObject hitObj)
 	{
-		DoDamage(hitObj, attackData.Damage);
+		DoDamage(hitObj, attackData.Damage * Unity.Mathematics.math.remap(0, 100, attackData.damageMinMultiplier, attackData.damageMaxMultiplier, CurrentParryValue));
+		var character = hitObj.GetComponent<GameCharacter>();
+		if (character != null)
+		{
+			didHitSomething = true;
+		}
 	}
 
 	public override void ImplementUI()
 	{
 		PlayerGameCharacter player = (PlayerGameCharacter)GameCharacter;
 		SpawnUIElement(player);
-
-		Debug.Log("ImplementUI");
 	}
 
 	void OnUpdateHelperUpdate()
@@ -97,6 +134,20 @@ public class ParryDefensiveAction : AttackBase
 			if (GameCharacter.PluginStateMachine.ContainsPluginState(EPluginCharacterState.Parry))
 				parryTimer.Update(Time.deltaTime);
 		}
+	}
+
+	public override void AttackPhaseEnd()
+	{
+		if (didHitSomething)
+		{
+			CurrentParryValue = 0;
+			didHitSomething = false;
+		}
+	}
+
+	public override void PostAttackStateLogic(float deltaTime)
+	{
+		GameCharacter.transform.rotation = (Quaternion.Lerp(GameCharacter.transform.rotation, newDir, Time.deltaTime * attackData.rotSpeed));
 	}
 
 	public override void RemoveUI()
@@ -114,10 +165,15 @@ public class ParryDefensiveAction : AttackBase
 				return;
 			GameObject spawnedUIElement = GameObject.Instantiate(attackData.uiELement, player.PlayerUI.transform);
 			ui = spawnedUIElement.GetComponent<CounterAttackUI>();
+			if (ui != null) ui.SetBarFillValue(Unity.Mathematics.math.remap(0, 100, 0, 1, CurrentParryValue));
 		}
 		else
 		{
-			ui.gameObject.SetActive(true);
+			if (ui != null)
+			{
+				ui.gameObject.SetActive(true);
+				ui.SetBarFillValue(Unity.Mathematics.math.remap(0, 100, 0, 1, CurrentParryValue));
+			}
 		}
 	
 	}
@@ -129,6 +185,7 @@ public class ParryDefensiveAction : AttackBase
 			GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.Parry);
 			GameCharacter.PluginStateMachine.AddPluginState(EPluginCharacterState.Block);
 			GameCharacter.AnimController.SetHoldAttack(attackData.defensiveActionHold);
+			GameCharacter.AnimController.CrossFadeToNextState(GameCharacter.AnimController.HoldStateHash, 0.2f);
 			GameCharacter.AnimController.InDefensiveAction = false;
 			GameCharacter.AnimController.HoldAttack = true;
 		}
@@ -148,6 +205,7 @@ public class ParryDefensiveAction : AttackBase
 	{
 		isInterupted = true;
 		GameCharacter.StateMachine.RemoveLazyState(EGameCharacterState.DefensiveAction);
+		parryTimer.Stop();
 		RemoveParryBlockStates();
 		GameCharacter.RequestBestCharacterState();
 	}

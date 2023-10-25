@@ -487,6 +487,11 @@ public abstract class WeaponBase
 		CurrentAction?.Action?.OnHit(hitObj);
 	}
 
+	public virtual void DefensiveActionHit(GameObject hitObj)
+	{
+		CurrentAction?.Action?.OnHit(hitObj);
+	}
+
 	void SetUpWeaponAnimationData()
 	{
 		if (weaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) gameCharacter.AnimController.SetBodyLayerAnimClip(weaponData.AnimationData[GameCharacter.CharacterData.Name].WeaponReadyPose);
@@ -715,6 +720,7 @@ public abstract class WeaponBase
 			case EExplicitAttackType.AirDirectionalAttack: AirDirectionAttackHit(other.gameObject); break;
 			case EExplicitAttackType.AirDownAttack: AirDownAttackHit(other.gameObject); break;
 			case EExplicitAttackType.AirUpAttack: AirUpAttackHit(other.gameObject); break;
+			case EExplicitAttackType.DefensiveAction: DefensiveActionHit(other.gameObject); break;
 			default: break;
 		}
 	}

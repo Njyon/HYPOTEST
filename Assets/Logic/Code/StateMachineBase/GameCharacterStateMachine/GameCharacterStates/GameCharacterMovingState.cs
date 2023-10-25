@@ -10,6 +10,7 @@ public class GameCharacterMovingState : AGameCharacterState
 	public override void StartState(EGameCharacterState oldState)
 	{
 		SetSlopStrenghToZero(oldState);
+		GameCharacter.AnimController.InterpSecondaryMotionLayerWeight(0, 10f);
 	}
 
 	public override EGameCharacterState GetStateType()
@@ -148,6 +149,7 @@ public class GameCharacterMovingState : AGameCharacterState
 
 	public override void EndState(EGameCharacterState newState)
 	{
-		
+		GameCharacter.AnimController.InterpSecondaryMotionLayerWeight(1, 10f);
+
 	}
 }

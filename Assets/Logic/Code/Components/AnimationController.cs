@@ -6,6 +6,20 @@ using UnityEditor.Animations;
 using UnityEditor.Build;
 using UnityEngine;
 
+public enum EGameCharacterAnimatiorLayers
+{
+	BasisLayer,
+	SpineLayer,
+	LegLayer,
+	HeadLayer,
+	ArmRLayer,
+	ArmLLayer,
+	UpperBodyLayer,
+	RotationLayer,
+	SecondaryMotionLayer,
+	HitLayer,
+}
+
 public class AnimationController
 {
 	GameCharacter gameCharacter;
@@ -76,10 +90,58 @@ public class AnimationController
 	float upperBodyLayerInterpTarget;
 	float upperBodyLayerInterpSpeed;
 
+	int holdStateHash;
+	public int HoldStateHash { 
+		get {
+			if (holdStateHash == 0)
+			{
+				holdStateHash = Animator.StringToHash("BasisLayer.Combat.CombatLoseStates.Hold");
+			}
+			return holdStateHash; 
+		} 
+	}
+	int dodgeStateHash;
+	public int DodgeStateHash
+	{
+		get
+		{
+			if (dodgeStateHash == 0)
+			{
+				dodgeStateHash = Animator.StringToHash("BasisLayer.Combat.CombatLoseStates.Dodge");
+			}
+			return dodgeStateHash;
+		}
+	}
+	int triggerStateHash;
+	public int TriggerStateHash
+	{
+		get
+		{
+			if (triggerStateHash == 0)
+			{
+				triggerStateHash = Animator.StringToHash("BasisLayer.Combat.CombatLoseStates.Trigger");
+			}
+			return triggerStateHash;
+		}
+	}
+	int defensiveActionStateHash;
+	public int DefensiveActionStateHash
+	{
+		get
+		{
+			if (defensiveActionStateHash == 0)
+			{
+				defensiveActionStateHash = Animator.StringToHash("BasisLayer.Combat.CombatLoseStates.DefensiveAction");
+			}
+			return defensiveActionStateHash;
+		}
+	}
+
 	float walkRunBlend;
 	public float WalkRunBlend { 
 		get { return walkRunBlend; } 
 		private set {
+			value = Mathf.Clamp01(value);
 			if (walkRunBlend != value)
 			{
 				walkRunBlend = value;
@@ -91,6 +153,7 @@ public class AnimationController
 	public float StrideBlend { 
 		get { return strideBlend; } 
 		private set {
+			value = Mathf.Clamp01(value);
 			if (strideBlend != value)
 			{
 				strideBlend = value;
@@ -604,7 +667,7 @@ public class AnimationController
 		if (startWalkRunBlendInterp) startWalkRunBlendInterp = !startWalkRunBlendInterp;
 
 		// Walk Run
-		float movementSpeed = gameCharacter.MovementComponent.MovementSpeed;
+		float movementSpeed = gameCharacter.MovementComponent.MovementVelocity.magnitude;
 		float walkrunblendTarget = Unity.Mathematics.math.remap(minMalkSpeed, gameCharacter.GameCharacterData.MaxMovementSpeed, 0.2f, 1, movementSpeed);
 		WalkRunBlend = dontInterp ? walkrunblendTarget : Mathf.Lerp(WalkRunBlend, walkrunblendTarget, Time.deltaTime * gameCharacter.GameCharacterData.WalkRunInterp);
 
@@ -650,7 +713,7 @@ public class AnimationController
 			gameCharacter.Animator.SetTrigger(jumpATriggerID);
 		}
 	}
-    
+
 	public void Attack(AnimationClip attackClip)
 	{
 		bool isAttackAState = IsInState(attackAStateIndex);
@@ -895,5 +958,31 @@ public class AnimationController
 	void OnAttackTriggerTimerFinished()
 	{
 		TriggerAttack = false;
+	}
+
+	public void CrossFadeToNextState(int nextStateHash, float transitionDuration, EGameCharacterAnimatiorLayers layerType = EGameCharacterAnimatiorLayers.BasisLayer)
+	{
+		int layer = GetLayerIndex(layerType);
+		gameCharacter.Animator.CrossFade(nextStateHash, transitionDuration, layer);
+	}
+
+	public int GetLayerIndex(EGameCharacterAnimatiorLayers layer)
+	{
+		switch (layer)
+		{
+			case EGameCharacterAnimatiorLayers.BasisLayer: return 0;
+			case EGameCharacterAnimatiorLayers.SpineLayer: return 1;
+			case EGameCharacterAnimatiorLayers.LegLayer: return 2;
+			case EGameCharacterAnimatiorLayers.HeadLayer: return 3;
+			case EGameCharacterAnimatiorLayers.ArmRLayer: return 4;
+			case EGameCharacterAnimatiorLayers.ArmLLayer: return 5;
+			case EGameCharacterAnimatiorLayers.UpperBodyLayer: return 6;
+			case EGameCharacterAnimatiorLayers.RotationLayer: return 7;
+			case EGameCharacterAnimatiorLayers.SecondaryMotionLayer: return 8;
+			case EGameCharacterAnimatiorLayers.HitLayer: return 9;
+			default:
+				Ultra.Utilities.Instance.DebugErrorString("AnimationController", "GetLayerIndex", "Layer was not defined!");
+				return -1;
+		}
 	}
 }

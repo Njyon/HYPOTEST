@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 public class GameCharacter : MonoBehaviour , IDamage
 {
@@ -67,6 +68,17 @@ public class GameCharacter : MonoBehaviour , IDamage
 	public int IgnoreCharacterLayer { get { return ignoreCharacterLayer; } }
 	public int CharacterLayer { get { return characterLayer; } }
 
+#if UNITY_EDITOR
+	//[DebugGUIGraph(min: 0, max: 9, r: 0, g: 1, b: 1, autoScale: true)]
+	//public float MovementSpeed { get { return MovementComponent != null ? MovementComponent.MovementSpeed : 0; } }
+	//
+	//[DebugGUIPrint, DebugGUIGraph(min: -10, max: 10, group: 1, r: 1, g: 0.3f, b: 0.3f)]
+	//public float MovementVelx { get { return MovementComponent != null ? MovementComponent.Velocity.x : 0; } }
+	//[DebugGUIPrint, DebugGUIGraph(min: -10, max: 10, group: 1, r: 0, g: 1, b: 0)]
+	//public float MovementVely { get { return MovementComponent != null ? MovementComponent.Velocity.y : 0; } }
+	//[DebugGUIPrint, DebugGUIGraph(min: -10, max: 10, group: 1, r: 0, g: 1, b: 1)]
+	//public float MovementVelz { get { return MovementComponent != null ? MovementComponent.Velocity.z : 0; } }
+#endif
 
 	public HyppoliteTeam Team { get { return team; } set { team = value; } }
 	public bool IsGameCharacterDead 
@@ -170,7 +182,6 @@ public class GameCharacter : MonoBehaviour , IDamage
 	{
 		if (!IsInitialized) return;
 		freezTimer.Update(Time.deltaTime);
-
 		//movementInput.x = 1;
 		EventComponent.Update(Time.deltaTime);
 		MovementComponent.CalculateVelocity();
@@ -184,7 +195,6 @@ public class GameCharacter : MonoBehaviour , IDamage
 		if (StaggerComponent != null) StaggerComponent.Update(Time.deltaTime);
 
 
-		
 		// Debug
 		if (IsPlayerCharacter)
 		{
@@ -202,8 +212,6 @@ public class GameCharacter : MonoBehaviour , IDamage
 		if (IsPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen("Current Ground Angle: " + MovementComponent.GetPossibleGroundAngle(), 0f, StringColor.Teal, 200, DebugAreas.Misc);
 		if (!IsPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen("AICurrentCharacterState: " + StateMachine.GetCurrentStateType().ToString(), 0f, StringColor.Brown, 200, DebugAreas.AI);
 	}
-
-	
 
 	private void LateUpdate()
 	{
@@ -469,5 +477,11 @@ public class GameCharacter : MonoBehaviour , IDamage
 	public virtual void ShowAttackFeedback()
 	{
 
+	}
+
+	[Button("ReInitGraphs")]
+	protected void Test()
+	{
+		DebugGUI.ForceReinitializeAttributes();
 	}
 }
