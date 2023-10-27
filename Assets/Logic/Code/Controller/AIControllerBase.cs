@@ -2,6 +2,7 @@ using Megumin.GameFramework.AI.BehaviorTree;
 using Megumin.Reflection;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Profiling;
@@ -25,6 +26,12 @@ public class AIControllerBase : ControllerBase
 	{
 		Profiler.BeginSample("Init new GameCharacter");
 		gameCharacter = pawn.AddComponent<EnemyGameCharacter>();
+		LoadingChecker.Instance.Tasks.Add(Task.Run(async () => {
+			while (!gameCharacter.IsInitialized)
+			{
+				await Task.Yield();
+			}
+		}));
 		gameCharacter.CharacterData = characterData;
 		if (characterData != null && characterData.behaviourTree != null)
 		{
@@ -75,7 +82,7 @@ public class AIControllerBase : ControllerBase
 		btRunner.BehaviorTreeAsset = characterData.behaviourTree;
 	}
 
-	protected virtual void OnBehaviourTreeInit()
+	protected virtual void OnBehaviourTreeInit(BehaviorTreeRunner btr)
 	{
 		InitCustomBehaviourTreeValues();
 		AIManager.Instance.AddManagableAI(new HyppoliteManagableAI(gameCharacter, btRunner));

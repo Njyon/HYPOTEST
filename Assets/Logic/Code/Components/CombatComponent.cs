@@ -412,4 +412,11 @@ public class CombatComponent
 			FlyAwayTime = flyAwayTime;
 		gameCharacter.StateMachine.ForceStateChange(EGameCharacterState.FlyAway);
 	}
+
+	public void SuccsessfullDodge(GameCharacter damageInitiator, float damage)
+	{
+		var ps = gameCharacter.SuccsessfullDodgeParticlePool.GetValue();
+		ps.transform.position = gameCharacter.MovementComponent.CharacterCenter;
+		ps.transform.rotation = Quaternion.identity;
+	}
 }

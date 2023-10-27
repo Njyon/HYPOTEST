@@ -67,6 +67,9 @@ public class GameCharacterData : MonoBehaviour
 	[Header("Combat")]
 	[SerializeField] float characterDetectionRange = 30f;
 	[SerializeField] int combatAttackListLenght = 10;
+	[SerializeField] float iFramesTime = 0.2f;
+	[SerializeField] GameObject succsessfullDodgeParticleEffect;
+	[SerializeField] GameObject dodgeParticleEffect;
 
 	[Header("Data")]
 	[SerializeField] SkinnedMeshRenderer meshRenderer;
@@ -130,6 +133,9 @@ public class GameCharacterData : MonoBehaviour
 
 	public float CharacterDetectionRange { get { return characterDetectionRange; } }
 	public int CombatAttackListLenght { get { return combatAttackListLenght; } }
+	public float IFrameTime { get { return iFramesTime; } }
+	public GameObject SuccsessfullDodgeParticleEffect { get { return succsessfullDodgeParticleEffect; } }
+	public GameObject DodgeParticleEffect { get { return dodgeParticleEffect; } }
 
 	public SkinnedMeshRenderer MeshRenderer { get { return meshRenderer; } }
 

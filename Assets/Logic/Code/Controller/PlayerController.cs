@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
@@ -18,7 +19,6 @@ public class PlayerController : ControllerBase
 
 	//DebugStuff
 	bool bForcedFrameRate = false;
-	
 
 	public override void BeginPosses(GameObject pawn, ScriptableCharacter characterData)
 	{
@@ -33,6 +33,12 @@ public class PlayerController : ControllerBase
 	private void SetupGameCharacter(GameObject pawn)
 	{
 		gameCharacter = pawn.AddComponent<PlayerGameCharacter>();
+		LoadingChecker.Instance.Tasks.Add(Task.Run(async () => {
+			while (!gameCharacter.IsInitialized)
+			{
+				await Task.Yield();
+			}
+		}));
 		gameCharacter.CharacterData = characterData;
 		gameCharacter.IsPlayerCharacter = true;
 		gameCharacter.CustomAwake();

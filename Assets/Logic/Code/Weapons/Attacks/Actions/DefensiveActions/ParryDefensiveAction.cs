@@ -50,7 +50,8 @@ public class ParryDefensiveAction : AttackBase
 
 	public override void Init(GameCharacter gameCharacter, WeaponBase weapon, InitAction initAction = null)
 	{
-		base.Init(gameCharacter, weapon, () => {
+		base.Init(gameCharacter, weapon, () =>
+		{
 			if (updateHelper == null)
 			{
 				GameObject go = new GameObject(GameCharacter.name + " UpdateHelper | ParryAction");
@@ -60,9 +61,14 @@ public class ParryDefensiveAction : AttackBase
 			parryTimer = new Ultra.Timer();
 			parryTimer.onTimerFinished += OnParryTimerFinished;
 
-			parryEffectPool = new ParticleSystemPool(attackData.parryParticleEffect, new GameObject(gameCharacter.name + " ParryEffect Holder"), 2);
-			blockEffectPool = new ParticleSystemPool(attackData.blockParticleEffect, new GameObject(gameCharacter.name + " BlockEffect Holder"), 2);
+			SetupParticlePools(gameCharacter);
 		});
+	}
+
+	private void SetupParticlePools(GameCharacter gameCharacter)
+	{
+		parryEffectPool = new ParticleSystemPool(attackData.parryParticleEffect, gameCharacter.CreateHolderChild(gameCharacter.name + " ParryEffect Holder"), 2);
+		blockEffectPool = new ParticleSystemPool(attackData.blockParticleEffect, gameCharacter.CreateHolderChild(gameCharacter.name + " BlockEffect Holder"), 2);
 	}
 
 	public override void StartAction()
@@ -72,6 +78,7 @@ public class ParryDefensiveAction : AttackBase
 		parryTimer.Start(attackData.parryTime);
 		GameCharacter.StateMachine.AddLazyState(EGameCharacterState.DefensiveAction);
 		Weapon.AttackAnimType = EAttackAnimType.Default;
+		GameCharacter.AnimController.CrossFadeToNextState(GameCharacter.AnimController.DefensiveActionStateHash, 0.2f);
 		GameCharacter.AnimController.SetDefensiveAction(attackData.defensiveAction);
 
 		newDir = GameCharacter.transform.rotation;

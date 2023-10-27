@@ -25,7 +25,7 @@ public class AttackAnimationData
 		{
 			if (actionCopie == null)
 			{
-				actionCopie = action.instance.CreateCopy();
+				actionCopie = action?.instance?.CreateCopy();
 			}
 			return actionCopie;
 		}

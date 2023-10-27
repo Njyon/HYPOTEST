@@ -15,10 +15,14 @@ public class GameCharacterDefensiveActionHoldPluginState : AGameCharacterPluginS
     public override void Active()
 	{
 		base.Active();
+		if (GameCharacter != null && GameCharacter.StateMachine != null)
+			GameCharacter.StateMachine.onStateChanged += OnStateChanged;
 	}
 
 	public override void Deactive()
 	{
+		if (GameCharacter != null && GameCharacter.StateMachine != null)
+			GameCharacter.StateMachine.onStateChanged -= OnStateChanged;
 		base.Deactive();
 	}
 
@@ -40,5 +44,13 @@ public class GameCharacterDefensiveActionHoldPluginState : AGameCharacterPluginS
 	public override void ExecuteState(float deltaTime)
 	{
 	
+	}
+
+	void OnStateChanged(IState<EGameCharacterState> newState, IState<EGameCharacterState> oldState)
+	{
+		if (newState != null && newState.GetStateType() != EGameCharacterState.DefensiveAction)
+		{
+			GameCharacter.EventComponent.AddEvent(new DefensiveEvent(GameCharacter));
+		}
 	}
 }

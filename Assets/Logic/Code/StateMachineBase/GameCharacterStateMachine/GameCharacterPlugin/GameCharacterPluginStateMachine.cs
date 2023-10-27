@@ -15,6 +15,7 @@ public enum EPluginCharacterState
 	DefensiveActionHold,
 	Parry,
 	Block,
+	IFrame,
 }
 
 public class GameCharacterPluginStateMachine : PluginStateMachineBase<EPluginCharacterState>
@@ -39,6 +40,7 @@ public class GameCharacterPluginStateMachine : PluginStateMachineBase<EPluginCha
 			case EPluginCharacterState.DefensiveActionHold: newPluginState = new GameCharacterDefensiveActionHoldPluginState(this.gameCharacter, this); break;
 			case EPluginCharacterState.Parry: newPluginState = new GameCharacterParryPluginState(this.gameCharacter, this); break;
 			case EPluginCharacterState.Block: newPluginState = new GameCharacterBlockPluginState(this.gameCharacter, this); break;
+			case EPluginCharacterState.IFrame: newPluginState = new GameCharacterIFramePluginState(this.gameCharacter, this); break;
 			default:
 				Ultra.Utilities.Instance.DebugErrorString("GameCharacterPluginStateMaschine", "CreatePluginState", "PluginState has no Implementation!");
 				break;

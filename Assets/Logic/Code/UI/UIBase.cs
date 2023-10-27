@@ -32,7 +32,10 @@ public abstract class UIBase : MonoBehaviour
 	/// </summary>
 	protected void LoadedUI()
 	{
-		string name = UIManager.Instance.UIStack.Pop().name;
-		UIManager.Instance.UIStack.Push(new UIStackELement(name, this));
+		if (UIManager.Instance.UIStack != null && UIManager.Instance.UIStack.Count > 0)
+		{
+			string name = UIManager.Instance.UIStack.Pop().name;
+			UIManager.Instance.UIStack.Push(new UIStackELement(name, this));
+		}
 	}
 }

@@ -39,6 +39,9 @@ public class GameCharacter : MonoBehaviour , IDamage
 	Vector3 lastDir;
 	int ignoreCharacterLayer;
 	int characterLayer;
+	ParticleSystemPool dodgeParticleSystemPool;
+	ParticleSystemPool succsessfullDodgeParticlePool;
+	GameObject dataWorldHolder;
 
 	bool isInitialized = false;
 	public bool IsInitialized { get { return isInitialized; } }
@@ -67,6 +70,9 @@ public class GameCharacter : MonoBehaviour , IDamage
 	public Vector3 LastDir { get { return lastDir; } set { lastDir = value; } }
 	public int IgnoreCharacterLayer { get { return ignoreCharacterLayer; } }
 	public int CharacterLayer { get { return characterLayer; } }
+	public ParticleSystemPool SuccsessfullDodgeParticlePool { get { return succsessfullDodgeParticlePool; } }
+	public ParticleSystemPool DodgeParticleSystemPool { get { return dodgeParticleSystemPool; } }
+	public GameObject DataWorldHolder { get { return dataWorldHolder; } }
 
 #if UNITY_EDITOR
 	//[DebugGUIGraph(min: 0, max: 9, r: 0, g: 1, b: 1, autoScale: true)]
@@ -158,9 +164,29 @@ public class GameCharacter : MonoBehaviour , IDamage
 
 		staggerComponent = new StaggerComponent(this, gameCharacterData.StaggerTime, gameCharacterData.MaxStaggerValue, gameCharacterData.MaxStaggerValue);
 
+		if (dataWorldHolder == null)
+		{
+			dataWorldHolder = new GameObject(this.name + " World Data Holder");
+		}
+
+		SetupPartilcePools();
+
 		PluginStateMachine.AddPluginState(EPluginCharacterState.LookInVelocityDirection);
 
 		isInitialized = true;
+	}
+
+	private void SetupPartilcePools()
+	{
+		succsessfullDodgeParticlePool = new ParticleSystemPool(gameCharacterData.SuccsessfullDodgeParticleEffect, CreateHolderChild(this.name + " SuccsessfullDodgeEffect Holder"), 2);
+		dodgeParticleSystemPool = new ParticleSystemPool(gameCharacterData.DodgeParticleEffect, CreateHolderChild(this.name + " DodgeEffect Holder"), 2);
+	}
+
+	public GameObject CreateHolderChild(string name)
+	{
+		var succsessfullDodgeParticlePoolHolder = new GameObject(this.name + name);
+		succsessfullDodgeParticlePoolHolder.transform.parent = dataWorldHolder.transform;
+		return succsessfullDodgeParticlePoolHolder;
 	}
 
 	protected void OnDestroy()
@@ -180,7 +206,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 
 	protected void Update()
 	{
-		if (!IsInitialized) return;
+		if (!IsInitialized || !LoadingChecker.Instance.FinishLoading) return;
 		freezTimer.Update(Time.deltaTime);
 		//movementInput.x = 1;
 		EventComponent.Update(Time.deltaTime);
@@ -195,6 +221,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 		if (StaggerComponent != null) StaggerComponent.Update(Time.deltaTime);
 
 
+#if UNITY_EDITOR
 		// Debug
 		if (IsPlayerCharacter)
 		{
@@ -211,6 +238,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 		if (IsPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen("CurrentCharacterState: " + StateMachine.GetCurrentStateType().ToString(), 0f, StringColor.Teal, 100, DebugAreas.Movement);
 		if (IsPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen("Current Ground Angle: " + MovementComponent.GetPossibleGroundAngle(), 0f, StringColor.Teal, 200, DebugAreas.Misc);
 		if (!IsPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen("AICurrentCharacterState: " + StateMachine.GetCurrentStateType().ToString(), 0f, StringColor.Brown, 200, DebugAreas.AI);
+#endif
 	}
 
 	private void LateUpdate()
@@ -249,7 +277,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 
 	public void StartCameraShake(AnimationEvent evt)
 	{
-		CameraController.Instance.ShakeCamerea(evt.intParameter);
+		CameraController.Instance?.ShakeCamerea(evt.intParameter);
 	}
 
 	public void DefensiveActionStart(AnimationEvent evt)
@@ -262,6 +290,16 @@ public class GameCharacter : MonoBehaviour , IDamage
 		CombatComponent?.CurrentWeapon.DefensiveActionEnd();
 	}
 
+	public void StartIFrameWindow(AnimationEvent evt)
+	{
+		PluginStateMachine?.AddPluginState(EPluginCharacterState.IFrame);
+	}
+
+	public void EndIFrameWindow(AnimationEvent evt)
+	{
+		PluginStateMachine?.RemovePluginState(EPluginCharacterState.IFrame);
+	}
+
 	#endregion
 
 	public void DoDamage(GameCharacter damageInitiator, float damage)
@@ -270,17 +308,23 @@ public class GameCharacter : MonoBehaviour , IDamage
 		{
 			if (CheckForSameTeam(damageInitiator.Team)) return;
 		}
-		if (PluginStateMachine.IsPluginStatePlugedIn(EPluginCharacterState.Parry)) 
+		if (PluginStateMachine.ContainsPluginState(EPluginCharacterState.IFrame))
 		{
+			CombatComponent.SuccsessfullDodge(damageInitiator, damage);
 			damage = 0;
-			CombatComponent.CurrentWeapon.CurrentAction.Action.SuccessfullParry(damageInitiator, damage);
 			return;
-		} else if(PluginStateMachine.IsPluginStatePlugedIn(EPluginCharacterState.Block))
+		}
+		else if (PluginStateMachine.ContainsPluginState(EPluginCharacterState.Parry)) 
+		{
+			CombatComponent.CurrentWeapon.CurrentAction.Action.SuccessfullParry(damageInitiator, damage);
+			damage = 0;
+			return;
+		} else if(PluginStateMachine.ContainsPluginState(EPluginCharacterState.Block))
 		{
 			if (damage > 0)
 			{
-				damage = damage / 2f;
 				CombatComponent.CurrentWeapon.CurrentAction.Action.SuccessfullBlock(damageInitiator, damage);
+				damage = damage / 2f;
 			}
 		}
 

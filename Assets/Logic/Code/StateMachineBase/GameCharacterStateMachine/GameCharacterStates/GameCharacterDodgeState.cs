@@ -6,11 +6,15 @@ public class GameCharacterDodgeState : AGameCharacterState
 {
 	Vector3 targetPosition;
 	Vector3 startPosition;
+	Ultra.Timer iFrameTimer;
 	Ultra.Timer minDodgeTimeTimer;
 	float minDodgeTime = 0.2f;
 	public GameCharacterDodgeState(GameCharacterStateMachine stateMachine, GameCharacter gameCharacter) : base (stateMachine, gameCharacter)
 	{
 		minDodgeTimeTimer = new Ultra.Timer();	
+		iFrameTimer = new Ultra.Timer(gameCharacter.GameCharacterData.IFrameTime, true);
+		iFrameTimer.onTimerStarted += OnTimerStarted;
+		iFrameTimer.onTimerFinished += OnTimerFinished;
 	}
 
     public override void StartState(EGameCharacterState oldState)
@@ -22,8 +26,14 @@ public class GameCharacterDodgeState : AGameCharacterState
 		GameCharacter.MovementComponent.onMoveCollisionFlag += OnMoveCollisionFlag;
 		Ultra.Utilities.DrawArrow(GameCharacter.transform.position, Vector3.up, 2f, Color.green, 2f, 100, DebugAreas.Combat);
 		minDodgeTimeTimer.Start(minDodgeTime);
+		iFrameTimer.Start();
 
 		GameCharacter.AnimController.InDodge = true;
+
+		var ps = GameCharacter.DodgeParticleSystemPool.GetValue();
+		ps.transform.position = GameCharacter.MovementComponent.CharacterCenter;
+		ps.transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
+		GameCharacter.AnimController.InterpSecondaryMotionLayerWeight(0, 10f);
 	}
 
 	public override EGameCharacterState GetStateType()
@@ -50,6 +60,7 @@ public class GameCharacterDodgeState : AGameCharacterState
 	public override void ExecuteState(float deltaTime)
 	{
 		minDodgeTimeTimer.Update(deltaTime);
+		iFrameTimer.Update(deltaTime);
 
 
 		if (Vector3.Distance(GameCharacter.transform.position, startPosition) >= GameCharacter.GameCharacterData.DodgeDistance)
@@ -79,6 +90,13 @@ public class GameCharacterDodgeState : AGameCharacterState
 	{
 		GameCharacter.MovementComponent.MovementVelocity = Vector3.zero;
 		GameCharacter.AnimController.InDodge = false;
+		GameCharacter.AnimController.InterpSecondaryMotionLayerWeight(1, 10f);
+
+		if (iFrameTimer.IsRunning)
+		{
+			iFrameTimer.Stop();
+			OnTimerFinished();
+		}
 	}
 
 	void OnMoveCollisionFlag(CollisionFlags collisionFlag)
@@ -88,5 +106,17 @@ public class GameCharacterDodgeState : AGameCharacterState
 			GameCharacter.RequestBestCharacterState();
 			Ultra.Utilities.DrawArrow(GameCharacter.transform.position, Vector3.up, 2f, Color.cyan, 2f, 100, DebugAreas.Combat);
 		}
+	}
+
+	void OnTimerStarted(float lengh)
+	{
+		if (GameCharacter != null && GameCharacter.PluginStateMachine != null)
+			GameCharacter.PluginStateMachine.AddPluginState(EPluginCharacterState.IFrame);
+	}
+
+	void OnTimerFinished()
+	{
+		if (GameCharacter != null && GameCharacter.PluginStateMachine != null)
+			GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.IFrame);
 	}
 }

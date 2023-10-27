@@ -7,7 +7,7 @@ public class SceneLoaderManager : Singelton<SceneLoaderManager>
 {
 	public void LoadStoryLevel01()
 	{
-		LoadScene("StoryLevel01");
+		LoadScene("TestLevelMain01");
 	}
 
 	public void LoadTrainingsMap()

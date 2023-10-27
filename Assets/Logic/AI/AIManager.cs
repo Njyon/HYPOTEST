@@ -4,6 +4,7 @@ using Megumin.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
@@ -59,6 +60,9 @@ public class AIManager : Singelton<AIManager>
 	public bool NoMoreBehaviorTrees => behaviorTreeRunners.Count <= 0;
 	public bool IsBehaviorTreeStackInit => behaviorTreeRunners != null;
 	int behaviorStackMinSize = 10;
+	int behaviourTreeInits = 0;
+	int createdBehaviourTrees = 0;
+	public bool AllBehaviourTreesInit { get { return behaviourTreeInits >= (createdBehaviourTrees < behaviorStackMinSize ? behaviorStackMinSize : createdBehaviourTrees); } }
 
 	public int MeleeCharacterAttackAmount { get { return meleeCharacterAttackAmount; } }
 	public int ManagableAIsCount { get { return managableAIs.Count; } }
@@ -304,6 +308,7 @@ public class AIManager : Singelton<AIManager>
 		BehaviorTreeRunner btr = behaviorTreeRunners.Pop();
 		btr.BehaviorTreeAsset = characterData.behaviourTree;
 		btr.onBehaviourTreeInit += onBTRInit;
+		btr.gameObject.SetActive(true);
 		btr.EnableTree();
 		return btr;
 	}
@@ -312,12 +317,19 @@ public class AIManager : Singelton<AIManager>
 	{
 		btr.DisableTree();
 		behaviorTreeRunners.Push(btr);
+		btr.gameObject.SetActive(false);
 	}
 
 	public void InitBehaviorTreeStack()
 	{
 		TypeCache.CacheAllTypes();
 		behaviorTreeRunners = new Stack<BehaviorTreeRunner>();
+		LoadingChecker.Instance.Tasks.Add(Task.Run(async () => {
+			while (!AllBehaviourTreesInit)
+			{
+				await Task.Yield();
+			}
+		}));
 		for (int i = 0; i < behaviorStackMinSize; i++)
 		{
 			SpawnBehaviorTreeRunner(i);
@@ -329,6 +341,7 @@ public class AIManager : Singelton<AIManager>
 		GameObject go = new GameObject("BehaviorTreeRunner_" + behaviorTreeRunners.Count);
 		go.transform.parent = BTRParent.transform;
 		BehaviorTreeRunner btr = go.AddComponent<BehaviorTreeRunner>();
+		createdBehaviourTrees++;
 		btr.RunOption = new Megumin.GameFramework.AI.RunOption();
 		btr.InitOption = new Megumin.GameFramework.AI.InitOption();
 		btr.InitOption.DelayRandomFrame = new(true, 15);
@@ -340,8 +353,20 @@ public class AIManager : Singelton<AIManager>
 				btr.EnableTree();
 			}
 		}
-		btr.DisableTree();
 		behaviorTreeRunners.Push(btr);
+		if (btr.BehaviorTreeAsset != null)
+			btr.onBehaviourTreeInit += OnBehaviourTreeInit;
+		else
+			OnBehaviourTreeInit(btr);
+	}
+
+	async void OnBehaviourTreeInit(BehaviorTreeRunner btr)
+	{
+		btr.onBehaviourTreeInit -= OnBehaviourTreeInit;
+		behaviourTreeInits++;
+		await new WaitForEndOfFrame();
+		if (behaviorTreeRunners.Contains(btr))
+			btr.gameObject.SetActive(false);
 	}
 }
 

@@ -554,15 +554,25 @@ MonoBehaviour:
   handLObjectPoint: {fileID: 3408676625142400146}
   airToZeroVelYInAttackSpeed: 5
   airToZeroVelXInAttackSpeed: 5
-  health: 100
+  health: 1000
   maxStaggerValue: 0
   staggerTime: 3
   root: {fileID: 2408333745932806949}
+  headBoneName: head.x
   characterDetectionRange: 30
   combatAttackListLenght: 10
+  iFramesTime: 0.2
+  succsessfullDodgeParticleEffect: {fileID: 315728508828981994, guid: 20e50266e9880014f9e14ec6717295a3,
+    type: 3}
+  dodgeParticleEffect: {fileID: 1013969931334927654, guid: 13f79e72d34d8014db55079caae75cd3,
+    type: 3}
   meshRenderer: {fileID: 3981049287439554516}
   rigType: 1
   enemyInfoOffset: {x: 0, y: 5, z: 0}
+  minCharacterDistance: 1
+  attackFeedbackOffset: {x: 0, y: 0, z: 0}
+  dodgeDistance: 5
+  dodgeSpeed: 20
 --- !u!114 &483579400
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -570,7 +580,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1170870102689315339}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6240ef4d089e05d4bac98ba7902e6236, type: 3}
   m_Name: 

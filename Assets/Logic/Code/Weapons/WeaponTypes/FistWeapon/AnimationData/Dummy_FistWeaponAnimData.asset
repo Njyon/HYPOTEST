@@ -15,7 +15,7 @@ MonoBehaviour:
   GroundAttacks:
   - action:
       instance:
-        rid: 3239357409519206416
+        rid: 3239357566468227080
     data:
       showProperties: 0
       hitDetectionType: 1
@@ -300,15 +300,6 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 3239357409519206416
-      type: {class: DefaultAttack, ns: , asm: Assembly-CSharp}
-      data:
-        attackData:
-          Damage: 10
-          Rating: 100
-          Discharge: 100
-          attackAnimation: {fileID: -2426589905315972437, guid: a20ed1cb39892024fa4d3602ce6d5cdb,
-            type: 3}
     - rid: 3239357409519206417
       type: {class: DefaultAttack, ns: , asm: Assembly-CSharp}
       data:
@@ -459,7 +450,7 @@ MonoBehaviour:
       type: {class: ParryDefensiveAction, ns: , asm: Assembly-CSharp}
       data:
         attackData:
-          Damage: 10
+          Damage: 100
           Rating: 100
           Discharge: 100
           defensiveAction: {fileID: 2578224585427505389, guid: 67cc6116e5cb439499f6bbcf9954cae1,
@@ -475,3 +466,18 @@ MonoBehaviour:
           blockParticleEffect: {fileID: 8857593053734190051, guid: f8625e8e32db4b94eb52cfbd9a0027ef,
             type: 3}
           parryTime: 0.3
+          addParryTimeOnParry: 0.1
+          parryPoints: 20
+          blockPoints: -10
+          rotSpeed: 10
+          damageMinMultiplier: 0.5
+          damageMaxMultiplier: 3
+    - rid: 3239357566468227080
+      type: {class: DefaultAttack, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          attackAnimation: {fileID: -2426589905315972437, guid: a20ed1cb39892024fa4d3602ce6d5cdb,
+            type: 3}

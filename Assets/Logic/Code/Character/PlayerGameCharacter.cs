@@ -21,6 +21,20 @@ public class PlayerGameCharacter : GameCharacter
 		combatRatingComponent = new CombatRatingComponent(0);
 		combatRatingComponent.Init(this);
 
+		if (!LoadingChecker.Instance.FinishLoading)
+		{
+			LoadingChecker.Instance.onLoadingFinished += FinsihLoading;
+		}
+		else
+		{
+			FinsihLoading();
+		}
+	}
+
+	void FinsihLoading()
+	{
+		LoadingChecker.Instance.onLoadingFinished -= FinsihLoading;
+
 		UIManager.Instance.onAllUIsUnloaded += OnAllUIsUnloaded;
 		UIManager.Instance.UnloadAll();
 	}
