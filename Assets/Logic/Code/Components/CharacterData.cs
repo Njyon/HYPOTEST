@@ -67,6 +67,9 @@ public class GameCharacterData : MonoBehaviour
 	[Header("Combat")]
 	[SerializeField] float characterDetectionRange = 30f;
 	[SerializeField] int combatAttackListLenght = 10;
+	[SerializeField] float iFramesTime = 0.2f;
+	[SerializeField] GameObject succsessfullDodgeParticleEffect;
+	[SerializeField] GameObject dodgeParticleEffect;
 
 	[Header("Data")]
 	[SerializeField] SkinnedMeshRenderer meshRenderer;
@@ -80,6 +83,10 @@ public class GameCharacterData : MonoBehaviour
 
 	[Header("Feedback")]
 	[SerializeField] Vector3 attackFeedbackOffset = Vector3.zero;
+
+	[Header("Dodge")]
+	[SerializeField] float dodgeDistance = 10f;
+	[SerializeField] float dodgeSpeed = 10f;
 
 	public float MaxMovementSpeed { get { return maxMovementSpeed; } }
 	public float MovmentGravity { get { return movmentGravity; } }
@@ -126,6 +133,9 @@ public class GameCharacterData : MonoBehaviour
 
 	public float CharacterDetectionRange { get { return characterDetectionRange; } }
 	public int CombatAttackListLenght { get { return combatAttackListLenght; } }
+	public float IFrameTime { get { return iFramesTime; } }
+	public GameObject SuccsessfullDodgeParticleEffect { get { return succsessfullDodgeParticleEffect; } }
+	public GameObject DodgeParticleEffect { get { return dodgeParticleEffect; } }
 
 	public SkinnedMeshRenderer MeshRenderer { get { return meshRenderer; } }
 
@@ -135,4 +145,7 @@ public class GameCharacterData : MonoBehaviour
 	public float MinCharacterDistance { get { return minCharacterDistance; } }
 
 	public Vector3 AttackFeedbackOffset { get { return attackFeedbackOffset; } }
+
+	public float DodgeDistance { get { return dodgeDistance; } }
+	public float DodgeSpeed { get { return dodgeSpeed; } }
 }

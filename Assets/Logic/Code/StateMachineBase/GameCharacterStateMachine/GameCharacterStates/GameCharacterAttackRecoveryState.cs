@@ -27,6 +27,7 @@ public class GameCharacterAttackRecoveryState : AGameCharacterState
 			case EGameCharacterState.DefensiveAction: return EGameCharacterState.DefensiveAction;
 			case EGameCharacterState.FlyAway: return EGameCharacterState.FlyAway;
 			case EGameCharacterState.InAir: return EGameCharacterState.InAir;
+			case EGameCharacterState.Dodge: return EGameCharacterState.Dodge;
 			default: break;
 		}
 

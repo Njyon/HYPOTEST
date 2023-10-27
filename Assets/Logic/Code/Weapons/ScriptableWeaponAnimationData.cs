@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -15,13 +16,24 @@ public enum EWeaponHandType
 [Serializable]
 public class AttackAnimationData
 {
-	public AnimationClip clip;
+	public ClassInstance<ActionBase> action = new ClassInstance<ActionBase>();
+	private ActionBase actionCopie;
+
+	public ActionBase Action
+	{
+		get
+		{
+			if (actionCopie == null)
+			{
+				actionCopie = action?.instance?.CreateCopy();
+			}
+			return actionCopie;
+		}
+	}
 	public AttackAnimationHitDetectionData data;
-	public AnimationClip holdAnimation;
-	public AnimationClip triggerAnimation;
-	public AimBlendTypes aimBlendTypes;
+	public SerializableDictionary<EExplicitAttackType, int> combatBranches;
+	public SerializableDictionary<EExplicitAttackType, int> timedCombatBrenches;
 	public List<GameObject> particleList;
-	public AttackAnimationExtraData extraData;
 }
 
 [Serializable]
@@ -121,4 +133,62 @@ public class ScriptableWeaponAnimationData : ScriptableObject
 	public float ArmRMovingWeight = 0.5f;
 	[Range(0f, 1f)]
 	public float ArmLMovingWeight = 0.5f;
+
+	//bool isValidtating = false;
+
+	public void OnValidate()
+	{
+//#if UNITY_EDITOR
+//		if (EditorApplication.isUpdating) return;
+//#endif
+//		if (isValidtating) return;
+//		isValidtating = true;
+//		foreach (AttackAnimationData AnimData in GroundAttacks)
+//		{
+//			AnimData.attackDataHolder.SetAttackRef();
+//		}
+//		foreach (AttackAnimationData AnimData in GroundUpAttacks)
+//		{
+//			AnimData.attackDataHolder.SetAttackRef();
+//		}
+//		foreach (AttackAnimationData AnimData in GroundDownAttacks)
+//		{
+//			AnimData.attackDataHolder.SetAttackRef();
+//		}
+//		foreach (AttackAnimationData AnimData in GroundDirectionAttacks)
+//		{
+//			AnimData.attackDataHolder.SetAttackRef();
+//		}
+//		
+//		foreach (AttackAnimationData AnimData in AirAttacks)
+//		{
+//			AnimData.attackDataHolder.SetAttackRef();
+//		}
+//		foreach (AttackAnimationData AnimData in AirUpAttacks)
+//		{
+//			AnimData.attackDataHolder.SetAttackRef();
+//		}
+//		foreach (AttackAnimationData AnimData in AirDownAttacks)
+//		{
+//			AnimData.attackDataHolder.SetAttackRef();
+//		}
+//		foreach (AttackAnimationData AnimData in AirDirectionAttacks)
+//		{
+//			AnimData.attackDataHolder.SetAttackRef();
+//		}
+//		
+//		foreach (AttackAnimationData AnimData in DefensiveAction)
+//		{
+//			AnimData.attackDataHolder.SetAttackRef();
+//		}
+//
+//#if UNITY_EDITOR
+//		EditorUtility.SetDirty(this);
+//		if (!EditorApplication.isUpdating)
+//		{
+//			//AssetDatabase.SaveAssetIfDirty(this);
+//		} 
+//#endif
+//		isValidtating = false;
+	}
 }

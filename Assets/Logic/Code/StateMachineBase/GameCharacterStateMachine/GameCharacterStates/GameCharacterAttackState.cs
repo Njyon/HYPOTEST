@@ -1,3 +1,4 @@
+using Megumin.Binding;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
@@ -12,35 +13,39 @@ public class GameCharacterAttackState : AGameCharacterState
 	float currentYPosAnimCurve;
 	Quaternion newDir;
 	Ultra.Timer backupTimer = null;
-	int layerMask;
+	Ultra.Timer delayedAnimationStateCheckTimer = null;
 
 	public GameCharacterAttackState(GameCharacterStateMachine stateMachine, GameCharacter gameCharacter) : base (stateMachine, gameCharacter)
 	{
 		backupTimer = new Ultra.Timer();
+		delayedAnimationStateCheckTimer = new Ultra.Timer(0.3f, true);
 		backupTimer.onTimerFinished += OnBackupTimerFinished;
+		delayedAnimationStateCheckTimer.onTimerFinished += OnDelayedAnimationStateCheckTimerFinished;
 	}
 
     public override void StartState(EGameCharacterState oldState)
 	{
 		backupTimer.Start(5f);
 
-		layerMask = LayerMask.GetMask("Character");
-
 		switch (GameCharacter.CombatComponent.CurrentWeapon.AttackAnimType)
 		{
 			case EAttackAnimType.Combat3Blend: 
 				GameCharacter.AnimController.InCombat3Blend = true;
-				GameCharacter.CombatComponent.AttackTimer.Start(GameCharacter.CombatComponent.CurrentWeapon.CurrentAttack.aimBlendTypes.blendAnimations.midAnimation.length); 
 				break;
 			case EAttackAnimType.AimBlendSpace: 
 				GameCharacter.AnimController.InAimBlendTree = true;
-				GameCharacter.CombatComponent.AttackTimer.Start(GameCharacter.CombatComponent.CurrentWeapon.CurrentAttack.aimBlendTypes.blendAnimations.midAnimation.length); 
+				//GameCharacter.CombatComponent.AttackTimer.Start(GameCharacter.CombatComponent.CurrentWeapon.CurrentAction.aimBlendTypes.blendAnimations.midAnimation.length); 
 				break;
 			default:
 				GameCharacter.AnimController.InAttack = true;
-				GameCharacter.CombatComponent.AttackTimer.Start(GameCharacter.CombatComponent.CurrentWeapon.CurrentAttack.clip.length); 
+				GameCharacter.AnimController.InCombat3Blend = false;
 				break;
 		}
+		delayedAnimationStateCheckTimer.Start();
+
+		GameCharacter.AnimController.TriggerAttack = false;
+		GameCharacter.AnimController.HoldAttack = false;
+
 		//GameCharacter.MovementComponent.UseGravity = false;
 		GameCharacter.MovementComponent.VariableGravityMultiplierOverTime = GameCharacter.GameCharacterData.GravityMultiplierInAttack;
 		GameCharacter.AnimController.InterpSecondaryMotionLayerWeight(0, 10f);
@@ -96,6 +101,7 @@ public class GameCharacterAttackState : AGameCharacterState
 	public override void ExecuteState(float deltaTime)
 	{
 		backupTimer.Update(deltaTime);
+		delayedAnimationStateCheckTimer.Update(deltaTime);
 
 		GameCharacter.CombatComponent.CurrentWeapon.PreAttackStateLogic(deltaTime);
 		RotateCharacter(newDir);
@@ -130,7 +136,7 @@ public class GameCharacterAttackState : AGameCharacterState
 
 	private void CheckIfACharacterIsToCloseToMoveTo(out bool isValidHit, out RaycastHit validHit)
 	{
-		float lenght = GameCharacter.CombatComponent.CurrentWeapon.CurrentAttack.extraData.stopMovingRange;
+		float lenght = GameCharacter.CombatComponent.CurrentWeapon.CurrentAction.Action.GetStopMovingRange();
 		Vector3 currentDir = Vector3.zero;
 		if (GameCharacter.MovementInput.x != 0)
 		{
@@ -141,7 +147,7 @@ public class GameCharacterAttackState : AGameCharacterState
 			currentDir = GameCharacter.transform.forward;
 		}
 		currentDir = currentDir * lenght;
-		RaycastHit[] hits = Ultra.Utilities.CapsulCastAll(GameCharacter.MovementComponent.CharacterCenter, GameCharacter.MovementComponent.Height, GameCharacter.MovementComponent.Radius, currentDir, Color.red, 100, DebugAreas.Combat, layerMask, QueryTriggerInteraction.Ignore);
+		RaycastHit[] hits = Ultra.Utilities.CapsulCastAll(GameCharacter.MovementComponent.CharacterCenter, GameCharacter.MovementComponent.Height, GameCharacter.MovementComponent.Radius, currentDir, Color.red, 100, DebugAreas.Combat, GameCharacter.CharacterLayer, QueryTriggerInteraction.Ignore);
 
 		isValidHit = false;
 		validHit = new();
@@ -178,5 +184,28 @@ public class GameCharacterAttackState : AGameCharacterState
 	void OnBackupTimerFinished()
 	{
 		GameCharacter.StateMachine.RequestStateChange(EGameCharacterState.AttackRecovery);
+	}
+	void OnDelayedAnimationStateCheckTimerFinished()
+	{
+		bool isValidAnimState = false;
+		switch (GameCharacter.CombatComponent.CurrentWeapon.AttackAnimType)
+		{
+			case EAttackAnimType.Combat3Blend:
+				isValidAnimState = GameCharacter.AnimController.IsInValid3BlendAttackState();
+				break;
+			case EAttackAnimType.AimBlendSpace:
+				isValidAnimState = GameCharacter.AnimController.IsInValid3BlendAimState();
+				break;
+			default:
+				isValidAnimState = GameCharacter.AnimController.IsInValidAttackState();
+				break;
+		}
+		if (!isValidAnimState) { 
+			if (!GameCharacter.AnimController.IsInValidAttackTriggerState() && !GameCharacter.AnimController.IsInValidAttackHoldState())
+			{
+				GameCharacter.RequestBestCharacterState();
+				Ultra.Utilities.Instance.DebugErrorString("GameCharacterAttackState", "OnDelayedAnimationStateCheckTimerFinished", "In Attack but not in Valid Attack State, missing checks? or Missing Transitions");
+			}
+		}
 	}
 }

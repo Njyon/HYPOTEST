@@ -33,22 +33,14 @@ public class BTAttack : BTHyppoliteActionNodeBase
 		GameCharacter.HorizontalMovementInput(dir.x);
 		GameCharacter.VerticalMovmentInput(dir.y);
 		
-		if (canAttackInAir && !GameCharacter.MovementComponent.IsGrounded)
+		if (GameCharacter.MovementComponent.IsGrounded || (canAttackInAir && !GameCharacter.MovementComponent.IsGrounded))
 		{
 			GameCharacter.CombatComponent.Attack(AttackType);
 			if (showFeedback)
 				GameCharacter.ShowAttackFeedback();
 
 			attackStartet = true;
-		}
-		else if (GameCharacter.MovementComponent.IsGrounded)
-		{
-			GameCharacter.CombatComponent.Attack(AttackType);
-			if (showFeedback)
-				GameCharacter.ShowAttackFeedback();
-
-			attackStartet = true;
-		}else
+		} else
 		{
 			cantAttack = true;
 		}

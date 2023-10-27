@@ -46,9 +46,9 @@ public abstract class AGameCharacterState : IState<EGameCharacterState>
 	{
 		float yPosCurve = GameCharacter.AnimController.GetUpMovementCurve;
 		float yPosFromAnimCurveDelta = 0;
-		if (yPosCurve > 0 && GameCharacter.CombatComponent.CurrentWeapon != null && GameCharacter.CombatComponent.CurrentWeapon.CurrentAttack != null)
+		if (yPosCurve > 0 && GameCharacter.CombatComponent.CurrentWeapon != null && GameCharacter.CombatComponent.CurrentWeapon.CurrentAction != null)
 		{
-			float yPosFromAnimCurve = math.remap(0, 1, 0, GameCharacter.CombatComponent.CurrentWeapon.CurrentAttack.extraData.maxVerticalMovement, yPosCurve);
+			float yPosFromAnimCurve = math.remap(0, 1, 0, GameCharacter.CombatComponent.CurrentWeapon.CurrentAction.Action.MaxVerticalMovement(), yPosCurve);
 			yPosFromAnimCurveDelta = yPosFromAnimCurve - currentYPosAnimCurve;
 			currentYPosAnimCurve = yPosFromAnimCurve;
 

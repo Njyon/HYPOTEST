@@ -47,7 +47,7 @@ public class IntStringDictionaryDrawer : PropertyDrawer
         {
             keysProperty.arraySize++;
             valuesProperty.arraySize++;
-            WriteSerialzedProperty(keysProperty.GetArrayElementAtIndex(keysProperty.arraySize - 1));
+			WriteSerialzedProperty(keysProperty.GetArrayElementAtIndex(keysProperty.arraySize - 1));
             WriteSerialzedProperty(valuesProperty.GetArrayElementAtIndex(valuesProperty.arraySize - 1));
             keysProperty.GetArrayElementAtIndex(keysProperty.arraySize - 1).serializedObject.ApplyModifiedProperties();
             valuesProperty.GetArrayElementAtIndex(valuesProperty.arraySize - 1).serializedObject.ApplyModifiedProperties();
@@ -133,7 +133,7 @@ public class IntStringDictionaryDrawer : PropertyDrawer
         return true;
     }
 
-    public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+	public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
         SerializedProperty keysProperty = property.FindPropertyRelative("keys");
         return (keysProperty.arraySize + 1) * EditorGUIUtility.singleLineHeight;

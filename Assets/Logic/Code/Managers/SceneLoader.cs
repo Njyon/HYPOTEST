@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System;
+using System.IO;
 #if UNITY_EDITOR
 using UnityEditor.SceneManagement;
 #endif
@@ -11,7 +13,6 @@ public class SceneLoader : MonoBehaviour
 {
 	public bool isMasterLoader = true;
 	[SerializeField] List<string> scenes = new List<string>();
-	List<AsyncOperation> asyncOperations = new List<AsyncOperation>();
 
 	void Awake()
 	{
@@ -21,8 +22,9 @@ public class SceneLoader : MonoBehaviour
 		{
 			if (Application.isPlaying)
 			{
-				if (SceneManager.GetSceneByPath(scenes[i]).IsValid()) continue;
-				asyncOperations.Add(SceneManager.LoadSceneAsync(scenes[i], LoadSceneMode.Additive));
+				string sceneName = System.IO.Path.GetFileNameWithoutExtension(scenes[i]);
+				if (SceneManager.GetSceneByName(sceneName).IsValid() || SceneManager.GetSceneByPath(scenes[i]).IsValid()) continue;
+				LoadingChecker.Instance.AsyncOperations.Add(SceneManager.LoadSceneAsync(System.IO.Path.GetFileNameWithoutExtension(scenes[i]), LoadSceneMode.Additive));
 			}
 #if UNITY_EDITOR
 			else
@@ -30,31 +32,30 @@ public class SceneLoader : MonoBehaviour
 #endif
 		}
 		if (Application.isPlaying)
-			StartCoroutine(LoadScenes());
+		{
+			LoadingChecker.Instance.onLoadingFinished += LoadingDone;
+			LoadingChecker.Instance.StartCheckingLoading();
+		}
 	}
 
-	void LoadingDone()
+	async void LoadingDone()
 	{
+		if (isMasterLoader)
+		{
+			if (Application.isPlaying)
+			{
+				string sceneName = System.IO.Path.GetFileNameWithoutExtension(scenes[0]);
+				SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName));
+			}
+			else
+				SceneManager.SetActiveScene(SceneManager.GetSceneByPath(scenes[0]));
+		}
+
+		await new WaitForEndOfFrame();
+
 		if (Application.isPlaying)
 			UIManager.Instance.UnloadLoadingScreen();
-		if (isMasterLoader)
-			SceneManager.SetActiveScene(SceneManager.GetSceneByPath(scenes[0]));
 	}
 
-	IEnumerator LoadScenes()
-	{
-		bool loading = true;
-		while(loading)
-		{
-			loading = false;
-			foreach(AsyncOperation asyncOperation in asyncOperations)
-			{
-				if (asyncOperation == null) { loading = true; continue; }
-				if (!asyncOperation.isDone) loading = true;
-			}
-			yield return new WaitForEndOfFrame();
-		}
-		LoadingDone();
-		yield return null;
-	}
+	
 }

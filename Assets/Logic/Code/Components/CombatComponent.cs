@@ -210,6 +210,8 @@ public class CombatComponent
 			if (i >= 4) break;
 			weapons[i] = gameCharacter.GameCharacterData.Weapons[i];
 
+			if (weapons[i] == null) continue;
+
 			switch (weapons[i].WeaponClassName)
 			{
 				case "FistWeapon": weapons[i].Weapon = new FistWeapon(gameCharacter, weapons[i]); break;
@@ -270,7 +272,7 @@ public class CombatComponent
 		SwitchWeapon(index);
 	}
 
-	public void Attack(EAttackType attackType)
+	public void Attack(EAttackType attackType, float deltaAttackTime = -1f)
 	{
 		if (NextWeapon != null)
 			UpdateWeapon();
@@ -282,20 +284,20 @@ public class CombatComponent
 		{
 			switch (attackType)
 			{
-				case EAttackType.Default: newAttack = CurrentWeapon?.GroundAttack(); break;
-				case EAttackType.AttackHorizontal: newAttack = CurrentWeapon?.GroundDirectionAttack(); break;
-				case EAttackType.AttackUp: newAttack = CurrentWeapon?.GroundUpAttack(); break;
-				case EAttackType.AttackDown: newAttack = CurrentWeapon?.GroundDownAttack(); break;
+				case EAttackType.Default: newAttack = CurrentWeapon?.GroundAttack(deltaAttackTime); break;
+				case EAttackType.AttackHorizontal: newAttack = CurrentWeapon?.GroundDirectionAttack(deltaAttackTime); break;
+				case EAttackType.AttackUp: newAttack = CurrentWeapon?.GroundUpAttack(deltaAttackTime); break;
+				case EAttackType.AttackDown: newAttack = CurrentWeapon?.GroundDownAttack(deltaAttackTime); break;
 				default: break;
 			}
 		}else
 		{
 			switch (attackType)
 			{
-				case EAttackType.Default: newAttack = CurrentWeapon?.AirAttack(); break;
-				case EAttackType.AttackHorizontal: newAttack = CurrentWeapon?.AirDirectionAttack(); break;
-				case EAttackType.AttackUp: newAttack = CurrentWeapon?.AirUpAttack(); break;
-				case EAttackType.AttackDown: newAttack = CurrentWeapon?.AirDownAttack(); break;
+				case EAttackType.Default: newAttack = CurrentWeapon?.AirAttack(deltaAttackTime); break;
+				case EAttackType.AttackHorizontal: newAttack = CurrentWeapon?.AirDirectionAttack(deltaAttackTime); break;
+				case EAttackType.AttackUp: newAttack = CurrentWeapon?.AirUpAttack(deltaAttackTime); break;
+				case EAttackType.AttackDown: newAttack = CurrentWeapon?.AirDownAttack(deltaAttackTime); break;
 				default: break;
 			}
 		}
@@ -389,5 +391,32 @@ public class CombatComponent
 	public void CharacterDidDamageTo(GameCharacter damagedCharacter, float damage)
 	{
 		if (onCharacterDamagedCharacter != null) onCharacterDamagedCharacter(gameCharacter, damagedCharacter, damage);
+	}
+
+	public void Dodge()
+	{
+		gameCharacter.StateMachine.RequestStateChange(EGameCharacterState.Dodge);
+	}
+
+	public async void FreezAfterPush(GameCharacter character, float waitTime, float freezTime)
+	{
+		await new WaitForSeconds(waitTime);
+		character.CombatComponent.RequestFreez(freezTime);
+	}
+
+	public void RequestFlyAway(float flyAwayTime)
+	{
+		if (FlyAwayTimer.IsRunning)
+			FlyAwayTimer.AddTime(flyAwayTime);
+		else 
+			FlyAwayTime = flyAwayTime;
+		gameCharacter.StateMachine.ForceStateChange(EGameCharacterState.FlyAway);
+	}
+
+	public void SuccsessfullDodge(GameCharacter damageInitiator, float damage)
+	{
+		var ps = gameCharacter.SuccsessfullDodgeParticlePool.GetValue();
+		ps.transform.position = gameCharacter.MovementComponent.CharacterCenter;
+		ps.transform.rotation = Quaternion.identity;
 	}
 }

@@ -14,10 +14,11 @@ public class DefensiveEvent : CharacterEvent
 		if (gameCharacter.MovementComponent.IsInJump) return false;
 		if (gameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.Attack) return false;
 		if (gameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.DefensiveAction) return false;
+		if (gameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.Dodge) return false;
 		return gameCharacter?.StateMachine?.CurrentState?.UpdateState(0, EGameCharacterState.DefensiveAction) == EGameCharacterState.DefensiveAction;
 	}
 
-	public override EGameCharacterEvent GetGameCharacterEvenetType()
+	public override EGameCharacterEvent GetCharacterEvenetType()
 	{
 		return EGameCharacterEvent.DefensiveAction;
 	}

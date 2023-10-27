@@ -12,7 +12,7 @@ namespace Megumin.GameFramework.AI.BehaviorTree
 {
     public class BehaviorTreeRunner : MonoBehaviour
     {
-        public delegate void OnBehaviourTreeInit();
+        public delegate void OnBehaviourTreeInit(BehaviorTreeRunner btr);
         public OnBehaviourTreeInit onBehaviourTreeInit;
 
 		//[field: SerializeField]
@@ -121,7 +121,7 @@ namespace Megumin.GameFramework.AI.BehaviorTree
                     await WaitFrames(wait);
                 }
 
-                if (BehaviourTree != null && onBehaviourTreeInit != null) onBehaviourTreeInit();
+                if (onBehaviourTreeInit != null) onBehaviourTreeInit(this);
             }
 
             if (BehaviourTree != null)

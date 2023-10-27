@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 using System.Linq;
+using static GameCharacterMovementComponent;
 
 public class GameCharacterMovementComponent : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	public OnMoveCollisionFlag onMoveCollisionFlag;
 	public delegate void OnCharacterGroundedChanged(bool newState);
 	public OnCharacterGroundedChanged onCharacterGroundedChanged;
+	public delegate void OnCharacterGroundReset();
+	public OnCharacterGroundReset onCharacterGroundReset;
 
 	[SerializeField] float stepHight = 0.5f;
 	[SerializeField] float maxWalkableSlopAngle = 45f;
@@ -344,9 +347,9 @@ public class GameCharacterMovementComponent : MonoBehaviour
 				IsGroundedIntern = false;
 				return;
 			}
-
+			
 			Vector3 castOrigin = new Vector3(groundHitCapsul.point.x, groundHitCapsul.point.y + 1f, groundHitCapsul.point.z);
-			if (Physics.Raycast(castOrigin, groundHitCapsul.point - castOrigin, out groundHitRayCast, Vector3.Distance(castOrigin, groundHitCapsul.point) + 0.1f))
+			if (Physics.Raycast(castOrigin, groundHitCapsul.point - castOrigin, out groundHitRayCast, Vector3.Distance(castOrigin, groundHitCapsul.point) + 0.1f, gameCharacter.IgnoreCharacterLayer, QueryTriggerInteraction.UseGlobal))
 				RayCastGroundHit = new NullableHit(groundHitRayCast);
 			else
 				RayCastGroundHit = null;
@@ -481,7 +484,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	public void GroundReset()
 	{
 		gameCharacter.CurrentJumpAmount = 0;
-		gameCharacter.CombatComponent.CurrentWeapon?.GroundReset();
+		if (onCharacterGroundReset != null) onCharacterGroundReset();
 	}
 
 	public bool CanMovementOverride()

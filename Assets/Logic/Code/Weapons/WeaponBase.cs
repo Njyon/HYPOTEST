@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public enum EExplicitAttackType
 {
@@ -53,6 +54,7 @@ public abstract class WeaponBase
 	float charge = 0;
 	float chargeAfterTime = 0;
 	Ultra.Timer maxChargeAfterEquipTimer;
+	AttackAnimationData lastData;
 
 	// Particle Save
 	List<List<ParticleSystem>> groundLightAttackParticleList;
@@ -70,12 +72,12 @@ public abstract class WeaponBase
     public GameObject SpawnedWeapon { get { return spawnedWeapon; } }
     public GameObject SpawnedWeaponBones { get { return spawnedWeaponBones; } }
 	public bool IsHitDetecting { get { return ishitDetecting; } }
-	public AttackAnimationData CurrentAttack { get { return currentAttack; } }
-	public AttackAnimationData CurrentDefensiveAction { get { return currentDefensiveAction; } }
+	public AttackAnimationData CurrentAction { get { return GetAttackAnimationData(); } }
 	public EExplicitAttackType CurrentAttackType { get { return currentAttackType; } }
 	public EExplicitAttackType LastAttackType { get { return lastAttackType; } }
-	public EAttackAnimType AttackAnimType { get { return attackAnimType; } }
-	public int ComboIndexInSameAttack { get { return comboIndexInSameAttack; } }	
+	public EAttackAnimType AttackAnimType { get { return attackAnimType; } set { attackAnimType = value; } }
+	public int ComboIndexInSameAttack { get { return comboIndexInSameAttack; } }
+	public List<GameObject> HitObjects { get { return hitObjects; } }	
 	public int AttackIndex { get { return attackIndex; } }
 	public float Charge { 
 		get { return charge; } 
@@ -139,7 +141,18 @@ public abstract class WeaponBase
 			MaxChargeAfterEquipTimer.Start(weaponData.TimeAfterEqupingMaxChargedWeapon);
 			MaxChargeAfterEquipTimer.onTimerFinished += OnMaxChargeAfterEquipTimerFinished;
 		}
-
+		if (WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name) && gameCharacter.IsPlayerCharacter)
+		{
+			foreach(AttackAnimationData data in WeaponData.AnimationData[GameCharacter.CharacterData.Name].DefensiveAction)
+			{
+				if (data != null && data.Action != null && data.Action.HasUIImplementation())
+				{
+					data.Action.Init(gameCharacter, this);
+					data.Action.ImplementUI();
+					break;
+				}
+			}
+		}
 	}
 
 	public virtual void UnEquipWeapon()
@@ -153,6 +166,20 @@ public abstract class WeaponBase
 		}
 		GameObject.Destroy(spawnedWeapon);
 		GameObject.Destroy(spawnedWeaponBones);
+
+		CurrentAction?.Action?.ActionInterupted();
+
+		if (WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name) && gameCharacter.IsPlayerCharacter)
+		{
+			foreach (AttackAnimationData data in WeaponData.AnimationData[GameCharacter.CharacterData.Name].DefensiveAction)
+			{
+				if (data != null && data.Action != null && data.Action.HasUIImplementation())
+				{
+					data.Action.RemoveUI();
+				}
+			}
+		}
+
 		if (gameCharacter.CombatComponent.HitDetectionColliderScript != null) gameCharacter.CombatComponent.HitDetectionColliderScript.onOverlapEnter -= WeaponColliderEnter;
 		if (gameCharacter.CombatComponent.HitDetectionColliderScript != null) gameCharacter.CombatComponent.HitDetectionColliderScript.onOverlapExit -= WeaponColliderExit;
 
@@ -243,9 +270,9 @@ public abstract class WeaponBase
 	private void HitDetection()
 	{
 		if (!ishitDetecting) return;
-		if (currentAttack == null) return;
+		if (CurrentAction == null) return;
 
-		switch (currentAttack.data.hitDetectionType)
+		switch (CurrentAction.data.hitDetectionType)
 		{
 			case EHitDetectionType.Mesh:
 				// We Dont need to do anything here because the hitDetectionObject does the job
@@ -253,26 +280,26 @@ public abstract class WeaponBase
 			case EHitDetectionType.Box:
 				{
 					gameCharacter.CombatComponent.HitDetectionGameObject.transform.position = gameCharacter.MovementComponent.CharacterCenter;
-					gameCharacter.CombatComponent.HitDetectionGameObject.transform.Translate(currentAttack.data.offset);
-					Collider[] colliders = Physics.OverlapBox(gameCharacter.CombatComponent.HitDetectionGameObject.transform.position, currentAttack.data.boxDimensions / 2);
+					gameCharacter.CombatComponent.HitDetectionGameObject.transform.Translate(CurrentAction.data.offset);
+					Collider[] colliders = Physics.OverlapBox(gameCharacter.CombatComponent.HitDetectionGameObject.transform.position, CurrentAction.data.boxDimensions / 2, Quaternion.identity, GameCharacter.CharacterLayer, QueryTriggerInteraction.Ignore);
 					foreach (Collider collider in colliders)
 					{
 						WeaponColliderEnter(collider);
 					}
 					//Ultra.Utilities.DrawBox(hitDetectionGameObject.transform.position, Quaternion.identity, lastAttack.data.boxDimensions, Color.red, 200);
-					Ultra.Utilities.DrawBox(gameCharacter.CombatComponent.HitDetectionGameObject.transform.position, Quaternion.identity, currentAttack.data.boxDimensions, Color.red);
+					Ultra.Utilities.DrawBox(gameCharacter.CombatComponent.HitDetectionGameObject.transform.position, Quaternion.identity, CurrentAction.data.boxDimensions, Color.red);
 				}
 				break;
 			case EHitDetectionType.Capsul:
 				{
 					gameCharacter.CombatComponent.HitDetectionGameObject.transform.position = gameCharacter.MovementComponent.CharacterCenter;
-					gameCharacter.CombatComponent.HitDetectionGameObject.transform.Translate(currentAttack.data.offset);
-					Collider[] colliders = Ultra.Utilities.OverlapCapsule(gameCharacter.CombatComponent.HitDetectionGameObject.transform.position, currentAttack.data.capsulHeight, currentAttack.data.radius);
+					gameCharacter.CombatComponent.HitDetectionGameObject.transform.Translate(CurrentAction.data.offset);
+					Collider[] colliders = Ultra.Utilities.OverlapCapsule(gameCharacter.CombatComponent.HitDetectionGameObject.transform.position, CurrentAction.data.capsulHeight, CurrentAction.data.radius, GameCharacter.CharacterLayer, QueryTriggerInteraction.Ignore);
 					foreach (Collider collider in colliders)
 					{
 						WeaponColliderEnter(collider);
 					}
-					Ultra.Utilities.DrawCapsule(gameCharacter.CombatComponent.HitDetectionGameObject.transform.position, Quaternion.identity,currentAttack.data.capsulHeight, currentAttack.data.radius, Color.red);
+					Ultra.Utilities.DrawCapsule(gameCharacter.CombatComponent.HitDetectionGameObject.transform.position, Quaternion.identity, CurrentAction.data.capsulHeight, CurrentAction.data.radius, Color.red);
 					//Ultra.Utilities.DrawWireCapsule(hitDetectionGameObject.transform.position, Quaternion.identity, lastAttack.data.radius, lastAttack.data.capsulHeight, Color.red, 200);
 					//Gizmos.DrawCube(hitDetectionGameObject.transform.position, Vector3.one);
 				}
@@ -280,127 +307,189 @@ public abstract class WeaponBase
 			default:
 				{
 					gameCharacter.CombatComponent.HitDetectionGameObject.transform.position = gameCharacter.MovementComponent.CharacterCenter;
-					gameCharacter.CombatComponent.HitDetectionGameObject.transform.Translate(currentAttack.data.offset);
-					Collider[] colliders = Physics.OverlapSphere(gameCharacter.CombatComponent.HitDetectionGameObject.transform.position, currentAttack.data.radius);
+					gameCharacter.CombatComponent.HitDetectionGameObject.transform.Translate(CurrentAction.data.offset);
+					Collider[] colliders = Physics.OverlapSphere(gameCharacter.CombatComponent.HitDetectionGameObject.transform.position, CurrentAction.data.radius, GameCharacter.CharacterLayer, QueryTriggerInteraction.Ignore);
 					foreach (Collider collider in colliders)
 					{
 						WeaponColliderEnter(collider);
 					}
-					Ultra.Utilities.DrawWireSphere(gameCharacter.CombatComponent.HitDetectionGameObject.transform.position, currentAttack.data.radius, Color.red, 0f, 100);
+					Ultra.Utilities.DrawWireSphere(gameCharacter.CombatComponent.HitDetectionGameObject.transform.position, CurrentAction.data.radius, Color.red, 0f, 100);
 				}
 				break;
 		}
 	}
-
-	public virtual AttackAnimationData GroundAttack()
+	private void TryStartingAction(EExplicitAttackType attackType, float attackDeltaTime)
 	{
-		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return null;
-		return BaseAttackLogic(EExplicitAttackType.GroundedDefaultAttack, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundAttacks);
-	}
-	public virtual AttackAnimationData GroundUpAttack()
-	{
-		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return null;
-		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundUpAttacks.Count > 0) return BaseAttackLogic(EExplicitAttackType.GroundedUpAttack, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundUpAttacks);
-		else return GroundAttack();
-	}
-    public virtual AttackAnimationData GroundDownAttack()
-	{
-		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return null;
-		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundDownAttacks.Count > 0) return BaseAttackLogic(EExplicitAttackType.GroundedDownAttack, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundDownAttacks);
-		else return GroundAttack();
-	}
-    public virtual AttackAnimationData GroundDirectionAttack()
-	{
-		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return null;
-		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundDirectionAttacks.Count > 0) return BaseAttackLogic(EExplicitAttackType.GroundedDirectionalAttack, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundDirectionAttacks);
-		else return GroundAttack();
+		if (gameCharacter.PluginStateMachine.IsPluginStatePlugedIn(EPluginCharacterState.DefensiveActionHold))
+		{
+			if (currentDefensiveAction != null && currentDefensiveAction.Action != null && currentDefensiveAction.Action.HasAttackInputInHold())
+			{
+				if (CurrentAction != currentDefensiveAction) Ultra.Utilities.Instance.DebugErrorString("WeaponBase", "TryStartingAction", "CurrentAction was not DefensiveAction, but was suppose to!");
+				currentDefensiveAction.Action.StartActionInHold();
+			}
+			else
+			{
+				EvaluateAndStartAction(attackType, attackDeltaTime);
+			}
+		}
+		else
+		{
+			EvaluateAndStartAction(attackType, attackDeltaTime);
+		}
 	}
 
-    public virtual AttackAnimationData AirAttack()
+	private void EvaluateAndStartAction(EExplicitAttackType attackType, float attackDeltaTime)
 	{
-		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return null;
-		return BaseAttackLogic(EExplicitAttackType.AirDefaultAttack, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirAttacks);
+		if (SetCurrentAttack(attackType, attackDeltaTime))
+			CurrentAction?.Action?.StartAction();
 	}
-    public virtual AttackAnimationData AirUpAttack()
+
+	public virtual AttackAnimationData GroundAttack(float attackDeltaTime)
 	{
 		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return null;
-		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirUpAttacks.Count > 0) return BaseAttackLogic(EExplicitAttackType.AirUpAttack, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirUpAttacks);
-		else return AirAttack();
+		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundAttacks.Count > 0)
+		{
+			TryStartingAction(EExplicitAttackType.GroundedDefaultAttack, attackDeltaTime);
+			return CurrentAction;
+		}
+		else
+		{
+			return null;
+		}
 	}
-    public virtual AttackAnimationData AirDownAttack()
+
+	
+
+	public virtual AttackAnimationData GroundUpAttack(float attackDeltaTime)
 	{
 		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return null;
-		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks.Count > 0) return BaseAttackLogic(EExplicitAttackType.AirDownAttack, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks);
-		else return AirAttack();
+		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundUpAttacks.Count > 0)
+		{
+			TryStartingAction(EExplicitAttackType.GroundedUpAttack, attackDeltaTime);
+			return CurrentAction;
+		}
+		else return GroundAttack(attackDeltaTime);
 	}
-    public virtual AttackAnimationData AirDirectionAttack()
+    public virtual AttackAnimationData GroundDownAttack(float attackDeltaTime)
 	{
 		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return null;
-		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDirectionAttacks.Count > 0) return BaseAttackLogic(EExplicitAttackType.AirDirectionalAttack, ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDirectionAttacks);
-		else return AirAttack();
+		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundDownAttacks.Count > 0)
+		{
+			TryStartingAction(EExplicitAttackType.GroundedDownAttack, attackDeltaTime);
+			return CurrentAction;
+		}
+		else return GroundAttack(attackDeltaTime);
+	}
+    public virtual AttackAnimationData GroundDirectionAttack(float attackDeltaTime)
+	{
+		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return null;
+		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundDirectionAttacks.Count > 0)
+		{
+			TryStartingAction(EExplicitAttackType.GroundedDirectionalAttack, attackDeltaTime);
+			return CurrentAction;
+		}
+		else return GroundAttack(attackDeltaTime);
+	}
+
+    public virtual AttackAnimationData AirAttack(float attackDeltaTime)
+	{
+		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return null;
+		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirAttacks.Count > 0)
+		{
+			TryStartingAction(EExplicitAttackType.AirDefaultAttack, attackDeltaTime);
+			return CurrentAction;
+		}
+		else
+		{
+			return null;
+		}
+	}
+    public virtual AttackAnimationData AirUpAttack(float attackDeltaTime)
+	{
+		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return null;
+		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirUpAttacks.Count > 0)
+		{
+			TryStartingAction(EExplicitAttackType.AirUpAttack, attackDeltaTime);
+			return CurrentAction;
+		}
+		else return AirAttack(attackDeltaTime);
+	}
+    public virtual AttackAnimationData AirDownAttack(float attackDeltaTime)
+	{
+		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return null;
+		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks.Count > 0)
+		{
+			TryStartingAction(EExplicitAttackType.AirDownAttack, attackDeltaTime);
+			return CurrentAction;
+		}
+		else return AirAttack(attackDeltaTime);
+	}
+    public virtual AttackAnimationData AirDirectionAttack(float attackDeltaTime)
+	{
+		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return null;
+		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDirectionAttacks.Count > 0)
+		{
+			TryStartingAction(EExplicitAttackType.AirDirectionalAttack, attackDeltaTime);
+			return CurrentAction;
+		}
+		else return AirAttack(attackDeltaTime);
 	}
 
 	public virtual AttackAnimationData DefensiveAction()
 	{
 		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return null;
-		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].DefensiveAction.Count > 0) return DefensiceActionLogic(ref WeaponData.AnimationData[GameCharacter.CharacterData.Name].DefensiveAction);
+		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].DefensiveAction.Count > 0)
+		{
+			if (SetCurrentDefensiveAction())
+				CurrentAction?.Action?.StartAction();
+			return CurrentAction;
+		}
 		return null;
 	}
 
 	public virtual void GroundAttackHit(GameObject hitObj)
 	{
-		IDamage damageInterface = GetDamageInterface(hitObj);
-		if (damageInterface == null) return;
-		damageInterface.DoDamage(GameCharacter, GetDamage());
+		CurrentAction?.Action?.OnHit(hitObj);
 	}
 
 	public virtual void GroundUpAttackHit(GameObject hitObj)
 	{
-		IDamage damageInterface = GetDamageInterface(hitObj);
-		if (damageInterface == null) return;
-		damageInterface.DoDamage(GameCharacter, GetDamage());
+		CurrentAction?.Action?.OnHit(hitObj);
 	}
 
 	public virtual void GroundDownAttackHit(GameObject hitObj)
 	{
-		IDamage damageInterface = GetDamageInterface(hitObj);
-		if (damageInterface == null) return;
-		damageInterface.DoDamage(GameCharacter, GetDamage());
+		CurrentAction?.Action?.OnHit(hitObj);
 	}
 
 	public virtual void GroundDirectionAttackHit(GameObject hitObj)
 	{
-		IDamage damageInterface = GetDamageInterface(hitObj);
-		if (damageInterface == null) return;
-		damageInterface.DoDamage(GameCharacter, GetDamage());
+		CurrentAction?.Action?.OnHit(hitObj);
 	}
 
 	public virtual void AirAttackHit(GameObject hitObj)
 	{
-		IDamage damageInterface = GetDamageInterface(hitObj);
-		if (damageInterface == null) return;
-		damageInterface.DoDamage(GameCharacter, GetDamage());
+		CurrentAction?.Action?.OnHit(hitObj);
 	}
 
 	public virtual void AirUpAttackHit(GameObject hitObj)
 	{
-		IDamage damageInterface = GetDamageInterface(hitObj);
-		if (damageInterface == null) return;
-		damageInterface.DoDamage(GameCharacter, GetDamage());
+		CurrentAction?.Action?.OnHit(hitObj);
 	}
 
 	public virtual void AirDownAttackHit(GameObject hitObj)
 	{
-		IDamage damageInterface = GetDamageInterface(hitObj);
-		if (damageInterface == null) return;
-		damageInterface.DoDamage(GameCharacter, GetDamage());
+		CurrentAction?.Action?.OnHit(hitObj);
 	}
 
 	public virtual void AirDirectionAttackHit(GameObject hitObj)
 	{
-		IDamage damageInterface = GetDamageInterface(hitObj);
-		if (damageInterface == null) return;
-		damageInterface.DoDamage(GameCharacter, GetDamage());
+		CurrentAction?.Action?.OnHit(hitObj);
+	}
+
+	public virtual void DefensiveActionHit(GameObject hitObj)
+	{
+		CurrentAction?.Action?.OnHit(hitObj);
 	}
 
 	void SetUpWeaponAnimationData()
@@ -408,134 +497,128 @@ public abstract class WeaponBase
 		if (weaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) gameCharacter.AnimController.SetBodyLayerAnimClip(weaponData.AnimationData[GameCharacter.CharacterData.Name].WeaponReadyPose);
 	}
 
-	protected IDamage GetDamageInterface(GameObject obj)
+	public IDamage GetDamageInterface(GameObject obj)
 	{
 		if (obj == null) return null;	
 		return obj.GetComponent<IDamage>();
 	}
 
-	void GetAnimation(EExplicitAttackType explicitAttackType, ref List<AttackAnimationData> attackList, bool updatedIndex = true)
+	public List<AttackAnimationData> GetAttackListBasedOnEExplicitAttackType(EExplicitAttackType explicitAttackType)
 	{
-		if (currentAttackType != explicitAttackType || !updatedIndex)
+		switch (explicitAttackType) 
 		{
-			attackIndex = 0;
-			currentAttackType = explicitAttackType;
+			case EExplicitAttackType.GroundedDefaultAttack: return WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundAttacks;
+			case EExplicitAttackType.GroundedDownAttack: return WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundDownAttacks;
+			case EExplicitAttackType.GroundedUpAttack: return WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundUpAttacks;
+			case EExplicitAttackType.GroundedDirectionalAttack: return WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundDirectionAttacks;
+			case EExplicitAttackType.AirDefaultAttack: return WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirAttacks;
+			case EExplicitAttackType.AirDownAttack: return WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks;
+			case EExplicitAttackType.AirUpAttack: return WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirUpAttacks;
+			case EExplicitAttackType.AirDirectionalAttack: return WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDirectionAttacks;
+			case EExplicitAttackType.DefensiveAction: return WeaponData.AnimationData[GameCharacter.CharacterData.Name].DefensiveAction;
+			default:
+				Ultra.Utilities.Instance.DebugErrorString("WeaponBase", "GetAttackListBasedOnEExplicitAttackType", "Coundn't find List, ExplicitAttackType not Implemented");
+				return new List<AttackAnimationData>();
 		}
-		else
-		{
-			attackIndex++;
-		}
-		if (attackList == null || attackList.Count <= 0) return;
-		attackIndex = attackIndex % attackList.Count;
-		currentAttack = attackList[attackIndex];
 	}
 
-	void GetDefensiveAnimation(ref List<AttackAnimationData> defensiveList, bool updateAttackType = true)
+	public bool SetCurrentAttack(EExplicitAttackType explicitAttackType, float attackDeltaTime, bool updatedIndex = true)
 	{
+		List<AttackAnimationData> attackList = GetAttackListBasedOnEExplicitAttackType(explicitAttackType);
+		if (!CheckForAttackBrenchesInLastAttack(explicitAttackType, updatedIndex, attackDeltaTime))
+		{
+			if (currentAttackType != explicitAttackType || !updatedIndex)
+			{
+				attackIndex = 0;
+				currentAttackType = explicitAttackType;
+			}
+			else
+			{
+				attackIndex++;
+			}
+		}
+
+		if (attackList == null || attackList.Count <= 0) return false;
+		attackIndex = attackIndex % attackList.Count;
+		AttackAnimationData newAttack = attackList[attackIndex];
+		currentAttack?.Action?.ActionInterupted();
+		currentAttack = newAttack;
+		currentAttack?.Action?.Init(GameCharacter, this);
+		return true;
+	}
+
+	bool CheckForAttackBrenchesInLastAttack(EExplicitAttackType explicitAttackType, bool updatedIndex, float attackDeltaTime)
+	{
+		if (updatedIndex && CurrentAction != null)
+		{
+			Ultra.Utilities.Instance.DebugLogOnScreen("AttackDeltaTime" + attackDeltaTime, 1f, StringColor.Green, 100, DebugAreas.Combat);
+			if (AttackDeltatimeIsValid(attackDeltaTime) && CurrentAction.timedCombatBrenches.TryGetValue(explicitAttackType, out int x))
+			{
+				attackIndex = x;
+				return true;
+			}
+			else if (currentAttackType != EExplicitAttackType.Unknown && CurrentAction.combatBranches.TryGetValue(explicitAttackType, out int i))
+			{
+				attackIndex = i;
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private static bool AttackDeltatimeIsValid(float attackDeltaTime)
+	{
+		float minTime = 0.5f;
+		float maxTime = 1.0f;
+		return attackDeltaTime > minTime && attackDeltaTime < maxTime;
+	}
+
+	public bool SetCurrentDefensiveAction(bool updateAttackType = true)
+	{
+		List<AttackAnimationData> defensiveList = GetAttackListBasedOnEExplicitAttackType(EExplicitAttackType.DefensiveAction);
 		if (updateAttackType) currentAttackType = EExplicitAttackType.DefensiveAction;
 		defensiveActionIndex++;
-		if (defensiveList == null || defensiveList.Count <= 0) return;
+		if (defensiveList == null || defensiveList.Count <= 0) return false;
 		defensiveActionIndex = defensiveActionIndex % defensiveList.Count;
-		currentDefensiveAction = defensiveList[defensiveActionIndex];
+		AttackAnimationData newDefensiveAction = defensiveList[defensiveActionIndex];
+		currentDefensiveAction?.Action?.ActionInterupted();
+		currentDefensiveAction = newDefensiveAction;
+		currentDefensiveAction?.Action?.Init(GameCharacter, this);
+		return true;
 	}
 
-	protected AttackAnimationData BaseAttackLogic(EExplicitAttackType explicitAttackType, ref List<AttackAnimationData> attackList)
+	protected void AimBlendSpace(AimBlendAnimations blendTreeAnims, EAnimationType animType)
 	{
-		GetAnimation(explicitAttackType, ref attackList);
-		if (currentAttack == null || currentAttack.clip == null)
-		{
-			Ultra.Utilities.Instance.DebugLogOnScreen("AttackClip was null!", 5f, StringColor.Red, 100, DebugAreas.Combat);
-			Debug.Log(Ultra.Utilities.Instance.DebugErrorString("WeaponBase", "BaseAttackLogic", "AttackClip was null!"));
-			return null;
-		}
-		gameCharacter.AnimController.Attack(currentAttack.clip);
-		gameCharacter.StateMachine.RequestStateChange(EGameCharacterState.Attack);
-		attackAnimType = EAttackAnimType.Default;
-
-		return currentAttack;
-		
-		
-	}
-	protected AttackAnimationData Attack3BlendLogic(EExplicitAttackType explicitAttackType, ref List<AttackAnimationData> attackList, EAnimationType animType)
-	{
-		GetAnimation(explicitAttackType, ref attackList);
-		Attack3BlendSpace(ref attackList, animType);
-		gameCharacter.StateMachine.RequestStateChange(EGameCharacterState.Attack);
-		attackAnimType = EAttackAnimType.Combat3Blend;
-
-		return currentAttack;
-	}
-	protected AttackAnimationData AttackAimLogic(EExplicitAttackType explicitAttackType, ref List<AttackAnimationData> attackList, EAnimationType animType)
-	{
-		GetAnimation(explicitAttackType, ref attackList);
-		AimBlendSpace(ref attackList, animType); 
-		gameCharacter.PluginStateMachine.AddPluginState(EPluginCharacterState.Aim);
-		attackAnimType = EAttackAnimType.AimBlendSpace;
-
-		return currentAttack;
-	}
-
-	protected AttackAnimationData DefensiceActionLogic(ref List<AttackAnimationData> defensiveList)
-	{
-		GetDefensiveAnimation(ref defensiveList);
-		if (currentDefensiveAction == null || currentDefensiveAction.clip == null)
-		{
-			Ultra.Utilities.Instance.DebugLogOnScreen("DefensiveActionClip was null!", 5f, StringColor.Red, 100, DebugAreas.Combat);
-			Debug.Log(Ultra.Utilities.Instance.DebugErrorString("WeaponBase", "DefensiceActionLogic", "DefensiveActionClip was null!"));
-			return null;
-		}
-		gameCharacter.AnimController.SetDefensiveAction(currentDefensiveAction.clip);
-		gameCharacter.StateMachine.RequestStateChange(EGameCharacterState.DefensiveAction);
-		attackAnimType = EAttackAnimType.Default;
-
-		return currentDefensiveAction;
-	}
-
-	protected AttackAnimationData DefensiveActionAimLogic(ref List<AttackAnimationData> defensiveList, EAnimationType animType, bool upDateAttackType = true)
-	{
-		GetDefensiveAnimation(ref defensiveList, upDateAttackType);
-		AimBlendSpace(ref defensiveList, animType);
-		gameCharacter.PluginStateMachine.AddPluginState(EPluginCharacterState.Aim);
-		gameCharacter.StateMachine.RequestStateChange(EGameCharacterState.DefensiveAction);
-		attackAnimType = EAttackAnimType.AimBlendSpace;
-
-		return currentDefensiveAction;
-	}
-
-	protected void AimBlendSpace(ref List<AttackAnimationData> defensiveList, EAnimationType animType)
-	{
-		AttackAnimationData attackData = GetAttackAnimationData();
-		if (attackData == null)
+		if (blendTreeAnims == null)
 		{
 			Ultra.Utilities.Instance.DebugLogOnScreen("AttackData was null!", 5f, StringColor.Red, 100, DebugAreas.Combat);
-			Debug.Log(Ultra.Utilities.Instance.DebugErrorString("WeaponBase", "AimBlendSpace", "AttackData was null!"));
+			Debug.Log(Ultra.Utilities.Instance.DebugErrorString("WeaponBase", "AimBlendSpace", "blendTreeAnims was null!"));
 			return;
 		}
 		switch (animType)
 		{
-			case EAnimationType.Hold: gameCharacter.AnimController.ApplyBlendTree(attackData.aimBlendTypes.blendHoldAnimations); break;
-			case EAnimationType.Trigger: gameCharacter.AnimController.ApplyBlendTree(attackData.aimBlendTypes.blendTriggerAnimations); break;
+			case EAnimationType.Hold: gameCharacter.AnimController.ApplyBlendTree(blendTreeAnims); break;
+			case EAnimationType.Trigger: gameCharacter.AnimController.ApplyBlendTree(blendTreeAnims); break;
 			default:
-				gameCharacter.AnimController.ApplyBlendTree(attackData.aimBlendTypes.blendAnimations);
+				gameCharacter.AnimController.ApplyBlendTree(blendTreeAnims);
 				break;
 		}
 	}
 
-	protected void Attack3BlendSpace(ref List<AttackAnimationData> Attack3Blend, EAnimationType animType)
+	public void Attack3BlendSpace(AimBlendAnimations blendTreeAnims, EAnimationType animType)
 	{
-		AttackAnimationData attackData = GetAttackAnimationData();
-		if (attackData == null)
+		if (blendTreeAnims == null)
 		{
 			Ultra.Utilities.Instance.DebugLogOnScreen("AttackData was null!", 5f, StringColor.Red, 100, DebugAreas.Combat);
-			Debug.Log(Ultra.Utilities.Instance.DebugErrorString("WeaponBase", "AimBlendSpace", "AttackData was null!"));
+			Debug.Log(Ultra.Utilities.Instance.DebugErrorString("WeaponBase", "AimBlendSpace", "blendTreeAnims was null!"));
 			return;
 		}
 		switch (animType)
 		{
-			case EAnimationType.Hold: gameCharacter.AnimController.ApplyCombat3BlendTree(attackData.aimBlendTypes.blendHoldAnimations); break;
-			case EAnimationType.Trigger: gameCharacter.AnimController.ApplyCombat3BlendTree(attackData.aimBlendTypes.blendTriggerAnimations); break;
+			case EAnimationType.Hold: gameCharacter.AnimController.ApplyCombat3BlendTree(blendTreeAnims); break;
+			case EAnimationType.Trigger: gameCharacter.AnimController.ApplyCombat3BlendTree(blendTreeAnims); break;
 			default:
-				gameCharacter.AnimController.ApplyCombat3BlendTree(attackData.aimBlendTypes.blendAnimations);
+				gameCharacter.AnimController.ApplyCombat3BlendTree(blendTreeAnims);
 				break;
 		}
 	}
@@ -545,60 +628,39 @@ public abstract class WeaponBase
 		switch (CurrentAttackType)
 		{
 			case EExplicitAttackType.DefensiveAction:
+				if (lastData != currentDefensiveAction)
+				{
+					lastData?.Action?.ActionInterupted();
+					lastData = currentDefensiveAction;
+				}
 				return currentDefensiveAction;
 			default:
+				if (lastData != currentAttack)
+				{
+					lastData?.Action?.ActionInterupted();
+					lastData = currentAttack;
+				}
+				lastData = currentAttack;
 				return currentAttack;
 		}
 	}
 
-	protected void HoldAttackAfterAttack(EExplicitAttackType explicitAttackType, ref List<AttackAnimationData> attackList)
-	{
-		GetAnimation(explicitAttackType, ref attackList, false);
-		if (currentAttack.holdAnimation == null)
-		{
-			Ultra.Utilities.Instance.DebugLogOnScreen("HoldAnimation was null!", 5f, StringColor.Red, 100, DebugAreas.Combat);
-			Debug.Log(Ultra.Utilities.Instance.DebugErrorString("WeaponBase", "HoldAttackAfterAttack", "HoldAnimation was null!"));
-			return;
-		}
-
-		gameCharacter.AnimController.SetHoldAttack(currentAttack.holdAnimation);
-		gameCharacter.CombatComponent.AttackTimer.IsPaused = true;
-
-		gameCharacter.AnimController.HoldAttack = true;
-	}
-
-	protected void TriggerAttack(EExplicitAttackType explicitAttackType, ref List<AttackAnimationData> attackList)
-	{
-		GetAnimation(explicitAttackType, ref attackList, false);
-		if (currentAttack.triggerAnimation == null)
-		{
-			Ultra.Utilities.Instance.DebugLogOnScreen("TriggerAnimation was null!", 5f, StringColor.Red, 100, DebugAreas.Combat);
-			Debug.Log(Ultra.Utilities.Instance.DebugErrorString("WeaponBase", "TriggerAttack", "TriggerAnimation was null!"));
-			return;
-		}
-		gameCharacter.AnimController.SetTriggerAttack(currentAttack.triggerAnimation);
-		gameCharacter.CombatComponent.AttackTimer.Start(currentAttack.triggerAnimation.length);
-		gameCharacter.AnimController.AttackTriggerTimer.Start(currentAttack.triggerAnimation.length);
-
-		gameCharacter.AnimController.TriggerAttack = true;
-	}
-
 	public virtual void HitDetectionStart()
 	{
-		if (currentAttack == null) 
+		if (CurrentAction == null) 
 			return;
 
 		if (ishitDetecting) return;
 
 		ishitDetecting = true;
-		switch (currentAttack.data.hitDetectionType)
+		switch (CurrentAction.data.hitDetectionType)
 		{
 			case EHitDetectionType.Mesh:
-				gameCharacter.CombatComponent.HitDetectionMeshCollider.sharedMesh = currentAttack.data.mesh;
+				gameCharacter.CombatComponent.HitDetectionMeshCollider.sharedMesh = CurrentAction.data.mesh;
 				gameCharacter.CombatComponent.HitDetectionGameObject.transform.position = gameCharacter.MovementComponent.CharacterCenter;
-				gameCharacter.CombatComponent.HitDetectionGameObject.transform.Translate(currentAttack.data.offset);
-				gameCharacter.CombatComponent.HitDetectionMeshFilter.mesh = currentAttack.data.mesh;
-				gameCharacter.CombatComponent.HitDetectionMeshFilter.sharedMesh = currentAttack.data.mesh;
+				gameCharacter.CombatComponent.HitDetectionGameObject.transform.Translate(CurrentAction.data.offset);
+				gameCharacter.CombatComponent.HitDetectionMeshFilter.mesh = CurrentAction.data.mesh;
+				gameCharacter.CombatComponent.HitDetectionMeshFilter.sharedMesh = CurrentAction.data.mesh;
 #if UNITY_EDITOR
 				if (Ultra.Utilities.Instance.debugLevel >= 100) gameCharacter.CombatComponent.HitDetectionMeshRenderer.enabled = true;
 #endif
@@ -627,7 +689,7 @@ public abstract class WeaponBase
 		if (!ishitDetecting) return;
 
 		ishitDetecting = false;
-		switch(currentAttack.data.hitDetectionType)
+		switch(CurrentAction.data.hitDetectionType)
 		{
 			case EHitDetectionType.Mesh: gameCharacter.CombatComponent.HitDetectionMeshRenderer.enabled = false; break;
 				default: break;
@@ -639,7 +701,7 @@ public abstract class WeaponBase
 	protected virtual void WeaponColliderEnter(Collider other)
 	{
 		if (!IsHitDetecting) return;
-		if (other.gameObject == gameCharacter.gameObject) return;
+		if (other.gameObject == gameCharacter.gameObject || IsChildFromParent(other)) return;
 
 		GameCharacter possibleGameCharacter = other.GetComponent<GameCharacter>();
 		if (possibleGameCharacter != null && possibleGameCharacter.CheckForSameTeam(gameCharacter.Team)) return;
@@ -647,7 +709,7 @@ public abstract class WeaponBase
 		if (hitObjects.Contains(other.gameObject)) return;
 		hitObjects.Add(other.gameObject);
 
-		if (gameCharacter.IsPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen(StringColor.Red + "Hit Object: " + other.gameObject.name + StringColor.EndColor, (currentAttack.data.hitDetectionType == EHitDetectionType.Mesh) ? 1f : 0f);
+		if (gameCharacter.IsPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen(StringColor.Red + "Hit Object: " + other.gameObject.name + StringColor.EndColor, (CurrentAction.data.hitDetectionType == EHitDetectionType.Mesh) ? 1f : 0f);
 		switch (currentAttackType)
 		{
 			case EExplicitAttackType.GroundedDefaultAttack: GroundAttackHit(other.gameObject); break;
@@ -658,8 +720,24 @@ public abstract class WeaponBase
 			case EExplicitAttackType.AirDirectionalAttack: AirDirectionAttackHit(other.gameObject); break;
 			case EExplicitAttackType.AirDownAttack: AirDownAttackHit(other.gameObject); break;
 			case EExplicitAttackType.AirUpAttack: AirUpAttackHit(other.gameObject); break;
+			case EExplicitAttackType.DefensiveAction: DefensiveActionHit(other.gameObject); break;
 			default: break;
 		}
+	}
+
+	bool IsChildFromParent(Collider other)
+	{
+		Transform currentTransform = other.transform;
+
+		// Solange es ein übergeordnetes Transform gibt, setze currentTransform auf das übergeordnete Transform
+		while (currentTransform.parent != null)
+		{
+			currentTransform = currentTransform.parent;
+		}
+
+		if (currentTransform.gameObject == GameCharacter.gameObject)
+			return true;
+		return false;
 	}
 
 	protected virtual void WeaponColliderExit(Collider other)
@@ -683,57 +761,58 @@ public abstract class WeaponBase
 
 	public virtual void StartAttackStateLogic()
 	{
-
+		CurrentAction?.Action?.StartAttackStateLogic();
 	}
 
 	public virtual void PreAttackStateLogic(float deltaTime)
 	{
-
+		CurrentAction?.Action?.PreAttackStateLogic(deltaTime);
 	}
 
 	public virtual void PostAttackStateLogic(float deltaTime)
 	{
-
+		CurrentAction?.Action?.PostAttackStateLogic(deltaTime);
 	}
 
 	public virtual void EndAttackStateLogic()
 	{
+		CurrentAction?.Action?.EndAttackStateLogic();
 		hitObjects.Clear();
 	}
 
 	public virtual void AttackPhaseStart()
 	{
-
+		CurrentAction?.Action?.AttackPhaseStart();
 	}
 
 	public virtual void AttackPhaseEnd()
 	{
-
+		CurrentAction?.Action?.AttackPhaseEnd();
 	}
 
 	public virtual void AttackRecoveryEnd()
 	{
-
+		CurrentAction?.Action?.AttackRecoveryEnd();
 	}
 
 	public virtual void DefensiveActionStateEnd()
 	{
-
+		CurrentAction?.Action?.DefensiveActionStateEnd();
 	}
 
 	public void StartParticelEffect(int index)
 	{
 		switch (currentAttackType)
 		{
-			case EExplicitAttackType.GroundedDefaultAttack: PlayParticleEffect(groundLightAttackParticleList[attackIndex][index], CurrentAttack.particleList[index]); break;
-			case EExplicitAttackType.GroundedDirectionalAttack: PlayParticleEffect(groundHeavyAttackParticleList[attackIndex][index], CurrentAttack.particleList[index]); break;
-			case EExplicitAttackType.GroundedUpAttack: PlayParticleEffect(groundUpAttackParticleList[attackIndex][index], CurrentAttack.particleList[index]); break;
-			case EExplicitAttackType.GroundedDownAttack: PlayParticleEffect(groundDownAttackParticleList[attackIndex][index], CurrentAttack.particleList[index]); break;
-			case EExplicitAttackType.AirDefaultAttack: PlayParticleEffect(airLightAttackParticleList[attackIndex][index], CurrentAttack.particleList[index]); break;
-			case EExplicitAttackType.AirDirectionalAttack: PlayParticleEffect(airHeavyAttackParticleList[attackIndex][index], CurrentAttack.particleList[index]); break;
-			case EExplicitAttackType.AirDownAttack: PlayParticleEffect(airDownAttackParticleList[attackIndex][index], CurrentAttack.particleList[index]); break;
-			case EExplicitAttackType.AirUpAttack: PlayParticleEffect(airUpAttackParticleList[attackIndex][index], CurrentAttack.particleList[index]); break;
-			case EExplicitAttackType.DefensiveAction: PlayParticleEffect(defensiveActionParticleList[defensiveActionIndex][index], CurrentDefensiveAction.particleList[index]); break;
+			case EExplicitAttackType.GroundedDefaultAttack: PlayParticleEffect(groundLightAttackParticleList[attackIndex][index], CurrentAction.particleList[index]); break;
+			case EExplicitAttackType.GroundedDirectionalAttack: PlayParticleEffect(groundHeavyAttackParticleList[attackIndex][index], CurrentAction.particleList[index]); break;
+			case EExplicitAttackType.GroundedUpAttack: PlayParticleEffect(groundUpAttackParticleList[attackIndex][index], CurrentAction.particleList[index]); break;
+			case EExplicitAttackType.GroundedDownAttack: PlayParticleEffect(groundDownAttackParticleList[attackIndex][index], CurrentAction.particleList[index]); break;
+			case EExplicitAttackType.AirDefaultAttack: PlayParticleEffect(airLightAttackParticleList[attackIndex][index], CurrentAction.particleList[index]); break;
+			case EExplicitAttackType.AirDirectionalAttack: PlayParticleEffect(airHeavyAttackParticleList[attackIndex][index], CurrentAction.particleList[index]); break;
+			case EExplicitAttackType.AirDownAttack: PlayParticleEffect(airDownAttackParticleList[attackIndex][index], CurrentAction.particleList[index]); break;
+			case EExplicitAttackType.AirUpAttack: PlayParticleEffect(airUpAttackParticleList[attackIndex][index], CurrentAction.particleList[index]); break;
+			case EExplicitAttackType.DefensiveAction: PlayParticleEffect(defensiveActionParticleList[defensiveActionIndex][index], CurrentAction.particleList[index]); break;
 			default: break;
 		}
 	}
@@ -763,40 +842,36 @@ public abstract class WeaponBase
 
 	public virtual void CharacterArrivedAtRequestedLocation(GameCharacter movedCharacter)
 	{
-
+		CurrentAction?.Action?.CharacterArrivedAtRequestedLocation(movedCharacter);
 	}
 
 	public virtual void CharacterMoveToAbort(GameCharacter movedCharacter)
 	{
-
+		CurrentAction?.Action?.CharacterMoveToAbort(movedCharacter);
 	}
 
 	public virtual void CharacterMoveToEnd(GameCharacter movedCharacter)
 	{
-
+		CurrentAction?.Action?.CharacterMoveToEnd(movedCharacter);
 	}
 
 	public virtual void DefensiveActionStart()
 	{
-
+		CurrentAction?.Action?.DefensiveActionStart();
 	}
 
 	public virtual void DefensiveActionEnd()
 	{
-
+		CurrentAction?.Action?.DefensiveActionEnd();
 	}
 
 	public virtual bool CanLeaveDefensiveState()
 	{
-		return true;
+		if (CurrentAction == null || CurrentAction.Action == null) return true;
+		return CurrentAction.Action.CanLeaveDefensiveState();
 	}
 
-	public virtual void GroundReset()
-	{
-
-	}
-
-	protected void UnHookAllHookedCharacerts()
+	public void UnHookAllHookedCharacerts()
 	{
 		foreach (GameCharacter character in GameCharacter.CombatComponent.HookedCharacters)
 		{
@@ -805,29 +880,27 @@ public abstract class WeaponBase
 		GameCharacter.CombatComponent.HookedCharacters.Clear();
 	}
 
-	protected void HookCharacterToCharacter(GameCharacter enemyCharacter)
+	public void HookCharacterToCharacter(GameCharacter enemyCharacter)
 	{
 		if (!GameCharacter.CombatComponent.HookedCharacters.Contains(enemyCharacter))
 			GameCharacter.CombatComponent.HookedCharacters.Add(enemyCharacter);
 	}
 
-	protected void RequestFlyAway(GameCharacter enemyCharacter)
+	public void KickAway(GameCharacter enemyCharacter, float kickAwayTime, Vector3 kickAwayDir, float kickAwayStrengh)
 	{
 		if (enemyCharacter.CombatComponent.CanRequestFlyAway())
 		{
-			//enemyCharacter.StateMachine.RequestStateChange(EGameCharacterState.FlyAway);
-			enemyCharacter.StateMachine.ForceStateChange(EGameCharacterState.FlyAway);
-			enemyCharacter.CombatComponent.FlyAwayTime = CurrentAttack.extraData.flyAwayTime;
+			enemyCharacter.CombatComponent.RequestFlyAway(kickAwayTime);
 			if (Mathf.Sign(GameCharacter.transform.forward.x) < 0)
 			{
-				Vector3 direction = Quaternion.Euler(CurrentAttack.extraData.flyAwayDirection) * GameCharacter.transform.forward;
+				Vector3 direction = Quaternion.Euler(kickAwayDir) * GameCharacter.transform.forward;
 				direction.y = direction.y * -1;
-				enemyCharacter.MovementComponent.MovementVelocity = direction * CurrentAttack.extraData.flyAwayStrengh;
+				enemyCharacter.MovementComponent.MovementVelocity = direction * kickAwayStrengh;
 			}
 			else
 			{
-				Vector3 direction = Quaternion.Euler(CurrentAttack.extraData.flyAwayDirection) * GameCharacter.transform.forward;
-				enemyCharacter.MovementComponent.MovementVelocity = direction * CurrentAttack.extraData.flyAwayStrengh;
+				Vector3 direction = Quaternion.Euler(kickAwayDir) * GameCharacter.transform.forward;
+				enemyCharacter.MovementComponent.MovementVelocity = direction * kickAwayStrengh;
 			}
 
 			Ultra.Utilities.DrawArrow(enemyCharacter.MovementComponent.CharacterCenter, enemyCharacter.MovementComponent.MovementVelocity.normalized, 5f, Color.magenta, 10f, 100, DebugAreas.Combat);
@@ -839,10 +912,41 @@ public abstract class WeaponBase
 		Charge = chargeAfterTime;
 	}
 
-	protected virtual float GetDamage()
+	public virtual float GetDamage(float damage)
 	{
 		float chargeValue = Ultra.Utilities.Remap(Charge, 0, weaponData.MaxChargeAmount, 0.1f, 1f);
 		//Ultra.Utilities.Instance.DebugLogOnScreen("Damage => " + CurrentAttack.extraData.Damage, 1f, StringColor.Magenta);
-		return chargeValue * CurrentAttack.extraData.Damage;
+		return chargeValue * damage;
+	}
+
+	public virtual void SetTriggerAttack(AnimationClip triggerAttack)
+	{
+		if (triggerAttack == null)
+		{
+			Ultra.Utilities.Instance.DebugErrorString("WeaponBase", "SetTriggerAttack", "Trigger Attack was null!");
+			return;
+		}
+		gameCharacter.AnimController.SetTriggerAttack(triggerAttack);
+		gameCharacter.CombatComponent.AttackTimer.Start(triggerAttack.length);
+		gameCharacter.AnimController.AttackTriggerTimer.Start(triggerAttack.length);
+
+		gameCharacter.AnimController.TriggerAttack = true;
+		gameCharacter.AnimController.HoldAttack = false;
+		gameCharacter.AnimController.InAttack = false;
+	}
+
+	public virtual void SetHoldAttack(AnimationClip holdAttack)
+	{
+		if (holdAttack == null)
+		{
+			Ultra.Utilities.Instance.DebugErrorString("WeaponBase", "SetHoldAttack", "Hold Attack was null!");
+			return;
+		}
+		gameCharacter.AnimController.SetHoldAttack(holdAttack);
+		gameCharacter.CombatComponent.AttackTimer.IsPaused = true;
+
+		gameCharacter.AnimController.HoldAttack = true;
+		gameCharacter.AnimController.TriggerAttack = false;
+		gameCharacter.AnimController.InAttack = false;
 	}
 }

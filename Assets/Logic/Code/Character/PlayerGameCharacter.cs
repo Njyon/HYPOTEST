@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 public class PlayerGameCharacter : GameCharacter
 {
@@ -19,6 +20,20 @@ public class PlayerGameCharacter : GameCharacter
 
 		combatRatingComponent = new CombatRatingComponent(0);
 		combatRatingComponent.Init(this);
+
+		if (!LoadingChecker.Instance.FinishLoading)
+		{
+			LoadingChecker.Instance.onLoadingFinished += FinsihLoading;
+		}
+		else
+		{
+			FinsihLoading();
+		}
+	}
+
+	void FinsihLoading()
+	{
+		LoadingChecker.Instance.onLoadingFinished -= FinsihLoading;
 
 		UIManager.Instance.onAllUIsUnloaded += OnAllUIsUnloaded;
 		UIManager.Instance.UnloadAll();

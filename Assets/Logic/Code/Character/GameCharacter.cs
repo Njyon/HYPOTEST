@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 public class GameCharacter : MonoBehaviour , IDamage
 {
@@ -36,6 +37,11 @@ public class GameCharacter : MonoBehaviour , IDamage
 	HyppoliteTeam team;
 	Quaternion rotationTarget;
 	Vector3 lastDir;
+	int ignoreCharacterLayer;
+	int characterLayer;
+	ParticleSystemPool dodgeParticleSystemPool;
+	ParticleSystemPool succsessfullDodgeParticlePool;
+	GameObject dataWorldHolder;
 
 	bool isInitialized = false;
 	public bool IsInitialized { get { return isInitialized; } }
@@ -62,7 +68,23 @@ public class GameCharacter : MonoBehaviour , IDamage
 	public RigDataComponent RigDataComponent { get { return rigDataComponent; } }
 	public Quaternion RotationTarget { get { return rotationTarget; } set { rotationTarget = value; } }
 	public Vector3 LastDir { get { return lastDir; } set { lastDir = value; } }
+	public int IgnoreCharacterLayer { get { return ignoreCharacterLayer; } }
+	public int CharacterLayer { get { return characterLayer; } }
+	public ParticleSystemPool SuccsessfullDodgeParticlePool { get { return succsessfullDodgeParticlePool; } }
+	public ParticleSystemPool DodgeParticleSystemPool { get { return dodgeParticleSystemPool; } }
+	public GameObject DataWorldHolder { get { return dataWorldHolder; } }
 
+#if UNITY_EDITOR
+	//[DebugGUIGraph(min: 0, max: 9, r: 0, g: 1, b: 1, autoScale: true)]
+	//public float MovementSpeed { get { return MovementComponent != null ? MovementComponent.MovementSpeed : 0; } }
+	//
+	//[DebugGUIPrint, DebugGUIGraph(min: -10, max: 10, group: 1, r: 1, g: 0.3f, b: 0.3f)]
+	//public float MovementVelx { get { return MovementComponent != null ? MovementComponent.Velocity.x : 0; } }
+	//[DebugGUIPrint, DebugGUIGraph(min: -10, max: 10, group: 1, r: 0, g: 1, b: 0)]
+	//public float MovementVely { get { return MovementComponent != null ? MovementComponent.Velocity.y : 0; } }
+	//[DebugGUIPrint, DebugGUIGraph(min: -10, max: 10, group: 1, r: 0, g: 1, b: 1)]
+	//public float MovementVelz { get { return MovementComponent != null ? MovementComponent.Velocity.z : 0; } }
+#endif
 
 	public HyppoliteTeam Team { get { return team; } set { team = value; } }
 	public bool IsGameCharacterDead 
@@ -110,6 +132,8 @@ public class GameCharacter : MonoBehaviour , IDamage
 
 		freezTimer = new Ultra.Timer(freezTime, true);
 
+		ignoreCharacterLayer = LayerMask.GetMask("IgnoreCharacter");
+		characterLayer = LayerMask.GetMask("Character");
 	}
 
 	public virtual void CustomAwake()
@@ -140,9 +164,29 @@ public class GameCharacter : MonoBehaviour , IDamage
 
 		staggerComponent = new StaggerComponent(this, gameCharacterData.StaggerTime, gameCharacterData.MaxStaggerValue, gameCharacterData.MaxStaggerValue);
 
+		if (dataWorldHolder == null)
+		{
+			dataWorldHolder = new GameObject(this.name + " World Data Holder");
+		}
+
+		SetupPartilcePools();
+
 		PluginStateMachine.AddPluginState(EPluginCharacterState.LookInVelocityDirection);
 
 		isInitialized = true;
+	}
+
+	private void SetupPartilcePools()
+	{
+		succsessfullDodgeParticlePool = new ParticleSystemPool(gameCharacterData.SuccsessfullDodgeParticleEffect, CreateHolderChild(this.name + " SuccsessfullDodgeEffect Holder"), 2);
+		dodgeParticleSystemPool = new ParticleSystemPool(gameCharacterData.DodgeParticleEffect, CreateHolderChild(this.name + " DodgeEffect Holder"), 2);
+	}
+
+	public GameObject CreateHolderChild(string name)
+	{
+		var succsessfullDodgeParticlePoolHolder = new GameObject(this.name + name);
+		succsessfullDodgeParticlePoolHolder.transform.parent = dataWorldHolder.transform;
+		return succsessfullDodgeParticlePoolHolder;
 	}
 
 	protected void OnDestroy()
@@ -162,9 +206,8 @@ public class GameCharacter : MonoBehaviour , IDamage
 
 	protected void Update()
 	{
-		if (!IsInitialized) return;
+		if (!IsInitialized || !LoadingChecker.Instance.FinishLoading) return;
 		freezTimer.Update(Time.deltaTime);
-
 		//movementInput.x = 1;
 		EventComponent.Update(Time.deltaTime);
 		MovementComponent.CalculateVelocity();
@@ -178,7 +221,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 		if (StaggerComponent != null) StaggerComponent.Update(Time.deltaTime);
 
 
-		
+#if UNITY_EDITOR
 		// Debug
 		if (IsPlayerCharacter)
 		{
@@ -195,9 +238,8 @@ public class GameCharacter : MonoBehaviour , IDamage
 		if (IsPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen("CurrentCharacterState: " + StateMachine.GetCurrentStateType().ToString(), 0f, StringColor.Teal, 100, DebugAreas.Movement);
 		if (IsPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen("Current Ground Angle: " + MovementComponent.GetPossibleGroundAngle(), 0f, StringColor.Teal, 200, DebugAreas.Misc);
 		if (!IsPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen("AICurrentCharacterState: " + StateMachine.GetCurrentStateType().ToString(), 0f, StringColor.Brown, 200, DebugAreas.AI);
+#endif
 	}
-
-	
 
 	private void LateUpdate()
 	{
@@ -235,7 +277,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 
 	public void StartCameraShake(AnimationEvent evt)
 	{
-		CameraController.Instance.ShakeCamerea(evt.intParameter);
+		CameraController.Instance?.ShakeCamerea(evt.intParameter);
 	}
 
 	public void DefensiveActionStart(AnimationEvent evt)
@@ -248,6 +290,16 @@ public class GameCharacter : MonoBehaviour , IDamage
 		CombatComponent?.CurrentWeapon.DefensiveActionEnd();
 	}
 
+	public void StartIFrameWindow(AnimationEvent evt)
+	{
+		PluginStateMachine?.AddPluginState(EPluginCharacterState.IFrame);
+	}
+
+	public void EndIFrameWindow(AnimationEvent evt)
+	{
+		PluginStateMachine?.RemovePluginState(EPluginCharacterState.IFrame);
+	}
+
 	#endregion
 
 	public void DoDamage(GameCharacter damageInitiator, float damage)
@@ -256,28 +308,53 @@ public class GameCharacter : MonoBehaviour , IDamage
 		{
 			if (CheckForSameTeam(damageInitiator.Team)) return;
 		}
-		Ultra.Utilities.Instance.DebugLogOnScreen(name + " got Damaged by: " + damageInitiator.name + ", Damage = " + damage, 2f, StringColor.Red, 200, DebugAreas.Combat);
-		Health.AddCurrentValue(-damage);
-		StaggerComponent.AddCurrentValue(-damage);
-		damageInitiator?.CombatComponent.AddCombo();
-		CombatComponent.ComboBreak();
-		damageInitiator?.CombatComponent.CharacterDidDamageTo(damageInitiator, damage);
-
-		if (CombatComponent.CanRequestFreez())
+		if (PluginStateMachine.ContainsPluginState(EPluginCharacterState.IFrame))
 		{
-			if (StateMachine.GetCurrentStateType() == EGameCharacterState.Freez)
+			CombatComponent.SuccsessfullDodge(damageInitiator, damage);
+			damage = 0;
+			return;
+		}
+		else if (PluginStateMachine.ContainsPluginState(EPluginCharacterState.Parry)) 
+		{
+			CombatComponent.CurrentWeapon.CurrentAction.Action.SuccessfullParry(damageInitiator, damage);
+			damage = 0;
+			return;
+		} else if(PluginStateMachine.ContainsPluginState(EPluginCharacterState.Block))
+		{
+			if (damage > 0)
 			{
-				freezTimer.Start(freezTime);
-				AnimController.FreezA = !AnimController.FreezA;
-			}else if (StateMachine.GetCurrentStateType() == EGameCharacterState.InAir)
-			{
-				StateMachine.RequestStateChange(EGameCharacterState.Freez);
+				CombatComponent.CurrentWeapon.CurrentAction.Action.SuccessfullBlock(damageInitiator, damage);
+				damage = damage / 2f;
 			}
 		}
-		
-		animController.TriggerAdditiveHit();
-		OnDamaged(damageInitiator, damage);
-		damageInitiator?.AddRatingOnHit(damage);
+
+		Health.AddCurrentValue(-damage);
+		StaggerComponent.AddCurrentValue(-damage);
+		Ultra.Utilities.Instance.DebugLogOnScreen(name + " got Damaged by: " + damageInitiator.name + ", Damage = " + damage, 2f, StringColor.Red, 200, DebugAreas.Combat);
+	
+		if (damage > 0)
+		{
+			damageInitiator?.CombatComponent.AddCombo();
+			CombatComponent.ComboBreak();
+			damageInitiator?.CombatComponent.CharacterDidDamageTo(damageInitiator, damage);
+
+			if (CombatComponent.CanRequestFreez())
+			{
+				if (StateMachine.GetCurrentStateType() == EGameCharacterState.Freez)
+				{
+					freezTimer.Start(freezTime);
+					AnimController.FreezA = !AnimController.FreezA;
+				}
+				else if (StateMachine.GetCurrentStateType() == EGameCharacterState.InAir)
+				{
+					StateMachine.RequestStateChange(EGameCharacterState.Freez);
+				}
+			}
+
+			animController.TriggerAdditiveHit();
+			OnDamaged(damageInitiator, damage);
+			damageInitiator?.AddRatingOnHit(damage);
+		}
 	}
 
 	public bool CheckForSameTeam(HyppoliteTeam team)
@@ -444,5 +521,11 @@ public class GameCharacter : MonoBehaviour , IDamage
 	public virtual void ShowAttackFeedback()
 	{
 
+	}
+
+	[Button("ReInitGraphs")]
+	protected void Test()
+	{
+		DebugGUI.ForceReinitializeAttributes();
 	}
 }

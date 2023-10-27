@@ -23,7 +23,7 @@ public class EnemyGameCharacter : GameCharacter
 		if (btRunner != null)
 		{
 			if (btRunner.BehaviourTree != null)
-				OnBehaviourTreeInit();
+				OnBehaviourTreeInit(btRunner);
 			else
 				btRunner.onBehaviourTreeInit += OnBehaviourTreeInit;
 		}
@@ -52,7 +52,7 @@ public class EnemyGameCharacter : GameCharacter
 		}
 	}
 
-	void OnBehaviourTreeInit()
+	void OnBehaviourTreeInit(BehaviorTreeRunner btr)
 	{
 		foreach (GameCharacter gc in CharacterDetection.OverlappingGameCharacter)
 		{

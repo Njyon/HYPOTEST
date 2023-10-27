@@ -24,7 +24,7 @@ public class WeaponSwitchEvent : CharacterEvent
 		return true;
 	}
 
-	public override EGameCharacterEvent GetGameCharacterEvenetType()
+	public override EGameCharacterEvent GetCharacterEvenetType()
 	{
 		return EGameCharacterEvent.WeaponSwitchEvent;
 	}

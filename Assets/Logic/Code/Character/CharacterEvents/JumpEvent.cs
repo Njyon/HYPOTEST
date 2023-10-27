@@ -19,7 +19,7 @@ public class JumpEvent : CharacterEvent
 		return false;
 	}
 
-	public override EGameCharacterEvent GetGameCharacterEvenetType()
+	public override EGameCharacterEvent GetCharacterEvenetType()
 	{
 		return EGameCharacterEvent.Jump;
 	}

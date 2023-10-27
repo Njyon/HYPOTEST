@@ -58,6 +58,8 @@ namespace Ultra
 			IsPaused = false;
 			isFinished = false;
 			currentTime = 0;
+
+			if (onTimerStarted != null) onTimerStarted(this.time);
 		}
 
 		public void Start()
@@ -65,6 +67,8 @@ namespace Ultra
 			IsPaused = false;
 			isFinished = false;
 			currentTime = 0;
+
+			if (onTimerStarted != null) onTimerStarted(this.time);
 		}
 
 		public void Stop()
