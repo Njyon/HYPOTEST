@@ -20,12 +20,13 @@ public class DefaultAttack : AttackBase
 
 	}
 
-	public override void StartAction() 
+	public override void StartAction()
 	{
-		StartAttack(attackData.attackAnimation);
+		if (!GameCharacter.IsGameCharacterDead)
+			StartAttack(attackData.attackAnimation);
 	}
 
-	public override void OnHit(GameObject hitObj) 
+	public override void OnHit(GameObject hitObj)
 	{
 		IDamage damageInterface = DoDamage(hitObj, attackData.Damage);
 	}

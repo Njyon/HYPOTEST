@@ -5,11 +5,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Profiling;
 
-public class GameCharacter : MonoBehaviour , IDamage
+public class GameCharacter : MonoBehaviour, IDamage
 {
 	public delegate void OnGameCharacterDied(GameCharacter gameCharacter);
+	public delegate void OnGameCharacterEvent();
 	public OnGameCharacterDied onGameCharacterDied;
 	public OnGameCharacterDied onGameCharacterDestroyed;
+	public OnGameCharacterEvent onGameCharacterAggroChanged;
 
 	GameCharacterStateMachine stateMachine;
 	GameCharacterPluginStateMachine pluginStateMachine;
@@ -42,6 +44,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 	ParticleSystemPool dodgeParticleSystemPool;
 	ParticleSystemPool succsessfullDodgeParticlePool;
 	GameObject dataWorldHolder;
+	List<GameCharacter> aggroedCharacters = new List<GameCharacter>();
 
 	bool isInitialized = false;
 	public bool IsInitialized { get { return isInitialized; } }
@@ -58,12 +61,12 @@ public class GameCharacter : MonoBehaviour , IDamage
 	public EventComponent EventComponent { get { return eventComponent; } }
 	public GameCharacterMovementComponent MovementComponent { get { return movementComponent; } }
 	public Rigidbody Rigidbody { get { return rigidbody; } }
-	public bool IsPlayerCharacter { get {  return isPlayerCharacter; } set { isPlayerCharacter = value; } }
+	public bool IsPlayerCharacter { get { return isPlayerCharacter; } set { isPlayerCharacter = value; } }
 	public RecourceBase Health { get { return health; } }
 	public StaggerComponent StaggerComponent { get { return staggerComponent; } }
 	public Ultra.Timer FreezTimer { get { return freezTimer; } }
-	public float FreezTime { get { return freezTime; } }	
-	public float FreezTimeOverride { get { return freezTimeOverride; } set { freezTimeOverride = value; } }	
+	public float FreezTime { get { return freezTime; } }
+	public float FreezTimeOverride { get { return freezTimeOverride; } set { freezTimeOverride = value; } }
 	public GameCharacterDetection CharacterDetection { get { return characterDetection; } }
 	public RigDataComponent RigDataComponent { get { return rigDataComponent; } }
 	public Quaternion RotationTarget { get { return rotationTarget; } set { rotationTarget = value; } }
@@ -73,6 +76,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 	public ParticleSystemPool SuccsessfullDodgeParticlePool { get { return succsessfullDodgeParticlePool; } }
 	public ParticleSystemPool DodgeParticleSystemPool { get { return dodgeParticleSystemPool; } }
 	public GameObject DataWorldHolder { get { return dataWorldHolder; } }
+	public bool CharacterHasAggro => aggroedCharacters.Count > 0;
 
 #if UNITY_EDITOR
 	//[DebugGUIGraph(min: 0, max: 9, r: 0, g: 1, b: 1, autoScale: true)]
@@ -87,9 +91,9 @@ public class GameCharacter : MonoBehaviour , IDamage
 #endif
 
 	public HyppoliteTeam Team { get { return team; } set { team = value; } }
-	public bool IsGameCharacterDead 
-	{ 
-		get { return isGameCharacterDead; } 
+	public bool IsGameCharacterDead
+	{
+		get { return isGameCharacterDead; }
 		private set { isGameCharacterDead = value; }
 	}
 	public float CharacterRadiusTarget
@@ -166,7 +170,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 
 		if (dataWorldHolder == null)
 		{
-			dataWorldHolder = new GameObject(this.name + " World Data Holder");
+			dataWorldHolder = new GameObject(">> " + this.name + " World Data Holder");
 		}
 
 		SetupPartilcePools();
@@ -178,13 +182,13 @@ public class GameCharacter : MonoBehaviour , IDamage
 
 	private void SetupPartilcePools()
 	{
-		succsessfullDodgeParticlePool = new ParticleSystemPool(gameCharacterData.SuccsessfullDodgeParticleEffect, CreateHolderChild(this.name + " SuccsessfullDodgeEffect Holder"), 2);
-		dodgeParticleSystemPool = new ParticleSystemPool(gameCharacterData.DodgeParticleEffect, CreateHolderChild(this.name + " DodgeEffect Holder"), 2);
+		succsessfullDodgeParticlePool = new ParticleSystemPool(gameCharacterData.SuccsessfullDodgeParticleEffect, CreateHolderChild("SuccsessfullDodgeEffect Holder"), 2);
+		dodgeParticleSystemPool = new ParticleSystemPool(gameCharacterData.DodgeParticleEffect, CreateHolderChild("DodgeEffect Holder"), 2);
 	}
 
 	public GameObject CreateHolderChild(string name)
 	{
-		var succsessfullDodgeParticlePoolHolder = new GameObject(this.name + name);
+		var succsessfullDodgeParticlePoolHolder = new GameObject(">> " + this.name + " " + name);
 		succsessfullDodgeParticlePoolHolder.transform.parent = dataWorldHolder.transform;
 		return succsessfullDodgeParticlePoolHolder;
 	}
@@ -250,7 +254,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 
 	private void OnControllerColliderHit(ControllerColliderHit hit)
 	{
-		
+
 	}
 
 	#region AnimEvents
@@ -314,12 +318,13 @@ public class GameCharacter : MonoBehaviour , IDamage
 			damage = 0;
 			return;
 		}
-		else if (PluginStateMachine.ContainsPluginState(EPluginCharacterState.Parry)) 
+		else if (PluginStateMachine.ContainsPluginState(EPluginCharacterState.Parry))
 		{
 			CombatComponent.CurrentWeapon.CurrentAction.Action.SuccessfullParry(damageInitiator, damage);
 			damage = 0;
 			return;
-		} else if(PluginStateMachine.ContainsPluginState(EPluginCharacterState.Block))
+		}
+		else if (PluginStateMachine.ContainsPluginState(EPluginCharacterState.Block))
 		{
 			if (damage > 0)
 			{
@@ -331,7 +336,7 @@ public class GameCharacter : MonoBehaviour , IDamage
 		Health.AddCurrentValue(-damage);
 		StaggerComponent.AddCurrentValue(-damage);
 		Ultra.Utilities.Instance.DebugLogOnScreen(name + " got Damaged by: " + damageInitiator.name + ", Damage = " + damage, 2f, StringColor.Red, 200, DebugAreas.Combat);
-	
+
 		if (damage > 0)
 		{
 			damageInitiator?.CombatComponent.AddCombo();
@@ -392,29 +397,29 @@ public class GameCharacter : MonoBehaviour , IDamage
 		return MovementComponent.Velocity.magnitude <= 0 && GetHorizontalMovementInputDir().magnitude <= 0;
 	}
 
-	public void RequestBestCharacterState()
+	public void RequestBestCharacterState(bool force = false)
 	{
 		if (CheckIfCharacterIsInAir())
 		{
-			StateMachine.RequestStateChange(EGameCharacterState.InAir);
+			StateMachine.RequestStateChange(EGameCharacterState.InAir, force);
 			return;
 		}
 
 		if (CheckIfCharacterIsOnSteepGround())
 		{
-			StateMachine.RequestStateChange(EGameCharacterState.InAir);
+			StateMachine.RequestStateChange(EGameCharacterState.InAir, force);
 			return;
 		}
 
 		if (CheckIfCharacterIsMoving())
 		{
-			StateMachine.RequestStateChange(EGameCharacterState.Moving);
+			StateMachine.RequestStateChange(EGameCharacterState.Moving, force);
 			return;
 		}
 
 		if (CheckIfCharacterIsStanding())
 		{
-			StateMachine.RequestStateChange(EGameCharacterState.Standing);
+			StateMachine.RequestStateChange(EGameCharacterState.Standing, force);
 			return;
 		}
 	}
@@ -504,6 +509,9 @@ public class GameCharacter : MonoBehaviour , IDamage
 		{
 			collider.enabled = true;
 		}
+
+		GameObject.Destroy(dataWorldHolder);
+
 		if (onGameCharacterDied != null) onGameCharacterDied(this);
 	}
 
@@ -515,12 +523,37 @@ public class GameCharacter : MonoBehaviour , IDamage
 
 	protected virtual void OnCharacterDetectionOverlapEnter(GameCharacter other)
 	{
-		
+
 	}
 
 	public virtual void ShowAttackFeedback()
 	{
 
+	}
+
+	public void AddCharacterToAggroedCharacters(GameCharacter aggroedCharacter)
+	{
+		aggroedCharacters.Add(aggroedCharacter);
+		aggroedCharacter.onGameCharacterDied += OnAggroedCharactersDies;
+
+		if (onGameCharacterAggroChanged != null) onGameCharacterAggroChanged();
+	}
+
+	public void RemoveCharacterFromAggroedCharacter(GameCharacter aggroedCharacter)
+	{
+		if (aggroedCharacters.Contains(aggroedCharacter))
+			aggroedCharacters.Remove(aggroedCharacter);
+
+		if (onGameCharacterAggroChanged != null) onGameCharacterAggroChanged();
+	}
+
+	void OnAggroedCharactersDies(GameCharacter diedCharacter)
+	{
+		diedCharacter.onGameCharacterDied -= OnAggroedCharactersDies;
+		if (aggroedCharacters.Contains(diedCharacter))
+			aggroedCharacters.Remove(diedCharacter);
+
+		if (onGameCharacterAggroChanged != null) onGameCharacterAggroChanged();
 	}
 
 	[Button("ReInitGraphs")]

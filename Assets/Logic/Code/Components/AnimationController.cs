@@ -1,9 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
-using UnityEditor.Animations;
-using UnityEditor.Build;
 using UnityEngine;
 
 public enum EGameCharacterAnimatiorLayers
@@ -72,6 +69,7 @@ public class AnimationController
 	int inDodgeIndex;
 	int attackTriggerStateIndex;
 	int attackHoldStateIndex;
+	int dodgeStateIndex;
 
 	float minMalkSpeed;
 	bool startWalkRunBlendInterp = true;
@@ -91,14 +89,16 @@ public class AnimationController
 	float upperBodyLayerInterpSpeed;
 
 	int holdStateHash;
-	public int HoldStateHash { 
-		get {
+	public int HoldStateHash
+	{
+		get
+		{
 			if (holdStateHash == 0)
 			{
 				holdStateHash = Animator.StringToHash("BasisLayer.Combat.CombatLoseStates.Hold");
 			}
-			return holdStateHash; 
-		} 
+			return holdStateHash;
+		}
 	}
 	int dodgeStateHash;
 	public int DodgeStateHash
@@ -138,9 +138,11 @@ public class AnimationController
 	}
 
 	float walkRunBlend;
-	public float WalkRunBlend { 
-		get { return walkRunBlend; } 
-		private set {
+	public float WalkRunBlend
+	{
+		get { return walkRunBlend; }
+		private set
+		{
 			value = Mathf.Clamp01(value);
 			if (walkRunBlend != value)
 			{
@@ -150,9 +152,11 @@ public class AnimationController
 		}
 	}
 	float strideBlend;
-	public float StrideBlend { 
-		get { return strideBlend; } 
-		private set {
+	public float StrideBlend
+	{
+		get { return strideBlend; }
+		private set
+		{
 			value = Mathf.Clamp01(value);
 			if (strideBlend != value)
 			{
@@ -162,9 +166,11 @@ public class AnimationController
 		}
 	}
 	float standingPlayRate;
-	public float StandingPlayRate {
+	public float StandingPlayRate
+	{
 		get { return standingPlayRate; }
-		private set {
+		private set
+		{
 			if (standingPlayRate != value)
 			{
 				standingPlayRate = value;
@@ -173,9 +179,11 @@ public class AnimationController
 		}
 	}
 	bool isGrounded;
-	public bool IsGrounded { 
-		get { return isGrounded; } 
-		private set {
+	public bool IsGrounded
+	{
+		get { return isGrounded; }
+		private set
+		{
 			if (isGrounded != value)
 			{
 				isGrounded = value;
@@ -184,9 +192,11 @@ public class AnimationController
 		}
 	}
 	bool isMoving;
-	public bool IsMoving { 
-		get { return isMoving; } 
-		private set {
+	public bool IsMoving
+	{
+		get { return isMoving; }
+		private set
+		{
 			if (isMoving != value)
 			{
 				isMoving = value;
@@ -197,9 +207,11 @@ public class AnimationController
 	float rotationTarget;
 	public float RotationTrarget { get { return rotationTarget; } set { rotationTarget = value; } }
 	float rotationBlend;
-	public float RotationBlend { 
+	public float RotationBlend
+	{
 		get { return rotationBlend; }
-		private set {
+		private set
+		{
 			if (rotationBlend != value)
 			{
 				//if (Ultra.Utilities.IsNearlyEqual(value, 0, 0.001f)) value = 0;
@@ -209,9 +221,11 @@ public class AnimationController
 		}
 	}
 	float fallingBlend;
-	public float FallingBlend { 
-		get { return fallingBlend; } 
-		private set { 
+	public float FallingBlend
+	{
+		get { return fallingBlend; }
+		private set
+		{
 			if (fallingBlend != value)
 			{
 				fallingBlend = value;
@@ -220,8 +234,9 @@ public class AnimationController
 		}
 	}
 	bool layerA = true;
-	public bool HeadSpineArmIsA { 
-		get { return layerA; } 
+	public bool HeadSpineArmIsA
+	{
+		get { return layerA; }
 		private set
 		{
 			if (layerA != value)
@@ -231,7 +246,8 @@ public class AnimationController
 			}
 		}
 	}
-	public float SpineLayerWeight {
+	public float SpineLayerWeight
+	{
 		get { return gameCharacter.Animator.GetLayerWeight(spineLayerIndex); }
 		private set
 		{
@@ -241,7 +257,8 @@ public class AnimationController
 			}
 		}
 	}
-	public float LegLayerWeight {
+	public float LegLayerWeight
+	{
 		get { return gameCharacter.Animator.GetLayerWeight(legLayerIndex); }
 		private set
 		{
@@ -318,22 +335,26 @@ public class AnimationController
 		}
 	}
 	bool inAttack = false;
-	public bool InAttack { 
-		get { return inAttack; } 
-		set {
+	public bool InAttack
+	{
+		get { return inAttack; }
+		set
+		{
 			if (inAttack != value)
 			{
-				inAttack = value; 
+				inAttack = value;
 				gameCharacter.Animator.SetBool(inAttackIndex, inAttack);
 			}
-		} 
+		}
 	}
 	bool attackA = true;
-	public bool AttackA { 
-		get { return attackA; } 
-		set {
-			if (attackA != value) 
-			{ 
+	public bool AttackA
+	{
+		get { return attackA; }
+		set
+		{
+			if (attackA != value)
+			{
 				attackA = value;
 				gameCharacter.Animator.SetBool(attackAIndex, attackA);
 			}
@@ -408,7 +429,7 @@ public class AnimationController
 	public bool InAimBlendTree
 	{
 		get { return inAimBlendTree; }
-		set 
+		set
 		{
 			if (inAimBlendTree != value)
 			{
@@ -447,20 +468,20 @@ public class AnimationController
 	public bool InUpperBodyLayerA
 	{
 		get { return inUpperBodyLayerA; }
-		set 
-		{ 
+		set
+		{
 			if (inUpperBodyLayerA != value)
 			{
 				inUpperBodyLayerA = value;
 				gameCharacter.Animator.SetBool(inUpperBodyLayerAIndex, inUpperBodyLayerA);
 			}
-		} 
+		}
 	}
 	bool flyAway = false;
 	public bool FlyAway
 	{
 		get { return flyAway; }
-		set 
+		set
 		{
 			if (flyAway != value)
 			{
@@ -540,7 +561,7 @@ public class AnimationController
 
 	public float GetUpMovementCurve { get { return gameCharacter.Animator.GetFloat(upMovementCurveIndex); } }
 	Ultra.Timer attackTriggerTimer = new Ultra.Timer();
-	public Ultra.Timer	AttackTriggerTimer { get { return attackTriggerTimer; } }
+	public Ultra.Timer AttackTriggerTimer { get { return attackTriggerTimer; } }
 
 	public AnimationController(GameCharacter character)
 	{
@@ -594,8 +615,9 @@ public class AnimationController
 		inCombat3BlendStateBIndex = Animator.StringToHash("InCombat3BlendBState");
 		combat3BlendTreeAStateIndex = Animator.StringToHash("Combat3BlendTreeA");
 		inDodgeIndex = Animator.StringToHash("inDodge");
-		attackTriggerStateIndex = Animator.StringToHash("Trigger");
-		attackHoldStateIndex = Animator.StringToHash("Hold");
+		attackTriggerStateIndex = Animator.StringToHash("TriggerState");
+		attackHoldStateIndex = Animator.StringToHash("HoldState");
+		dodgeStateIndex = Animator.StringToHash("DodgeState");
 
 		overrideController = new AnimatorOverrideController(gameCharacter.Animator.runtimeAnimatorController);
 
@@ -705,8 +727,9 @@ public class AnimationController
 			overrideController["Jump2 PlaceHolder"] = gameCharacter.CharacterData.CharacterAnimationData.Jumps[jumpIndex];
 			gameCharacter.Animator.runtimeAnimatorController = overrideController;
 			gameCharacter.Animator.SetTrigger(jumpBTriggerID);
-			
-		} else
+
+		}
+		else
 		{
 			overrideController["Jump1 PlaceHolder"] = gameCharacter.CharacterData.CharacterAnimationData.Jumps[jumpIndex];
 			gameCharacter.Animator.runtimeAnimatorController = overrideController;
@@ -720,7 +743,8 @@ public class AnimationController
 		if (isAttackAState)
 		{
 			overrideController["AttackB"] = attackClip;
-		}else
+		}
+		else
 		{
 			overrideController["AttackA"] = attackClip;
 		}
@@ -778,7 +802,7 @@ public class AnimationController
 	{
 		bool isAttackAState = IsInState(attackAStateIndex);
 		bool isAttackBState = IsInState(attackBStateIndex);
-	
+
 		return isAttackAState || isAttackBState;
 	}
 	public bool IsInValid3BlendAttackState()
@@ -835,7 +859,7 @@ public class AnimationController
 		gameCharacter.Animator.runtimeAnimatorController = overrideController;
 	}
 
-	public void SetDefensiveAction(AnimationClip defensiveActionClip) 
+	public void SetDefensiveAction(AnimationClip defensiveActionClip)
 	{
 		overrideController["DefensiveAction"] = defensiveActionClip;
 		gameCharacter.Animator.runtimeAnimatorController = overrideController;
@@ -915,7 +939,7 @@ public class AnimationController
 	}
 	public void SetHeadSpineArmWeight(float weight)
 	{
-		SetSpineLayerWeight(weight); 
+		SetSpineLayerWeight(weight);
 		SetHeadLayerWeight(weight);
 		SetArmLLayerWeight(weight);
 		SetArmRLayerWeight(weight);
@@ -937,7 +961,8 @@ public class AnimationController
 		if (HeadSpineArmIsA)
 		{
 			overrideController["BodyLayerB"] = clip;
-		}else
+		}
+		else
 		{
 			overrideController["BodyLayerA"] = clip;
 		}

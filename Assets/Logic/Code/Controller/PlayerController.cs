@@ -9,7 +9,7 @@ using UnityEngine.InputSystem.Utilities;
 [Icon("d_UnityEditor.GameView@2x")]
 public class PlayerController : ControllerBase
 {
-    [HideInInspector] public PlayerInputs playerInputs;
+	[HideInInspector] public PlayerInputs playerInputs;
 	CameraController camController;
 	PlayerGameCharacter gameCharacter;
 
@@ -55,11 +55,12 @@ public class PlayerController : ControllerBase
 		this.gameCharacter?.EventComponent?.AddEvent(null);
 	}
 
-	private void SetupCamera(GameObject pawn)
+	async void SetupCamera(GameObject pawn)
 	{
-		camController = Camera.main.GetComponent<CameraController>();
-		if (!camController) camController = Camera.main.gameObject.AddComponent<CameraController>();
-		camController.OnPosses(pawn);
+		await new WaitUntil(() => { return Camera.main != null; });
+		camController = Camera.main?.GetComponent<CameraController>();
+		if (!camController) camController = Camera.main?.gameObject.AddComponent<CameraController>();
+		if (camController) camController.OnPosses(pawn);
 	}
 
 	public override void EndPosses()
@@ -216,7 +217,7 @@ public class PlayerController : ControllerBase
 
 	private void OnEnable()
 	{
-		if (playerInputs != null) playerInputs.Enable(); 
+		if (playerInputs != null) playerInputs.Enable();
 	}
 
 	private void OnDestroy()
@@ -227,10 +228,12 @@ public class PlayerController : ControllerBase
 
 	private void ForceFrameRate()
 	{
-		if (bForcedFrameRate) {
-			Application.targetFrameRate = - 999;
+		if (bForcedFrameRate)
+		{
+			Application.targetFrameRate = -999;
 			bForcedFrameRate = false;
-		}else
+		}
+		else
 		{
 			Application.targetFrameRate = 10;
 			bForcedFrameRate = true;
@@ -281,7 +284,7 @@ public class PlayerController : ControllerBase
 		{
 			if (list[i].GetCharacterEvenetType() == eventType)
 			{
-				return list[i];	
+				return list[i];
 			}
 		}
 		return null;

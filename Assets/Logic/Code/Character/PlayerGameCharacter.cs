@@ -19,7 +19,10 @@ public class PlayerGameCharacter : GameCharacter
 		if (!AIManager.Instance.IsBehaviorTreeStackInit) AIManager.Instance.InitBehaviorTreeStack();
 
 		combatRatingComponent = new CombatRatingComponent(0);
+		combatRatingComponent.onStyleRankingChanged += StyleRankingChanged;
 		combatRatingComponent.Init(this);
+
+		onGameCharacterAggroChanged += OnAggroChanged;
 
 		if (!LoadingChecker.Instance.FinishLoading)
 		{
@@ -55,6 +58,8 @@ public class PlayerGameCharacter : GameCharacter
 
 	new protected void OnDestroy()
 	{
+		if (combatRatingComponent != null) combatRatingComponent.onStyleRankingChanged -= StyleRankingChanged;
+		onGameCharacterAggroChanged -= OnAggroChanged;
 		base.OnDestroy();
 
 	}
@@ -83,6 +88,24 @@ public class PlayerGameCharacter : GameCharacter
 		playerUI = FindObjectOfType<PlayerUI>();
 		if (playerUI != null)
 			playerUI.Init(this);
+	}
+
+	void StyleRankingChanged(int newRankIndex, int oldRankIndex)
+	{
+		MusicManager.Instance.SetVolumeTarget(combatRatingComponent.StyleRanks[newRankIndex].musicVolumeTarget);
+	}
+
+	void OnAggroChanged()
+	{
+		if (CharacterHasAggro)
+		{
+			MusicManager.Instance.Play();
+			MusicManager.Instance.SetVolumeTarget(combatRatingComponent.StyleRanks[combatRatingComponent.CurrentStyleRankIndex].musicVolumeTarget);
+		}
+		else
+		{
+			MusicManager.Instance.Stop();
+		}
 	}
 
 	[Button("Die")]

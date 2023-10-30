@@ -19,7 +19,7 @@ public class DebugGUI : MonoBehaviour
 
                 if (_instance == null && Application.isPlaying)
                 {
-                    _instance = new GameObject("DebugGUI").AddComponent<DebugGUI>();
+                    _instance = new GameObject(">> DebugGUI").AddComponent<DebugGUI>();
                 }
             }
             return _instance;

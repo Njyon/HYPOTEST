@@ -27,16 +27,16 @@ public class SpearDefensiveAction : ActionBase
 		{
 			Ultra.Utilities.Instance.DebugErrorString("SpearDefensiveAction", "StartAction", "AnimationData was null!");
 		}
+
+		GameCharacter targetEnemy = Ultra.HypoUttilies.FindCharactereNearestToDirection(GameCharacter.MovementComponent.CharacterCenter, (GameCharacter.MovementInput.magnitude <= 0) ? GameCharacter.transform.forward : GameCharacter.MovementInput, ref GameCharacter.CharacterDetection.OverlappingGameCharacter);
+		if (targetEnemy == null) return;
+
 		GameCharacter.CombatComponent.DefensiveTimer.Start(attackData.spearDefensiveAction.midAnimation.length);
 		GameCharacter.AnimController.ApplyBlendTree(attackData.spearDefensiveAction);
 		GameCharacter.PluginStateMachine.AddPluginState(EPluginCharacterState.Aim);
 		GameCharacter.StateMachine.RequestStateChange(EGameCharacterState.DefensiveAction);
 		Weapon.AttackAnimType = EAttackAnimType.AimBlendSpace;
 
-		GameCharacter.CombatComponent.DefensiveTimer.Start(attackData.spearDefensiveAction.midAnimation.length);
-
-		GameCharacter targetEnemy = Ultra.HypoUttilies.FindCharactereNearestToDirection(GameCharacter.MovementComponent.CharacterCenter, (GameCharacter.MovementInput.magnitude <= 0) ? GameCharacter.transform.forward : GameCharacter.MovementInput, ref GameCharacter.CharacterDetection.OverlappingGameCharacter);
-		if (targetEnemy == null) return;
 
 		Weapon.SpawnedWeapon.SetActive(false);
 

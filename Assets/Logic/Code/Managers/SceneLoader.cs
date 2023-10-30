@@ -14,11 +14,11 @@ public class SceneLoader : MonoBehaviour
 	public bool isMasterLoader = true;
 	[SerializeField] List<string> scenes = new List<string>();
 
-	void Awake()
+	void Start()
 	{
 		if (Application.isPlaying && isMasterLoader)
 			UIManager.Instance.LoadLoadingScreen();
-		for(int i = 0; i < scenes.Count; i++)
+		for (int i = 0; i < scenes.Count; i++)
 		{
 			if (Application.isPlaying)
 			{
@@ -57,5 +57,5 @@ public class SceneLoader : MonoBehaviour
 			UIManager.Instance.UnloadLoadingScreen();
 	}
 
-	
+
 }

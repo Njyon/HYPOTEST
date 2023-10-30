@@ -68,17 +68,22 @@ public class AIManager : Singelton<AIManager>
 	public int ManagableAIsCount { get { return managableAIs.Count; } }
 	public int MeleeAIsCount { get { return meleeAIs.Count; } }
 	public int MeleeAIsThatCanAttackCount { get { return meleeAIsThatCanAttack.Count; } }
-	GameObject BTRParent {
-		get {
-			if (btrParent == null) {
-				btrParent = new GameObject("AIs");
+	GameObject BTRParent
+	{
+		get
+		{
+			if (btrParent == null)
+			{
+				btrParent = new GameObject(">> AIs");
 			}
 			return btrParent;
 		}
 	}
-	GameModeBase GameMode {
-		get {
-			if (gameMode == null) 
+	GameModeBase GameMode
+	{
+		get
+		{
+			if (gameMode == null)
 				gameMode = Ultra.HypoUttilies.GetGameMode();
 			return gameMode;
 		}
@@ -124,13 +129,13 @@ public class AIManager : Singelton<AIManager>
 
 		if (!jobHandle.IsUnityNull())
 			jobHandle.Complete();
-		if (distances != null)
+		if (distances != null && distances.IsCreated)
 		{
 			SortDistanceNativeArray();
 			SetCanAttackFlagOnValidAIsAndRemoveOnOld();
 			OrderLeftAndRightMeleeAIsInARow();
 
-			distances.Dispose();
+			if (distances != null && distances.IsCreated) distances.Dispose();
 		}
 	}
 
@@ -157,7 +162,7 @@ public class AIManager : Singelton<AIManager>
 
 	void SetMovementTarget(List<HyppoliteManagableAI> aiList, float xModifier)
 	{
-		for(int i = 0; i < aiList.Count; i++)
+		for (int i = 0; i < aiList.Count; i++)
 		{
 			float minDistance = aiList[i].gameCharacter.MovementComponent.Radius + (i == 0 ? GameMode.PlayerGameCharacter.MovementComponent.Radius : aiList[i - 1].gameCharacter.MovementComponent.Radius);
 			minDistance += aiList[i].gameCharacter.GameCharacterData.MinCharacterDistance;
@@ -230,7 +235,8 @@ public class AIManager : Singelton<AIManager>
 
 	public void AddManagableAI(HyppoliteManagableAI hyppoliteManagableAI)
 	{
-		if (managableAIs != null && !managableAIs.Contains(hyppoliteManagableAI)) {
+		if (managableAIs != null && !managableAIs.Contains(hyppoliteManagableAI))
+		{
 			hyppoliteManagableAI.gameCharacter.onGameCharacterDied += OnGameCharacterDied;
 			hyppoliteManagableAI.gameCharacter.CombatComponent.onWeaponChanged += OnWeaponChanged;
 			hyppoliteManagableAI.gameCharacter.onGameCharacterDestroyed += OnGameCharacterDestoyed;
@@ -269,7 +275,7 @@ public class AIManager : Singelton<AIManager>
 		HyppoliteManagableAI ai = managableAIs.Find((HyppoliteManagableAI ai) => ai.gameCharacter == gameCharacter);
 		if (oldWeapon != null)
 		{
-			switch (oldWeapon.WeaponData.WeaponType) 
+			switch (oldWeapon.WeaponData.WeaponType)
 			{
 				case EWeaponType.Melee:
 					if (meleeAIs.Contains(ai)) meleeAIs.Remove(ai);
@@ -312,7 +318,7 @@ public class AIManager : Singelton<AIManager>
 		btr.EnableTree();
 		return btr;
 	}
-	
+
 	public void ReturnBehaviorTreeRunner(BehaviorTreeRunner btr)
 	{
 		btr.DisableTree();
@@ -338,7 +344,7 @@ public class AIManager : Singelton<AIManager>
 
 	void SpawnBehaviorTreeRunner(int index = -1)
 	{
-		GameObject go = new GameObject("BehaviorTreeRunner_" + behaviorTreeRunners.Count);
+		GameObject go = new GameObject(">> BehaviorTreeRunner_" + behaviorTreeRunners.Count);
 		go.transform.parent = BTRParent.transform;
 		BehaviorTreeRunner btr = go.AddComponent<BehaviorTreeRunner>();
 		createdBehaviourTrees++;

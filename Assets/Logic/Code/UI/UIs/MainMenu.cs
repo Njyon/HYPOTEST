@@ -18,6 +18,7 @@ public class MainMenu : UIBase
 	void Start()
 	{
 		fadeIn.PlayFeedbacks();
+		Application.targetFrameRate = 150;
 	}
 
 	public void PlayButtonPressed()
@@ -27,7 +28,7 @@ public class MainMenu : UIBase
 
 	public void SettingButtonPressed()
 	{
-		
+
 	}
 
 	public void ExitButtonPressed()

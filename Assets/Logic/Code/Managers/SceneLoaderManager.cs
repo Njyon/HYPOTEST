@@ -18,7 +18,7 @@ public class SceneLoaderManager : Singelton<SceneLoaderManager>
 	private void LoadScene(string sceneName)
 	{
 		UIManager.Instance.LoadLoadingScreen();
-		StartCoroutine(LoadSceneAsync(SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single)));
+		SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
 	}
 
 	IEnumerator LoadSceneAsync(AsyncOperation operation)

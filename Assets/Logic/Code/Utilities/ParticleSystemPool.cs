@@ -37,6 +37,7 @@ public class ParticleSystemPool : ComponentPoolBase<ParticleSystem>
 	protected override void SpawnValue()
 	{
 		GameObject go = GameObject.Instantiate(goInstance, Parent.transform);
+		go.name = ">> " + go.name;
 		ParticleSystem value = go.GetComponent<ParticleSystem>();
 		go.AddComponent<ParticleSystemCallBackComponent>();
 		stack.Push(value);

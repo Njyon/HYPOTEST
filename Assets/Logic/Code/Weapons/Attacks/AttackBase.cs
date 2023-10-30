@@ -11,13 +11,13 @@ public abstract class AttackBase : ActionBase
 	}
 
 	public void StartAttack(AnimationClip clip)
-    {
+	{
 		if (clip == null) return;
 
-		GameCharacter.AnimController.Attack(clip);
-		GameCharacter.StateMachine.RequestStateChange(EGameCharacterState.Attack);
+		GameCharacter?.AnimController?.Attack(clip);
+		GameCharacter?.StateMachine?.RequestStateChange(EGameCharacterState.Attack);
 		Weapon.AttackAnimType = EAttackAnimType.Default;
-		GameCharacter.CombatComponent.AttackTimer.Start(clip.length);
+		GameCharacter?.CombatComponent?.AttackTimer.Start(clip.length);
 	}
 
 	public IDamage DoDamage(GameObject hitObject, float damage)

@@ -203,7 +203,7 @@ public class GameCharacterAttackState : AGameCharacterState
 		if (!isValidAnimState) { 
 			if (!GameCharacter.AnimController.IsInValidAttackTriggerState() && !GameCharacter.AnimController.IsInValidAttackHoldState())
 			{
-				GameCharacter.RequestBestCharacterState();
+				GameCharacter.RequestBestCharacterState(true);
 				Ultra.Utilities.Instance.DebugErrorString("GameCharacterAttackState", "OnDelayedAnimationStateCheckTimerFinished", "In Attack but not in Valid Attack State, missing checks? or Missing Transitions");
 			}
 		}

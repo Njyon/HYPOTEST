@@ -57,7 +57,7 @@ public abstract class MonoBehaviourPoolBase<T> : PoolBase<T> where T : MonoBehav
 
 	protected override void SpawnValue()
 	{
-		GameObject go = GameObject.Instantiate(new GameObject(parent.name + " PoolObject"), parent.transform);
+		GameObject go = GameObject.Instantiate(new GameObject(">> " + parent.name + " PoolObject"), parent.transform);
 		T value = go.AddComponent<T>();
 		stack.Push(value);
 		DeactivateValue(value);
@@ -103,7 +103,7 @@ public abstract class ComponentPoolBase<T> : PoolBase<T> where T : Component
 
 	protected override void SpawnValue()
 	{
-		GameObject go = GameObject.Instantiate(new GameObject(parent.name + " PoolObject"), parent.transform);
+		GameObject go = GameObject.Instantiate(new GameObject(">> " + parent.name + " PoolObject"), parent.transform);
 		T value = go.AddComponent<T>();
 		stack.Push(value);
 		DeactivateValue(value);

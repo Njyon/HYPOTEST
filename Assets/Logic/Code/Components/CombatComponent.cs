@@ -129,7 +129,7 @@ public class CombatComponent
 
 	public void SetUpHitDetection()
 	{
-		hitDetectionGameObject = new GameObject("HitDetectionGameObject");
+		hitDetectionGameObject = new GameObject(">> HitDetectionGameObject");
 		if (hitDetectionGameObject == null) return;
 		hitDetectionGameObject.transform.position = gameCharacter.MovementComponent.CharacterCenter;
 		hitDetectionGameObject.transform.parent = gameCharacter.transform;
@@ -174,7 +174,11 @@ public class CombatComponent
 		if (defensiveTimer != null) defensiveTimer.Update(deltaTime);
 		if (flyAwayTimer != null) flyAwayTimer.Update(deltaTime);
 		if (comboTimer != null) comboTimer.Update(deltaTime);
-		if (CurrentWeapon != null) CurrentWeapon.UpdateWeapon(deltaTime);
+		foreach (ScriptableWeapon scriptableWeapon in weapons)
+		{
+			scriptableWeapon?.Weapon?.UpdateWeapon(deltaTime);
+		}
+		//if (CurrentWeapon != null) CurrentWeapon.UpdateWeapon(deltaTime);
 
 		if (NextWeapon != null)
 		{

@@ -100,6 +100,7 @@ public abstract class WeaponBase
     {
         this.gameCharacter = gameCharacter;
         this.weaponData = weaponData;
+		charge = weaponData.DefaultChargeAmount;
 		hitObjects = new List<GameObject>();
 		maxChargeAfterEquipTimer = new Ultra.Timer();
 	}
@@ -263,6 +264,13 @@ public abstract class WeaponBase
     public virtual void UpdateWeapon(float deltaTime)
 	{
 		MaxChargeAfterEquipTimer.Update(deltaTime);
+		if (!GameCharacter.CharacterHasAggro)
+		{
+			if (Charge < weaponData.DefaultChargeAmount)
+			{
+				Charge = Mathf.Lerp(Charge, weaponData.DefaultChargeAmount, Time.deltaTime * 0.5f);
+			}
+		}
 
 		HitDetection();
 	}
@@ -834,6 +842,7 @@ public abstract class WeaponBase
 			for (int j = 0; j < animList[i].particleList.Count; j++)
 			{
 				GameObject particle = GameObject.Instantiate(animList[i].particleList[j], GameCharacter.GameCharacterData.Root);
+				particle.name = ">> " + particle.name;
 				ParticleSystem particleSystem = particle.GetComponent<ParticleSystem>();
 				particleList[i].Add(particleSystem);
 			}

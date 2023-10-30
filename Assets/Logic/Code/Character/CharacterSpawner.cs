@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.Profiling;
 using UnityEngine.UIElements;
 
+[SelectionBaseAttribute]
 public class CharacterSpawner : MonoBehaviour
 {
 	GameObject characterToSpawn;

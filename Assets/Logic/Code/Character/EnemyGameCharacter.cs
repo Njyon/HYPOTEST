@@ -37,7 +37,7 @@ public class EnemyGameCharacter : GameCharacter
 
 	new protected void OnDestroy()
 	{
-		if (btRunner != null) 
+		if (btRunner != null)
 			btRunner.onBehaviourTreeInit -= OnBehaviourTreeInit;
 		base.OnDestroy();
 	}
@@ -48,7 +48,10 @@ public class EnemyGameCharacter : GameCharacter
 		{
 			btRunner.BehaviourTree.Variable.TryGetParam<GameCharacter>("Target", out var gameCharacterRef);
 			if (gameCharacterRef != null && gameCharacterRef.Value == null)
+			{
 				btRunner.BehaviourTree.Variable.TrySetValue<GameCharacter>("Target", other);
+				other.AddCharacterToAggroedCharacters(this);
+			}
 		}
 	}
 

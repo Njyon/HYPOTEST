@@ -743,6 +743,37 @@ Transform:
   - {fileID: 1707755442}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -183.217, z: 0}
+--- !u!1 &325240389
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 325240390}
+  m_Layer: 0
+  m_Name: ==== World =====
+  m_TagString: EditorOnly
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &325240390
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 325240389}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &361294542
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -850,7 +881,7 @@ MonoBehaviour:
   - maxSpawnEnemies: 5
     charactersToSpawn:
     - character: {fileID: 11400000, guid: 281f7dc6c6d078f4d812c65686904734, type: 2}
-      spawnAmount: 20
+      spawnAmount: 5
       maxOnField: 2
   randomSpawnLocations:
   - {fileID: 1432680749}
@@ -1166,6 +1197,37 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 751343430}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &769807231
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 769807232}
+  m_Layer: 0
+  m_Name: ==== Spawner ======
+  m_TagString: EditorOnly
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &769807232
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 769807231}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -31.430002, y: 1.2179179, z: 7.8269634}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &820882754
 GameObject:
   m_ObjectHideFlags: 0
@@ -1544,6 +1606,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: DummyCharacterNew EnemyVersion_B
+      objectReference: {fileID: 0}
+    - target: {fileID: 3177246276337519219, guid: 699dea8a027b2344197ead4358d34137,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2579,18 +2646,20 @@ SceneRoots:
   m_Roots:
   - {fileID: 28264762095083912}
   - {fileID: 1685661954}
+  - {fileID: 900203750}
+  - {fileID: 325240390}
   - {fileID: 663329989}
   - {fileID: 1761017243}
-  - {fileID: 1862273907}
-  - {fileID: 74542064}
   - {fileID: 1305260}
   - {fileID: 1573478511}
-  - {fileID: 900203750}
   - {fileID: 547695753}
   - {fileID: 140348462}
   - {fileID: 1263008647}
   - {fileID: 46117139}
   - {fileID: 2056935769}
+  - {fileID: 769807232}
+  - {fileID: 1862273907}
+  - {fileID: 74542064}
   - {fileID: 958110603}
   - {fileID: 1893741626}
   - {fileID: 820882756}

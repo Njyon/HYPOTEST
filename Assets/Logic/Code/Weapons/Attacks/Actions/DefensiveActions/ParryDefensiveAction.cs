@@ -54,7 +54,7 @@ public class ParryDefensiveAction : AttackBase
 		{
 			if (updateHelper == null)
 			{
-				GameObject go = new GameObject(GameCharacter.name + " UpdateHelper | ParryAction");
+				GameObject go = new GameObject(">> " + GameCharacter.name + " UpdateHelper | ParryAction");
 				updateHelper = go.AddComponent<UpdateHelper>();
 				updateHelper.onUpdate += OnUpdateHelperUpdate;
 			}
