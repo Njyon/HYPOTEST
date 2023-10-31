@@ -31,7 +31,7 @@ public abstract class ActionBase
 	/// <param name="initAction"> Only Execute Once</param>
 	public virtual void Init(GameCharacter gameCharacter, WeaponBase weapon, InitAction initAction = null)
 	{
-		if (!isActionInit)
+		if (!isActionInit || this.gameCharacter == null || this.weapon == null)
 		{
 			this.gameCharacter = gameCharacter;
 			this.weapon = weapon;
@@ -83,6 +83,7 @@ public abstract class ActionBase
 	{
 		if (this.gameCharacter != null) this.gameCharacter.onGameCharacterDestroyed -= OnGameCharacterDestroyed;
 		if (this.gameCharacter != null) this.gameCharacter.onGameCharacterDied -= OnGameCharacterDied;
+		isActionInit = false;
 	}
 
 	public virtual bool HasUIImplementation()

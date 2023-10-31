@@ -22,6 +22,4 @@ public class ScriptableWeapon : ScriptableObject
 	public float TimeAfterEqupingMaxChargedWeapon = 3f;
 	public GameObject UIElement;
 	public Sprite WeaponImage;
-
-
 }

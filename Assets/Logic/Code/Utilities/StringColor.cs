@@ -23,6 +23,7 @@ public static class StringColor {
     static string teal      = "<color=teal>";
     static string white     = "<color=white>";
     static string yellow    = "<color=yellow>";
+    static string black     = "<color=black>";
     static string endColor  = "</color>"; 
 
     public static string Aqua       { get { return aqua; } }
@@ -45,11 +46,12 @@ public static class StringColor {
     public static string Teal       { get { return teal; } }
     public static string White      { get { return white; } }
     public static string Yellow     { get { return yellow; } }
+    public static string Black      { get { return black; } }
     public static string EndColor   { get { return endColor; } }
 
     public static string Random()
 	{
-		int randNum = UnityEngine.Random.Range(0, 20);
+		int randNum = UnityEngine.Random.Range(0, 21);
 		return GetColorFormIndex(randNum);
 	}
 
@@ -77,6 +79,7 @@ public static class StringColor {
 			case 17: return Teal;
 			case 18: return White;
 			case 19: return Yellow;
+            case 20: return Black;
 			default:
 				return Aqua;
 		}

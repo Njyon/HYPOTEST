@@ -9,7 +9,7 @@ public class EnemyGameCharacter : GameCharacter
 	BehaviorTreeRunner btRunner;
 	public BehaviorTreeRunner BTRunner { get { return btRunner; } set { btRunner = value; } }
 
-	public ParticleSystem attackFeedback;
+	public ParticleSystemPool attackFeedbackPool;
 
 	protected override void Awake()
 	{
@@ -19,6 +19,7 @@ public class EnemyGameCharacter : GameCharacter
 	public override void CustomAwake()
 	{
 		base.CustomAwake();
+		attackFeedbackPool = new ParticleSystemPool(GameAssets.Instance.DefaultAttackFeedback, DataWorldHolder, 1);
 
 		if (btRunner != null)
 		{
@@ -65,21 +66,22 @@ public class EnemyGameCharacter : GameCharacter
 
 	public override void ShowAttackFeedback()
 	{
-		if (attackFeedback == null)
+		
+		if (!RigDataComponent.Bones.ContainsKey(GameCharacterData.HeadBoneName))
 		{
-			if (!RigDataComponent.Bones.ContainsKey(GameCharacterData.HeadBoneName))
-			{
-				Ultra.Utilities.Instance.DebugErrorString("EnemyGameCharacter", "ShowAttackFeedback", "Head Bonename not Valid!");
-				return;
-			}
-			GameObject go = Instantiate(GameAssets.Instance.DefaultAttackFeedback, RigDataComponent.Bones[GameCharacterData.HeadBoneName]);
-			go.transform.Translate(GameCharacterData.AttackFeedbackOffset, Space.World);
-
-			attackFeedback = go.GetComponent<ParticleSystem>();
-
-			if (attackFeedback == null)
-				Ultra.Utilities.Instance.DebugErrorString("EnemyGameCharacter", "ShowAttackFeedback", "Particle System is null!");
+			Ultra.Utilities.Instance.DebugErrorString("EnemyGameCharacter", "ShowAttackFeedback", "Head Bonename not Valid!");
+			return;
 		}
-		attackFeedback.Play();
+		var ps = attackFeedbackPool.GetValue();
+		ps.transform.position = Vector3.zero;
+		ps.transform.localPosition = Vector3.zero;
+		ps.transform.parent = RigDataComponent.Bones[GameCharacterData.HeadBoneName];
+		ps.transform.Translate(GameCharacterData.AttackFeedbackOffset, Space.World);
+		//Instantiate(GameAssets.Instance.DefaultAttackFeedback, RigDataComponent.Bones[GameCharacterData.HeadBoneName]);
+		//attackFeedback.transform.Translate(GameCharacterData.AttackFeedbackOffset, Space.World);
+
+			if (ps == null)
+				Ultra.Utilities.Instance.DebugErrorString("EnemyGameCharacter", "ShowAttackFeedback", "Particle System is null!");
+		ps.Play();
 	}
 }

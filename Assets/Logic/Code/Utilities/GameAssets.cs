@@ -28,7 +28,7 @@ public class GameAssets : MonoBehaviour
 	public List<StyleRankingScriptableObject> styleRanks = new List<StyleRankingScriptableObject>();
 	public GameObject EnemyInfo;
 	public List<BehaviorTreeAsset_1_1> BehaviorTrees = new List<BehaviorTreeAsset_1_1>();
-	public GameObject DefaultAttackFeedback;
+	public ParticleSystem DefaultAttackFeedback;
 	public List<AudioClip> MusicTracks = new List<AudioClip>();
 	public AudioSource MusicObject;
 }

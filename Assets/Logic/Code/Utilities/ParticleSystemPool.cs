@@ -5,17 +5,17 @@ using UnityEngine;
 
 public class ParticleSystemPool : ComponentPoolBase<ParticleSystem>
 {
-	GameObject goInstance;
-	public GameObject GameObjectInstance { get { return goInstance; } }
+	ParticleSystem partilceInstance;
+	public ParticleSystem ParticleInstance { get { return partilceInstance; } }
 
-	public ParticleSystemPool(GameObject instance, GameObject parent) : base(parent)
+	public ParticleSystemPool(ParticleSystem instance, GameObject parent) : base(parent)
 	{
-		this.goInstance = instance;
+		this.partilceInstance = instance;
 	}
 
-	public ParticleSystemPool(GameObject instance, GameObject parent, int minSize) : base(parent, minSize)
+	public ParticleSystemPool(ParticleSystem instance, GameObject parent, int minSize) : base(parent, minSize)
 	{
-		this.goInstance = instance;
+		this.partilceInstance = instance;
 	}
 
 	public override ParticleSystem GetValue()
@@ -36,10 +36,9 @@ public class ParticleSystemPool : ComponentPoolBase<ParticleSystem>
 
 	protected override void SpawnValue()
 	{
-		GameObject go = GameObject.Instantiate(goInstance, Parent.transform);
-		go.name = ">> " + go.name;
-		ParticleSystem value = go.GetComponent<ParticleSystem>();
-		go.AddComponent<ParticleSystemCallBackComponent>();
+		ParticleSystem value = GameObject.Instantiate(partilceInstance, Parent.transform);
+		value.gameObject.name = ">> " + value.gameObject.name;
+		value.gameObject.AddComponent<ParticleSystemCallBackComponent>();
 		stack.Push(value);
 		DeactivateValue(value);
 	}

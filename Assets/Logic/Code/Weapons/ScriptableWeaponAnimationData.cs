@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -34,6 +35,20 @@ public class AttackAnimationData
 	public SerializableDictionary<EExplicitAttackType, int> combatBranches;
 	public SerializableDictionary<EExplicitAttackType, int> timedCombatBrenches;
 	public List<GameObject> particleList;
+
+	public AttackAnimationData Copy()
+	{
+		var copy = new AttackAnimationData();
+
+		copy.action.instance = action.instance;
+		copy.actionCopie = null;
+		copy.data = data;
+		copy.combatBranches = combatBranches;
+		copy.timedCombatBrenches = timedCombatBrenches;
+		copy.particleList = particleList;
+
+		return copy;
+	}
 }
 
 [Serializable]
@@ -134,61 +149,47 @@ public class ScriptableWeaponAnimationData : ScriptableObject
 	[Range(0f, 1f)]
 	public float ArmLMovingWeight = 0.5f;
 
-	//bool isValidtating = false;
-
-	public void OnValidate()
+	public ScriptableWeaponAnimationData Copy()
 	{
-//#if UNITY_EDITOR
-//		if (EditorApplication.isUpdating) return;
-//#endif
-//		if (isValidtating) return;
-//		isValidtating = true;
-//		foreach (AttackAnimationData AnimData in GroundAttacks)
-//		{
-//			AnimData.attackDataHolder.SetAttackRef();
-//		}
-//		foreach (AttackAnimationData AnimData in GroundUpAttacks)
-//		{
-//			AnimData.attackDataHolder.SetAttackRef();
-//		}
-//		foreach (AttackAnimationData AnimData in GroundDownAttacks)
-//		{
-//			AnimData.attackDataHolder.SetAttackRef();
-//		}
-//		foreach (AttackAnimationData AnimData in GroundDirectionAttacks)
-//		{
-//			AnimData.attackDataHolder.SetAttackRef();
-//		}
-//		
-//		foreach (AttackAnimationData AnimData in AirAttacks)
-//		{
-//			AnimData.attackDataHolder.SetAttackRef();
-//		}
-//		foreach (AttackAnimationData AnimData in AirUpAttacks)
-//		{
-//			AnimData.attackDataHolder.SetAttackRef();
-//		}
-//		foreach (AttackAnimationData AnimData in AirDownAttacks)
-//		{
-//			AnimData.attackDataHolder.SetAttackRef();
-//		}
-//		foreach (AttackAnimationData AnimData in AirDirectionAttacks)
-//		{
-//			AnimData.attackDataHolder.SetAttackRef();
-//		}
-//		
-//		foreach (AttackAnimationData AnimData in DefensiveAction)
-//		{
-//			AnimData.attackDataHolder.SetAttackRef();
-//		}
-//
-//#if UNITY_EDITOR
-//		EditorUtility.SetDirty(this);
-//		if (!EditorApplication.isUpdating)
-//		{
-//			//AssetDatabase.SaveAssetIfDirty(this);
-//		} 
-//#endif
-//		isValidtating = false;
+		ScriptableWeaponAnimationData copy = new ScriptableWeaponAnimationData();
+
+		copy.GroundAttacks = GroundAttacks;
+		CopyDataInList(ref copy.GroundAttacks, ref GroundAttacks);
+		copy.GroundUpAttacks = GroundUpAttacks;
+		CopyDataInList(ref copy.GroundUpAttacks, ref GroundUpAttacks);
+		copy.GroundDownAttacks = GroundDownAttacks;
+		CopyDataInList(ref copy.GroundDownAttacks, ref GroundDownAttacks);
+		copy.GroundDirectionAttacks = GroundDirectionAttacks;
+		CopyDataInList(ref copy.GroundDirectionAttacks, ref GroundDirectionAttacks);
+
+		copy.AirAttacks = AirAttacks;
+		CopyDataInList(ref copy.AirAttacks, ref AirAttacks);
+		copy.AirUpAttacks = AirUpAttacks;
+		CopyDataInList(ref copy.AirUpAttacks, ref AirUpAttacks);
+		copy.AirDownAttacks = AirDownAttacks;
+		CopyDataInList(ref copy.AirDownAttacks, ref AirDownAttacks);
+		copy.AirDirectionAttacks = AirDirectionAttacks;
+		CopyDataInList(ref copy.AirDirectionAttacks, ref AirDirectionAttacks);
+
+		copy.DefensiveAction = DefensiveAction;
+		CopyDataInList(ref copy.DefensiveAction, ref DefensiveAction);
+
+		copy.HandType = HandType;
+		copy.WeaponReadyPose = WeaponReadyPose;
+		copy.WeaponReadyWeight = WeaponReadyWeight;
+		copy.WeaponReadyInterpSpeed = WeaponReadyInterpSpeed;
+		copy.HeadSpineLayerMovingWeight = HeadSpineLayerMovingWeight;
+		copy.ArmRMovingWeight = ArmRMovingWeight;
+		copy.ArmLMovingWeight = ArmLMovingWeight;
+
+		return copy;
+	}
+
+	void CopyDataInList(ref List<AttackAnimationData> copy, ref List<AttackAnimationData> origin)
+	{
+		for (int i = 0; i < origin.Count; i++)
+		{
+			copy[i] = origin[i].Copy();
+		}
 	}
 }

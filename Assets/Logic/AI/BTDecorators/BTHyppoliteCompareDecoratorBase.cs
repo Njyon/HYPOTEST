@@ -21,18 +21,7 @@ public abstract class BTHyppoliteCompareDecoratorBase<T> : CompareDecorator<T> w
 				}
 				if (gameCharacter == null)
 				{
-					if (Tree.Variable.TryGetParam<GameObject>("SelfObj", out var go))
-					{
-						if (go != null && go.Value != null)
-						{
-							gameCharacter = go.Value.GetComponent<GameCharacter>();
-							Tree.Variable.TrySetValue<GameCharacter>("Self", gameCharacter);
-						}
-						else
-						{
-							Debug.Log("Self and SelfObj was null in Behaviour Tree, but still used BTHyppoliteActionNodeBase... something is fucked!");
-						}
-					}
+					Debug.Log("Self and SelfObj was null in Behaviour Tree, but still used BTHyppoliteActionNodeBase... something is fucked!");
 				}
 
 			}

@@ -103,8 +103,8 @@ public class SmashDownAttack3Blend : ActionBase
 	{
 
 		GameCharacter.CombatComponent.AttackTimer.onTimerFinished -= AttackTimerFinished;
-		if (!Weapon.WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return;
-		if (Weapon.WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks.Count > 0)
+		if (Weapon.AnimationData == null) return;
+		if (Weapon.AnimationData.AirDownAttacks.Count > 0)
 		{
 			GameCharacter.AnimController.ApplyCombat3BlendTree(attackData.downAttack);
 			GameCharacter.AnimController.InCombat3Blend = true;

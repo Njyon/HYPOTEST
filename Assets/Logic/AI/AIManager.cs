@@ -99,6 +99,11 @@ public class AIManager : Singelton<AIManager>
 		if (GameMode.PlayerGameCharacter == null) return;
 		if (managableAIs.Count <= 0) return;
 
+		for (int i = 0; i < meleeAIsThatCanAttack.Count; i++)
+		{
+			Ultra.Utilities.Instance.DebugLogOnScreen(meleeAIsThatCanAttack[i].btr.name + " " + i, 0f, StringColor.Black);
+		}
+
 		PrepareDistanceCalculationJobForMeleeAIs();
 	}
 
@@ -182,6 +187,11 @@ public class AIManager : Singelton<AIManager>
 	{
 		if (sortedMeleeAIs == null) return;
 		List<HyppoliteManagableAI> newMeleeAIs = new List<HyppoliteManagableAI>();
+		///Debug Log Sorted Melee Array
+		//for (int i = 0; i < sortedMeleeAIs.Length; i++)
+		//{
+		//	Ultra.Utilities.Instance.DebugLogOnScreen(sortedMeleeAIs[i].btr.name + " " + i, 0f, StringColor.Black);
+		//}
 		for (int i = 0; i < meleeCharacterAttackAmount; i++)
 		{
 			if (i >= sortedMeleeAIs.Length) break;
@@ -195,20 +205,27 @@ public class AIManager : Singelton<AIManager>
 		List<HyppoliteManagableAI> oldMeleeAIs = meleeAIsThatCanAttack.Except(newMeleeAIs).ToList();
 		foreach (HyppoliteManagableAI oldAI in oldMeleeAIs)
 		{
+			if (oldAI.gameCharacter == null || oldAI.gameCharacter.IsGameCharacterDead)
+			{
+				oldAI?.btr?.BehaviourTree?.Variable?.TrySetValue<bool>("CanMeleeAttack", false);
+				meleeAIsThatCanAttack.Remove(oldAI);
+				continue;
+			}
+
 			if (oldAI.gameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.Attack && newMeleeAIs.Count > 0)
 			{
 				HyppoliteManagableAI ai = newMeleeAIs[newMeleeAIs.Count - 1];
+				ai?.btr?.BehaviourTree?.Variable?.TrySetValue<bool>("CanMeleeAttack", false);
 				meleeAIsThatCanAttack.Remove(ai);
 				continue;
 			}
 
-			if (oldAI.gameCharacter == null || oldAI.gameCharacter.IsGameCharacterDead) continue;
-			oldAI.btr.BehaviourTree.Variable.TrySetValue<bool>("CanMeleeAttack", false);
+			oldAI?.btr?.BehaviourTree?.Variable?.TrySetValue<bool>("CanMeleeAttack", false);
 			meleeAIsThatCanAttack.Remove(oldAI);
 		}
 		foreach (HyppoliteManagableAI ai in meleeAIsThatCanAttack)
 		{
-			ai.btr.BehaviourTree.Variable.TrySetValue<bool>("CanMeleeAttack", true);
+			ai?.btr?.BehaviourTree?.Variable?.TrySetValue<bool>("CanMeleeAttack", true);
 		}
 	}
 
@@ -315,13 +332,15 @@ public class AIManager : Singelton<AIManager>
 		btr.BehaviorTreeAsset = characterData.behaviourTree;
 		btr.onBehaviourTreeInit += onBTRInit;
 		btr.gameObject.SetActive(true);
-		btr.EnableTree();
+		//btr.EnableTree();
 		return btr;
 	}
 
 	public void ReturnBehaviorTreeRunner(BehaviorTreeRunner btr)
 	{
 		btr.DisableTree();
+		btr.BehaviorTreeAsset = null;
+		btr.RemoveTree();
 		behaviorTreeRunners.Push(btr);
 		btr.gameObject.SetActive(false);
 	}

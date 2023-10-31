@@ -10,8 +10,8 @@ public class ParryDefensiveActionData : AttackData
 	public AnimationClip defensiveActionHold;
 	public AnimationClip counterAttack;
 	public GameObject uiELement;
-	public GameObject parryParticleEffect;
-	public GameObject blockParticleEffect;
+	public ParticleSystem parryParticleEffect;
+	public ParticleSystem blockParticleEffect;
 	public float parryTime = 0.3f;
 	public float addParryTimeOnParry = 0.1f;
 	public float parryPoints = 20;

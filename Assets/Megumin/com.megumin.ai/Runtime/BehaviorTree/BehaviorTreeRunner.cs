@@ -59,6 +59,11 @@ namespace Megumin.GameFramework.AI.BehaviorTree
 			}
 		}
 
+		public void RemoveTree()
+		{
+			BehaviourTree = null;
+		}
+
 		/// <summary>
 		/// 由于可能是异步，防止多次实例化
 		/// </summary>

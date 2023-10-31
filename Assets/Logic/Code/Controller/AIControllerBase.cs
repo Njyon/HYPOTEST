@@ -68,8 +68,7 @@ public class AIControllerBase : ControllerBase
 	{
 		if (btRunner != null)
 		{
-			btRunner.DisableTree();
-			btRunner.enabled = false;
+			AIManager.Instance.ReturnBehaviorTreeRunner(btRunner);
 		}
 
 		UIManager.Instance.ReturnEnemyInfo(enemyInfo);
@@ -86,6 +85,7 @@ public class AIControllerBase : ControllerBase
 	{
 		InitCustomBehaviourTreeValues();
 		AIManager.Instance.AddManagableAI(new HyppoliteManagableAI(gameCharacter, btRunner));
+		btr.ReStart();
 	}
 
 	protected virtual void InitCustomBehaviourTreeValues()

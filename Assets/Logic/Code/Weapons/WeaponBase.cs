@@ -55,6 +55,7 @@ public abstract class WeaponBase
 	float chargeAfterTime = 0;
 	Ultra.Timer maxChargeAfterEquipTimer;
 	AttackAnimationData lastData;
+	ScriptableWeaponAnimationData animationData;
 
 	// Particle Save
 	List<List<ParticleSystem>> groundLightAttackParticleList;
@@ -79,6 +80,15 @@ public abstract class WeaponBase
 	public int ComboIndexInSameAttack { get { return comboIndexInSameAttack; } }
 	public List<GameObject> HitObjects { get { return hitObjects; } }	
 	public int AttackIndex { get { return attackIndex; } }
+	public ScriptableWeaponAnimationData AnimationData { 
+		get {
+			if (animationData == null)
+			{
+				if (weaponData.AnimationData.ContainsKey(gameCharacter.CharacterData.Name)) animationData = weaponData.AnimationData[gameCharacter.CharacterData.Name].Copy();
+			}
+			return animationData; 
+		} 
+	}
 	public float Charge { 
 		get { return charge; } 
 		set { 
@@ -103,30 +113,31 @@ public abstract class WeaponBase
 		charge = weaponData.DefaultChargeAmount;
 		hitObjects = new List<GameObject>();
 		maxChargeAfterEquipTimer = new Ultra.Timer();
+		//if (weaponData.AnimationData.ContainsKey(gameCharacter.CharacterData.Name)) animationData = weaponData.AnimationData[gameCharacter.CharacterData.Name].Copy();
 	}
 
 	public virtual void InitWeapon()
 	{
-		if (!weaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return;
+		if (AnimationData == null) return;
 
 		groundLightAttackParticleList = new List<List<ParticleSystem>>();
-		InitParticleForAttackList(ref weaponData.AnimationData[GameCharacter.CharacterData.Name].GroundAttacks, ref groundLightAttackParticleList);
+		InitParticleForAttackList(ref AnimationData.GroundAttacks, ref groundLightAttackParticleList);
 		groundHeavyAttackParticleList = new List<List<ParticleSystem>>();
-		InitParticleForAttackList(ref weaponData.AnimationData[GameCharacter.CharacterData.Name].GroundDirectionAttacks, ref groundHeavyAttackParticleList);
+		InitParticleForAttackList(ref AnimationData.GroundDirectionAttacks, ref groundHeavyAttackParticleList);
 		groundUpAttackParticleList = new List<List<ParticleSystem>>();
-		InitParticleForAttackList(ref weaponData.AnimationData[GameCharacter.CharacterData.Name].GroundUpAttacks, ref groundUpAttackParticleList);
+		InitParticleForAttackList(ref AnimationData.GroundUpAttacks, ref groundUpAttackParticleList);
 		groundDownAttackParticleList = new List<List<ParticleSystem>>();
-		InitParticleForAttackList(ref weaponData.AnimationData[GameCharacter.CharacterData.Name].GroundDownAttacks, ref groundDownAttackParticleList);
+		InitParticleForAttackList(ref AnimationData.GroundDownAttacks, ref groundDownAttackParticleList);
 		airLightAttackParticleList = new List<List<ParticleSystem>>();
-		InitParticleForAttackList(ref weaponData.AnimationData[GameCharacter.CharacterData.Name].AirAttacks, ref airLightAttackParticleList);
+		InitParticleForAttackList(ref AnimationData.AirAttacks, ref airLightAttackParticleList);
 		airHeavyAttackParticleList = new List<List<ParticleSystem>>();
-		InitParticleForAttackList(ref weaponData.AnimationData[GameCharacter.CharacterData.Name].AirDirectionAttacks, ref airHeavyAttackParticleList);
+		InitParticleForAttackList(ref AnimationData.AirDirectionAttacks, ref airHeavyAttackParticleList);
 		airUpAttackParticleList = new List<List<ParticleSystem>>();
-		InitParticleForAttackList(ref weaponData.AnimationData[GameCharacter.CharacterData.Name].AirUpAttacks, ref airUpAttackParticleList);
+		InitParticleForAttackList(ref AnimationData.AirUpAttacks, ref airUpAttackParticleList);
 		airDownAttackParticleList = new List<List<ParticleSystem>>();
-		InitParticleForAttackList(ref weaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks, ref airDownAttackParticleList);
+		InitParticleForAttackList(ref AnimationData.AirDownAttacks, ref airDownAttackParticleList);
 		defensiveActionParticleList = new List<List<ParticleSystem>>();
-		InitParticleForAttackList(ref weaponData.AnimationData[GameCharacter.CharacterData.Name].DefensiveAction, ref defensiveActionParticleList);
+		InitParticleForAttackList(ref AnimationData.DefensiveAction, ref defensiveActionParticleList);
 	}
 
     public virtual void EquipWeapon()
@@ -142,9 +153,9 @@ public abstract class WeaponBase
 			MaxChargeAfterEquipTimer.Start(weaponData.TimeAfterEqupingMaxChargedWeapon);
 			MaxChargeAfterEquipTimer.onTimerFinished += OnMaxChargeAfterEquipTimerFinished;
 		}
-		if (WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name) && gameCharacter.IsPlayerCharacter)
+		if (AnimationData != null && gameCharacter.IsPlayerCharacter)
 		{
-			foreach(AttackAnimationData data in WeaponData.AnimationData[GameCharacter.CharacterData.Name].DefensiveAction)
+			foreach(AttackAnimationData data in AnimationData.DefensiveAction)
 			{
 				if (data != null && data.Action != null && data.Action.HasUIImplementation())
 				{
@@ -170,9 +181,9 @@ public abstract class WeaponBase
 
 		CurrentAction?.Action?.ActionInterupted();
 
-		if (WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name) && gameCharacter.IsPlayerCharacter)
+		if (AnimationData != null && gameCharacter.IsPlayerCharacter)
 		{
-			foreach (AttackAnimationData data in WeaponData.AnimationData[GameCharacter.CharacterData.Name].DefensiveAction)
+			foreach (AttackAnimationData data in AnimationData.DefensiveAction)
 			{
 				if (data != null && data.Action != null && data.Action.HasUIImplementation())
 				{
@@ -188,11 +199,11 @@ public abstract class WeaponBase
 
 	private void SpawnVisualWeaponMesh()
 	{
-		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return;
+		if (AnimationData == null) return;
 
 		if (WeaponData.WeaponMeshData.cascadeurSetUp)
 		{
-			switch (WeaponData.AnimationData[GameCharacter.CharacterData.Name].HandType)
+			switch (AnimationData.HandType)
 			{
 				case EWeaponHandType.RightHand:
 					if (weaponData.WeaponMeshData.WeaponMesh == null) break;
@@ -228,7 +239,7 @@ public abstract class WeaponBase
 		}
 		else
 		{
-			switch (WeaponData.AnimationData[GameCharacter.CharacterData.Name].HandType)
+			switch (AnimationData.HandType)
 			{
 				case EWeaponHandType.RightHand:
 					if (weaponData.WeaponMeshData.WeaponMesh == null) break;
@@ -354,8 +365,8 @@ public abstract class WeaponBase
 
 	public virtual AttackAnimationData GroundAttack(float attackDeltaTime)
 	{
-		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return null;
-		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundAttacks.Count > 0)
+		if (AnimationData == null) return null;
+		if (AnimationData.GroundAttacks.Count > 0)
 		{
 			TryStartingAction(EExplicitAttackType.GroundedDefaultAttack, attackDeltaTime);
 			return CurrentAction;
@@ -370,8 +381,8 @@ public abstract class WeaponBase
 
 	public virtual AttackAnimationData GroundUpAttack(float attackDeltaTime)
 	{
-		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return null;
-		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundUpAttacks.Count > 0)
+		if (AnimationData == null) return null;
+		if (AnimationData.GroundUpAttacks.Count > 0)
 		{
 			TryStartingAction(EExplicitAttackType.GroundedUpAttack, attackDeltaTime);
 			return CurrentAction;
@@ -380,8 +391,8 @@ public abstract class WeaponBase
 	}
     public virtual AttackAnimationData GroundDownAttack(float attackDeltaTime)
 	{
-		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return null;
-		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundDownAttacks.Count > 0)
+		if (AnimationData == null) return null;
+		if (AnimationData.GroundDownAttacks.Count > 0)
 		{
 			TryStartingAction(EExplicitAttackType.GroundedDownAttack, attackDeltaTime);
 			return CurrentAction;
@@ -390,8 +401,8 @@ public abstract class WeaponBase
 	}
     public virtual AttackAnimationData GroundDirectionAttack(float attackDeltaTime)
 	{
-		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return null;
-		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundDirectionAttacks.Count > 0)
+		if (AnimationData == null) return null;
+		if (AnimationData.GroundDirectionAttacks.Count > 0)
 		{
 			TryStartingAction(EExplicitAttackType.GroundedDirectionalAttack, attackDeltaTime);
 			return CurrentAction;
@@ -401,8 +412,8 @@ public abstract class WeaponBase
 
     public virtual AttackAnimationData AirAttack(float attackDeltaTime)
 	{
-		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return null;
-		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirAttacks.Count > 0)
+		if (AnimationData == null) return null;
+		if (AnimationData.AirAttacks.Count > 0)
 		{
 			TryStartingAction(EExplicitAttackType.AirDefaultAttack, attackDeltaTime);
 			return CurrentAction;
@@ -414,8 +425,8 @@ public abstract class WeaponBase
 	}
     public virtual AttackAnimationData AirUpAttack(float attackDeltaTime)
 	{
-		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return null;
-		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirUpAttacks.Count > 0)
+		if (AnimationData == null) return null;
+		if (AnimationData.AirUpAttacks.Count > 0)
 		{
 			TryStartingAction(EExplicitAttackType.AirUpAttack, attackDeltaTime);
 			return CurrentAction;
@@ -424,8 +435,8 @@ public abstract class WeaponBase
 	}
     public virtual AttackAnimationData AirDownAttack(float attackDeltaTime)
 	{
-		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return null;
-		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks.Count > 0)
+		if (AnimationData == null) return null;
+		if (AnimationData.AirDownAttacks.Count > 0)
 		{
 			TryStartingAction(EExplicitAttackType.AirDownAttack, attackDeltaTime);
 			return CurrentAction;
@@ -434,8 +445,8 @@ public abstract class WeaponBase
 	}
     public virtual AttackAnimationData AirDirectionAttack(float attackDeltaTime)
 	{
-		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return null;
-		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDirectionAttacks.Count > 0)
+		if (AnimationData == null) return null;
+		if (AnimationData.AirDirectionAttacks.Count > 0)
 		{
 			TryStartingAction(EExplicitAttackType.AirDirectionalAttack, attackDeltaTime);
 			return CurrentAction;
@@ -445,8 +456,8 @@ public abstract class WeaponBase
 
 	public virtual AttackAnimationData DefensiveAction()
 	{
-		if (!WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) return null;
-		if (WeaponData.AnimationData[GameCharacter.CharacterData.Name].DefensiveAction.Count > 0)
+		if (AnimationData == null) return null;
+		if (AnimationData.DefensiveAction.Count > 0)
 		{
 			if (SetCurrentDefensiveAction())
 				CurrentAction?.Action?.StartAction();
@@ -502,7 +513,7 @@ public abstract class WeaponBase
 
 	void SetUpWeaponAnimationData()
 	{
-		if (weaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) gameCharacter.AnimController.SetBodyLayerAnimClip(weaponData.AnimationData[GameCharacter.CharacterData.Name].WeaponReadyPose);
+		if (AnimationData != null) gameCharacter.AnimController.SetBodyLayerAnimClip(AnimationData.WeaponReadyPose);
 	}
 
 	public IDamage GetDamageInterface(GameObject obj)
@@ -515,15 +526,15 @@ public abstract class WeaponBase
 	{
 		switch (explicitAttackType) 
 		{
-			case EExplicitAttackType.GroundedDefaultAttack: return WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundAttacks;
-			case EExplicitAttackType.GroundedDownAttack: return WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundDownAttacks;
-			case EExplicitAttackType.GroundedUpAttack: return WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundUpAttacks;
-			case EExplicitAttackType.GroundedDirectionalAttack: return WeaponData.AnimationData[GameCharacter.CharacterData.Name].GroundDirectionAttacks;
-			case EExplicitAttackType.AirDefaultAttack: return WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirAttacks;
-			case EExplicitAttackType.AirDownAttack: return WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDownAttacks;
-			case EExplicitAttackType.AirUpAttack: return WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirUpAttacks;
-			case EExplicitAttackType.AirDirectionalAttack: return WeaponData.AnimationData[GameCharacter.CharacterData.Name].AirDirectionAttacks;
-			case EExplicitAttackType.DefensiveAction: return WeaponData.AnimationData[GameCharacter.CharacterData.Name].DefensiveAction;
+			case EExplicitAttackType.GroundedDefaultAttack: return AnimationData.GroundAttacks;
+			case EExplicitAttackType.GroundedDownAttack: return AnimationData.GroundDownAttacks;
+			case EExplicitAttackType.GroundedUpAttack: return AnimationData.GroundUpAttacks;
+			case EExplicitAttackType.GroundedDirectionalAttack: return AnimationData.GroundDirectionAttacks;
+			case EExplicitAttackType.AirDefaultAttack: return AnimationData.AirAttacks;
+			case EExplicitAttackType.AirDownAttack: return AnimationData.AirDownAttacks;
+			case EExplicitAttackType.AirUpAttack: return AnimationData.AirUpAttacks;
+			case EExplicitAttackType.AirDirectionalAttack: return AnimationData.AirDirectionAttacks;
+			case EExplicitAttackType.DefensiveAction: return AnimationData.DefensiveAction;
 			default:
 				Ultra.Utilities.Instance.DebugErrorString("WeaponBase", "GetAttackListBasedOnEExplicitAttackType", "Coundn't find List, ExplicitAttackType not Implemented");
 				return new List<AttackAnimationData>();

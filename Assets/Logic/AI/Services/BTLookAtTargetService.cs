@@ -12,11 +12,12 @@ public class BTLookAtTargetService : BTServiceNodeBase
 	{
 		base.OnEnter(options);
 
-		GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.LookInVelocityDirection);
+		GameCharacter?.PluginStateMachine?.RemovePluginState(EPluginCharacterState.LookInVelocityDirection);
 	}
 
 	protected override Status OnTick(BTNode from, object options = null)
 	{
+		if (GameCharacter == null || GameCharacter.StateMachine == null) return Status.Failed;
 		if (TargetGameCharacter != null)
 		{
 			switch (GameCharacter.StateMachine.GetCurrentStateType())
@@ -62,6 +63,6 @@ public class BTLookAtTargetService : BTServiceNodeBase
 	{
 		base.OnExit(result, options);
 
-		GameCharacter.PluginStateMachine.AddPluginState(EPluginCharacterState.LookInVelocityDirection);
+		GameCharacter?.PluginStateMachine?.AddPluginState(EPluginCharacterState.LookInVelocityDirection);
 	}
 }

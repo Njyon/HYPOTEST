@@ -23,7 +23,7 @@ public class BTAttack : BTHyppoliteActionNodeBase
 		if (attackDone || attackStartet) return;
 		base.OnEnter(options);
 
-		if (GameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.Attack)
+		if (!CanBeExecuted())
 		{
 			cantAttack = true;
 			return;
@@ -50,14 +50,19 @@ public class BTAttack : BTHyppoliteActionNodeBase
 
 	protected override Status OnTick(BTNode from, object options = null)
 	{
+		if (attackDone) return Status.Succeeded;
 		if (cantAttack && !attackStartet) return Status.Failed;
+		if (GameCharacter == null || GameCharacter.IsGameCharacterDead) return Status.Failed;
 
 		Vector3 dir = (TargetGameCharacter.MovementComponent.CharacterCenter  - GameCharacter.MovementComponent.CharacterCenter).normalized;
 		GameCharacter.HorizontalMovementInput(dir.x);
 		GameCharacter.VerticalMovmentInput(dir.y);
 
-		if (attackStartet) 
-			return  attackDone ? Status.Succeeded : Status.Running;
+		if (attackStartet && !attackDone)
+		{
+			if (GameCharacter.StateMachine.CurrentState.GetStateType() != EGameCharacterState.Attack && GameCharacter.StateMachine.NewestStateChangeRequestState != EGameCharacterState.Attack)
+				return Status.Failed;
+		}
 		return Status.Running;
 	}
 
@@ -85,9 +90,17 @@ public class BTAttack : BTHyppoliteActionNodeBase
 	void OnStateChanged(IState<EGameCharacterState> newState, IState<EGameCharacterState> oldState)
 	{
 		if (newState == null) return;
-		if (newState.GetStateType() == EGameCharacterState.AttackRecovery)
+		if (oldState.GetStateType() == EGameCharacterState.Attack)
 		{
 			attackDone = true;
 		}
+	}
+
+	bool CanBeExecuted()
+	{
+		if (GameCharacter.MovementComponent.IsInJump) return false;
+		if (GameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.Attack) return false;
+		if (GameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.Dodge) return false;
+		return GameCharacter?.StateMachine?.CurrentState?.UpdateState(0, EGameCharacterState.Attack) == EGameCharacterState.Attack;
 	}
 }
