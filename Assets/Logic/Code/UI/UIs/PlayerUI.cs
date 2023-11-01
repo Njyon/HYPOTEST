@@ -30,6 +30,11 @@ public class PlayerUI : UIBase
 	[SerializeField] MMF_Player comboBreakFeedback;
 	[SerializeField] MMF_Player comboShowFeedback;
 
+	[Header("Dodge")]
+	[SerializeField] RectTransform dodgeHolder;
+	[SerializeField] DodgebarElemnt dodgeBarPrefab;
+	List<Image> dodgeBars;
+
 	PlayerGameCharacter gameCharacter;
 
 	public void Init(PlayerGameCharacter playerCharacter)
@@ -52,6 +57,14 @@ public class PlayerUI : UIBase
 		}
 
 		comboText.alpha = 0f;
+
+		dodgeBars = new List<Image>();
+		for (int i = 0; i < gameCharacter.GameCharacterData.MaxDodgeAmount; i++)
+		{
+			dodgeBars.Add(GameObject.Instantiate(dodgeBarPrefab, dodgeHolder).dodgebar);
+			dodgeBars[i].fillAmount = 1;
+		}
+		gameCharacter.CombatComponent.onDodgeLeftChanged += OnDodgeLeftChanged;
 	}
 
 	void OnDestroy()
@@ -59,6 +72,7 @@ public class PlayerUI : UIBase
 		if (gameCharacter != null)
 		{
 			gameCharacter.CombatRatingComponent.onStyleRankingChanged -= OnStyleRankingChanged;
+			gameCharacter.CombatComponent.onDodgeLeftChanged -= OnDodgeLeftChanged;
 		}
 		weaponUIs.Clear();
 	}
@@ -87,6 +101,12 @@ public class PlayerUI : UIBase
 	void Update()
 	{
 		UpdateHealthbar();
+
+		if (gameCharacter != null && gameCharacter.CombatComponent != null)
+		{
+			if (gameCharacter.CombatComponent.DodgeRecoveryTimer.IsRunning && dodgeBars.Count > gameCharacter.CombatComponent.DodgesLeft)
+				dodgeBars[gameCharacter.CombatComponent.DodgesLeft].fillAmount = gameCharacter.CombatComponent.GetDodgeRecovertTimerProgress();
+		}
 	}
 
 	void UpdateHealthbar()
@@ -178,6 +198,19 @@ public class PlayerUI : UIBase
 				comboAddFeedback?.PlayFeedbacks();
 				if (oldComboCount == 0) comboShowFeedback?.PlayFeedbacks();
 				break;
+		}
+	}
+
+	void OnDodgeLeftChanged(int newDodgeAmount, int oldDodgeAmount)
+	{
+		if (newDodgeAmount < oldDodgeAmount)
+		{
+			dodgeBars[oldDodgeAmount - 1].fillAmount = 0f;
+			if (dodgeBars.Count > oldDodgeAmount) dodgeBars[oldDodgeAmount].fillAmount = 0f;
+		}
+		if (newDodgeAmount > oldDodgeAmount)
+		{
+			dodgeBars[oldDodgeAmount].fillAmount = 1f;
 		}
 	}
 }

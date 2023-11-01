@@ -1,3 +1,4 @@
+using Megumin;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,8 +10,8 @@ public abstract class ActionBase
 {
 	public delegate void InitAction();
 
-	GameCharacter gameCharacter;
-	WeaponBase weapon;
+	GameCharacter gameCharacter = null;
+	WeaponBase weapon = null;
 	bool isActionInit = false;
 
 	public GameCharacter GameCharacter { get { return gameCharacter; } }

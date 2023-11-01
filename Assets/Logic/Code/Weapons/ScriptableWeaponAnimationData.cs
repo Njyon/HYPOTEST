@@ -18,7 +18,7 @@ public enum EWeaponHandType
 public class AttackAnimationData
 {
 	public ClassInstance<ActionBase> action = new ClassInstance<ActionBase>();
-	private ActionBase actionCopie;
+	private ActionBase actionCopie = null;
 
 	public ActionBase Action
 	{
@@ -40,7 +40,7 @@ public class AttackAnimationData
 	{
 		var copy = new AttackAnimationData();
 
-		copy.action.instance = action.instance;
+		copy.action = action;
 		copy.actionCopie = null;
 		copy.data = data;
 		copy.combatBranches = combatBranches;
@@ -149,47 +149,46 @@ public class ScriptableWeaponAnimationData : ScriptableObject
 	[Range(0f, 1f)]
 	public float ArmLMovingWeight = 0.5f;
 
-	public ScriptableWeaponAnimationData Copy()
+	public void Copy(ScriptableWeaponAnimationData origin)
 	{
-		ScriptableWeaponAnimationData copy = new ScriptableWeaponAnimationData();
+		GroundAttacks = new List<AttackAnimationData>();
+		GroundUpAttacks = new List<AttackAnimationData>();
+		GroundDownAttacks = new List<AttackAnimationData>();
+		GroundDirectionAttacks = new List<AttackAnimationData>();
 
-		copy.GroundAttacks = GroundAttacks;
-		CopyDataInList(ref copy.GroundAttacks, ref GroundAttacks);
-		copy.GroundUpAttacks = GroundUpAttacks;
-		CopyDataInList(ref copy.GroundUpAttacks, ref GroundUpAttacks);
-		copy.GroundDownAttacks = GroundDownAttacks;
-		CopyDataInList(ref copy.GroundDownAttacks, ref GroundDownAttacks);
-		copy.GroundDirectionAttacks = GroundDirectionAttacks;
-		CopyDataInList(ref copy.GroundDirectionAttacks, ref GroundDirectionAttacks);
+		AirAttacks = new List<AttackAnimationData>();
+		AirUpAttacks = new List<AttackAnimationData>();
+		AirDownAttacks = new List<AttackAnimationData>();
+		AirDirectionAttacks = new List<AttackAnimationData>();
 
-		copy.AirAttacks = AirAttacks;
-		CopyDataInList(ref copy.AirAttacks, ref AirAttacks);
-		copy.AirUpAttacks = AirUpAttacks;
-		CopyDataInList(ref copy.AirUpAttacks, ref AirUpAttacks);
-		copy.AirDownAttacks = AirDownAttacks;
-		CopyDataInList(ref copy.AirDownAttacks, ref AirDownAttacks);
-		copy.AirDirectionAttacks = AirDirectionAttacks;
-		CopyDataInList(ref copy.AirDirectionAttacks, ref AirDirectionAttacks);
+		DefensiveAction = new List<AttackAnimationData>();
 
-		copy.DefensiveAction = DefensiveAction;
-		CopyDataInList(ref copy.DefensiveAction, ref DefensiveAction);
+		CopyDataInList(ref GroundAttacks, ref origin.GroundAttacks);
+		CopyDataInList(ref GroundUpAttacks, ref origin.GroundUpAttacks);
+		CopyDataInList(ref GroundDownAttacks, ref origin.GroundDownAttacks);
+		CopyDataInList(ref GroundDirectionAttacks, ref origin.GroundDirectionAttacks);
 
-		copy.HandType = HandType;
-		copy.WeaponReadyPose = WeaponReadyPose;
-		copy.WeaponReadyWeight = WeaponReadyWeight;
-		copy.WeaponReadyInterpSpeed = WeaponReadyInterpSpeed;
-		copy.HeadSpineLayerMovingWeight = HeadSpineLayerMovingWeight;
-		copy.ArmRMovingWeight = ArmRMovingWeight;
-		copy.ArmLMovingWeight = ArmLMovingWeight;
+		CopyDataInList(ref AirAttacks, ref origin.AirAttacks);
+		CopyDataInList(ref AirUpAttacks, ref origin.AirUpAttacks);
+		CopyDataInList(ref AirDownAttacks, ref origin.AirDownAttacks);
+		CopyDataInList(ref AirDirectionAttacks, ref origin.AirDirectionAttacks);
 
-		return copy;
+		CopyDataInList(ref DefensiveAction, ref origin.DefensiveAction);
+
+		HandType = origin.HandType;
+		WeaponReadyPose = origin.WeaponReadyPose;
+		WeaponReadyWeight = origin.WeaponReadyWeight;
+		WeaponReadyInterpSpeed = origin.WeaponReadyInterpSpeed;
+		HeadSpineLayerMovingWeight = origin.HeadSpineLayerMovingWeight;
+		ArmRMovingWeight = origin.ArmRMovingWeight;
+		ArmLMovingWeight = origin.ArmLMovingWeight;
 	}
 
 	void CopyDataInList(ref List<AttackAnimationData> copy, ref List<AttackAnimationData> origin)
 	{
 		for (int i = 0; i < origin.Count; i++)
 		{
-			copy[i] = origin[i].Copy();
+			copy.Add(origin[i].Copy());
 		}
 	}
 }

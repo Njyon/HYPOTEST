@@ -36,6 +36,9 @@ public class CombatComponent
 	public delegate void OnAttack(ref ShelfList<AttackAnimationData> lastAttacks);
 	public OnAttack onAttack;
 
+	public delegate void OnDodgeLeftChanged(int newDodgeAmount, int oldDodgeAmount);
+	public OnDodgeLeftChanged onDodgeLeftChanged;
+
 	GameCharacter gameCharacter;
 	ScriptableWeapon[] weapons = new ScriptableWeapon[4];
 	WeaponBase currentWeapon;
@@ -60,7 +63,8 @@ public class CombatComponent
 	int comboCount = 0;
 	Ultra.Timer comboTimer = new Ultra.Timer();
 	float comboTime = 2f;
-
+	int dodgesLeft = 0;
+	Ultra.Timer dodgeRecoveryTimer;
 
 	public ScriptableWeapon[] Weapons { get { return  weapons; } }
 	public Ultra.Timer AttackTimer { get { return attackTimer; } }
@@ -79,6 +83,30 @@ public class CombatComponent
 	public ShelfList<AttackAnimationData> PreviousAttacks { get { return previousAttacks; } }
 	public int EquipedWeapons { get { return equipedWeapons; } }	
 	public int ComboCount { get { return comboCount; } }
+	public Ultra.Timer DodgeRecoveryTimer { get { return dodgeRecoveryTimer; } }
+	public int DodgesLeft { get { return dodgesLeft; }  
+		private set {
+			int oldDodges = DodgesLeft;
+			dodgesLeft = Mathf.Clamp(value, 0, gameCharacter.GameCharacterData.MaxDodgeAmount); 
+
+			if (dodgesLeft == gameCharacter.GameCharacterData.MaxDodgeAmount)
+			{
+				if (dodgeRecoveryTimer.IsRunning)
+					dodgeRecoveryTimer.Stop();
+			}
+			if (dodgesLeft < gameCharacter.GameCharacterData.MaxDodgeAmount)
+			{
+				if (!dodgeRecoveryTimer.IsRunning)
+				{
+					dodgeRecoveryTimer.onTimerFinished += OnDodgeRecoveryTimerFinished;
+					dodgeRecoveryTimer.Start();
+				}
+			}
+
+			if (DodgesLeft != oldDodges)
+				if (onDodgeLeftChanged != null) onDodgeLeftChanged(DodgesLeft, oldDodges);
+		} 
+	}
 
 	public WeaponBase NextWeapon
 	{
@@ -117,6 +145,8 @@ public class CombatComponent
 		nextWeapon = null;
 		hookedCharacters = new List<GameCharacter>();
 		previousAttacks = new ShelfList<AttackAnimationData>(gameCharacter.GameCharacterData.CombatAttackListLenght);
+		dodgesLeft = gameCharacter.GameCharacterData.MaxDodgeAmount;
+		dodgeRecoveryTimer = new Ultra.Timer(gameCharacter.GameCharacterData.DodgeRecoveryTime, true);
 	}
 
 	~CombatComponent()
@@ -174,6 +204,7 @@ public class CombatComponent
 		if (defensiveTimer != null) defensiveTimer.Update(deltaTime);
 		if (flyAwayTimer != null) flyAwayTimer.Update(deltaTime);
 		if (comboTimer != null) comboTimer.Update(deltaTime);
+		if (dodgeRecoveryTimer != null) dodgeRecoveryTimer.Update(deltaTime);
 		foreach (ScriptableWeapon scriptableWeapon in weapons)
 		{
 			scriptableWeapon?.Weapon?.UpdateWeapon(deltaTime);
@@ -394,12 +425,20 @@ public class CombatComponent
 
 	public void CharacterDidDamageTo(GameCharacter damagedCharacter, float damage)
 	{
+		DodgesLeft++;
 		if (onCharacterDamagedCharacter != null) onCharacterDamagedCharacter(gameCharacter, damagedCharacter, damage);
 	}
 
 	public void Dodge()
 	{
-		gameCharacter.StateMachine.RequestStateChange(EGameCharacterState.Dodge);
+		if (DodgesLeft > 0)
+		{
+			DodgesLeft--;
+			gameCharacter.StateMachine.RequestStateChange(EGameCharacterState.Dodge);
+		}else
+		{
+			// TODO: Add Fail feedback
+		}
 	}
 
 	public async void FreezAfterPush(GameCharacter character, float waitTime, float freezTime)
@@ -422,5 +461,19 @@ public class CombatComponent
 		var ps = gameCharacter.SuccsessfullDodgeParticlePool.GetValue();
 		ps.transform.position = gameCharacter.MovementComponent.CharacterCenter;
 		ps.transform.rotation = Quaternion.identity;
+	}
+
+	void OnDodgeRecoveryTimerFinished()
+	{
+		dodgeRecoveryTimer.onTimerFinished -= OnDodgeRecoveryTimerFinished;
+		DodgesLeft++;
+	}
+
+	public float GetDodgeRecovertTimerProgress()
+	{
+		if (dodgeRecoveryTimer.IsRunning)
+			return Mathf.Lerp(0, dodgeRecoveryTimer.Time, dodgeRecoveryTimer.CurrentTime);
+		else 
+			return 1;
 	}
 }

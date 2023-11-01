@@ -1,0 +1,204 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8104bde8e4c1a2e42b58f845296f6b18, type: 3}
+  m_Name: EnemyTest_FistWeaponAnimData
+  m_EditorClassIdentifier: 
+  GroundAttacks:
+  - clip: {fileID: -1283617849781794479, guid: 09b0eca1ad790ad418fcdcb1d591515f, type: 3}
+    data:
+      showProperties: 0
+      hitDetectionType: 1
+      mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+      offset: {x: 0, y: 1, z: 1}
+      scale: {x: 1, y: 1, z: 1}
+      radius: 0.5
+      boxDimensions: {x: 1, y: 1, z: 1}
+      capsulHeight: 2
+    holdAnimation: {fileID: 0}
+    triggerAnimation: {fileID: 0}
+    combatBranches:
+      keys: 
+      values: 
+    timedCombatBrenches:
+      keys: 
+      values: 
+    aimBlendTypes:
+      blendAnimations:
+        upAnimation: {fileID: 0}
+        midAnimation: {fileID: 0}
+        downAnimation: {fileID: 0}
+      blendHoldAnimations:
+        upAnimation: {fileID: 0}
+        midAnimation: {fileID: 0}
+        downAnimation: {fileID: 0}
+      blendTriggerAnimations:
+        upAnimation: {fileID: 0}
+        midAnimation: {fileID: 0}
+        downAnimation: {fileID: 0}
+    particleList: []
+    extraData:
+      Damage: 10
+      Rating: 10
+      discharge: 100
+      maxVerticalMovement: 0
+      maxHorizontalMovement: 0
+      flyAwayDirection: {x: 0, y: 0, z: 0}
+      flyAwayStrengh: 0
+      rangeValue: 0
+      speedValue: 0
+      timeValue: 0
+      flyAwayTime: 1
+      freezTime: 1
+      stopMovingRange: 1
+    attackDataHolder:
+      attack: {fileID: 0}
+      attackInstance: {fileID: 0}
+      attackDataRef:
+        rid: 3239357387436195953
+  GroundUpAttacks:
+  - clip: {fileID: -1511537027194615298, guid: cb676680cb3657a4fa28a2fc509e76b6, type: 3}
+    data:
+      showProperties: 0
+      hitDetectionType: 1
+      mesh: {fileID: 0}
+      offset: {x: 0, y: 0, z: 1}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 1
+      boxDimensions: {x: 0, y: 0, z: 0}
+      capsulHeight: 0
+    holdAnimation: {fileID: 0}
+    triggerAnimation: {fileID: 0}
+    combatBranches:
+      keys: 
+      values: 
+    timedCombatBrenches:
+      keys: 
+      values: 
+    aimBlendTypes:
+      blendAnimations:
+        upAnimation: {fileID: 0}
+        midAnimation: {fileID: 0}
+        downAnimation: {fileID: 0}
+      blendHoldAnimations:
+        upAnimation: {fileID: 0}
+        midAnimation: {fileID: 0}
+        downAnimation: {fileID: 0}
+      blendTriggerAnimations:
+        upAnimation: {fileID: 0}
+        midAnimation: {fileID: 0}
+        downAnimation: {fileID: 0}
+    particleList: []
+    extraData:
+      Damage: 10
+      Rating: 10
+      discharge: 100
+      maxVerticalMovement: 0
+      maxHorizontalMovement: 0
+      flyAwayDirection: {x: 0, y: 0, z: 0}
+      flyAwayStrengh: 0
+      rangeValue: 0
+      speedValue: 0
+      timeValue: 0
+      flyAwayTime: 1
+      freezTime: 1
+      stopMovingRange: 1
+    attackDataHolder:
+      attack: {fileID: 0}
+      attackInstance: {fileID: 0}
+      attackDataRef:
+        rid: 3239357387436195954
+  GroundDownAttacks: []
+  GroundDirectionAttacks: []
+  AirAttacks:
+  - clip: {fileID: -1283617849781794479, guid: 09b0eca1ad790ad418fcdcb1d591515f, type: 3}
+    data:
+      showProperties: 0
+      hitDetectionType: 1
+      mesh: {fileID: 0}
+      offset: {x: 0, y: 0, z: 1}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 1
+      boxDimensions: {x: 0, y: 0, z: 0}
+      capsulHeight: 0
+    holdAnimation: {fileID: 0}
+    triggerAnimation: {fileID: 0}
+    combatBranches:
+      keys: 
+      values: 
+    timedCombatBrenches:
+      keys: 
+      values: 
+    aimBlendTypes:
+      blendAnimations:
+        upAnimation: {fileID: 0}
+        midAnimation: {fileID: 0}
+        downAnimation: {fileID: 0}
+      blendHoldAnimations:
+        upAnimation: {fileID: 0}
+        midAnimation: {fileID: 0}
+        downAnimation: {fileID: 0}
+      blendTriggerAnimations:
+        upAnimation: {fileID: 0}
+        midAnimation: {fileID: 0}
+        downAnimation: {fileID: 0}
+    particleList: []
+    extraData:
+      Damage: 10
+      Rating: 10
+      discharge: 100
+      maxVerticalMovement: 0
+      maxHorizontalMovement: 0
+      flyAwayDirection: {x: 0, y: 0, z: 0}
+      flyAwayStrengh: 0
+      rangeValue: 0
+      speedValue: 0
+      timeValue: 0
+      flyAwayTime: 1
+      freezTime: 1
+      stopMovingRange: 1
+    attackDataHolder:
+      attack: {fileID: 0}
+      attackInstance: {fileID: 0}
+      attackDataRef:
+        rid: 3239357387436195955
+  AirUpAttacks: []
+  AirDownAttacks: []
+  AirDirectionAttacks: []
+  DefensiveAction: []
+  HandType: 0
+  WeaponReadyPose: {fileID: 7400000, guid: 2d03847dc800f1c43a532bb5eddaf2f1, type: 2}
+  WeaponReadyWeight: 1
+  WeaponReadyInterpSpeed: 5
+  HeadSpineLayerMovingWeight: 0
+  ArmRMovingWeight: 0
+  ArmLMovingWeight: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 3239357387436195953
+      type: {class: AttackData, ns: , asm: Assembly-CSharp}
+      data:
+        Damage: 10
+        Rating: 100
+        Discharge: 100
+    - rid: 3239357387436195954
+      type: {class: AttackData, ns: , asm: Assembly-CSharp}
+      data:
+        Damage: 10
+        Rating: 100
+        Discharge: 100
+    - rid: 3239357387436195955
+      type: {class: AttackData, ns: , asm: Assembly-CSharp}
+      data:
+        Damage: 10
+        Rating: 100
+        Discharge: 100

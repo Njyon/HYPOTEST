@@ -15,7 +15,7 @@ MonoBehaviour:
   GroundAttacks:
   - action:
       instance:
-        rid: 3239357682084479655
+        rid: 3239357566468227080
     data:
       showProperties: 0
       hitDetectionType: 1
@@ -34,7 +34,7 @@ MonoBehaviour:
     particleList: []
   - action:
       instance:
-        rid: -2
+        rid: 3239357409519206417
     data:
       showProperties: 1
       hitDetectionType: 1
@@ -53,7 +53,7 @@ MonoBehaviour:
     particleList: []
   - action:
       instance:
-        rid: -2
+        rid: 3239357409519206419
     data:
       showProperties: 1
       hitDetectionType: 1
@@ -73,7 +73,7 @@ MonoBehaviour:
   GroundUpAttacks:
   - action:
       instance:
-        rid: -2
+        rid: 3239357409519206420
     data:
       showProperties: 0
       hitDetectionType: 1
@@ -94,7 +94,7 @@ MonoBehaviour:
   GroundDirectionAttacks:
   - action:
       instance:
-        rid: -2
+        rid: 3239357412136189956
     data:
       showProperties: 1
       hitDetectionType: 1
@@ -114,7 +114,7 @@ MonoBehaviour:
   AirAttacks:
   - action:
       instance:
-        rid: -2
+        rid: 3239357412136189958
     data:
       showProperties: 0
       hitDetectionType: 1
@@ -133,7 +133,7 @@ MonoBehaviour:
     particleList: []
   - action:
       instance:
-        rid: -2
+        rid: 3239357412136189959
     data:
       showProperties: 0
       hitDetectionType: 1
@@ -152,7 +152,7 @@ MonoBehaviour:
     particleList: []
   - action:
       instance:
-        rid: -2
+        rid: 3239357412136189960
     data:
       showProperties: 0
       hitDetectionType: 1
@@ -171,7 +171,7 @@ MonoBehaviour:
     particleList: []
   - action:
       instance:
-        rid: -2
+        rid: 3239357412136189961
     data:
       showProperties: 1
       hitDetectionType: 1
@@ -210,7 +210,7 @@ MonoBehaviour:
     particleList: []
   - action:
       instance:
-        rid: -2
+        rid: 3239357412136189977
     data:
       showProperties: 1
       hitDetectionType: 1
@@ -230,7 +230,7 @@ MonoBehaviour:
   AirDownAttacks:
   - action:
       instance:
-        rid: -2
+        rid: 3239357412136189957
     data:
       showProperties: 1
       hitDetectionType: 1
@@ -250,7 +250,7 @@ MonoBehaviour:
   AirDirectionAttacks:
   - action:
       instance:
-        rid: -2
+        rid: 3239357409519206426
     data:
       showProperties: 1
       hitDetectionType: 1
@@ -270,7 +270,7 @@ MonoBehaviour:
   DefensiveAction:
   - action:
       instance:
-        rid: -2
+        rid: 3239357499048984579
     data:
       showProperties: 1
       hitDetectionType: 1
@@ -300,7 +300,179 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 3239357682084479655
+    - rid: 3239357409519206417
+      type: {class: DefaultAttack, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          attackAnimation: {fileID: 6779268952688790718, guid: 188767a2950ced040bf42bb5d36865b7,
+            type: 3}
+    - rid: 3239357409519206419
+      type: {class: KickAwayAttack, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          attackAnimation: {fileID: 9200174377881703865, guid: 797c4e3506e779c4aa88dc230d85ff97,
+            type: 3}
+          attackTriggerAmount: 1
+          freezBetweenAttacks: 0
+          kickDirection: {x: 0, y: 0, z: 30}
+          stunTime: 0.5
+          kickStrengh: 15
+    - rid: 3239357409519206420
+      type: {class: HookAttack, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          attackAnimation: {fileID: 4916077277263605233, guid: d4622cd20c5a5b843926955dd81f21f8,
+            type: 3}
+          maxVerticalMovement: 7
+    - rid: 3239357409519206426
+      type: {class: KickAwayAttack, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          attackAnimation: {fileID: 6594025621508612525, guid: 6a832559fea509346bd7faaaf47d642b,
+            type: 3}
+          attackTriggerAmount: 2
+          freezBetweenAttacks: 1
+          kickDirection: {x: 0, y: 0, z: 45}
+          stunTime: 1
+          kickStrengh: 20
+    - rid: 3239357412136189956
+      type: {class: KickAwayAttack, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          attackAnimation: {fileID: 6594025621508612525, guid: 6a832559fea509346bd7faaaf47d642b,
+            type: 3}
+          attackTriggerAmount: 2
+          freezBetweenAttacks: 1
+          kickDirection: {x: 0, y: 0, z: 45}
+          stunTime: 1
+          kickStrengh: 20
+    - rid: 3239357412136189957
+      type: {class: SmashDownAttack3Blend, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          downAttack:
+            upAnimation: {fileID: -1795832262590111387, guid: 314e395bc066f8e44a01b35e61e319aa,
+              type: 3}
+            midAnimation: {fileID: 17136065998202433, guid: b48d08753bf709e43ad3132952b4239c,
+              type: 3}
+            downAnimation: {fileID: 17136065998202433, guid: b48d08753bf709e43ad3132952b4239c,
+              type: 3}
+          downAttackHold:
+            upAnimation: {fileID: -2458144356878027265, guid: de563377388830b4f9f1a6eb867fc57b,
+              type: 3}
+            midAnimation: {fileID: -4107872184108702142, guid: 8461cb203fda02149b08c3c119f6abf2,
+              type: 3}
+            downAnimation: {fileID: -4107872184108702142, guid: 8461cb203fda02149b08c3c119f6abf2,
+              type: 3}
+          trigger: {fileID: 17136065998202433, guid: 1d048d398f94aef4d878fd4487f49a2c,
+            type: 3}
+          smashDownDistance: 0.2
+          interpSpeed: 10
+          speed: 40
+        landingData:
+          stunTime: 0.2
+          kickDir: {x: 0, y: 0, z: 90}
+          kickStrenght: 5
+          freezTimeAftetKick: 1
+    - rid: 3239357412136189958
+      type: {class: DefaultAttack, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          attackAnimation: {fileID: -6042615203269523770, guid: 26911eb7d4649cd4fa5c1b42fbc6883f,
+            type: 3}
+    - rid: 3239357412136189959
+      type: {class: DefaultAttack, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          attackAnimation: {fileID: 4783459395969580578, guid: bc07ec1c4cbfa4343bcc99f145b51207,
+            type: 3}
+    - rid: 3239357412136189960
+      type: {class: KickAwayAttack, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          attackAnimation: {fileID: 2938286237668451413, guid: 119509c8c5b25604387a070f1bf88446,
+            type: 3}
+          attackTriggerAmount: 0
+          freezBetweenAttacks: 0
+          kickDirection: {x: 0, y: 0, z: -30}
+          stunTime: 0.6
+          kickStrengh: 20
+    - rid: 3239357412136189961
+      type: {class: KickAwayAttack, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          attackAnimation: {fileID: 4809141571418458547, guid: 2abaf50464518db4c9a74b0c9ceaff5d,
+            type: 3}
+          attackTriggerAmount: 1
+          freezBetweenAttacks: 0
+          kickDirection: {x: 0, y: 0, z: 85}
+          stunTime: 1
+          kickStrengh: 20
+    - rid: 3239357412136189977
+      type: {class: DefaultAttack, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          attackAnimation: {fileID: 0}
+    - rid: 3239357499048984579
+      type: {class: ParryDefensiveAction, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 100
+          Rating: 100
+          Discharge: 100
+          defensiveAction: {fileID: 2578224585427505389, guid: 67cc6116e5cb439499f6bbcf9954cae1,
+            type: 3}
+          defensiveActionHold: {fileID: 4969365560786418264, guid: 683c04e7d50c934429c9d4b421fa40eb,
+            type: 3}
+          counterAttack: {fileID: 311396034716669421, guid: 57bf47e7cb6a2d847a0ef13121cfbf3a,
+            type: 3}
+          uiELement: {fileID: 7221905412587384954, guid: 0574b3332dde5504497c74df02e157a1,
+            type: 3}
+          parryParticleEffect: {fileID: 9014502877425522584, guid: 20e50266e9880014f9e14ec6717295a3,
+            type: 3}
+          blockParticleEffect: {fileID: 8161050390316501503, guid: f8625e8e32db4b94eb52cfbd9a0027ef,
+            type: 3}
+          parryTime: 0.3
+          addParryTimeOnParry: 0.1
+          parryPoints: 20
+          blockPoints: -10
+          rotSpeed: 10
+          damageMinMultiplier: 0.5
+          damageMaxMultiplier: 3
+    - rid: 3239357566468227080
       type: {class: DefaultAttack, ns: , asm: Assembly-CSharp}
       data:
         attackData:

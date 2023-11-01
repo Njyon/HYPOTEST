@@ -84,7 +84,9 @@ public abstract class WeaponBase
 		get {
 			if (animationData == null)
 			{
-				if (weaponData.AnimationData.ContainsKey(gameCharacter.CharacterData.Name)) animationData = weaponData.AnimationData[gameCharacter.CharacterData.Name].Copy();
+				var data = ScriptableObject.CreateInstance<ScriptableWeaponAnimationData>();
+				data.Copy(weaponData.AnimationData[gameCharacter.CharacterData.Name]);
+				if (weaponData.AnimationData.ContainsKey(gameCharacter.CharacterData.Name)) animationData = data;
 			}
 			return animationData; 
 		} 

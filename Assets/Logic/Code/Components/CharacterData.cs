@@ -85,8 +85,10 @@ public class GameCharacterData : MonoBehaviour
 	[SerializeField] Vector3 attackFeedbackOffset = Vector3.zero;
 
 	[Header("Dodge")]
+	[SerializeField] int maxDodgeAmount = 3;
 	[SerializeField] float dodgeDistance = 10f;
 	[SerializeField] float dodgeSpeed = 10f;
+	[SerializeField] float dodgeRecoveryTime = 1f;
 
 	public float MaxMovementSpeed { get { return maxMovementSpeed; } }
 	public float MovmentGravity { get { return movmentGravity; } }
@@ -146,6 +148,8 @@ public class GameCharacterData : MonoBehaviour
 
 	public Vector3 AttackFeedbackOffset { get { return attackFeedbackOffset; } }
 
+	public int MaxDodgeAmount { get { return maxDodgeAmount; } }
 	public float DodgeDistance { get { return dodgeDistance; } }
 	public float DodgeSpeed { get { return dodgeSpeed; } }
+	public float DodgeRecoveryTime { get { return dodgeRecoveryTime; } }
 }
