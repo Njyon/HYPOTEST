@@ -149,6 +149,8 @@ public class ScriptableWeaponAnimationData : ScriptableObject
 	[Range(0f, 1f)]
 	public float ArmLMovingWeight = 0.5f;
 
+	public AimBlendAnimations AimAnimations;
+
 	public void Copy(ScriptableWeaponAnimationData origin)
 	{
 		GroundAttacks = new List<AttackAnimationData>();
@@ -182,6 +184,7 @@ public class ScriptableWeaponAnimationData : ScriptableObject
 		HeadSpineLayerMovingWeight = origin.HeadSpineLayerMovingWeight;
 		ArmRMovingWeight = origin.ArmRMovingWeight;
 		ArmLMovingWeight = origin.ArmLMovingWeight;
+		AimAnimations = origin.AimAnimations;
 	}
 
 	void CopyDataInList(ref List<AttackAnimationData> copy, ref List<AttackAnimationData> origin)

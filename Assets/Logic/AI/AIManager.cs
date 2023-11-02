@@ -331,8 +331,10 @@ public class AIManager : Singelton<AIManager>
 		BehaviorTreeRunner btr = behaviorTreeRunners.Pop();
 		btr.BehaviorTreeAsset = characterData.behaviourTree;
 		btr.onBehaviourTreeInit += onBTRInit;
-		btr.gameObject.SetActive(true);
-		//btr.EnableTree();
+		if (!btr.gameObject.activeInHierarchy)
+			btr.gameObject.SetActive(true);
+		else 
+			btr.EnableTree();
 		return btr;
 	}
 

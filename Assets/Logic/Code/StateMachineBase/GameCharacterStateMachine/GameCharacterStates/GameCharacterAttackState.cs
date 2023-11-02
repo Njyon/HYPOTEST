@@ -187,7 +187,7 @@ public class GameCharacterAttackState : AGameCharacterState
 	}
 	void OnDelayedAnimationStateCheckTimerFinished()
 	{
-		bool isValidAnimState = false;
+ 		bool isValidAnimState = false;
 		switch (GameCharacter.CombatComponent.CurrentWeapon.AttackAnimType)
 		{
 			case EAttackAnimType.Combat3Blend:

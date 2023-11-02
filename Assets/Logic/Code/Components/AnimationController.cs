@@ -66,6 +66,7 @@ public class AnimationController
 	int inCombat3BlendStateAIndex;
 	int inCombat3BlendStateBIndex;
 	int combat3BlendTreeAStateIndex;
+	int combat3BlendTreeBStateIndex;
 	int inDodgeIndex;
 	int attackTriggerStateIndex;
 	int attackHoldStateIndex;
@@ -614,6 +615,7 @@ public class AnimationController
 		inCombat3BlendStateAIndex = Animator.StringToHash("InCombat3BlendAState");
 		inCombat3BlendStateBIndex = Animator.StringToHash("InCombat3BlendBState");
 		combat3BlendTreeAStateIndex = Animator.StringToHash("Combat3BlendTreeA");
+		combat3BlendTreeBStateIndex = Animator.StringToHash("Combat3BlendTreeB");
 		inDodgeIndex = Animator.StringToHash("inDodge");
 		attackTriggerStateIndex = Animator.StringToHash("TriggerState");
 		attackHoldStateIndex = Animator.StringToHash("HoldState");
@@ -807,8 +809,8 @@ public class AnimationController
 	}
 	public bool IsInValid3BlendAttackState()
 	{
-		bool isAttackAState = IsInState(inCombat3BlendStateAIndex);
-		bool isAttackBState = IsInState(inCombat3BlendStateBIndex);
+		bool isAttackAState = IsInState(combat3BlendTreeAStateIndex);
+		bool isAttackBState = IsInState(combat3BlendTreeBStateIndex);
 
 		return isAttackAState || isAttackBState;
 	}
