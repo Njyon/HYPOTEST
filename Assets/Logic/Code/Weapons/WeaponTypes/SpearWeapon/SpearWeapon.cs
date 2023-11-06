@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class SpearWeapon : WeaponBase
 {
-	WeaponProjectile defensiveSpear = null;
+	OldWeaponProjectile defensiveSpear = null;
 	List<GameObject> thrownSpears = new List<GameObject>();
 
-	public WeaponProjectile DefensiveSpear { get { return defensiveSpear; } set { defensiveSpear = value; } }
+	public OldWeaponProjectile DefensiveSpear { get { return defensiveSpear; } set { defensiveSpear = value; } }
 
 
 	public SpearWeapon() { }

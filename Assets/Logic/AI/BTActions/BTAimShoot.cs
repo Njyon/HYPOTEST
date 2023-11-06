@@ -21,6 +21,8 @@ public class BTAimShoot : BTHyppoliteActionNodeBase
 		if (aimTimer.IsRunning) return;
 		base.OnEnter(options);
 
+		GameCharacter.CombatComponent.AimPositionCheck.Value = false;
+
 		aimTimer.Start(aimTime);
 		aimTimer.onTimerFinished += OnTimerFinished;
 
@@ -114,6 +116,8 @@ public class BTAimShoot : BTHyppoliteActionNodeBase
 
 	void OnTimerFinished()
 	{
+		GameCharacter.CombatComponent.AimPositionCheck.Value = true;
+		GameCharacter.CombatComponent.AimPositionCheck.Position = TargetGameCharacter.MovementComponent.CharacterCenter;
 		// Do Effects?
 	}
 }

@@ -2,8 +2,10 @@ using Megumin.GameFramework.AI;
 using Megumin.GameFramework.AI.BehaviorTree;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 
+[Category("Service")]
 public class BTAimAtTargetService : BTServiceNodeBase
 {
 	protected override void OnEnter(object options = null)

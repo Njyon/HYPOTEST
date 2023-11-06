@@ -1,146 +1,95 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.Experimental.GlobalIllumination;
 
 public class WeaponProjectile : MonoBehaviour
 {
-	public delegate void OnProjectileHit(GameObject other);
-	public OnProjectileHit onProjectileHit;
-
-	[SerializeField] float speed = 5f;
-	[SerializeField] float aliveTime = 5f;
-	Vector3 direction;
-	ColliderHitScript colliderScript;
-	CapsuleCollider capsuleCollider;
-	GameCharacter gameCharacterOwner;
-	bool hit = false;
-	float moveDistance = 0.5f;
-	bool initilized = false;
-	bool flyInDirection = false;
-	bool lerpToCharacter;
-	float t;
-	Vector3 from;
-	GameCharacter toCharacter;
-	Ultra.Timer timer;
-	Vector3 scale;
-	LineRenderer lineRenderer;
-
-	public Vector3 Direction { get { return direction; } }
-	public GameCharacter GameCharacterOwner { get { return gameCharacterOwner; } }
-
-	public void Initialize(GameCharacter Owner, Vector3 direction)
-	{
-		gameCharacterOwner = Owner;
-		this.direction = direction;
-		flyInDirection = true;
-		lineRenderer = gameObject.GetComponent<LineRenderer>();
-		lineRenderer.enabled = false;
-
-		Init();
-	}
-
-	public void Initialize(GameCharacter Owner, Vector3 from, GameCharacter toCharacter)
-	{
-		gameCharacterOwner = Owner;
-		this.toCharacter = toCharacter;
-		this.from = from;
-		lerpToCharacter = true;
-		t = 0;
-		lineRenderer = gameObject.GetComponent<LineRenderer>();
-		lineRenderer.positionCount = 2;
-
-		Init();
-	}
-
-	private void Init()
-	{
-		initilized = true;
-		colliderScript = GetComponent<ColliderHitScript>();
-		capsuleCollider = GetComponent<CapsuleCollider>();
-		colliderScript.onOverlapEnter += OnOverlapEnter;
-		timer = new Ultra.Timer();
-		timer.onTimerFinished += OnTimerFinished;
-		timer.Start(aliveTime);
-		scale = transform.localScale;
-	}
-
-	private void Awake()
-	{
-
-	}
-
-	// Update is called once per frame
-	void Update()
-    {
-		if (lineRenderer != null)
-		{
-			lineRenderer.SetPosition(0, transform.position);
-			lineRenderer.SetPosition(1, gameCharacterOwner.GameCharacterData.HandROnjectPoint.position);
-		}
+	public delegate void OnProjectileHit(WeaponProjectile projectile, Collider other);
+	public delegate void OnProjectileLifeTimeEnd(WeaponProjectile projectile);
 	
 
-		timer.Update(Time.deltaTime);
-		if (!hit && initilized)
-		{
-			RaycastHit hit;
-			if (Physics.Raycast(transform.position + Direction.normalized * (moveDistance * 2), Direction.normalized, out hit, (speed * Time.deltaTime) + moveDistance))
-			{
-				OnOverlapEnter(hit.collider);
-				if (this.hit)
-				{
-					return;
-				}
-			}
+	bool isInit = false;
+	Vector3 dir;
+	float speed;
+	ColliderHitScript colliderScript;
+	Collider projectileCollider;
+	GameCharacter gameCharacterOwner;
+	Rigidbody projectileRigidBody;
+	Ultra.Timer lifeTimeTimer;
+	OnProjectileHit onHit;
+	OnProjectileLifeTimeEnd onLifeTimeEnd;
+	TrailRenderer tr;
 
-			if (flyInDirection)
-				transform.position = transform.position + Direction.normalized * (speed * Time.deltaTime);
 
-			if (lerpToCharacter)
-			{
-				t += Time.deltaTime * 2f;
-				transform.position = Vector3.Lerp(from, toCharacter.MovementComponent.CharacterCenter, t);
-				transform.rotation = Quaternion.LookRotation((toCharacter.MovementComponent.CharacterCenter - lineRenderer.GetPosition(1)).normalized, Vector3.up);
-			}
-		}
+	public void Init(GameCharacter owner, Vector3 direction, float speed, OnProjectileHit onHit, OnProjectileLifeTimeEnd onProjectileLifeTimeEnd, float lifeTime = 5f)
+	{
+		gameCharacterOwner = owner;
+		dir = direction;
+		transform.rotation = Quaternion.LookRotation(dir);
+		this.speed = speed;
+		if (lifeTimeTimer == null) lifeTimeTimer = new Ultra.Timer();
+		lifeTimeTimer.onTimerFinished += OnTimerFinished;
+		lifeTimeTimer.Start(lifeTime);
+		this.onHit = onHit;
+		onLifeTimeEnd = onProjectileLifeTimeEnd;
+
+		Init_Intern();
+
+		isInit = true;
 	}
 
-	private void OnDestroy()
+	void Init_Intern()
+	{
+		if (colliderScript == null)
+		{
+			colliderScript = gameObject.GetComponent<ColliderHitScript>();
+			if (colliderScript != null ) 
+				colliderScript = gameObject.AddComponent<ColliderHitScript>();
+		}
+		projectileCollider = gameObject.GetComponent<Collider>();
+		if (tr == null) tr = GetComponent<TrailRenderer>();
+		if (tr != null) tr.enabled = true;
+
+		colliderScript.onOverlapEnter += OnOverlapEnter;
+	}
+
+	void Update()
+    {
+		if (!isInit) return;
+		if (lifeTimeTimer != null) lifeTimeTimer.Update(Time.deltaTime);
+
+		transform.position = transform.position + dir.normalized * (speed * Time.deltaTime);
+    }
+
+	void RemoveSubscriptions()
 	{
 		if (colliderScript != null) colliderScript.onOverlapEnter -= OnOverlapEnter;
-		if (timer != null) timer.onTimerFinished -= OnTimerFinished;
-		lineRenderer.enabled = false;
+		if (lifeTimeTimer != null) lifeTimeTimer.onTimerFinished -= OnTimerFinished;
+	}
+
+	public void TurnOff()
+	{
+		isInit = false;
+		if (tr != null) tr.enabled = false;	
+		RemoveSubscriptions();
+	}
+
+	void OnDestroy()
+	{
+		RemoveSubscriptions();
 	}
 
 	void OnOverlapEnter(Collider other)
 	{
-		if (other.transform == this.transform) return;
-		GameCharacter otherChracter = other.GetComponent<GameCharacter>();
-		if (otherChracter == null || otherChracter == gameCharacterOwner) return;
-
-		if (hit) return; 
-		hit = true;
-		if (flyInDirection)
+		if (!isInit) return;
+		if (onHit != null)
 		{
-			transform.position = transform.position + Direction.normalized * moveDistance;
-			transform.rotation = Quaternion.LookRotation(Direction, Vector3.up);
+			if (onHit != null) onHit(this, other);
 		}
-		if (lerpToCharacter)
-		{
- 			transform.position = otherChracter.MovementComponent.CharacterCenter + -transform.forward * 1.5f;
-		}
-		capsuleCollider.enabled = false;
-
-		if (onProjectileHit != null) onProjectileHit(other.gameObject);
-		transform.parent = other.transform;
-		transform.localScale = scale;
-		timer.AddTime(1);
-
 	}
 
 	void OnTimerFinished()
 	{
-		Destroy(this.gameObject);
+		if (onLifeTimeEnd != null) onLifeTimeEnd(this);
 	}
 }

@@ -51,7 +51,7 @@ public class SpearDefensiveAction : ActionBase
 		GameCharacter.MovementComponent.MovementVelocity = Vector3.zero;
 
 
-		spearWeapon.DefensiveSpear = throwSpear.GetComponent<WeaponProjectile>();
+		spearWeapon.DefensiveSpear = throwSpear.GetComponent<OldWeaponProjectile>();
 		spearWeapon.DefensiveSpear.onProjectileHit += DefensiveActionHit;
 		spearWeapon.DefensiveSpear.Initialize(GameCharacter, throwSpear.transform.position, targetEnemy);
 	}

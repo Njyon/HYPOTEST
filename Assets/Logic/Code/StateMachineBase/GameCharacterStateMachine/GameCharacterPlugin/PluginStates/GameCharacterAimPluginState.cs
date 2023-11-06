@@ -47,17 +47,30 @@ public class GameCharacterAimPluginState : AGameCharacterPluginState
 				return false;
 			default: break;
 		}
+		if (GameCharacter.PluginStateMachine.ContainsPluginState(EPluginCharacterState.BlockAim)) return false;
+
 		return true;
 	}
 
 	public override void ExecuteState(float deltaTime)
 	{
-		if (GameCharacter.CombatComponent.AimCharacter != null)
+		if (GameCharacter.CombatComponent.AimPositionCheck.Value == true)
 		{
-			float angle = Vector3.Angle(Vector3.down, (GameCharacter.CombatComponent.AimCharacter.transform.position - GameCharacter.transform.position).normalized);
-			float aimValue = Ultra.Utilities.Remap(angle, 0, 180, 1, -1);
- 			GameCharacter.AnimController.AimBlend = aimValue;
+			AimAtPosition(GameCharacter.CombatComponent.AimPositionCheck.Position);
 		}
+		else if (GameCharacter.CombatComponent.AimCharacter != null)
+		{
+			AimAtPosition(GameCharacter.CombatComponent.AimCharacter.MovementComponent.CharacterCenter);
+		}else
+		{
+			GameCharacter.AnimController.AimBlend = 0;
+		}
+	}
 
+	private void AimAtPosition(Vector3 position)
+	{
+		float angle = Vector3.Angle(Vector3.down, (position - GameCharacter.MovementComponent.CharacterCenter).normalized);
+		float aimValue = Ultra.Utilities.Remap(angle, 0, 180, 1, -1);
+		GameCharacter.AnimController.AimBlend = aimValue;
 	}
 }

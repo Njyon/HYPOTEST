@@ -9,11 +9,20 @@ public class GameObjectPool : GameObjectPoolBase
 	public GameObjectPool(GameObject instance, GameObject parent) : base(instance)
 	{
 		this.instance = instance;
+		SetupName();
+
 	}
 
 	public GameObjectPool(GameObject instance, GameObject parent, int stackMinsize) : base(parent, stackMinsize)
 	{
 		this.instance = instance;
+		SetupName();
+
+	}
+
+	void SetupName() 
+	{ 
+		this.instance.name = ">> " + this.instance.name; // for Hirachy Visualization
 	}
 
 	public override GameObject GetValue()

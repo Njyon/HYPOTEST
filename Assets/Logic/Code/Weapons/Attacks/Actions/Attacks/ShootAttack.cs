@@ -6,13 +6,30 @@ using UnityEngine;
 [Serializable]
 public class ShootAttackData : AttackData
 {
-	[SerializeField]
 	public AnimationClip shootAddativeAnimation;
+	public WeaponProjectile projectile;
+	public float projectileSpeed;
 }
 
 public class ShootAttack : AttackBase
 {
 	public ShootAttackData attackData;
+	ProjectilePool projectilePool;
+	WeaponBase lastWeapon;
+	WeaponObjData weaponObjData;
+
+	public override void Init(GameCharacter gameCharacter, WeaponBase weapon, InitAction action = null)
+	{
+		base.Init(gameCharacter, weapon, () => {
+			projectilePool = new ProjectilePool(attackData.projectile, gameCharacter.DataWorldHolder, 5);
+		});
+
+		if (lastWeapon != GameCharacter.CombatComponent.CurrentWeapon)
+		{
+			lastWeapon = GameCharacter.CombatComponent.CurrentWeapon;
+			weaponObjData = GameCharacter.CombatComponent.CurrentWeapon.SpawnedWeapon.GetComponent<WeaponObjData>();
+		}
+	}
 
 	public override void StartAction()
 	{
@@ -21,6 +38,48 @@ public class ShootAttack : AttackBase
 		GameCharacter.CombatComponent.AttackTimer.onTimerFinished += OnTimerFinished;
 		GameCharacter.CombatComponent.AttackTimer.Start(attackData.shootAddativeAnimation.length);
 		GameCharacter.PluginStateMachine.AddPluginState(EPluginCharacterState.Shoot);
+
+		if (weaponObjData != null)
+		{
+			var projectile = projectilePool.GetValue();
+			projectile.transform.position = weaponObjData.weaponTip.transform.position;
+			Vector3 projectileDir = GameCharacter.CombatComponent.AimPositionCheck.Value ? GameCharacter.CombatComponent.AimPositionCheck.Position - weaponObjData.weaponTip.transform.position : GameCharacter.CombatComponent.AimCharacter != null ? GameCharacter.CombatComponent.AimCharacter.MovementComponent.CharacterCenter - GameCharacter.MovementComponent.CharacterCenter : GameCharacter.transform.forward;
+			projectile.Init(GameCharacter, projectileDir, attackData.projectileSpeed, OnProjectileHit, OnProjectileLifeTimeEnd);
+		}
+	}
+
+	void OnProjectileHit(WeaponProjectile projectile, Collider other)
+	{
+		IDamage iDamage = other.GetComponent<IDamage>();
+		if (iDamage != null)
+		{
+			DoDamage(projectile, iDamage);
+		}
+		else
+		{
+			var parent = other.transform;
+			while (parent.parent != null)
+			{
+				parent = parent.parent;
+			}
+			iDamage = parent.GetComponent<IDamage>();
+			if (parent != null)
+			{
+				DoDamage(projectile, iDamage);
+			}
+		}
+	}
+
+	void DoDamage(WeaponProjectile projectile, IDamage iDamage)
+	{
+		if (iDamage == null) return;
+		iDamage.DoDamage(GameCharacter, attackData.Damage);
+		projectilePool.ReturnValue(projectile);
+	}
+
+	void OnProjectileLifeTimeEnd(WeaponProjectile projectile)
+	{
+		projectilePool.ReturnValue(projectile);
 	}
 
 	public override void ActionInterupted()

@@ -2,9 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
 public enum EAttackType
 {
@@ -21,6 +19,16 @@ public enum EComboChangeType
 	Break,
 }
 
+public class CheckBase
+{
+	public bool Value;
+}
+
+public class PositionCheck : CheckBase
+{
+	public Vector3 Position;
+}
+
 public class CombatComponent
 {
 	public delegate void OnWeaponChanged(WeaponBase newWeapon, WeaponBase oldWeapon, GameCharacter gameCharacter);
@@ -30,7 +38,7 @@ public class CombatComponent
 	public delegate void OnComboCountChanged(int newComboCount, int oldColboCount, EComboChangeType type);
 	public OnComboCountChanged onComboCountChanged;
 
-	public delegate void OnCharacterDamagedCharacter(GameCharacter attackingCharacter,  GameCharacter damageCharacter, float damage);
+	public delegate void OnCharacterDamagedCharacter(GameCharacter attackingCharacter, GameCharacter damageCharacter, float damage);
 	public OnCharacterDamagedCharacter onCharacterDamagedCharacter;
 
 	public delegate void OnAttack(ref ShelfList<AttackAnimationData> lastAttacks);
@@ -65,8 +73,9 @@ public class CombatComponent
 	float comboTime = 2f;
 	int dodgesLeft = 0;
 	Ultra.Timer dodgeRecoveryTimer;
+	PositionCheck aimPositionCheck;
 
-	public ScriptableWeapon[] Weapons { get { return  weapons; } }
+	public ScriptableWeapon[] Weapons { get { return weapons; } }
 	public Ultra.Timer AttackTimer { get { return attackTimer; } }
 	public Ultra.Timer DefensiveTimer { get { return defensiveTimer; } }
 	public Ultra.Timer FlyAwayTimer { get { return flyAwayTimer; } }
@@ -81,9 +90,10 @@ public class CombatComponent
 	public MeshRenderer HitDetectionMeshRenderer { get { return hitDetectionMeshRenderer; } }
 	public float FlyAwayTime { get { return flyAwayTime; } set { flyAwayTime = value; } }
 	public ShelfList<AttackAnimationData> PreviousAttacks { get { return previousAttacks; } }
-	public int EquipedWeapons { get { return equipedWeapons; } }	
+	public int EquipedWeapons { get { return equipedWeapons; } }
 	public int ComboCount { get { return comboCount; } }
 	public Ultra.Timer DodgeRecoveryTimer { get { return dodgeRecoveryTimer; } }
+	public PositionCheck AimPositionCheck { get { return aimPositionCheck; } }
 	public int DodgesLeft { get { return dodgesLeft; }  
 		private set {
 			int oldDodges = DodgesLeft;
@@ -147,6 +157,7 @@ public class CombatComponent
 		previousAttacks = new ShelfList<AttackAnimationData>(gameCharacter.GameCharacterData.CombatAttackListLenght);
 		dodgesLeft = gameCharacter.GameCharacterData.MaxDodgeAmount;
 		dodgeRecoveryTimer = new Ultra.Timer(gameCharacter.GameCharacterData.DodgeRecoveryTime, true);
+		aimPositionCheck = new PositionCheck();
 	}
 
 	~CombatComponent()

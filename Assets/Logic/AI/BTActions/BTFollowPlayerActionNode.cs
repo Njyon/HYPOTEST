@@ -60,4 +60,10 @@ public class BTFollowPlayerActionNode : BTHyppoliteActionNodeBase
 
 		return Status.Running;
 	}
+
+	protected override void OnAbort(object options = null)
+	{
+		GameCharacter.VerticalMovmentInput(0);
+		GameCharacter.HorizontalMovementInput(0);
+	}
 }

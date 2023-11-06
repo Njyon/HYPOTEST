@@ -15,7 +15,7 @@ namespace Ultra
 			isFinished = false;
 		}
 
-		public Timer(float time, bool startPaused)
+		public Timer(float time, bool startPaused = true)
 		{
 			this.time = time;
 			isPaused = startPaused;
