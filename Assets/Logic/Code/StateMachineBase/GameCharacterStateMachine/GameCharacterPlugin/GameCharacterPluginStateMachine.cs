@@ -16,6 +16,7 @@ public enum EPluginCharacterState
 	Parry,
 	Block,
 	IFrame,
+	Shoot,
 }
 
 public class GameCharacterPluginStateMachine : PluginStateMachineBase<EPluginCharacterState>
@@ -41,6 +42,7 @@ public class GameCharacterPluginStateMachine : PluginStateMachineBase<EPluginCha
 			case EPluginCharacterState.Parry: newPluginState = new GameCharacterParryPluginState(this.gameCharacter, this); break;
 			case EPluginCharacterState.Block: newPluginState = new GameCharacterBlockPluginState(this.gameCharacter, this); break;
 			case EPluginCharacterState.IFrame: newPluginState = new GameCharacterIFramePluginState(this.gameCharacter, this); break;
+			case EPluginCharacterState.Shoot: newPluginState = new GameCharacterShootPluginState(this.gameCharacter, this); break;
 			default:
 				Ultra.Utilities.Instance.DebugErrorString("GameCharacterPluginStateMaschine", "CreatePluginState", "PluginState has no Implementation!");
 				break;

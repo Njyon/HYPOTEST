@@ -12,7 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8104bde8e4c1a2e42b58f845296f6b18, type: 3}
   m_Name: Gauner_TommyGun_AnimationData
   m_EditorClassIdentifier: 
-  GroundAttacks: []
+  GroundAttacks:
+  - action:
+      instance:
+        rid: 4291185053772808865
+    data:
+      showProperties: 0
+      hitDetectionType: 0
+      mesh: {fileID: 0}
+      offset: {x: 0, y: 0, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 0
+      boxDimensions: {x: 0, y: 0, z: 0}
+      capsulHeight: 0
+    combatBranches:
+      keys: 
+      values: 
+    timedCombatBrenches:
+      keys: 
+      values: 
+    particleList: []
   GroundUpAttacks: []
   GroundDownAttacks: []
   GroundDirectionAttacks: []
@@ -38,4 +57,13 @@ MonoBehaviour:
       type: 3}
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 4291185053772808865
+      type: {class: ShootAttack, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          shootAddativeAnimation: {fileID: 7400000, guid: 0bb0dbb1e2139e849ad7239afea20aac,
+            type: 2}

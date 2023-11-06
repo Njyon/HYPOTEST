@@ -71,6 +71,11 @@ public class AnimationController
 	int attackTriggerStateIndex;
 	int attackHoldStateIndex;
 	int dodgeStateIndex;
+	int addativeLayerIndex;
+	int additiveAStateIndex;
+	int additiveBStateIndex;
+	int inAddativeStateIndex;
+	int inAddativeAStateIndex;
 
 	float minMalkSpeed;
 	bool startWalkRunBlendInterp = true;
@@ -88,6 +93,8 @@ public class AnimationController
 	float secondaryMotionLayerInterpSpeed;
 	float upperBodyLayerInterpTarget;
 	float upperBodyLayerInterpSpeed;
+	float addativeLayerInterpTarget;
+	float addativeLayerInterpSpeed;
 
 	int holdStateHash;
 	public int HoldStateHash
@@ -310,6 +317,17 @@ public class AnimationController
 			if (gameCharacter.Animator.GetLayerWeight(secondaryMotionLayerIndex) != value)
 			{
 				gameCharacter.Animator.SetLayerWeight(secondaryMotionLayerIndex, value);
+			}
+		}
+	}
+	public float AddativeLayerWeight
+	{
+		get { return gameCharacter.Animator.GetLayerWeight(addativeLayerIndex); }
+		private set
+		{
+			if (gameCharacter.Animator.GetLayerWeight(addativeLayerIndex) != value)
+			{
+				gameCharacter.Animator.SetLayerWeight(addativeLayerIndex, value);
 			}
 		}
 	}
@@ -556,6 +574,32 @@ public class AnimationController
 			}
 		}
 	}
+	bool inAddativeState = false;
+	public bool InAddativeState
+	{
+		get { return inAddativeState; }
+		set
+		{
+			if (inAddativeState != value)
+			{
+				inAddativeState = value;
+				gameCharacter.Animator.SetBool(inAddativeStateIndex, inAddativeState);
+			}
+		}
+	}
+	bool inAddativeAState = false;
+	public bool InAddativeAState
+	{
+		get {return inAddativeAState; }
+		set
+		{
+			if (inAddativeAState != value)
+			{
+				inAddativeAState = value;
+				gameCharacter.Animator.SetBool(inAddativeAStateIndex, inAddativeAState);
+			}
+		}
+	}
 
 	bool blockRotation = false;
 	public bool BlockRotation { get { return blockRotation; } set { blockRotation = value; } }
@@ -620,10 +664,18 @@ public class AnimationController
 		attackTriggerStateIndex = Animator.StringToHash("TriggerState");
 		attackHoldStateIndex = Animator.StringToHash("HoldState");
 		dodgeStateIndex = Animator.StringToHash("DodgeState");
+		addativeLayerIndex = gameCharacter.Animator.GetLayerIndex("AdditiveLayer");
+		additiveAStateIndex = Animator.StringToHash("AdditiveAState");
+		additiveBStateIndex = Animator.StringToHash("AdditiveBState");
+		inAddativeStateIndex = Animator.StringToHash("InAddativeState");
+		inAddativeAStateIndex = Animator.StringToHash("InAddativeAState");
 
 		overrideController = new AnimatorOverrideController(gameCharacter.Animator.runtimeAnimatorController);
 
 		minMalkSpeed = gameCharacter.GameCharacterData.MaxMovementSpeed * gameCharacter.GameCharacterData.WalkFactor;
+
+		addativeLayerInterpTarget = AddativeLayerWeight;
+		addativeLayerInterpSpeed = 5f;
 
 		AttackTriggerTimer.onTimerFinished += OnAttackTriggerTimerFinished;
 	}
@@ -664,6 +716,7 @@ public class AnimationController
 		ArmLLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(armLLayerIndex), armLLayerInterpTarget, deltaTime * armLLayerInterpSpeed);
 		SecondaryMotionLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(secondaryMotionLayerIndex), secondaryMotionLayerInterpTarget, deltaTime * secondaryMotionLayerInterpSpeed);
 		UpperBodyLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(upperBodyLayerIndex), upperBodyLayerInterpTarget, deltaTime * upperBodyLayerInterpSpeed);
+		AddativeLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(addativeLayerIndex), addativeLayerInterpTarget, deltaTime * addativeLayerInterpSpeed);
 	}
 
 	private void RotationLayer(float deltaTime)
@@ -729,7 +782,6 @@ public class AnimationController
 			overrideController["Jump2 PlaceHolder"] = gameCharacter.CharacterData.CharacterAnimationData.Jumps[jumpIndex];
 			gameCharacter.Animator.runtimeAnimatorController = overrideController;
 			gameCharacter.Animator.SetTrigger(jumpBTriggerID);
-
 		}
 		else
 		{
@@ -789,6 +841,20 @@ public class AnimationController
 		}
 		gameCharacter.Animator.runtimeAnimatorController = overrideController;
 		InCombat3BlendStateA = !isBlendAState;
+	}
+	public void ApplyAddativeAnimationToAddativeState(AnimationClip addativeAnimation)
+	{
+		bool inAddativeAState = IsInState(additiveAStateIndex, addativeLayerIndex);
+		if (inAddativeAState)
+		{
+			overrideController["AddativeB"] = addativeAnimation;
+		}
+		else
+		{
+			overrideController["AddativeA"] = addativeAnimation;
+		}
+		gameCharacter.Animator.runtimeAnimatorController = overrideController;
+		InAddativeAState = !inAddativeAState;
 	}
 
 	private bool IsInState(int stateIndex, int layerIndex = 0)
@@ -931,6 +997,16 @@ public class AnimationController
 	{
 		secondaryMotionLayerInterpTarget = weight;
 		SecondaryMotionLayerWeight = weight;
+	}
+	public void InterpAddativeLayerWeight(float target, float speed = 5f)
+	{
+		addativeLayerInterpTarget = target;
+		addativeLayerInterpSpeed = speed;
+	}
+	public void SetAddativeLayerWeight(float weight)
+	{
+		addativeLayerInterpTarget = weight;
+		AddativeLayerWeight = weight;
 	}
 	public void InterpHeadSpineArmWeight(float target, float speed = 5f)
 	{

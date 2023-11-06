@@ -26,7 +26,8 @@ public class GameCharacterLookInVelocityDirectionPluginState : AGameCharacterPlu
 	public override void AddState()
 	{
 		// Set Default Data
-		GameCharacter.LastDir = GameCharacter.transform.right;
+		if (GameCharacter.LastDir == Vector3.zero)
+			GameCharacter.LastDir = GameCharacter.transform.right;
 	}
 	
 	public override void RemoveState()

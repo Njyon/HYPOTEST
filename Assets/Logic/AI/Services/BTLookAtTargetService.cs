@@ -44,6 +44,7 @@ public class BTLookAtTargetService : BTServiceNodeBase
 					// invert sign because of lerping rotation
 					GameCharacter.AnimController.RotationTrarget = sign * -1;
 					GameCharacter.transform.rotation = targetRot;
+					GameCharacter.LastDir = targetDir;
 					break;
 			}
 		}

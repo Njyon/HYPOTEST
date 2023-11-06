@@ -23,7 +23,7 @@ public class BTAttack : BTHyppoliteActionNodeBase
 		if (attackDone || attackStartet) return;
 		base.OnEnter(options);
 
-		if (!CanBeExecuted())
+		if (!CanAttackBeExecuted())
 		{
 			cantAttack = true;
 			return;
@@ -96,11 +96,5 @@ public class BTAttack : BTHyppoliteActionNodeBase
 		}
 	}
 
-	bool CanBeExecuted()
-	{
-		if (GameCharacter.MovementComponent.IsInJump) return false;
-		if (GameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.Attack) return false;
-		if (GameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.Dodge) return false;
-		return GameCharacter?.StateMachine?.CurrentState?.UpdateState(0, EGameCharacterState.Attack) == EGameCharacterState.Attack;
-	}
+
 }

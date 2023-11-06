@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Ultra
 {
@@ -95,6 +96,15 @@ namespace Ultra
 				isFinished = true;
 				if (onTimerFinished != null) onTimerFinished();
 			}
+		}
+
+		/// <summary>
+		/// Get Progress between 0 (start) and 1 (end)
+		/// </summary>
+		/// <returns></returns>
+		public float GetProgess()
+		{
+			return Mathf.Lerp(0, Time, CurrentTime);
 		}
 	}
 }

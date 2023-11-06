@@ -249,9 +249,10 @@ public class CombatComponent
 
 			switch (weapons[i].WeaponClassName)
 			{
-				case "FistWeapon": weapons[i].Weapon = new FistWeapon(gameCharacter, weapons[i]); break;
+				case "FistWeapon":	weapons[i].Weapon = new FistWeapon(gameCharacter, weapons[i]); break;
 				case "SpearWeapon": weapons[i].Weapon = new SpearWeapon(gameCharacter, weapons[i]); break;
 				case "SwordWeapon": weapons[i].Weapon = new SwordWeapon(gameCharacter, weapons[i]); break;
+				case "TommyGun":	weapons[i].Weapon = new TommyGun(gameCharacter, weapons[i]); break;
 				default:
 					Ultra.Utilities.Instance.DebugErrorString("CombatComponent", "InitWeapons", "No Valid Weapon Implementation Found!");
 					break;

@@ -31,4 +31,5 @@ public class GameAssets : MonoBehaviour
 	public ParticleSystem DefaultAttackFeedback;
 	public List<AudioClip> MusicTracks = new List<AudioClip>();
 	public AudioSource MusicObject;
+	public LineRenderer laserLineRenderer;
 }

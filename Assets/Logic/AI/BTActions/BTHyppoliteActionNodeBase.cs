@@ -52,4 +52,12 @@ public class BTHyppoliteActionNodeBase : BTActionNode
 			return targetGameCharacter; 
 		} 
 	}
+
+	protected bool CanAttackBeExecuted()
+	{
+		if (GameCharacter.MovementComponent.IsInJump) return false;
+		if (GameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.Attack) return false;
+		if (GameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.Dodge) return false;
+		return GameCharacter?.StateMachine?.CurrentState?.UpdateState(0, EGameCharacterState.Attack) == EGameCharacterState.Attack;
+	}
 }
