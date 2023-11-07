@@ -92,6 +92,7 @@ public class GameCharacterAttackState : AGameCharacterState
 			case EGameCharacterState.HookedToCharacter: return EGameCharacterState.HookedToCharacter;
 			case EGameCharacterState.PullCharacterOnHorizontalLevel: return EGameCharacterState.PullCharacterOnHorizontalLevel;
 			case EGameCharacterState.Freez: return EGameCharacterState.Freez;
+			case EGameCharacterState.Dodge: return EGameCharacterState.Dodge;
 			default: break;
 		}
 
@@ -112,54 +113,9 @@ public class GameCharacterAttackState : AGameCharacterState
 
 	private void CheckIfCharacterShouldMoveWithRootMotion(float deltaTime)
 	{
-		// Maybe Fix This check sometime pretty lazy
-		if (GameCharacter.AnimController.GetUpMovementCurve == 0)
-		{
-			bool isValidHit;
-			RaycastHit validHit;
-			CheckIfACharacterIsToCloseToMoveTo(out isValidHit, out validHit);
-			if (!isValidHit)
-			{
-				CombatMovement(deltaTime, initYVelocity, initXVelocity, ref lerpTimeY, ref lerpTimeX, ref currentYPosAnimCurve);
-			}
-			else
-			{
-				GameCharacter.MovementComponent.MovementVelocity = Vector3.zero;
-				//Debug.Log("Collided with object => " + validHit.transform.name);
-			}
-		}
-		else
-		{
-			CombatMovement(deltaTime, initYVelocity, initXVelocity, ref lerpTimeY, ref lerpTimeX, ref currentYPosAnimCurve);
-		}
-	}
-
-	private void CheckIfACharacterIsToCloseToMoveTo(out bool isValidHit, out RaycastHit validHit)
-	{
-		float lenght = GameCharacter.CombatComponent.CurrentWeapon.CurrentAction.Action.GetStopMovingRange();
-		Vector3 currentDir = Vector3.zero;
-		if (GameCharacter.MovementInput.x != 0)
-		{
-			currentDir = new Vector3(GameCharacter.MovementInput.x, 0, 0);
-		}
-		else
-		{
-			currentDir = GameCharacter.transform.forward;
-		}
-		currentDir = currentDir * lenght;
-		RaycastHit[] hits = Ultra.Utilities.CapsulCastAll(GameCharacter.MovementComponent.CharacterCenter, GameCharacter.MovementComponent.Height, GameCharacter.MovementComponent.Radius, currentDir, Color.red, 100, DebugAreas.Combat, GameCharacter.CharacterLayer, QueryTriggerInteraction.Ignore);
-
-		isValidHit = false;
-		validHit = new();
-		foreach (RaycastHit hit in hits)
-		{
-			if (hit.collider == null) continue;
-			if (hit.collider.gameObject == GameCharacter.gameObject) continue;
-			if (hit.collider.transform.parent == GameCharacter.transform) continue;
-			isValidHit = true;
-			validHit = hit;
-			break;
-		}
+		
+		CombatMovement(deltaTime, initYVelocity, initXVelocity, ref lerpTimeY, ref lerpTimeX, ref currentYPosAnimCurve);
+		
 	}
 
 	public override void FixedExecuteState(float deltaTime)

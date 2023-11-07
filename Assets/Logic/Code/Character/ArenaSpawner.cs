@@ -39,6 +39,7 @@ public class ArenaSpawner : MonoBehaviour
 	List<GameCharacter> spawnedGameCharacters = new List<GameCharacter>();
 
 	int spawnIndex = 0;
+	int lastSpawnPointIndex = -1;
 	bool startedSpawning = false;
 	GameModeBase gameMode;
 	public GameModeBase GameMode { 
@@ -156,9 +157,17 @@ public class ArenaSpawner : MonoBehaviour
 		}
 		else if (randomSpawnLocations.Count > 0)
 		{
-			GameObject randomSpawnLocation = randomSpawnLocations[UnityEngine.Random.Range(0, randomSpawnLocations.Count)];
+			int index = UnityEngine.Random.Range(0, randomSpawnLocations.Count);
+			if (index == lastSpawnPointIndex)
+			{
+				index++;
+				index = index % randomSpawnLocations.Count;
+			}
+			GameObject randomSpawnLocation = randomSpawnLocations[index];
 			spawnLocation = randomSpawnLocation.transform.position;
 			spawnRotation = randomSpawnLocation.transform.rotation;
+
+			lastSpawnPointIndex = index;
 		}
 		else
 		{

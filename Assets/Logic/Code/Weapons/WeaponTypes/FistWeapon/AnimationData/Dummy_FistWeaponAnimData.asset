@@ -101,7 +101,7 @@ MonoBehaviour:
       mesh: {fileID: 0}
       offset: {x: 0, y: 0.5, z: 0}
       scale: {x: 0, y: 0, z: 0}
-      radius: 2
+      radius: 2.5
       boxDimensions: {x: 0, y: 0, z: 0}
       capsulHeight: 0
     combatBranches:
@@ -116,12 +116,12 @@ MonoBehaviour:
       instance:
         rid: 3239357412136189958
     data:
-      showProperties: 0
+      showProperties: 1
       hitDetectionType: 1
       mesh: {fileID: 0}
       offset: {x: 1, y: 0.5, z: 0}
       scale: {x: 0, y: 0, z: 0}
-      radius: 1
+      radius: 1.5
       boxDimensions: {x: 0, y: 0, z: 0}
       capsulHeight: 0
     combatBranches:
@@ -135,12 +135,12 @@ MonoBehaviour:
       instance:
         rid: 3239357412136189959
     data:
-      showProperties: 0
+      showProperties: 1
       hitDetectionType: 1
       mesh: {fileID: 0}
       offset: {x: 1, y: 0.5, z: 0}
       scale: {x: 0, y: 0, z: 0}
-      radius: 1
+      radius: 1.5
       boxDimensions: {x: 0, y: 0, z: 0}
       capsulHeight: 0
     combatBranches:
@@ -159,7 +159,7 @@ MonoBehaviour:
       mesh: {fileID: 0}
       offset: {x: 1, y: 0.5, z: 0}
       scale: {x: 0, y: 0, z: 0}
-      radius: 1.5
+      radius: 2
       boxDimensions: {x: 0, y: 0, z: 0}
       capsulHeight: 0
     combatBranches:
@@ -178,7 +178,7 @@ MonoBehaviour:
       mesh: {fileID: 0}
       offset: {x: 1.5, y: 0, z: 0}
       scale: {x: 0, y: 0, z: 0}
-      radius: 1.2
+      radius: 1.8
       boxDimensions: {x: 0, y: 0, z: 0}
       capsulHeight: 0
     combatBranches:
@@ -188,45 +188,7 @@ MonoBehaviour:
       keys: 
       values: 
     particleList: []
-  AirUpAttacks:
-  - action:
-      instance:
-        rid: -2
-    data:
-      showProperties: 1
-      hitDetectionType: 1
-      mesh: {fileID: 0}
-      offset: {x: 1.5, y: 0, z: 0}
-      scale: {x: 0, y: 0, z: 0}
-      radius: 1.2
-      boxDimensions: {x: 0, y: 0, z: 0}
-      capsulHeight: 0
-    combatBranches:
-      keys: 
-      values: 
-    timedCombatBrenches:
-      keys: 
-      values: 
-    particleList: []
-  - action:
-      instance:
-        rid: 3239357412136189977
-    data:
-      showProperties: 1
-      hitDetectionType: 1
-      mesh: {fileID: 0}
-      offset: {x: 1.5, y: 0, z: 0}
-      scale: {x: 0, y: 0, z: 0}
-      radius: 1.2
-      boxDimensions: {x: 0, y: 0, z: 0}
-      capsulHeight: 0
-    combatBranches:
-      keys: 
-      values: 
-    timedCombatBrenches:
-      keys: 
-      values: 
-    particleList: []
+  AirUpAttacks: []
   AirDownAttacks:
   - action:
       instance:
@@ -257,7 +219,7 @@ MonoBehaviour:
       mesh: {fileID: 0}
       offset: {x: 0, y: 0.5, z: 0}
       scale: {x: 0, y: 0, z: 0}
-      radius: 2
+      radius: 2.5
       boxDimensions: {x: 0, y: 0, z: 0}
       capsulHeight: 0
     combatBranches:
@@ -295,11 +257,13 @@ MonoBehaviour:
   HeadSpineLayerMovingWeight: 0
   ArmRMovingWeight: 0
   ArmLMovingWeight: 0
+  AimAnimations:
+    upAnimation: {fileID: 0}
+    midAnimation: {fileID: 0}
+    downAnimation: {fileID: 0}
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 3239357409519206417
       type: {class: DefaultAttack, ns: , asm: Assembly-CSharp}
       data:
@@ -438,14 +402,6 @@ MonoBehaviour:
           kickDirection: {x: 0, y: 0, z: 85}
           stunTime: 1
           kickStrengh: 20
-    - rid: 3239357412136189977
-      type: {class: DefaultAttack, ns: , asm: Assembly-CSharp}
-      data:
-        attackData:
-          Damage: 10
-          Rating: 100
-          Discharge: 100
-          attackAnimation: {fileID: 0}
     - rid: 3239357499048984579
       type: {class: ParryDefensiveAction, ns: , asm: Assembly-CSharp}
       data:

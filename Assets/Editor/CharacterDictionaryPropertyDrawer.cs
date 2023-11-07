@@ -39,7 +39,7 @@ public class CharacterDictionaryDrawer : PropertyDrawer
         SerializedProperty keysProperty = property.FindPropertyRelative("keys");
         SerializedProperty valuesProperty = property.FindPropertyRelative("values");
 
-        float widthSize = position.width / 3;
+		float widthSize = position.width / 3;
         float offsetSize = 2;
 
 		List<string> stringList = new List<string>(keysProperty.arraySize);

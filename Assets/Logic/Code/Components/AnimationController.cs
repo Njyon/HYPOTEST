@@ -1088,4 +1088,15 @@ public class AnimationController
 				return -1;
 		}
 	}
+
+	public void ResetAnimStatesHARD()
+	{
+		gameCharacter.AnimController.InAttack = false;
+		gameCharacter.AnimController.InAimBlendTree = false;
+		gameCharacter.AnimController.InFreez = false;
+		gameCharacter.AnimController.HoldAttack = false;
+		gameCharacter.AnimController.TriggerAttack = false;
+		gameCharacter.AnimController.InDefensiveAction = false;
+		gameCharacter.AnimController.InCombat3Blend = false;
+	}
 }

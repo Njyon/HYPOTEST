@@ -59,7 +59,7 @@ public class ClassInstancePropertyDrawer : PropertyDrawer
                 foreach (var type in classTypes)
                 {
                     if (!baseType.IsAssignableFrom(type)) continue;
-                    if (!type.IsAbstract || type.IsInterface) continue;
+                    if (type.IsAbstract || type.IsInterface) continue;
                     property.FindPropertyRelative("instance").managedReferenceValue = Activator.CreateInstance(type);
                     break;
                 }

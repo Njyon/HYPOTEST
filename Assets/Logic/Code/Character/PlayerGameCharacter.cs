@@ -64,10 +64,10 @@ public class PlayerGameCharacter : GameCharacter
 
 	}
 
-	protected override void OnDamaged(GameCharacter damageInitiator, float damage)
+	protected override void OnDamaged(GameCharacter damageInitiator, float damage, bool removeCharge)
 	{
-		base.OnDamaged(damageInitiator, damage);
-		combatRatingComponent.OnGotHit(damageInitiator, damage);
+		base.OnDamaged(damageInitiator, damage, removeCharge);
+		combatRatingComponent.OnGotHit(damageInitiator, damage, removeCharge);
 	}
 
 	protected override void AddRatingOnHit(float damage)

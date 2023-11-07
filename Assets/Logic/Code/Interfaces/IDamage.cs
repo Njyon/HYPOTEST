@@ -4,5 +4,6 @@ using UnityEngine;
 
 public interface IDamage 
 {
-	public abstract void DoDamage(GameCharacter damageInitiator, float damage);
+	public abstract void DoDamage(GameCharacter damageInitiator, float damage, bool removeCharge = true);
+	public abstract HyppoliteTeam GetTeam();
 }

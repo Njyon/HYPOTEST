@@ -58,6 +58,10 @@ public class BTHyppoliteActionNodeBase : BTActionNode
 		if (GameCharacter.MovementComponent.IsInJump) return false;
 		if (GameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.Attack) return false;
 		if (GameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.Dodge) return false;
+		if (GameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.Freez) return false;
+		if (GameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.MoveToPosition) return false;
+		if (GameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.HookedToCharacter) return false;
+		if (GameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.PullCharacterOnHorizontalLevel) return false;
 		return GameCharacter?.StateMachine?.CurrentState?.UpdateState(0, EGameCharacterState.Attack) == EGameCharacterState.Attack;
 	}
 }

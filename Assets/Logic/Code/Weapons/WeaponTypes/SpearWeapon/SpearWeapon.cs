@@ -4,10 +4,7 @@ using UnityEngine;
 
 public class SpearWeapon : WeaponBase
 {
-	OldWeaponProjectile defensiveSpear = null;
 	List<GameObject> thrownSpears = new List<GameObject>();
-
-	public OldWeaponProjectile DefensiveSpear { get { return defensiveSpear; } set { defensiveSpear = value; } }
 
 
 	public SpearWeapon() { }
@@ -28,9 +25,6 @@ public class SpearWeapon : WeaponBase
 		GameCharacter.RequestBestCharacterState();
 		GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.Aim);
 		SpawnedWeapon?.SetActive(true);
-
-		if (defensiveSpear != null)
-			GameObject.Destroy(defensiveSpear.gameObject);
 	}
 
     public override void UpdateWeapon(float deltaTime)

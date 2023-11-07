@@ -28,6 +28,7 @@ public class GameCharacterDodgeState : AGameCharacterState
 		minDodgeTimeTimer.Start(minDodgeTime);
 		iFrameTimer.Start();
 
+		GameCharacter.AnimController.ResetAnimStatesHARD();
 		GameCharacter.AnimController.InDodge = true;
 
 		var ps = GameCharacter.DodgeParticleSystemPool.GetValue();

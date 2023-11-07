@@ -45,6 +45,7 @@ public class PlayerUI : UIBase
 		gameCharacter.CombatRatingComponent.onStyleRankingChanged += OnStyleRankingChanged;
 		gameCharacter.CombatRatingComponent.onCurrentValueChange += OnStyleValueChanged;
 		gameCharacter.CombatComponent.onComboCountChanged += OnComboCountChanged;
+		gameCharacter.onGameCharacterAggroChanged += OnAggroChanged;
 		InitHealthbar();
 
 		for (int i = 0; i < gameCharacter.CombatComponent.Weapons.Length; i++)
@@ -72,7 +73,9 @@ public class PlayerUI : UIBase
 		if (gameCharacter != null)
 		{
 			gameCharacter.CombatRatingComponent.onStyleRankingChanged -= OnStyleRankingChanged;
-			gameCharacter.CombatComponent.onDodgeLeftChanged -= OnDodgeLeftChanged;
+			gameCharacter.CombatRatingComponent.onCurrentValueChange -= OnStyleValueChanged;
+			gameCharacter.CombatComponent.onComboCountChanged -= OnComboCountChanged;
+			gameCharacter.onGameCharacterAggroChanged -= OnAggroChanged;
 		}
 		weaponUIs.Clear();
 	}
@@ -211,6 +214,21 @@ public class PlayerUI : UIBase
 		if (newDodgeAmount > oldDodgeAmount)
 		{
 			dodgeBars[oldDodgeAmount].fillAmount = 1f;
+		}
+	}
+
+	void OnAggroChanged()
+	{
+		if (gameCharacter != null)
+		{
+			if (gameCharacter.CharacterHasAggro)
+			{
+				// Show Ranking
+			}
+			else
+			{
+				// Hide Ranking
+			}
 		}
 	}
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public enum HyppoliteTeam
 {
+	None,
 	TeamPlayer,
 	TeamEnemy,
 }

@@ -129,10 +129,10 @@ MonoBehaviour:
     Member:
     - Name: maxWaitTime
       Type: System.Single
-      Value: 3
+      Value: 2
     - Name: minWaitTime
       Type: System.Single
-      Value: 1
+      Value: 0.5
     - Name: Meta
       Type: $ref
       Value: 1e67fc54-8448-44af-9523-1154ec4e5c8f.Meta
@@ -448,6 +448,12 @@ MonoBehaviour:
   - Name: d154c868-80b5-404c-bf67-0028af22069f
     Type: BTRandomWait
     Member:
+    - Name: maxWaitTime
+      Type: System.Single
+      Value: 2
+    - Name: minWaitTime
+      Type: System.Single
+      Value: 0.5
     - Name: Meta
       Type: $ref
       Value: d154c868-80b5-404c-bf67-0028af22069f.Meta

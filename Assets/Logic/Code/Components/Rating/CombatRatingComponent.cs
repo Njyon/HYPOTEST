@@ -67,8 +67,10 @@ public class CombatRatingComponent : RecourceBase
 	{
 		if (gameCharacter == null) return;
 
-		base.Update(deltaTime);
-
+		if (gameCharacter.CharacterHasAggro)
+		{
+			base.Update(deltaTime);
+		}
 	}
 
 	public override void AddCurrentValue(float value)
@@ -110,15 +112,18 @@ public class CombatRatingComponent : RecourceBase
 		}
 	}
 
-	public void OnGotHit(GameCharacter damageInitiator, float damage)
+	public void OnGotHit(GameCharacter damageInitiator, float damage, bool removeCharge)
 	{
 		if (damage > 0)
 		{
 			AddCurrentValue(-(CurrentValue / 2));
-			foreach (ScriptableWeapon sWeapon in gameCharacter.CombatComponent.Weapons)
+			if (removeCharge)
 			{
-				if (sWeapon == null || sWeapon.Weapon == null) continue;
-				sWeapon.Weapon.Charge -= 200;
+				foreach (ScriptableWeapon sWeapon in gameCharacter.CombatComponent.Weapons)
+				{
+					if (sWeapon == null || sWeapon.Weapon == null) continue;
+					sWeapon.Weapon.Charge -= 200;
+				}
 			}
 			UpdateStyleRank();
 		}

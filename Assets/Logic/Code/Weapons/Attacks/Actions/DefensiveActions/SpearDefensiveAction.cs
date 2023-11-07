@@ -13,12 +13,13 @@ public class SpearDefensiveActionData : AttackData
 public class SpearDefensiveAction : ActionBase
 {
 	public SpearDefensiveActionData attackData;
-	SpearWeapon spearWeapon;
+	OldWeaponProjectile defensiveSpear;
+	bool canLeaveState = false;
 
 	public override void Init(GameCharacter gameCharacter, WeaponBase weapon, InitAction action = null)
 	{
 		base.Init(gameCharacter, weapon);
-		spearWeapon = (SpearWeapon)weapon;
+		canLeaveState = false;
 	}
 
 	public override void StartAction()
@@ -37,7 +38,6 @@ public class SpearDefensiveAction : ActionBase
 		GameCharacter.StateMachine.RequestStateChange(EGameCharacterState.DefensiveAction);
 		Weapon.AttackAnimType = EAttackAnimType.AimBlendSpace;
 
-
 		Weapon.SpawnedWeapon.SetActive(false);
 
 		GameObject throwSpear = GameObject.Instantiate(attackData.throwSpear);
@@ -51,9 +51,9 @@ public class SpearDefensiveAction : ActionBase
 		GameCharacter.MovementComponent.MovementVelocity = Vector3.zero;
 
 
-		spearWeapon.DefensiveSpear = throwSpear.GetComponent<OldWeaponProjectile>();
-		spearWeapon.DefensiveSpear.onProjectileHit += DefensiveActionHit;
-		spearWeapon.DefensiveSpear.Initialize(GameCharacter, throwSpear.transform.position, targetEnemy);
+		defensiveSpear = throwSpear.GetComponent<OldWeaponProjectile>();
+		defensiveSpear.onProjectileHit += DefensiveActionHit;
+		defensiveSpear.Initialize(GameCharacter, throwSpear.transform.position, targetEnemy);
 	}
 	void DefensiveActionHit(GameObject hitObj)
 	{
@@ -61,22 +61,33 @@ public class SpearDefensiveAction : ActionBase
 		if (hitgameCharacter == null)
 		{
 			IDamage damageInterface = hitObj.GetComponent<IDamage>();
-			if (damageInterface != null) damageInterface.DoDamage(GameCharacter, 0);
+			if (damageInterface != null)
+			{
+				if (damageInterface.GetTeam() == GameCharacter.GetTeam()) return;
+				damageInterface.DoDamage(GameCharacter, 0);
+			}
 			return;
 		}
 
-		GameCharacter.CombatComponent.AimCharacter = hitgameCharacter;
-		Weapon.HookCharacterToCharacter(hitgameCharacter);
-		GameCharacter.CombatComponent.HookedCharacters.Add(hitgameCharacter);
-		hitgameCharacter.CombatComponent.HookedToCharacter = GameCharacter;
-		hitgameCharacter.CombatComponent.MoveToPosition = GameCharacter.transform.position + GameCharacter.transform.forward * 1f;
+		if (hitgameCharacter.CombatComponent.CanRequestMoveTo())
+		{
+			GameCharacter.CombatComponent.AimCharacter = hitgameCharacter;
+			Weapon.HookCharacterToCharacter(hitgameCharacter);
+			GameCharacter.CombatComponent.HookedCharacters.Add(hitgameCharacter);
+			hitgameCharacter.CombatComponent.HookedToCharacter = GameCharacter;
+			hitgameCharacter.CombatComponent.MoveToPosition = GameCharacter.transform.position + GameCharacter.transform.forward * 1f;
 
-		hitgameCharacter.StateMachine.RequestStateChange(EGameCharacterState.MoveToPosition);
+			hitgameCharacter.StateMachine.RequestStateChange(EGameCharacterState.MoveToPosition, true);
 
-		GameCharacter.AnimController.ApplyBlendTree(attackData.spearDefensiveActionPull);
-		GameCharacter.PluginStateMachine.AddPluginState(EPluginCharacterState.Aim);
-		GameCharacter.StateMachine.RequestStateChange(EGameCharacterState.DefensiveAction);
-		Weapon.AttackAnimType = EAttackAnimType.AimBlendSpace;
+			GameCharacter.AnimController.ApplyBlendTree(attackData.spearDefensiveActionPull);
+			GameCharacter.PluginStateMachine.AddPluginState(EPluginCharacterState.Aim);
+			GameCharacter.StateMachine.RequestStateChange(EGameCharacterState.DefensiveAction);
+			Weapon.AttackAnimType = EAttackAnimType.AimBlendSpace;
+		}
+		else
+		{
+			AfterDefensiveActionCleanUp();
+		}
 	}
 
 	public override void CharacterArrivedAtRequestedLocation(GameCharacter movedCharacter)
@@ -102,13 +113,19 @@ public class SpearDefensiveAction : ActionBase
 
 	private void AfterDefensiveActionCleanUp()
 	{
+		canLeaveState = true;
 		GameCharacter.AnimController.InAimBlendTree = false;
 		Weapon.UnHookAllHookedCharacerts();
 		GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.Aim);
 		GameCharacter.RequestBestCharacterState();
 		Weapon.SpawnedWeapon.SetActive(true);
-		if (spearWeapon.DefensiveSpear != null)
-			GameObject.Destroy(spearWeapon.DefensiveSpear.gameObject);
+		if (defensiveSpear != null)
+			GameObject.Destroy(defensiveSpear.gameObject);
+	}
+
+	public override bool CanLeaveDefensiveState()
+	{
+		return canLeaveState;
 	}
 
 	public override void ActionInterupted()

@@ -163,7 +163,17 @@ public class GameCharacterMovementComponent : MonoBehaviour
 
 	void RequestMove(Vector3 moveRequestVector)
 	{
-
+		if (Mathf.Abs(gameCharacter.transform.position.z) > 0)
+		{
+			Vector3 noZVector = new Vector3(transform.position.x, transform.position.y, 0);
+			Vector3 noZDirection = noZVector - transform.position;
+			noZDirection = noZDirection.normalized * 0.1f;
+			if (noZDirection.magnitude > 0.0001f) unityMovementController.Move(noZDirection);
+			if (Mathf.Abs(gameCharacter.transform.position.z).IsNearlyEqual(0, 0.5f))
+			{
+				gameCharacter.transform.position = new Vector3(gameCharacter.transform.position.x, gameCharacter.transform.position.y, 0);
+			}
+		}
 		if (moveRequestVector.magnitude < 0.0001f && gameCharacter.MovementInput.magnitude < 0.0001f) return;
 
 		//if (!IsInJump && gameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.Moving)
@@ -177,16 +187,10 @@ public class GameCharacterMovementComponent : MonoBehaviour
 		//	}
 		//}
 
-
 		CollisionFlags collisionFlag = unityMovementController.Move(moveRequestVector);
 		if (onMoveCollisionFlag != null && collisionFlag != CollisionFlags.None) onMoveCollisionFlag(collisionFlag);
 
 		MovementVelocity = new Vector3(MovementVelocity.x, MovementVelocity.y, 0);
-
-		Vector3 noZVector = new Vector3(transform.position.x, transform.position.y, 0);
-		Vector3 noZDirection = noZVector - transform.position;	
-		if (noZDirection.magnitude > 0.0001f) unityMovementController.Move(noZDirection);
-	
 
 		return;
 
@@ -504,6 +508,34 @@ public class GameCharacterMovementComponent : MonoBehaviour
 		{
 			if (gravityCoroutine != null) StopCoroutine(gravityCoroutine);
 			gravityCoroutine = StartCoroutine(InterpGravity(time));
+		}
+	}
+
+	public void CheckIfACharacterIsToCloseToMoveTo(out bool isValidHit, out RaycastHit validHit)
+	{
+		float lenght = gameCharacter.CombatComponent.CurrentWeapon.CurrentAction.Action.GetStopMovingRange();
+		Vector3 currentDir = Vector3.zero;
+		if (gameCharacter.MovementInput.x != 0)
+		{
+			currentDir = new Vector3(gameCharacter.MovementInput.x, 0, 0);
+		}
+		else
+		{
+			currentDir = gameCharacter.transform.forward;
+		}
+		currentDir = currentDir * lenght;
+		RaycastHit[] hits = Ultra.Utilities.CapsulCastAll(gameCharacter.MovementComponent.CharacterCenter, gameCharacter.MovementComponent.Height, gameCharacter.MovementComponent.Radius, currentDir, Color.red, 100, DebugAreas.Combat, gameCharacter.CharacterLayer, QueryTriggerInteraction.Ignore);
+
+		isValidHit = false;
+		validHit = new();
+		foreach (RaycastHit hit in hits)
+		{
+			if (hit.collider == null) continue;
+			if (hit.collider.gameObject == gameCharacter.gameObject) continue;
+			if (hit.collider.transform.parent == gameCharacter.transform) continue;
+			isValidHit = true;
+			validHit = hit;
+			break;
 		}
 	}
 

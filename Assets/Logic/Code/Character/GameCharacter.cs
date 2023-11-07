@@ -306,7 +306,7 @@ public class GameCharacter : MonoBehaviour, IDamage
 
 	#endregion
 
-	public void DoDamage(GameCharacter damageInitiator, float damage)
+	public void DoDamage(GameCharacter damageInitiator, float damage, bool removeCharge = true)
 	{
 		if (damageInitiator != null)
 		{
@@ -357,7 +357,7 @@ public class GameCharacter : MonoBehaviour, IDamage
 			}
 
 			animController.TriggerAdditiveHit();
-			OnDamaged(damageInitiator, damage);
+			OnDamaged(damageInitiator, damage, removeCharge);
 			damageInitiator?.AddRatingOnHit(damage);
 		}
 	}
@@ -367,7 +367,7 @@ public class GameCharacter : MonoBehaviour, IDamage
 		return Team == team;
 	}
 
-	protected virtual void OnDamaged(GameCharacter damageInitiator, float damage)
+	protected virtual void OnDamaged(GameCharacter damageInitiator, float damage, bool removeCharge)
 	{
 
 	}
@@ -535,30 +535,54 @@ public class GameCharacter : MonoBehaviour, IDamage
 	{
 		aggroedCharacters.Add(aggroedCharacter);
 		aggroedCharacter.onGameCharacterDied += OnAggroedCharactersDies;
-
-		if (onGameCharacterAggroChanged != null) onGameCharacterAggroChanged();
-	}
-
-	public void RemoveCharacterFromAggroedCharacter(GameCharacter aggroedCharacter)
-	{
-		if (aggroedCharacters.Contains(aggroedCharacter))
-			aggroedCharacters.Remove(aggroedCharacter);
+		aggroedCharacter.onGameCharacterDestroyed += OnAggroedCharactersDies;
 
 		if (onGameCharacterAggroChanged != null) onGameCharacterAggroChanged();
 	}
 
 	void OnAggroedCharactersDies(GameCharacter diedCharacter)
 	{
-		diedCharacter.onGameCharacterDied -= OnAggroedCharactersDies;
-		if (aggroedCharacters.Contains(diedCharacter))
-			aggroedCharacters.Remove(diedCharacter);
+		RemoveCharacterFromAggroedCharacter(diedCharacter);
+	}
+
+	public void RemoveCharacterFromAggroedCharacter(GameCharacter aggroedCharacter)
+	{
+		if (aggroedCharacters.Contains(aggroedCharacter))
+		{
+			aggroedCharacter.onGameCharacterDied -= OnAggroedCharactersDies;
+			aggroedCharacter.onGameCharacterDestroyed -= OnAggroedCharactersDies;
+			aggroedCharacters.Remove(aggroedCharacter);
+		}else
+		{
+			Ultra.Utilities.Instance.DebugErrorString("GameCharacter", "RemoveCharacterFromAggroedCharacter", "Character Died but was not in Aggroed Characters, something went wrong!");
+		}
+
+		RemoveNullsFromAggroedCharacters();
 
 		if (onGameCharacterAggroChanged != null) onGameCharacterAggroChanged();
+	}
+
+	void RemoveNullsFromAggroedCharacters()
+	{
+		List<GameCharacter> nullCharacters = new List<GameCharacter>();
+		foreach (var character in aggroedCharacters)
+		{
+			if (character == null) nullCharacters.Add(character);
+		}
+		foreach (var character in nullCharacters)
+		{
+			aggroedCharacters.Remove(character);
+		}
 	}
 
 	[Button("ReInitGraphs")]
 	protected void Test()
 	{
 		DebugGUI.ForceReinitializeAttributes();
+	}
+
+	public HyppoliteTeam GetTeam()
+	{
+		return Team;
 	}
 }

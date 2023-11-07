@@ -44,6 +44,10 @@ public abstract class AGameCharacterState : IState<EGameCharacterState>
 
 	protected void CombatMovement(float deltaTime, float initYVelocity, float initXVelocity, ref float lerpTimeY, ref float lerpTimeX, ref float currentYPosAnimCurve)
 	{
+		bool isValidHit;
+		RaycastHit validHit;
+		gameCharacter.MovementComponent.CheckIfACharacterIsToCloseToMoveTo(out isValidHit, out validHit);
+
 		float yPosCurve = GameCharacter.AnimController.GetUpMovementCurve;
 		float yPosFromAnimCurveDelta = 0;
 		if (yPosCurve > 0 && GameCharacter.CombatComponent.CurrentWeapon != null && GameCharacter.CombatComponent.CurrentWeapon.CurrentAction != null)
@@ -61,7 +65,7 @@ public abstract class AGameCharacterState : IState<EGameCharacterState>
 		lerpTimeY += deltaTime * GameCharacter.GameCharacterData.AirToZeroVelYInAttackSpeed;
 		lerpTimeX += deltaTime * GameCharacter.GameCharacterData.AirToZeroVelXInAttackSpeed;
 		float yMotion = GameCharacter.MovementComponent.RootmotionVector.y + Mathf.Lerp(initYVelocity, 0, lerpTimeY) + yPosFromAnimCurveDelta;
-		float xMotion = GameCharacter.MovementComponent.RootmotionVector.x + Mathf.Lerp(initXVelocity, 0, lerpTimeX);
+		float xMotion = isValidHit ? 0 : GameCharacter.MovementComponent.RootmotionVector.x + Mathf.Lerp(initXVelocity, 0, lerpTimeX);
 		Vector3 rootmotionVector = new Vector3(xMotion, yMotion, 0);
 
 		// Move Along Ground
