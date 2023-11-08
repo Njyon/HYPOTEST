@@ -101,6 +101,11 @@ public class CombatRatingComponent : RecourceBase
 
 		gameCharacter.CombatComponent.CurrentWeapon.Charge -= newestAttack.Action.GetActionDischarge();
 		AddCurrentValue(rating);
+		AddWeaponCharge();
+	}
+
+	public void AddWeaponCharge()
+	{
 		foreach (ScriptableWeapon weapon in gameCharacter.CombatComponent.Weapons)
 		{
 			if (weapon == null || weapon.Weapon == null) continue;

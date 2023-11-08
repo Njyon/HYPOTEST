@@ -46,23 +46,7 @@ public class GameCharacterInAirState : AGameCharacterState
 
 	public override void ExecuteState(float deltaTime)
 	{
-		RaycastHit hit;
-		bool groundBelowCharacter = GameCharacter.MovementComponent.IsGroundedCheck(GameCharacter.MovementComponent.CharacterCenter, out hit);
-
-		// MaybeAir Speed?
-		float maxSpeed = GameCharacter.GameCharacterData.MaxMovementSpeed;
-
-		Vector3 velocity = GameCharacter.MovementComponent.MovementVelocity;
-		Vector3 inputDir = new Vector3(GameCharacter.MovementInput.x, 0f, 0f);
-		Vector3 targetVelocity = inputDir.normalized * maxSpeed;
-		Vector3 velocityDiff = (targetVelocity - velocity);
-		Vector3 acceleration = velocityDiff * GameCharacter.GameCharacterData.InAirControll;
-		velocity.x += acceleration.x;
-  		if (groundBelowCharacter /*&& GameCharacter.MovementComponent.PossibleGround != null*/) velocity = Vector3.ProjectOnPlane(velocity, hit.normal);
-
-		// Anwenden der Geschwindigkeit
-		velocity = new Vector3(velocity.x, GameCharacter.MovementComponent.MovementVelocity.y, GameCharacter.MovementComponent.MovementVelocity.z);
-		GameCharacter.MovementComponent.MovementVelocity = velocity;
+		InAirMovement();
 	}
 
 	public override void FixedExecuteState(float deltaTime)

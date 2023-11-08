@@ -46,50 +46,7 @@ public class GameCharacterMovingState : AGameCharacterState
 
 	public override void ExecuteState(float deltaTime)
 	{
-		Vector2 inputVector = GameCharacter.MovementInput;
-		inputVector.y = 0;
-
-		if (GameCharacter.MovementComponent.IsGrounded)
-		{
-			Vector2 newInputVector = Vector3.ProjectOnPlane(inputVector, GameCharacter.MovementComponent.RayCastGroundHit != null ? GameCharacter.MovementComponent.RayCastGroundHit.hit.normal : GameCharacter.MovementComponent.PossibleGround.hit.normal);
-			if (Mathf.Abs(newInputVector.normalized.x) > 0.1f) inputVector = newInputVector;
-		}
-
-		float maxSpeed = GameCharacter.GameCharacterData.MaxMovementSpeed;
-		float acceleration = GameCharacter.GameCharacterData.Acceleration;
-
-		Vector3 velocity = GameCharacter.MovementComponent.MovementVelocity;
-		Vector3 targetVelocity = inputVector.normalized * maxSpeed;
-
-		if (inputVector.magnitude > 0 /*&& !FutureInclineToHigh(velocity)*/)
-		{
-			// Beschleunigung
-			Vector3 deltaV = targetVelocity - velocity;
-			deltaV = Vector3.ClampMagnitude(deltaV, acceleration);
-			Ultra.Utilities.DrawArrow(GameCharacter.transform.position, deltaV, 10, Color.black, 0f, 200, DebugAreas.Movement);
-			Ultra.Utilities.DrawArrow(GameCharacter.transform.position, targetVelocity, 10, Color.green, 0f, 200, DebugAreas.Movement);
-			velocity += deltaV;
-			velocity = targetVelocity.normalized * velocity.magnitude;
-			Ultra.Utilities.DrawArrow(GameCharacter.transform.position, velocity, 10, Color.white, 0f, 200, DebugAreas.Movement);
-		}
-		else
-		{
-			// Bremsen
-			if (Ultra.Utilities.IsNearlyEqual(velocity, Vector3.zero, new Vector3(0.5f, 0.5f, 0.5f)))
-			{
-				velocity = Vector3.zero;
-			} 
-			else
-			{
-				float drag = GameCharacter.GameCharacterData.Drag;
-				float deceleration = drag;
-				velocity = Vector3.MoveTowards(velocity, Vector3.zero, deceleration);
-			}
-		}
-
-		// Anwenden der Geschwindigkeit
-		velocity = new Vector3(velocity.x, velocity.y, GameCharacter.MovementComponent.MovementVelocity.z);
-		GameCharacter.MovementComponent.MovementVelocity = velocity;
+		OnGroundMovement();
 	}
 
 	private bool FutureInclineToHigh(Vector3 velocity)

@@ -14,6 +14,7 @@ public class JumpEvent : CharacterEvent
 			/*case EGameCharacterState.Attack:*/ case EGameCharacterState.Freez: return false;
 			default: break;
 		}
+		if (gameCharacter.CombatComponent.CurrentWeapon != null && gameCharacter.CombatComponent.CurrentWeapon.IsHitDetecting) return false;
 		if (gameCharacter.GameCharacterData.EnemyStepColliderScript.CanEnemyStep) return true;
 		if (gameCharacter.CurrentJumpAmount < gameCharacter.GameCharacterData.MaxJumps) return true;
 		return false;

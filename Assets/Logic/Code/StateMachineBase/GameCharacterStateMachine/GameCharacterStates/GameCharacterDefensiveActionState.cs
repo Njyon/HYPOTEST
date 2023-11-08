@@ -79,7 +79,13 @@ public class GameCharacterDefensiveActionState : AGameCharacterState
 		GameCharacter.CombatComponent.CurrentWeapon.PreAttackStateLogic(deltaTime);
 		//RotateCharacter(newDir);
 
-		CombatMovement(deltaTime, initYVelocity, initXVelocity, ref lerpTimeY, ref lerpTimeX, ref currentYPosAnimCurve);
+		if (GameCharacter.MovementComponent.IsGrounded)
+		{
+			CombatMovement(deltaTime, initYVelocity, initXVelocity, ref lerpTimeY, ref lerpTimeX, ref currentYPosAnimCurve, true);
+		}else
+		{
+			CombatMovement(deltaTime, initYVelocity, initXVelocity, ref lerpTimeY, ref lerpTimeX, ref currentYPosAnimCurve, false);
+		}
 
 		GameCharacter.CombatComponent.CurrentWeapon.PostAttackStateLogic(deltaTime);
 	}

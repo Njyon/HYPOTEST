@@ -108,6 +108,18 @@ public class PlayerGameCharacter : GameCharacter
 		}
 	}
 
+	protected override void SuccsessfullDodge(GameCharacter damageInitiator, float damage)
+	{
+		base.SuccsessfullDodge(damageInitiator, damage);
+		combatRatingComponent.AddWeaponCharge();
+	}
+
+	protected override void SuccessfullParry(GameCharacter damageInitiator, float damage)
+	{
+		base.SuccessfullParry(damageInitiator, damage);
+		combatRatingComponent.AddWeaponCharge();
+	}
+
 	[Button("Die")]
 	protected override void DieButton()
 	{

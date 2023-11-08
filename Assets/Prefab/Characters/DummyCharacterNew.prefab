@@ -439,7 +439,7 @@ MonoBehaviour:
   movmentGravity: 80
   acceleration: 0.5
   drag: 0.5
-  inAirControll: 0.7
+  inAirControll: 1
   slopStrenghIncrease: 100
   slopStrenghDecrease: 3
   maxSlopAngle: 65
@@ -468,7 +468,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  gravityMultiplierInAttack: 0.3
+  gravityMultiplierInAttack: 0
   maxJumps: 3
   jumpForce: 1.5
   gravityMultiplier: 0.5
@@ -552,8 +552,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2697eea71c4162a4c8efb9fff50eb33d, type: 2}
   handRObjectPoint: {fileID: 7136606249696951597}
   handLObjectPoint: {fileID: 3408676625142400146}
-  airToZeroVelYInAttackSpeed: 5
-  airToZeroVelXInAttackSpeed: 5
+  airToZeroVelYInAttackSpeed: 1
+  airToZeroVelXInAttackSpeed: 1
   health: 1000
   maxStaggerValue: 0
   staggerTime: 3

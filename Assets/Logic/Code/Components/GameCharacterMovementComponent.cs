@@ -541,14 +541,16 @@ public class GameCharacterMovementComponent : MonoBehaviour
 
 	IEnumerator InterpGravity(float time)
 	{
-		variableGravityMultiplierOverTime = 0f;
+		//variableGravityMultiplierOverTime = 0f;
 		float currentTime = 0f;
 		while (currentTime < time)
 		{
 			yield return new WaitForEndOfFrame();
 			currentTime += Time.deltaTime;
+			//float value = Ultra.Utilities.Remap(currentTime, 0f, time, 0f, 1f);
+			//variableGravityMultiplierOverTime = gameCharacter.GameCharacterData.GravityInterpCurve.Evaluate(value);
 			float value = Ultra.Utilities.Remap(currentTime, 0f, time, 0f, 1f);
-			variableGravityMultiplierOverTime = gameCharacter.GameCharacterData.GravityInterpCurve.Evaluate(value);
+			variableGravityMultiplierOverTime = Mathf.Lerp(variableGravityMultiplierOverTime, 1, value);
 		}
 	}
 

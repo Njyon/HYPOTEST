@@ -113,6 +113,25 @@ MonoBehaviour:
       keys: 
       values: 
     particleList: []
+  - action:
+      instance:
+        rid: 4291185166870642698
+    data:
+      showProperties: 1
+      hitDetectionType: 2
+      mesh: {fileID: 0}
+      offset: {x: 2, y: 0, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 1.5
+      boxDimensions: {x: 3, y: 3.5, z: 2}
+      capsulHeight: 0
+    combatBranches:
+      keys: 
+      values: 
+    timedCombatBrenches:
+      keys: 
+      values: 
+    particleList: []
   GroundDirectionAttacks:
   - action:
       instance:
@@ -416,3 +435,17 @@ MonoBehaviour:
               type: 3}
           throwSpear: {fileID: 4125002481947065072, guid: 30f7e1e18cb2f0b46a40690fa0186d0c,
             type: 3}
+    - rid: 4291185166870642698
+      type: {class: KickAwayAttack, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          attackAnimation: {fileID: -8595696173719005526, guid: d5861c742538ece41ba0060432996db8,
+            type: 3}
+          attackTriggerAmount: 0
+          freezBetweenAttacks: 0
+          kickDirection: {x: 0, y: 0, z: -90}
+          stunTime: 1
+          kickStrengh: 25

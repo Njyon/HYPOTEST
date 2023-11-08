@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class GameCharacterAttackRecoveryState : AGameCharacterState
 {
+	float lerpTimeY;
+	float lerpTimeX;
+	float currentYPosAnimCurve;
 	public GameCharacterAttackRecoveryState(GameCharacterStateMachine stateMachine, GameCharacter gameCharacter) : base (stateMachine, gameCharacter)
 	{ }
 
@@ -50,7 +53,18 @@ public class GameCharacterAttackRecoveryState : AGameCharacterState
 
 	public override void ExecuteState(float deltaTime)
 	{
-	
+		GameCharacter.CombatComponent.CurrentWeapon.PreAttackStateLogic(deltaTime);
+
+		if (GameCharacter.MovementComponent.IsGrounded) {
+			//OnGroundMovement();
+			//CombatMovement(deltaTime, initYVelocity, initXVelocity, ref lerpTimeY, ref lerpTimeX, ref currentYPosAnimCurve);
+		} else {
+			InAirMovement();
+			//CombatMovement(deltaTime, GameCharacter.MovementComponent.CalculateGravity() /*initYVelocity*/, GameCharacter.MovementComponent.MovementVelocity.x /*initXVelocity*/, ref lerpTimeY, ref lerpTimeX, ref currentYPosAnimCurve, false);
+		}
+
+
+		GameCharacter.CombatComponent.CurrentWeapon.PostAttackStateLogic(deltaTime);
 	}
 	
 	public override void FixedExecuteState(float deltaTime)

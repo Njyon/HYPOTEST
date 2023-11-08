@@ -93,6 +93,8 @@ public class GameCharacterDodgeState : AGameCharacterState
 		GameCharacter.AnimController.InDodge = false;
 		GameCharacter.AnimController.InterpSecondaryMotionLayerWeight(1, 10f);
 
+		if (GameCharacter.MovementComponent.MovementVelocity.y < 0) GameCharacter.MovementComponent.MovementVelocity = new Vector3(GameCharacter.MovementComponent.MovementVelocity.x, 0, GameCharacter.MovementComponent.MovementVelocity.z);
+
 		if (iFrameTimer.IsRunning)
 		{
 			iFrameTimer.Stop();

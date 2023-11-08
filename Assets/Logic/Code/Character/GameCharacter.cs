@@ -314,13 +314,14 @@ public class GameCharacter : MonoBehaviour, IDamage
 		}
 		if (PluginStateMachine.ContainsPluginState(EPluginCharacterState.IFrame))
 		{
-			CombatComponent.SuccsessfullDodge(damageInitiator, damage);
+
+			SuccsessfullDodge(damageInitiator, damage);
 			damage = 0;
 			return;
 		}
 		else if (PluginStateMachine.ContainsPluginState(EPluginCharacterState.Parry))
 		{
-			CombatComponent.CurrentWeapon.CurrentAction.Action.SuccessfullParry(damageInitiator, damage);
+			SuccessfullParry(damageInitiator, damage);
 			damage = 0;
 			return;
 		}
@@ -328,7 +329,7 @@ public class GameCharacter : MonoBehaviour, IDamage
 		{
 			if (damage > 0)
 			{
-				CombatComponent.CurrentWeapon.CurrentAction.Action.SuccessfullBlock(damageInitiator, damage);
+				SuccessfullBlock(damageInitiator, damage);
 				damage = damage / 2f;
 			}
 		}
@@ -573,6 +574,21 @@ public class GameCharacter : MonoBehaviour, IDamage
 		{
 			aggroedCharacters.Remove(character);
 		}
+	}
+
+	protected virtual void SuccsessfullDodge(GameCharacter damageInitiator, float damage)
+	{
+		CombatComponent.SuccsessfullDodge(damageInitiator, damage);
+	}
+
+	protected virtual void SuccessfullParry(GameCharacter damageInitiator, float damage)
+	{
+		CombatComponent.CurrentWeapon.CurrentAction.Action.SuccessfullParry(damageInitiator, damage);
+	}
+
+	protected virtual void SuccessfullBlock(GameCharacter damageInitiator, float damage)
+	{
+		CombatComponent.CurrentWeapon.CurrentAction.Action.SuccessfullBlock(damageInitiator, damage);
 	}
 
 	[Button("ReInitGraphs")]
