@@ -19,6 +19,8 @@ public class GameCharacterFlyAwayState : AGameCharacterState
 		GameCharacter.MovementComponent.StopGravityInterp();
 		GameCharacter.MovementComponent.VariableGravityMultiplierOverTime = 1;
 
+		GameCharacter.AnimController.ResetAnimStatesHARD();
+
 		GameCharacter.AnimController.FlyAway = true;
 	}
 

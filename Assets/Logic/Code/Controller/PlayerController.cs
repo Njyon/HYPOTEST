@@ -95,10 +95,10 @@ public class PlayerController : ControllerBase
 		playerInputs.Default.DefensiveAction.performed += ctx => DefensiveAction();
 		playerInputs.Default.DefensiveAction.canceled += ctx => DefensiveActionEnd();
 		playerInputs.Default.Dodge.performed += ctx => Dodge();
+
 		playerInputs.Default.ForceFrameRate.performed += ctx => ForceFrameRate();
 		playerInputs.Default.DebugPauseGame.performed += ctx => DebugPauseGame();
 		playerInputs.Default.DebugSlomo.performed += ctx => DebugSlomo();
-
 		playerInputs.Default.DebugButton01.performed += ctx => DebugButton01();
 		playerInputs.Default.DebugButton02.performed += ctx => DebugButton02();
 		playerInputs.Default.DebugButton03.performed += ctx => DebugButton03();
@@ -247,6 +247,9 @@ public class PlayerController : ControllerBase
 
 	void DebugSlomo()
 	{
+
+		GameTimeManager.Instance.ToggleTimeManipulation("Debug", 0.2f);
+		return;
 		if (Time.timeScale >= 1)
 		{
 			Time.timeScale = 0.2f;

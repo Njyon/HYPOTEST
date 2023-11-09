@@ -97,6 +97,16 @@ public class ShootAttack : AttackBase
 		GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.Shoot);
 	}
 
+	public override float GetActionRanting()
+	{
+		return attackData.Rating;
+	}
+
+	public override float GetActionDischarge()
+	{
+		return attackData.Discharge;
+	}
+
 	public override ActionBase CreateCopy()
 	{
 		ShootAttack copy = new ShootAttack();

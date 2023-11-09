@@ -465,7 +465,7 @@ public class CombatComponent
 			FlyAwayTimer.AddTime(flyAwayTime);
 		else 
 			FlyAwayTime = flyAwayTime;
-		gameCharacter.StateMachine.ForceStateChange(EGameCharacterState.FlyAway);
+		gameCharacter.StateMachine.ForceStateChange(EGameCharacterState.FlyAway, true);
 	}
 
 	public void SuccsessfullDodge(GameCharacter damageInitiator, float damage)

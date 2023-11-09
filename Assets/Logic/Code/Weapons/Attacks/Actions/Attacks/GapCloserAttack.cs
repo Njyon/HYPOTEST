@@ -78,6 +78,16 @@ public class GapCloserAttack : AttackBase
 		}
 	}
 
+	public override float GetActionRanting()
+	{
+		return attackData.Rating;
+	}
+
+	public override float GetActionDischarge()
+	{
+		return attackData.Discharge;
+	}
+
 	public override ActionBase CreateCopy()
 	{
 		GapCloserAttack copy = new GapCloserAttack();

@@ -40,7 +40,7 @@ public class DefaultCameraState : ACameraState
 	{
 		if (!GameCharacter.IsInitialized) return;
 
-		if (CameraController.Targets.Count <= 0) return;
+		if (CameraController.Targets.Count <= 0 || CameraController.Targets[0] == null) return;
 		Vector3 target = CameraController.Targets[0].MovementComponent.CharacterCenter;
 
 		// Get the target's velocity and direction

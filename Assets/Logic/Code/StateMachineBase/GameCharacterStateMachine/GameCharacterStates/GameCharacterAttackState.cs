@@ -95,6 +95,7 @@ public class GameCharacterAttackState : AGameCharacterState
 			case EGameCharacterState.HookedToCharacter: return EGameCharacterState.HookedToCharacter;
 			case EGameCharacterState.PullCharacterOnHorizontalLevel: return EGameCharacterState.PullCharacterOnHorizontalLevel;
 			case EGameCharacterState.Freez: return EGameCharacterState.Freez;
+			case EGameCharacterState.FlyAway: return EGameCharacterState.FlyAway;
 			case EGameCharacterState.Dodge: return EGameCharacterState.Dodge;
 			default: break;
 		}

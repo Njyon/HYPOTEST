@@ -106,6 +106,16 @@ public class SmashDownAttack : AttackBase
 		Weapon.UnHookAllHookedCharacerts();
 	}
 
+	public override float GetActionRanting()
+	{
+		return attackData.Rating;
+	}
+
+	public override float GetActionDischarge()
+	{
+		return attackData.Discharge;
+	}
+
 	public override ActionBase CreateCopy()
 	{
 		SmashDownAttack copy = new SmashDownAttack();

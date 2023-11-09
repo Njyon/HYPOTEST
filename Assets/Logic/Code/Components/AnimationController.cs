@@ -1098,5 +1098,6 @@ public class AnimationController
 		gameCharacter.AnimController.TriggerAttack = false;
 		gameCharacter.AnimController.InDefensiveAction = false;
 		gameCharacter.AnimController.InCombat3Blend = false;
+		gameCharacter.AnimController.FlyAway = false;
 	}
 }
