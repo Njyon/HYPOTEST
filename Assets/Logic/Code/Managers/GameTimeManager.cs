@@ -111,4 +111,9 @@ public class GameTimeManager : Singelton<GameTimeManager>
 	{
 		CurrentTimeMultiplier /= manipulation;
 	}
+
+    public void AddDefaultFreezFrame()
+    {
+		AddTimedManipulation("Default", 0.1f, 0.1f); // Stay Hardcoded until satifing default
+	}
 }

@@ -25,6 +25,7 @@ public class GameCharacterData : MonoBehaviour
 	[SerializeField] float roationSpeed = 5f;
 	[SerializeField] AnimationCurve gravityInterpCurve;
 	[SerializeField] float gravityMultiplierInAttack = 0.2f;
+	[SerializeField] float maxGravityPull = 20f;
 
 	[Header("JumpData")]
 	[SerializeField] int maxJumps = 3;
@@ -52,6 +53,9 @@ public class GameCharacterData : MonoBehaviour
 	[SerializeField] Transform handLObjectPoint;
 	[SerializeField] float airToZeroVelYInAttackSpeed = 5f;
 	[SerializeField] float airToZeroVelXInAttackSpeed = 5f;
+	[SerializeField] float groundToZeroVelYInAttackSpeed = 5f;
+	[SerializeField] float groundToZeroVelXInAttackSpeed = 5f;
+	[SerializeField] AnimationCurve gravitationOverTime;
 
 	[Header("Health")]
 	[SerializeField] float health = 100f;
@@ -101,6 +105,7 @@ public class GameCharacterData : MonoBehaviour
 	public float RoationSpeed { get { return roationSpeed; } }
 	public AnimationCurve GravityInterpCurve { get { return gravityInterpCurve; } }
 	public float GravityMultiplierInAttack { get { return gravityMultiplierInAttack; } }
+	public float MaxGravityPull { get { return maxGravityPull; } }
 
 	public int MaxJumps { get { return maxJumps; } }
 	public float JumpForce { get { return jumpForce; } }
@@ -124,6 +129,9 @@ public class GameCharacterData : MonoBehaviour
 	public Transform HandLOnjectPoint { get { return handLObjectPoint; } }
 	public float AirToZeroVelYInAttackSpeed { get { return airToZeroVelYInAttackSpeed; } }
 	public float AirToZeroVelXInAttackSpeed { get { return airToZeroVelXInAttackSpeed; } }
+	public float GroundToZeroVelYInAttackSpeed { get { return groundToZeroVelYInAttackSpeed; } }
+	public float GroundToZeroVelXInAttackSpeed { get { return groundToZeroVelXInAttackSpeed; } }
+	public AnimationCurve GravitationOverTime { get { return  gravitationOverTime; } }
 
 	public float Health { get { return health; } }
 

@@ -49,7 +49,6 @@ public class GameCharacterAttackState : AGameCharacterState
 		//GameCharacter.MovementComponent.UseGravity = false;
 
 		GameCharacter.MovementComponent.VariableGravityMultiplierOverTime = GameCharacter.GameCharacterData.GravityMultiplierInAttack;
-		GameCharacter.MovementComponent.InterpGravityUp();
 
 		GameCharacter.AnimController.InterpSecondaryMotionLayerWeight(0, 10f);
 		initYVelocity = GameCharacter.MovementComponent.MovementVelocity.y;
@@ -117,7 +116,13 @@ public class GameCharacterAttackState : AGameCharacterState
 		} else {
 			InAirMovement();
 			CombatMovement(deltaTime, initYVelocity, GameCharacter.MovementComponent.MovementVelocity.x /*initXVelocity*/, ref lerpTimeY, ref lerpTimeX, ref currentYPosAnimCurve, false);
-			if (GameCharacter.AnimController.GetUpMovementCurve == 0) GameCharacter.MovementComponent.MovementVelocity = new Vector3(GameCharacter.MovementComponent.MovementVelocity.x, Mathf.Clamp(GameCharacter.MovementComponent.MovementVelocity.y, -3f, 3f), GameCharacter.MovementComponent.MovementVelocity.z);
+			if (GameCharacter.AnimController.GetUpMovementCurve == 0) {
+				float value = GameCharacter.GameCharacterData.GravitationOverTime.Evaluate(GameCharacter.MovementComponent.InAirTimer.CurrentTime);
+				Ultra.Utilities.Instance.DebugLogOnScreen("Clamp Value = " + value);
+				
+				GameCharacter.MovementComponent.MovementVelocity = new Vector3(GameCharacter.MovementComponent.MovementVelocity.x, Mathf.Clamp(GameCharacter.MovementComponent.MovementVelocity.y, -value, value), GameCharacter.MovementComponent.MovementVelocity.z);
+				Ultra.Utilities.Instance.DebugLogOnScreen("Movement Y Vel = " + GameCharacter.MovementComponent.MovementVelocity.y);
+			}
 		}
 
 
@@ -137,6 +142,7 @@ public class GameCharacterAttackState : AGameCharacterState
 	public override void EndState(EGameCharacterState newState)
 	{
 		//GameCharacter.MovementComponent.UseGravity = true;
+		GameCharacter.MovementComponent.InterpGravityUp();
 		GameCharacter.transform.rotation = newDir;
 		GameCharacter.LastDir = new Vector3(GameCharacter.transform.forward.x, 0, 0); 
 		GameCharacter.CombatComponent.CurrentWeapon.EndAttackStateLogic();

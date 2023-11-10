@@ -66,6 +66,26 @@ MonoBehaviour:
       boxDimensions: {x: 5, y: 4, z: 2}
       capsulHeight: 0
     combatBranches:
+      keys: 01000000
+      values: 00000000
+    timedCombatBrenches:
+      keys: 
+      values: 
+    particleList:
+    - {fileID: 1048237185546698715, guid: 19a0399fe5f4e61479bff443c9f3f77d, type: 3}
+  - action:
+      instance:
+        rid: 4291185212415803394
+    data:
+      showProperties: 1
+      hitDetectionType: 1
+      mesh: {fileID: 0}
+      offset: {x: 0, y: 0, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 0
+      boxDimensions: {x: 5, y: 4, z: 2}
+      capsulHeight: 0
+    combatBranches:
       keys: 
       values: 
     timedCombatBrenches:
@@ -129,8 +149,8 @@ MonoBehaviour:
       keys: 
       values: 
     timedCombatBrenches:
-      keys: 
-      values: 
+      keys: 0100000005000000
+      values: 0300000003000000
     particleList: []
   GroundDirectionAttacks:
   - action:
@@ -149,8 +169,8 @@ MonoBehaviour:
       keys: 
       values: 
     timedCombatBrenches:
-      keys: 
-      values: 
+      keys: 0100000005000000
+      values: 0300000003000000
     particleList: []
   AirAttacks:
   - action:
@@ -197,6 +217,25 @@ MonoBehaviour:
     data:
       showProperties: 1
       hitDetectionType: 2
+      mesh: {fileID: 0}
+      offset: {x: 1, y: 0.5, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 1
+      boxDimensions: {x: 3, y: 4, z: 2}
+      capsulHeight: 0
+    combatBranches:
+      keys: 
+      values: 
+    timedCombatBrenches:
+      keys: 0100000005000000
+      values: 0300000003000000
+    particleList: []
+  - action:
+      instance:
+        rid: 4291185212415803395
+    data:
+      showProperties: 1
+      hitDetectionType: 1
       mesh: {fileID: 0}
       offset: {x: 1, y: 0.5, z: 0}
       scale: {x: 0, y: 0, z: 0}
@@ -449,3 +488,37 @@ MonoBehaviour:
           kickDirection: {x: 0, y: 0, z: -90}
           stunTime: 1
           kickStrengh: 25
+    - rid: 4291185212415803394
+      type: {class: FollowAttack3Blend, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          blendSpace:
+            upAnimation: {fileID: 1413908642659992266, guid: a982583f79e729548a8ed424fbe88774,
+              type: 3}
+            midAnimation: {fileID: -7091091126245454510, guid: 1b2f3fa5ac35ca64d8bde09c130d9fb6,
+              type: 3}
+            downAnimation: {fileID: 7768948787156918802, guid: 929419e2bec1f7142b0b9d3732b67664,
+              type: 3}
+          attackRange: 10
+          rotationInterpSpeed: 10
+          attackMovementSpeed: 40
+    - rid: 4291185212415803395
+      type: {class: FollowAttack3Blend, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          blendSpace:
+            upAnimation: {fileID: 1413908642659992266, guid: a982583f79e729548a8ed424fbe88774,
+              type: 3}
+            midAnimation: {fileID: -7091091126245454510, guid: 1b2f3fa5ac35ca64d8bde09c130d9fb6,
+              type: 3}
+            downAnimation: {fileID: 7768948787156918802, guid: 929419e2bec1f7142b0b9d3732b67664,
+              type: 3}
+          attackRange: 10
+          rotationInterpSpeed: 10
+          attackMovementSpeed: 40

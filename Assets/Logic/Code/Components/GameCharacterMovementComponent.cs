@@ -15,6 +15,11 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	public delegate void OnCharacterGroundReset();
 	public OnCharacterGroundReset onCharacterGroundReset;
 
+	/// <summary>
+	/// Endless Timer
+	/// </summary>
+	Ultra.Timer inAirTimer;
+
 	[SerializeField] float stepHight = 0.5f;
 	[SerializeField] float maxWalkableSlopAngle = 45f;
 	[SerializeField] float headBounceValue = -2f;
@@ -68,6 +73,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	public float MovementOverrideTime { get { return movementOverrideTime; } set { movementOverrideTime = value; } }
 	public Vector3 MovementOverride { get { return movementOverride; } set { movementOverride = value; } }
 	public float VariableGravityMultiplierOverTime { get { return variableGravityMultiplierOverTime; } set { variableGravityMultiplierOverTime = value; } }
+	public Ultra.Timer InAirTimer { get { return inAirTimer; } }
 	public bool IsInJump
 	{
 		get { return isInJump; }
@@ -88,6 +94,11 @@ public class GameCharacterMovementComponent : MonoBehaviour
 			if (value != isGrounded)
 			{
 				isGrounded = value;
+
+				if (!isGrounded)
+					InAirTimer.Start();
+				else 
+					InAirTimer.Stop();
 
 				if (onCharacterGroundedChanged != null) onCharacterGroundedChanged(isGrounded);
 			}
@@ -114,11 +125,14 @@ public class GameCharacterMovementComponent : MonoBehaviour
 
 		characterDefaultRadius = capsuleCollider.radius;
 		characterDefaultHeight = capsuleCollider.height;
+
+		inAirTimer = new Ultra.Timer(true);
 	}
 
 	void Update()
 	{
 		if (gameCharacter == null) return;
+		if (inAirTimer != null) inAirTimer.Update(Time.deltaTime);
 		/// Interpolate Character Capsul
 		if (!Ultra.Utilities.IsNearlyEqual(capsuleCollider.radius, gameCharacter.CharacterRadiusTarget, 0.001f) || !Ultra.Utilities.IsNearlyEqual(unityMovementController.radius, gameCharacter.CharacterRadiusTarget, 0.001f))
 		{
@@ -337,7 +351,19 @@ public class GameCharacterMovementComponent : MonoBehaviour
 
 	public float CalculateGravity()
 	{
-		return ((MovementVelocity.y > 0) ? gameCharacter.GameCharacterData.MovmentGravity * gameCharacter.GameCharacterData.GravityMultiplier : gameCharacter.GameCharacterData.MovmentGravity * VariableGravityMultiplierOverTime) * Time.deltaTime;
+		float gravity = 0;
+		if (VariableGravityMultiplierOverTime < 1)
+		{
+			gravity = gameCharacter.GameCharacterData.MovmentGravity * VariableGravityMultiplierOverTime;
+		}
+		else if (MovementVelocity.y > 0)
+		{
+			gravity = gameCharacter.GameCharacterData.MovmentGravity * gameCharacter.GameCharacterData.GravityMultiplier;
+		}
+		else
+			gravity = gameCharacter.GameCharacterData.MovmentGravity;
+
+		return gravity * Time.deltaTime;
 	}
 
 	public void CheckIfCharacterIsGrounded()
@@ -408,6 +434,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 		{
 			if (!UseGravity) return;
 			float yGravity = CalculateGravity();
+			if (MovementVelocity.y <= -gameCharacter.GameCharacterData.MaxGravityPull && yGravity > 0) yGravity = 0;
 			MovementVelocity = new Vector3(MovementVelocity.x, MovementVelocity.y - yGravity, MovementVelocity.z);
 		}
 	}

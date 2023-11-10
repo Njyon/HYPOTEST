@@ -6,7 +6,6 @@ namespace Ultra
 {
 	public class Timer
 	{
-
 		public Timer()
 		{
 			this.time = 0;
@@ -18,6 +17,14 @@ namespace Ultra
 		public Timer(float time, bool startPaused = true)
 		{
 			this.time = time;
+			isPaused = startPaused;
+			currentTime = 0;
+			isFinished = false;
+		}
+
+		public Timer(bool startPaused)
+		{
+			this.time = -1f;
 			isPaused = startPaused;
 			currentTime = 0;
 			isFinished = false;
@@ -86,16 +93,28 @@ namespace Ultra
 		{
 			if (isPaused || isFinished) return;
 
-			if (time > currentTime)
+			if (time >= 0)
 			{
-				currentTime += deltaTime;
-				if (onTimerUpdated != null) onTimerUpdated(deltaTime);
-			}
-			else if (time <= currentTime)
+				if (time > currentTime)
+				{
+					UpdateTimer(deltaTime);
+				}
+				else if (time <= currentTime)
+				{
+					isFinished = true;
+					if (onTimerFinished != null) onTimerFinished();
+				}
+			}else
 			{
-				isFinished = true;
-				if (onTimerFinished != null) onTimerFinished();
+				UpdateTimer(deltaTime);
 			}
+
+		}
+
+		private void UpdateTimer(float deltaTime)
+		{
+			currentTime += deltaTime;
+			if (onTimerUpdated != null) onTimerUpdated(deltaTime);
 		}
 
 		/// <summary>
@@ -104,6 +123,7 @@ namespace Ultra
 		/// <returns></returns>
 		public float GetProgess()
 		{
+			if (Time < 0) return 0.5f; // this Funktion does not work on Timers with no end
 			return Mathf.Lerp(0, Time, CurrentTime);
 		}
 	}

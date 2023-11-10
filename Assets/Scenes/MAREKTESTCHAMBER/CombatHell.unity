@@ -837,6 +837,71 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5871210591813294166, guid: 86332de1ed30b784793c06564d56c577,
+        type: 3}
+      propertyPath: gravitationOverTime.m_Curve.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5871210591813294166, guid: 86332de1ed30b784793c06564d56c577,
+        type: 3}
+      propertyPath: gravitationOverTime.m_Curve.Array.data[0].time
+      value: -0.0012187976
+      objectReference: {fileID: 0}
+    - target: {fileID: 5871210591813294166, guid: 86332de1ed30b784793c06564d56c577,
+        type: 3}
+      propertyPath: gravitationOverTime.m_Curve.Array.data[1].time
+      value: 10.009145
+      objectReference: {fileID: 0}
+    - target: {fileID: 5871210591813294166, guid: 86332de1ed30b784793c06564d56c577,
+        type: 3}
+      propertyPath: gravitationOverTime.m_Curve.Array.data[0].value
+      value: 0.00018047867
+      objectReference: {fileID: 0}
+    - target: {fileID: 5871210591813294166, guid: 86332de1ed30b784793c06564d56c577,
+        type: 3}
+      propertyPath: gravitationOverTime.m_Curve.Array.data[1].value
+      value: 4.9826136
+      objectReference: {fileID: 0}
+    - target: {fileID: 5871210591813294166, guid: 86332de1ed30b784793c06564d56c577,
+        type: 3}
+      propertyPath: gravitationOverTime.m_Curve.Array.data[0].inSlope
+      value: 0.20156814
+      objectReference: {fileID: 0}
+    - target: {fileID: 5871210591813294166, guid: 86332de1ed30b784793c06564d56c577,
+        type: 3}
+      propertyPath: gravitationOverTime.m_Curve.Array.data[1].inSlope
+      value: 0.460482
+      objectReference: {fileID: 0}
+    - target: {fileID: 5871210591813294166, guid: 86332de1ed30b784793c06564d56c577,
+        type: 3}
+      propertyPath: gravitationOverTime.m_Curve.Array.data[0].outSlope
+      value: 0.20156814
+      objectReference: {fileID: 0}
+    - target: {fileID: 5871210591813294166, guid: 86332de1ed30b784793c06564d56c577,
+        type: 3}
+      propertyPath: gravitationOverTime.m_Curve.Array.data[1].inWeight
+      value: 0.07387192
+      objectReference: {fileID: 0}
+    - target: {fileID: 5871210591813294166, guid: 86332de1ed30b784793c06564d56c577,
+        type: 3}
+      propertyPath: gravitationOverTime.m_Curve.Array.data[1].outSlope
+      value: 0.460482
+      objectReference: {fileID: 0}
+    - target: {fileID: 5871210591813294166, guid: 86332de1ed30b784793c06564d56c577,
+        type: 3}
+      propertyPath: gravitationOverTime.m_Curve.Array.data[0].outWeight
+      value: 0.114400156
+      objectReference: {fileID: 0}
+    - target: {fileID: 5871210591813294166, guid: 86332de1ed30b784793c06564d56c577,
+        type: 3}
+      propertyPath: gravitationOverTime.m_Curve.Array.data[0].tangentMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5871210591813294166, guid: 86332de1ed30b784793c06564d56c577,
+        type: 3}
+      propertyPath: gravitationOverTime.m_Curve.Array.data[1].tangentMode
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1263,7 +1328,7 @@ MonoBehaviour:
   spawnableCharacterData: {fileID: 11400000, guid: 60a72c065bb99f5429507e0841eb030c,
     type: 2}
   index: 4
-  autoSpawn: 1
+  autoSpawn: 0
 --- !u!4 &820882756
 Transform:
   m_ObjectHideFlags: 0
