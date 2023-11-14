@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: FistWeapon
   m_EditorClassIdentifier: 
   WeaponName: Fists
+  WeaponBase:
+    instance:
+      rid: 4291185303406510196
   AnimationData:
     keys:
     - Dummy Character
@@ -22,10 +25,40 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 3dfafa8fdd23894478eeb3d5b419c67e, type: 2}
     - {fileID: 11400000, guid: e49c71f8213e87146844db5f4123a613, type: 2}
     - {fileID: 11400000, guid: 3dfafa8fdd23894478eeb3d5b419c67e, type: 2}
-  WeaponClassName: FistWeapon
   WeaponMeshData: {fileID: 11400000, guid: 7ab946befe0bfe145a38f690bc251a7f, type: 2}
+  WeaponType: 0
   MaxChargeAmount: 1000
+  DefaultChargeAmount: 700
   TimeAfterEqupingMaxChargedWeapon: 3
   UIElement: {fileID: 2407642077447747131, guid: 543551c3f1b4ea34697fd6e5e0b10751,
     type: 3}
   WeaponImage: {fileID: 21300000, guid: 07a3dda36e7694348b019038330275bc, type: 3}
+  defaultAttackSounds:
+  - audioClip: {fileID: 8300000, guid: 49769a299beed3c42b00d1f71546c9f5, type: 3}
+    volume: 1
+    pitch: 1
+    randomPitch: 1
+    randPitch: 0.121
+    randomValue: 1
+    randVolume: 0.092
+  - audioClip: {fileID: 8300000, guid: ca9399fbe55b338489545d1ba47e9a70, type: 3}
+    volume: 1
+    pitch: 1
+    randomPitch: 1
+    randPitch: 0.121
+    randomValue: 1
+    randVolume: 0.092
+  defaultHitSounds:
+  - audioClip: {fileID: 8300000, guid: 846f5213aa515bc41932ea155990a3be, type: 3}
+    volume: 1
+    pitch: 1
+    randomPitch: 1
+    randPitch: 0.109
+    randomValue: 1
+    randVolume: 0.061
+  references:
+    version: 2
+    RefIds:
+    - rid: 4291185303406510196
+      type: {class: FistWeapon, ns: , asm: Assembly-CSharp}
+      data: 

@@ -141,5 +141,8 @@ public class FistWeapon : WeaponBase
 		return base.CanLeaveDefensiveState();
 	}
 
-	
+	public override WeaponBase CreateCopy(GameCharacter gameCharacter, ScriptableWeapon weapon)
+	{
+		return new FistWeapon(gameCharacter, weapon);
+	}
 }

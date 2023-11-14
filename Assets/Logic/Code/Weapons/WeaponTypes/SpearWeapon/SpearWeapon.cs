@@ -6,7 +6,6 @@ public class SpearWeapon : WeaponBase
 {
 	List<GameObject> thrownSpears = new List<GameObject>();
 
-
 	public SpearWeapon() { }
 	public SpearWeapon(GameCharacter gameCharacter, ScriptableWeapon weaponData) : base (gameCharacter, weaponData)
 	{ }
@@ -132,5 +131,10 @@ public class SpearWeapon : WeaponBase
 	public override AttackAnimationData DefensiveAction()
 	{
 		return base.DefensiveAction();
+	}
+
+	public override WeaponBase CreateCopy(GameCharacter gameCharacter, ScriptableWeapon weapon)
+	{
+		return new SpearWeapon(gameCharacter, weapon);
 	}
 }

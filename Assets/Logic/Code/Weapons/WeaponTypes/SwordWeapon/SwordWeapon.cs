@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SwordWeapon : WeaponBase
 {
-    public SwordWeapon() { }
+	public SwordWeapon() { }
 	public SwordWeapon(GameCharacter gameCharacter, ScriptableWeapon weaponData) : base (gameCharacter, weaponData)
 	{ }
 
@@ -55,5 +55,10 @@ public class SwordWeapon : WeaponBase
 	public override AttackAnimationData AirDirectionAttack(float attackDeltaTime)
 	{
 		return base.AirDirectionAttack(attackDeltaTime);
+	}
+
+	public override WeaponBase CreateCopy(GameCharacter gameCharacter, ScriptableWeapon weapon)
+	{
+		return new SwordWeapon(gameCharacter, weapon);
 	}
 }

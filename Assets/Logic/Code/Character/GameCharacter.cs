@@ -41,6 +41,7 @@ public class GameCharacter : MonoBehaviour, IDamage
 	Vector3 lastDir;
 	int ignoreCharacterLayer;
 	int characterLayer;
+	int defaultLayer;
 	ParticleSystemPool dodgeParticleSystemPool;
 	ParticleSystemPool succsessfullDodgeParticlePool;
 	GameObject dataWorldHolder;
@@ -73,6 +74,7 @@ public class GameCharacter : MonoBehaviour, IDamage
 	public Vector3 LastDir { get { return lastDir; } set { lastDir = value; } }
 	public int IgnoreCharacterLayer { get { return ignoreCharacterLayer; } }
 	public int CharacterLayer { get { return characterLayer; } }
+	public int DefaultLayer { get { return defaultLayer; } }
 	public ParticleSystemPool SuccsessfullDodgeParticlePool { get { return succsessfullDodgeParticlePool; } }
 	public ParticleSystemPool DodgeParticleSystemPool { get { return dodgeParticleSystemPool; } }
 	public GameObject DataWorldHolder { get { return dataWorldHolder; } }
@@ -138,6 +140,7 @@ public class GameCharacter : MonoBehaviour, IDamage
 
 		ignoreCharacterLayer = LayerMask.GetMask("IgnoreCharacter");
 		characterLayer = LayerMask.GetMask("Character");
+		defaultLayer =  LayerMask.GetMask("Default");
 	}
 
 	public virtual void CustomAwake()
@@ -304,6 +307,16 @@ public class GameCharacter : MonoBehaviour, IDamage
 		PluginStateMachine?.RemovePluginState(EPluginCharacterState.IFrame);
 	}
 
+	public void AllowEarlyLeaveAttackRecovery(AnimationEvent evt)
+	{
+		CombatComponent.AllowEarlyLeaveAttackRecovery = true;
+	}
+
+	public void PlayAttackSound(AnimationEvent evt)
+	{
+		CombatComponent.CurrentWeapon.PlayAttackSound(evt.intParameter);
+	}
+
 	#endregion
 
 	public void DoDamage(GameCharacter damageInitiator, float damage, bool removeCharge = true)
@@ -357,6 +370,7 @@ public class GameCharacter : MonoBehaviour, IDamage
 				}
 			}
 
+			damageInitiator.CombatComponent.CurrentWeapon.PlayHitSound();
 			animController.TriggerAdditiveHit();
 			OnDamaged(damageInitiator, damage, removeCharge);
 			damageInitiator?.AddRatingOnHit(damage);

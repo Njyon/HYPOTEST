@@ -56,6 +56,8 @@ public abstract class WeaponBase
 	Ultra.Timer maxChargeAfterEquipTimer;
 	AttackAnimationData lastData;
 	ScriptableWeaponAnimationData animationData;
+	int lastAttackSoundIndex;
+	int lastHitSoundIndex;
 
 	// Particle Save
 	List<List<ParticleSystem>> groundLightAttackParticleList;
@@ -971,4 +973,46 @@ public abstract class WeaponBase
 		gameCharacter.AnimController.TriggerAttack = false;
 		gameCharacter.AnimController.InAttack = false;
 	}
+
+	public void PlayAttackSound(int index)
+	{
+		if (WeaponData.defaultAttackSounds.Count <= 0) return;
+
+		index--;
+		if (index < 0)
+		{
+			int randIndex = UnityEngine.Random.Range(0, WeaponData.defaultAttackSounds.Count);
+			if (randIndex == lastAttackSoundIndex)
+			{
+				randIndex++;
+				randIndex %= WeaponData.defaultAttackSounds.Count;
+			}
+			var soundClip = WeaponData.defaultAttackSounds[randIndex];
+			SoundManager.Instance.PlaySound(soundClip);
+			lastAttackSoundIndex = randIndex;
+		}
+		else
+		{
+			var soundClip = WeaponData.defaultAttackSounds[index];
+			SoundManager.Instance.PlaySound(soundClip);
+			lastAttackSoundIndex = index;
+		}
+	}
+
+	public void PlayHitSound()
+	{
+		if (WeaponData.defaultHitSounds.Count <= 0) return;
+
+		int randIndex = UnityEngine.Random.Range(0, WeaponData.defaultHitSounds.Count);
+		if (randIndex == lastHitSoundIndex)
+		{
+			randIndex++;
+			randIndex %= WeaponData.defaultHitSounds.Count;
+		}
+		var soundClip = WeaponData.defaultHitSounds[randIndex];
+		SoundManager.Instance.PlaySound(soundClip);
+		lastHitSoundIndex = randIndex;
+	}
+
+	public abstract WeaponBase CreateCopy(GameCharacter gameCharacter, ScriptableWeapon weapon);
 }

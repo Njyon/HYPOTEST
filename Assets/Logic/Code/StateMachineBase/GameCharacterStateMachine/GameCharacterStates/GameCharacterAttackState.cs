@@ -118,10 +118,7 @@ public class GameCharacterAttackState : AGameCharacterState
 			CombatMovement(deltaTime, initYVelocity, GameCharacter.MovementComponent.MovementVelocity.x /*initXVelocity*/, ref lerpTimeY, ref lerpTimeX, ref currentYPosAnimCurve, false);
 			if (GameCharacter.AnimController.GetUpMovementCurve == 0) {
 				float value = GameCharacter.GameCharacterData.GravitationOverTime.Evaluate(GameCharacter.MovementComponent.InAirTimer.CurrentTime);
-				Ultra.Utilities.Instance.DebugLogOnScreen("Clamp Value = " + value);
-				
-				GameCharacter.MovementComponent.MovementVelocity = new Vector3(GameCharacter.MovementComponent.MovementVelocity.x, Mathf.Clamp(GameCharacter.MovementComponent.MovementVelocity.y, -value, value), GameCharacter.MovementComponent.MovementVelocity.z);
-				Ultra.Utilities.Instance.DebugLogOnScreen("Movement Y Vel = " + GameCharacter.MovementComponent.MovementVelocity.y);
+				GameCharacter.MovementComponent.MovementVelocity = new Vector3(GameCharacter.MovementComponent.MovementVelocity.x, Mathf.Clamp(GameCharacter.MovementComponent.MovementVelocity.y, -value, GameCharacter.MovementComponent.IsInJump ? int.MaxValue : value), GameCharacter.MovementComponent.MovementVelocity.z);
 			}
 		}
 

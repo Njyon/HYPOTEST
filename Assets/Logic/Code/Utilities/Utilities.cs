@@ -620,7 +620,7 @@ namespace Ultra {
 			Debug.DrawLine(pointC - offsetZ, pointC + offsetZ, color, time);
 			Debug.DrawLine(pointD - offsetZ, pointD + offsetZ, color, time);
 		}
-		public static Collider[] OverlapCapsule(Vector3 position, float capsulHeight, float radius, int layerMask = -1, QueryTriggerInteraction triggerInteraction = QueryTriggerInteraction.UseGlobal) { 
+		public static Collider[] OverlapCapsule(Vector3 position, float capsulHeight, float radius, int layerMask = -5, QueryTriggerInteraction triggerInteraction = QueryTriggerInteraction.UseGlobal) { 
 			Vector3 point1 = GetCapsuleSphere(position, capsulHeight, radius);
 			Vector3 point2 = GetCapsuleSphere(position, -capsulHeight, radius);
 			return Physics.OverlapCapsule(point1, point2, radius, layerMask, triggerInteraction);

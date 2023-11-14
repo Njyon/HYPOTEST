@@ -11,8 +11,8 @@ public class GameCharacterAttackRecoveryState : AGameCharacterState
 	{ }
 
     public override void StartState(EGameCharacterState oldState)
-	{
-	
+	{ 
+		GameCharacter.CombatComponent.AllowEarlyLeaveAttackRecovery = false;
 	}
 
 	public override EGameCharacterState GetStateType()
@@ -39,12 +39,14 @@ public class GameCharacterAttackRecoveryState : AGameCharacterState
 			return GameCharacter.GetBestCharacterState();
 		}
 
-		//if (GameCharacter.MovementComponent.IsInJump)
-		//	return EGameCharacterState.InAir;
-		//
-		//if (GameCharacter.GetHorizontalMovementInputDir().magnitude > 0)
-		//	return EGameCharacterState.Moving;
-		//
+		if (GameCharacter.CombatComponent.AllowEarlyLeaveAttackRecovery)
+		{
+			if (GameCharacter.MovementComponent.IsInJump)
+				return EGameCharacterState.InAir;
+			
+			if (GameCharacter.GetHorizontalMovementInputDir().magnitude > 0)
+				return EGameCharacterState.Moving;
+		}
 		//if (GameCharacter.CombatComponent.AttackTimer.IsFinished)
 		//	return EGameCharacterState.Standing;
 

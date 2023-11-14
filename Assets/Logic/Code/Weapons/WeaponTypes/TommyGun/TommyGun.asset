@@ -13,12 +13,14 @@ MonoBehaviour:
   m_Name: TommyGun
   m_EditorClassIdentifier: 
   WeaponName: TommyGun
+  WeaponBase:
+    instance:
+      rid: 4291185303406510199
   AnimationData:
     keys:
     - GaunerWithTommyGun
     values:
     - {fileID: 11400000, guid: d8aaeb719aec6f441b41406b2fb025db, type: 2}
-  WeaponClassName: TommyGun
   WeaponMeshData: {fileID: 11400000, guid: 04071fc4ee502d448a0251f500ecdc1c, type: 2}
   WeaponType: 0
   MaxChargeAmount: 1000
@@ -28,3 +30,32 @@ MonoBehaviour:
     type: 3}
   WeaponImage: {fileID: -6205461316961850552, guid: fe42c8b526e77e54ab91d0590272d9e8,
     type: 3}
+  defaultAttackSounds:
+  - audioClip: {fileID: 8300000, guid: 9ed019d38281b5a42a254f006d812e1c, type: 3}
+    volume: 1
+    pitch: 1
+    randomPitch: 1
+    randPitch: 0.116
+    randomValue: 1
+    randVolume: 0.074
+  - audioClip: {fileID: 8300000, guid: 6eb8bcc953cd4fb4ca4f80afda070c08, type: 3}
+    volume: 1
+    pitch: 1
+    randomPitch: 1
+    randPitch: 0.063
+    randomValue: 1
+    randVolume: 0.045
+  - audioClip: {fileID: 8300000, guid: 49ae41bea9d0d3e4dabc5005626542c5, type: 3}
+    volume: 1
+    pitch: 1
+    randomPitch: 1
+    randPitch: 0.123
+    randomValue: 1
+    randVolume: 0.086
+  defaultHitSounds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 4291185303406510199
+      type: {class: TommyGun, ns: , asm: Assembly-CSharp}
+      data: 

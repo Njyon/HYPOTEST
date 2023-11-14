@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: Spear
   m_EditorClassIdentifier: 
   WeaponName: Spear
+  WeaponBase:
+    instance:
+      rid: 4291185303406510197
   AnimationData:
     keys:
     - Dummy Character
@@ -20,11 +23,47 @@ MonoBehaviour:
     values:
     - {fileID: 11400000, guid: 58fa25d22eb5d544a98e27691fae1e2c, type: 2}
     - {fileID: 11400000, guid: 58fa25d22eb5d544a98e27691fae1e2c, type: 2}
-  WeaponClassName: SpearWeapon
   WeaponMeshData: {fileID: 11400000, guid: b83f4ec25382f3343a8fdb91ecdd31de, type: 2}
   WeaponType: 0
   MaxChargeAmount: 1000
+  DefaultChargeAmount: 700
   TimeAfterEqupingMaxChargedWeapon: 3
   UIElement: {fileID: 2407642077447747131, guid: 543551c3f1b4ea34697fd6e5e0b10751,
     type: 3}
   WeaponImage: {fileID: 21300000, guid: 47844debcf226904e8c96da233ad42bb, type: 3}
+  defaultAttackSounds:
+  - audioClip: {fileID: 8300000, guid: 7afb44d721ed4324688206557cabe577, type: 3}
+    volume: 1
+    pitch: 1
+    randomPitch: 1
+    randPitch: 0.106
+    randomValue: 1
+    randVolume: 0.076
+  - audioClip: {fileID: 8300000, guid: d2eea6aed0c405e428933f456be25a92, type: 3}
+    volume: 1
+    pitch: 1
+    randomPitch: 1
+    randPitch: 0.095
+    randomValue: 1
+    randVolume: 0.076
+  - audioClip: {fileID: 8300000, guid: 800206c612f989b46b7ef2b94d0a8397, type: 3}
+    volume: 1
+    pitch: 1
+    randomPitch: 1
+    randPitch: 0.106
+    randomValue: 1
+    randVolume: 0.076
+  defaultHitSounds:
+  - audioClip: {fileID: 8300000, guid: c17aee639667b26489b28de94868708e, type: 3}
+    volume: 1
+    pitch: 1
+    randomPitch: 1
+    randPitch: 0.127
+    randomValue: 1
+    randVolume: 0.065
+  references:
+    version: 2
+    RefIds:
+    - rid: 4291185303406510197
+      type: {class: SpearWeapon, ns: , asm: Assembly-CSharp}
+      data: 

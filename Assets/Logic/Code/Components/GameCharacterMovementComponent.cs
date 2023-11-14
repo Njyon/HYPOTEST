@@ -38,7 +38,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	bool isInJump = false;
 	LayerMask defaultLayerMask;
 	LayerMask moveThroughCharacterLayerMask;
-	int characterLayerIndex;
+	int characterLayer;
 	float characterDefaultRadius;
 	float characterDefaultHeight;
 	bool useGravity = true;
@@ -47,6 +47,10 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	float variableGravityMultiplierOverTime = 1;
 	Coroutine gravityCoroutine;
 
+	/// <summary>
+	/// Endless Timer
+	/// </summary>
+	public Ultra.Timer InAirTimer { get { return inAirTimer; } }
 	CapsuleCollider capsuleCollider;
 	public CapsuleCollider CapsuleCollider { get { return capsuleCollider; } }
 	public float StepHeight { get { return stepHight; } }
@@ -73,7 +77,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	public float MovementOverrideTime { get { return movementOverrideTime; } set { movementOverrideTime = value; } }
 	public Vector3 MovementOverride { get { return movementOverride; } set { movementOverride = value; } }
 	public float VariableGravityMultiplierOverTime { get { return variableGravityMultiplierOverTime; } set { variableGravityMultiplierOverTime = value; } }
-	public Ultra.Timer InAirTimer { get { return inAirTimer; } }
+	public int CharacterLayer { get { return characterLayer; } }
 	public bool IsInJump
 	{
 		get { return isInJump; }
@@ -119,8 +123,8 @@ public class GameCharacterMovementComponent : MonoBehaviour
 		unityMovementController.stepOffset = stepHight;
 		unityMovementController.skinWidth = 0.01f;
 
-		characterLayerIndex = LayerMask.NameToLayer("Character");
-		moveThroughCharacterLayerMask = ExcludeLayerIsMask(defaultLayerMask, characterLayerIndex);
+		characterLayer = LayerMask.NameToLayer("Character");
+		moveThroughCharacterLayerMask = ExcludeLayerIsMask(defaultLayerMask, characterLayer);
 		defaultLayerMask = moveThroughCharacterLayerMask;// unityMovementController.excludeLayers;
 
 		characterDefaultRadius = capsuleCollider.radius;
@@ -372,7 +376,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 		RaycastHit groundHitRayCast;
 		if (IsGroundedCheck(CharacterCenter, out groundHitCapsul))
 		{
-			if (groundHitCapsul.transform.gameObject.layer == characterLayerIndex)
+			if (groundHitCapsul.transform.gameObject.layer == characterLayer)
 			{
 				IsGroundedIntern = false;
 				return;
@@ -384,11 +388,11 @@ public class GameCharacterMovementComponent : MonoBehaviour
 			else
 				RayCastGroundHit = null;
 
+			PossibleGround = new NullableHit(groundHitCapsul);
 			IsGroundedIntern = true;
 
 			Ultra.Utilities.DrawCapsule(CharacterCenter, Quaternion.identity, CapsuleCollider.height, CapsuleCollider.radius, Color.red, 10f, 300, DebugAreas.Movement);
 
-			PossibleGround = new NullableHit(groundHitCapsul);
 			//if (MovementVelocity.y < 0) MovementVelocity = new Vector3(MovementVelocity.x, 0f, MovementVelocity.z);
 		}
 		else
@@ -399,7 +403,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 
 	public bool IsGroundedCheck(Vector3 center, out RaycastHit newHit)
 	{
-		return Ultra.Utilities.CapsulCast(center, capsuleCollider.height, capsuleCollider.radius, Vector3.down * (0.1f + minDistance), out newHit, Color.cyan.WithAlpha(0.35f), 100, DebugAreas.Movement);
+		return Ultra.Utilities.CapsulCast(center, capsuleCollider.height, capsuleCollider.radius, Vector3.down * (0.1f + minDistance), out newHit, Color.cyan.WithAlpha(0.35f), 100, DebugAreas.Movement, gameCharacter.DefaultLayer, QueryTriggerInteraction.Ignore);
 	}
 
 	public bool CheckCharacterCapsulInDirection(Vector3 center ,Vector3 direction, out RaycastHit newHit)
@@ -434,7 +438,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 		{
 			if (!UseGravity) return;
 			float yGravity = CalculateGravity();
-			if (MovementVelocity.y <= -gameCharacter.GameCharacterData.MaxGravityPull && yGravity > 0) yGravity = 0;
+			if (MovementVelocity.y <= -gameCharacter.GameCharacterData.MaxGravityPull && yGravity > 0) yGravity = 0; // maybe use interpolation or something to make it more dynamic
 			MovementVelocity = new Vector3(MovementVelocity.x, MovementVelocity.y - yGravity, MovementVelocity.z);
 		}
 	}
@@ -509,6 +513,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 
 	public void EnemyStep()
 	{
+		InAirTimer.Start();
 		GroundReset();
 	}
 

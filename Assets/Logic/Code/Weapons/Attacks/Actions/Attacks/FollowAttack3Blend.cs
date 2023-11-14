@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Android;
 
 [Serializable]
 public class FollowAttack3BlendData : AttackData
@@ -16,6 +17,7 @@ public class FollowAttack3Blend : ActionBase
 {
 	[SerializeField] FollowAttack3BlendData attackData;
 	GameCharacter targetCharacter;
+	Vector3 characterDestinationIfTargetIsSet;
 	Vector3 attackPositionIfNoEnemyFound;
 	Vector3 targetDir;
 	Vector3 startPostion;
@@ -38,13 +40,16 @@ public class FollowAttack3Blend : ActionBase
 		targetCharacter = Ultra.HypoUttilies.FindCharactereNearestToDirectionWithRange(GameCharacter.MovementComponent.CharacterCenter, (GameCharacter.MovementInput.magnitude <= 0) ? GameCharacter.transform.forward : GameCharacter.MovementInput, attackData.attackRange,ref GameCharacter.CharacterDetection.OverlappingGameCharacter);
 		if (targetCharacter != null)
 		{
-
-		}else
+			Vector3 dirToPlayer = GameCharacter.MovementComponent.CharacterCenter - targetCharacter.MovementComponent.CharacterCenter;
+			characterDestinationIfTargetIsSet = targetCharacter.MovementComponent.CharacterCenter + dirToPlayer.IgnoreAxis(EAxis.YZ).normalized * targetCharacter.GameCharacterData.MinCharacterDistance;
+			targetDir = characterDestinationIfTargetIsSet - GameCharacter.MovementComponent.CharacterCenter;
+		}
+		else
 		{
 			attackPositionIfNoEnemyFound = GameCharacter.MovementComponent.CharacterCenter + GameCharacter.transform.forward * attackData.attackRange;
+			targetDir = attackPositionIfNoEnemyFound - GameCharacter.MovementComponent.CharacterCenter;
 		}
 
-		targetDir = (targetCharacter != null ? targetCharacter.MovementComponent.CharacterCenter : attackPositionIfNoEnemyFound) - GameCharacter.MovementComponent.CharacterCenter;
 		targetAngle = Vector3.Angle(targetDir, GameCharacter.transform.forward);
 	}
 
@@ -53,7 +58,7 @@ public class FollowAttack3Blend : ActionBase
 		if (!atDestination)
 		{
 			// Check like this to be safe should only be 1 possible at the same time
-			bool nearAtTargetCharacter = targetCharacter != null ? GameCharacter.MovementComponent.CharacterCenter.IsNearlyEqual(targetCharacter.MovementComponent.CharacterCenter, targetCharacter.GameCharacterData.MinCharacterDistance) : false;
+			bool nearAtTargetCharacter = targetCharacter != null ? Vector3.Distance(startPostion, characterDestinationIfTargetIsSet) <= Vector3.Distance(startPostion, GameCharacter.MovementComponent.CharacterCenter) : false;
 			bool arrivedAtTargetLocation = targetCharacter == null ? Vector3.Distance(startPostion, attackPositionIfNoEnemyFound) <= Vector3.Distance(startPostion, GameCharacter.MovementComponent.CharacterCenter) : false;
 			if (nearAtTargetCharacter || arrivedAtTargetLocation)
 			{
@@ -63,7 +68,14 @@ public class FollowAttack3Blend : ActionBase
 			}
 			else
 			{
-				targetDir = (targetCharacter != null ? targetCharacter.MovementComponent.CharacterCenter : attackPositionIfNoEnemyFound) - GameCharacter.MovementComponent.CharacterCenter;
+				if (targetCharacter != null)
+				{
+					Vector3 dirToPlayer = GameCharacter.MovementComponent.CharacterCenter - targetCharacter.MovementComponent.CharacterCenter;
+					characterDestinationIfTargetIsSet = targetCharacter.MovementComponent.CharacterCenter + dirToPlayer.IgnoreAxis(EAxis.YZ).normalized * targetCharacter.GameCharacterData.MinCharacterDistance;
+					targetDir = characterDestinationIfTargetIsSet - GameCharacter.MovementComponent.CharacterCenter;
+				} else
+					targetDir = attackPositionIfNoEnemyFound - GameCharacter.MovementComponent.CharacterCenter;
+
 				targetAngle = Vector3.Angle(targetDir.normalized, GameCharacter.transform.forward);
 				GameCharacter.AnimController.Combat3BlendDir = Mathf.Lerp(GameCharacter.AnimController.Combat3BlendDir, Ultra.Utilities.Remap(targetAngle, -90f, 90f, 1, -1), deltaTime * attackData.rotationInterpSpeed);
 
@@ -82,6 +94,8 @@ public class FollowAttack3Blend : ActionBase
 		{
 			GameCharacter.MovementComponent.MovementVelocity = Vector3.zero;
 			targetCharacter.MovementComponent.MovementVelocity = Vector3.zero;
+
+			targetCharacter.CombatComponent.RequestFreez();
 
 			GameTimeManager.Instance.AddDefaultFreezFrame();
 			CameraController.Instance.ShakeCamerea(0);

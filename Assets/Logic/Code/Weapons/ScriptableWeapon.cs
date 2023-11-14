@@ -12,9 +12,10 @@ public enum EWeaponType
 public class ScriptableWeapon : ScriptableObject
 {
 	public string WeaponName = "new Weapon";
+	public ClassInstance<WeaponBase> WeaponBase;
 	public SerializableCharacterDictionary<string, ScriptableWeaponAnimationData> AnimationData;
-	[HideInInspector] public string WeaponClassName;
-	[HideInInspector] public WeaponBase Weapon;
+	//[HideInInspector] public string WeaponClassName;
+	//[HideInInspector] public WeaponBase Weapon;
 	public ScriptableWeaponMeshData WeaponMeshData;
 	public EWeaponType WeaponType;
 	public float MaxChargeAmount = 1000f;
@@ -22,4 +23,13 @@ public class ScriptableWeapon : ScriptableObject
 	public float TimeAfterEqupingMaxChargedWeapon = 3f;
 	public GameObject UIElement;
 	public Sprite WeaponImage;
+	public List<SoundEffect> defaultAttackSounds;
+	public List<SoundEffect> defaultHitSounds;
+
+	private WeaponBase weaponCopy = null;
+	public WeaponBase Weapon { get { return weaponCopy; } }
+	public void CreateWeapon(GameCharacter gameCharacter)
+	{
+		weaponCopy = WeaponBase?.instance?.CreateCopy(gameCharacter, this);
+	}
 }

@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: Sword
   m_EditorClassIdentifier: 
   WeaponName: Sword
+  WeaponBase:
+    instance:
+      rid: 4291185303406510198
   AnimationData:
     keys:
     - Dummy Character
@@ -26,7 +29,6 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 77a7fac2de6975b40b7f190c3c57b4ab, type: 2}
     - {fileID: 11400000, guid: 77a7fac2de6975b40b7f190c3c57b4ab, type: 2}
     - {fileID: 11400000, guid: 35e2c941cd684e44383259c9a5ae9a6d, type: 2}
-  WeaponClassName: SwordWeapon
   WeaponMeshData: {fileID: 11400000, guid: 6cea6eb20636cfe46af1fafadbc08ac4, type: 2}
   WeaponType: 0
   MaxChargeAmount: 1000
@@ -35,3 +37,11 @@ MonoBehaviour:
   UIElement: {fileID: 2407642077447747131, guid: 543551c3f1b4ea34697fd6e5e0b10751,
     type: 3}
   WeaponImage: {fileID: 21300000, guid: ecb7a4a5dc374a049b1b315844a6c8ea, type: 3}
+  defaultAttackSounds: []
+  defaultHitSounds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 4291185303406510198
+      type: {class: SwordWeapon, ns: , asm: Assembly-CSharp}
+      data: 
