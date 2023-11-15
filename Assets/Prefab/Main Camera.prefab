@@ -27,13 +27,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 28264763160451912}
-  m_LocalRotation: {x: 0.019844295, y: -0, z: -0, w: 0.9998031}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.019843077, y: 0, z: 0, w: 0.9998031}
   m_LocalPosition: {x: -0.02, y: 1.53, z: -10.27}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 2.274, y: 0, z: 0}
 --- !u!20 &28264763160451914
 Camera:
@@ -53,7 +53,7 @@ Camera:
   m_ShutterSpeed: 0.005
   m_Aperture: 16
   m_FocusDistance: 10
-  m_FocalLength: 50
+  m_FocalLength: 20.78461
   m_BladeCount: 5
   m_Curvature: {x: 2, y: 11}
   m_BarrelClipping: 0.25
@@ -68,7 +68,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 60.000004
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -124,6 +124,7 @@ MonoBehaviour:
   m_Dithering: 1
   m_ClearDepth: 1
   m_AllowXRRendering: 1
+  m_AllowHDROutput: 1
   m_UseScreenCoordOverride: 0
   m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
   m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
@@ -132,7 +133,7 @@ MonoBehaviour:
   m_Version: 2
   m_TaaSettings:
     quality: 3
-    frameInfluence: 0.1
+    frameInfluence: 0.100000024
     jitterScale: 1
     mipBias: 0
     varianceClampScale: 0.9
@@ -156,7 +157,7 @@ MonoBehaviour:
   lookAhead: 1
   speed: 1
   damping: 0.04
-  clampY: {x: -5, y: 5}
+  clampY: {x: 1.5, y: 5}
   clampX: {x: -5, y: 5}
   smoothTime: 0.5
   minZoom: 5

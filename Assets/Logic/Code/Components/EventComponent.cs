@@ -101,6 +101,8 @@ public class EventComponent
 		List<CharacterEvent> deleteEvents = new List<CharacterEvent>();
 		foreach (CharacterEvent characterEvent in previousEventsOverTimeFrame)
 		{
+			if (characterEvent == null) { deleteEvents.Add(characterEvent); continue; }
+
 			float time = currentTime - characterEvent.inputTime;
 			if (time >= timeframeOfList) deleteEvents.Add(characterEvent);
 		}

@@ -102,7 +102,7 @@ namespace Ultra
 				float distance = Vector3.Distance(fromPosition, character.MovementComponent.CharacterCenter);
 				if (distance <= range)
 				{
-					float angle = Ultra.Utilities.GetAngleBetweenVectors(direction.normalized, (character.MovementComponent.CharacterCenter - fromPosition).normalized);
+					float angle = Vector3.Angle(direction.normalized, (character.MovementComponent.CharacterCenter - fromPosition).normalized);
 					if (angle < smallestAngle)
 					{
 						mostPointingObject = character;
@@ -190,6 +190,41 @@ namespace Ultra
 				}
 			}
 
+			return mostPointingObject;
+		}
+
+		public static GameCharacter FindCharactereNearestToDirectionWithRangeWithAngleTreshHold(Vector3 fromPosition, Vector3 direction, float range, ref List<GameCharacter> list, float angleTreshHold = 2f)
+		{
+			if (list == null || list.Count <= 0) return null;
+
+			GameCharacter mostPointingObject = null;
+			float smallestAngle = 360f;
+			float closestDistance = 99999999f; 
+
+			foreach (GameCharacter character in list)
+			{
+				float distance = Vector3.Distance(fromPosition, character.MovementComponent.CharacterCenter);
+				if (distance <= range)
+				{
+					Vector3 dir = (character.MovementComponent.CharacterCenter - fromPosition);
+					//Ultra.Utilities.DrawArrow(fromPosition, dir, dir.magnitude, Ultra.Utilities.RandomColor(), 10f);
+					float angle = Vector3.Angle(direction.normalized, dir.normalized);
+					if (angle.IsNearlyEqual(smallestAngle, angleTreshHold) && distance < closestDistance)
+					{
+						mostPointingObject = character;
+						smallestAngle = angle;
+						closestDistance = distance;
+					}
+					else if (angle + angleTreshHold < smallestAngle)
+					{
+						mostPointingObject = character;
+						smallestAngle = angle;
+						closestDistance = distance;
+					}
+				}
+			}
+
+			//Ultra.Utilities.DrawWireSphere(mostPointingObject.MovementComponent.CharacterCenter, 1f, Color.green, 10f);
 			return mostPointingObject;
 		}
 

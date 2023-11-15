@@ -11,7 +11,7 @@ public class JumpEvent : CharacterEvent
 	{
 		switch (gameCharacter.StateMachine.GetCurrentStateType())
 		{
-			case EGameCharacterState.Attack: case EGameCharacterState.Freez: return false;
+			case EGameCharacterState.Attack: case EGameCharacterState.Freez: case EGameCharacterState.Dodge: return false;
 			default: break;
 		}
 		if (gameCharacter.CombatComponent.CurrentWeapon != null && gameCharacter.CombatComponent.CurrentWeapon.IsHitDetecting) return false;

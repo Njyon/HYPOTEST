@@ -242,6 +242,15 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""GapCloser"",
+                    ""type"": ""Button"",
+                    ""id"": ""cc375d28-1554-4019-8187-9b28ae14fd0c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -915,6 +924,28 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""action"": ""Dodge"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c5d5ef2a-6ceb-4108-92b4-6eb3852726da"",
+                    ""path"": ""<Mouse>/middleButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""GapCloser"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""30cc1a74-39c7-4765-8dba-d40a7129f8a7"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""GapCloser"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -975,6 +1006,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         m_Default_DebugButton03 = m_Default.FindAction("DebugButton03", throwIfNotFound: true);
         m_Default_DebugButton04 = m_Default.FindAction("DebugButton04", throwIfNotFound: true);
         m_Default_Dodge = m_Default.FindAction("Dodge", throwIfNotFound: true);
+        m_Default_GapCloser = m_Default.FindAction("GapCloser", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1060,6 +1092,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Default_DebugButton03;
     private readonly InputAction m_Default_DebugButton04;
     private readonly InputAction m_Default_Dodge;
+    private readonly InputAction m_Default_GapCloser;
     public struct DefaultActions
     {
         private @PlayerInputs m_Wrapper;
@@ -1088,6 +1121,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         public InputAction @DebugButton03 => m_Wrapper.m_Default_DebugButton03;
         public InputAction @DebugButton04 => m_Wrapper.m_Default_DebugButton04;
         public InputAction @Dodge => m_Wrapper.m_Default_Dodge;
+        public InputAction @GapCloser => m_Wrapper.m_Default_GapCloser;
         public InputActionMap Get() { return m_Wrapper.m_Default; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1169,6 +1203,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @Dodge.started += instance.OnDodge;
             @Dodge.performed += instance.OnDodge;
             @Dodge.canceled += instance.OnDodge;
+            @GapCloser.started += instance.OnGapCloser;
+            @GapCloser.performed += instance.OnGapCloser;
+            @GapCloser.canceled += instance.OnGapCloser;
         }
 
         private void UnregisterCallbacks(IDefaultActions instance)
@@ -1245,6 +1282,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @Dodge.started -= instance.OnDodge;
             @Dodge.performed -= instance.OnDodge;
             @Dodge.canceled -= instance.OnDodge;
+            @GapCloser.started -= instance.OnGapCloser;
+            @GapCloser.performed -= instance.OnGapCloser;
+            @GapCloser.canceled -= instance.OnGapCloser;
         }
 
         public void RemoveCallbacks(IDefaultActions instance)
@@ -1306,5 +1346,6 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         void OnDebugButton03(InputAction.CallbackContext context);
         void OnDebugButton04(InputAction.CallbackContext context);
         void OnDodge(InputAction.CallbackContext context);
+        void OnGapCloser(InputAction.CallbackContext context);
     }
 }

@@ -15,6 +15,7 @@ public enum EExplicitAttackType
     AirDirectionalAttack,
     AirUpAttack,
     AirDownAttack,
+    GapCloser,
 	DefensiveAction,
 }
 
@@ -458,6 +459,17 @@ public abstract class WeaponBase
 		else return AirAttack(attackDeltaTime);
 	}
 
+	public virtual AttackAnimationData GapCloserAttack(float attackDeltaTime)
+	{
+		if (AnimationData == null) return null;
+		if (AnimationData.GapCloserAttacks.Count > 0)
+		{
+			TryStartingAction(EExplicitAttackType.GapCloser, attackDeltaTime);
+			return CurrentAction;
+		}
+		return null;
+	}
+
 	public virtual AttackAnimationData DefensiveAction()
 	{
 		if (AnimationData == null) return null;
@@ -538,6 +550,7 @@ public abstract class WeaponBase
 			case EExplicitAttackType.AirDownAttack: return AnimationData.AirDownAttacks;
 			case EExplicitAttackType.AirUpAttack: return AnimationData.AirUpAttacks;
 			case EExplicitAttackType.AirDirectionalAttack: return AnimationData.AirDirectionAttacks;
+			case EExplicitAttackType.GapCloser: return AnimationData.GapCloserAttacks;
 			case EExplicitAttackType.DefensiveAction: return AnimationData.DefensiveAction;
 			default:
 				Ultra.Utilities.Instance.DebugErrorString("WeaponBase", "GetAttackListBasedOnEExplicitAttackType", "Coundn't find List, ExplicitAttackType not Implemented");

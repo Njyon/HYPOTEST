@@ -229,6 +229,26 @@ MonoBehaviour:
       keys: 
       values: 
     particleList: []
+  GapCloserAttacks:
+  - action:
+      instance:
+        rid: 4291185325493714946
+    data:
+      showProperties: 1
+      hitDetectionType: 1
+      mesh: {fileID: 0}
+      offset: {x: 0, y: 0, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 0
+      boxDimensions: {x: 0, y: 0, z: 0}
+      capsulHeight: 0
+    combatBranches:
+      keys: 
+      values: 
+    timedCombatBrenches:
+      keys: 
+      values: 
+    particleList: []
   DefensiveAction:
   - action:
       instance:
@@ -437,3 +457,20 @@ MonoBehaviour:
           Discharge: 100
           attackAnimation: {fileID: -2426589905315972437, guid: a20ed1cb39892024fa4d3602ce6d5cdb,
             type: 3}
+    - rid: 4291185325493714946
+      type: {class: FollowAttack3Blend, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          blendSpace:
+            upAnimation: {fileID: 6002095034016199831, guid: 76263071927e5094fa9de7c67de10c9b,
+              type: 3}
+            midAnimation: {fileID: -136326394544165310, guid: 3793fd702bbacee4cab3f70b2e9a070a,
+              type: 3}
+            downAnimation: {fileID: 3178431802474464050, guid: 85df0ec0d69ca714eb61404183e313ba,
+              type: 3}
+          attackRange: 10
+          rotationInterpSpeed: 10
+          attackMovementSpeed: 40

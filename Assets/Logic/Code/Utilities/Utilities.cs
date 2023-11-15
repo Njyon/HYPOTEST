@@ -715,5 +715,10 @@ namespace Ultra {
 			debugTimeSlice = newTimeSlice;
 #endif
 		}
+
+		public static Color RandomColor(float alpha = 1f)
+		{
+			return new Color(UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f), alpha);
+		}
 	}
 }

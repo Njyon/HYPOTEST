@@ -24,20 +24,16 @@ public class FollowAttack3Blend : ActionBase
 	float targetAngle = 0;
 	bool atDestination = false;
 	float minDistanceCheck = 2f;
+	bool move = false;
 
 	public override void StartAction()
 	{
 		atDestination = false;
-
-		Weapon.Attack3BlendSpace(attackData.blendSpace, EAnimationType.Default);
-		GameCharacter.StateMachine.RequestStateChange(EGameCharacterState.Attack);
-		Weapon.AttackAnimType = EAttackAnimType.Combat3Blend;
-		GameCharacter.AnimController.Combat3BlendDir = 0f;
-		GameCharacter.AnimController.InCombat3Blend = true;
+		move = true;
 
 		startPostion = GameCharacter.MovementComponent.CharacterCenter;
 
-		targetCharacter = Ultra.HypoUttilies.FindCharactereNearestToDirectionWithRange(GameCharacter.MovementComponent.CharacterCenter, (GameCharacter.MovementInput.magnitude <= 0) ? GameCharacter.transform.forward : GameCharacter.MovementInput, attackData.attackRange,ref GameCharacter.CharacterDetection.OverlappingGameCharacter);
+		targetCharacter = Ultra.HypoUttilies.FindCharactereNearestToDirectionWithRangeWithAngleTreshHold(GameCharacter.MovementComponent.CharacterCenter, (GameCharacter.MovementInput.magnitude <= 0) ? GameCharacter.transform.forward : GameCharacter.MovementInput, attackData.attackRange, ref GameCharacter.CharacterDetection.OverlappingGameCharacter);
 		if (targetCharacter != null)
 		{
 			Vector3 dirToPlayer = GameCharacter.MovementComponent.CharacterCenter - targetCharacter.MovementComponent.CharacterCenter;
@@ -46,16 +42,24 @@ public class FollowAttack3Blend : ActionBase
 		}
 		else
 		{
+			ActionInterupted();
+			return;
 			attackPositionIfNoEnemyFound = GameCharacter.MovementComponent.CharacterCenter + GameCharacter.transform.forward * attackData.attackRange;
 			targetDir = attackPositionIfNoEnemyFound - GameCharacter.MovementComponent.CharacterCenter;
 		}
+
+		Weapon.Attack3BlendSpace(attackData.blendSpace, EAnimationType.Default);
+		GameCharacter.StateMachine.RequestStateChange(EGameCharacterState.Attack);
+		Weapon.AttackAnimType = EAttackAnimType.Combat3Blend;
+		GameCharacter.AnimController.Combat3BlendDir = 0f;
+		GameCharacter.AnimController.InCombat3Blend = true;
 
 		targetAngle = Vector3.Angle(targetDir, GameCharacter.transform.forward);
 	}
 
 	public override void PostAttackStateLogic(float deltaTime)
 	{
-		if (!atDestination)
+		if (!atDestination && move)
 		{
 			// Check like this to be safe should only be 1 possible at the same time
 			bool nearAtTargetCharacter = targetCharacter != null ? Vector3.Distance(startPostion, characterDestinationIfTargetIsSet) <= Vector3.Distance(startPostion, GameCharacter.MovementComponent.CharacterCenter) : false;
@@ -92,12 +96,14 @@ public class FollowAttack3Blend : ActionBase
 
 		if (targetCharacter != null)
 		{
-			GameCharacter.MovementComponent.MovementVelocity = Vector3.zero;
-			targetCharacter.MovementComponent.MovementVelocity = Vector3.zero;
-
-			targetCharacter.CombatComponent.RequestFreez();
-
-			GameTimeManager.Instance.AddDefaultFreezFrame();
+			if (!targetCharacter.MovementComponent.IsGrounded)
+			{
+				GameCharacter.MovementComponent.MovementVelocity = Vector3.zero;
+				targetCharacter.MovementComponent.MovementVelocity = Vector3.zero;
+				targetCharacter.CombatComponent.RequestFreez();
+			}
+			
+			//GameTimeManager.Instance.AddDefaultFreezFrame();
 			CameraController.Instance.ShakeCamerea(0);
 
 			targetCharacter = null;
@@ -109,6 +115,7 @@ public class FollowAttack3Blend : ActionBase
 	{
 		base.ActionInterupted();
 		GameCharacter.AnimController.InCombat3Blend = false;
+		move = false;
 
 	}
 

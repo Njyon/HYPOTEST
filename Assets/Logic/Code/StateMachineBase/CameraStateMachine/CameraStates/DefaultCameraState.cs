@@ -57,7 +57,7 @@ public class DefaultCameraState : ACameraState
 		float xMin = target.x + CameraController.ClampX.x;
 		float xMax = target.x + CameraController.ClampX.y;
 		float x = Mathf.Clamp(targetPosition.x, xMin, xMax);
-		float yMin = (GameCharacter.MovementComponent.PossibleGround != null) ? GameCharacter.MovementComponent.PossibleGround.hit.point.y + CameraController.Offset.y : target.y + CameraController.ClampY.x;
+		float yMin = /*(GameCharacter.MovementComponent.PossibleGround != null) ? GameCharacter.MovementComponent.PossibleGround.hit.point.y + CameraController.Offset.y :*/ target.y + CameraController.ClampY.x;
 		float yMax = target.y + CameraController.ClampX.y;
 		float y = Mathf.Clamp(targetPosition.y, yMin, yMax);
 

@@ -54,7 +54,7 @@ public class BTAimShoot : BTHyppoliteActionNodeBase
 			if (hit.collider.transform.parent != null)
 			{
 				Transform parent = hit.collider.transform.parent;
-				while (parent != null)
+				while (parent.parent != null)
 				{
 					parent = parent.parent;
 				}

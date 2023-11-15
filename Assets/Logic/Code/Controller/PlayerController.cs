@@ -95,6 +95,7 @@ public class PlayerController : ControllerBase
 		playerInputs.Default.DefensiveAction.performed += ctx => DefensiveAction();
 		playerInputs.Default.DefensiveAction.canceled += ctx => DefensiveActionEnd();
 		playerInputs.Default.Dodge.performed += ctx => Dodge();
+		playerInputs.Default.GapCloser.performed += ctx => GapCloser();
 
 		playerInputs.Default.ForceFrameRate.performed += ctx => ForceFrameRate();
 		playerInputs.Default.DebugPauseGame.performed += ctx => DebugPauseGame();
@@ -174,6 +175,11 @@ public class PlayerController : ControllerBase
 	void AttackEnd()
 	{
 		gameCharacter?.EventComponent?.RemoveHoldEvent(holdAttack);
+	}
+	void GapCloser()
+	{
+		CharacterEvent previousAttackEvent = GetFistEventOfType(EGameCharacterEvent.Attack, ref gameCharacter.EventComponent.previousEventsOverTimeFrame);
+		gameCharacter?.EventComponent?.AddEvent(new AttackEvent(gameCharacter, EAttackType.GapCloser, previousAttackEvent != null ? previousAttackEvent.inputTime : -1));
 	}
 	void DefensiveAction()
 	{

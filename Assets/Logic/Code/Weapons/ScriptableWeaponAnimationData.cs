@@ -135,6 +135,8 @@ public class ScriptableWeaponAnimationData : ScriptableObject
 	public List<AttackAnimationData> AirDownAttacks;
 	public List<AttackAnimationData> AirDirectionAttacks;
 
+	public List<AttackAnimationData> GapCloserAttacks;
+
 	public List<AttackAnimationData> DefensiveAction;
 
 	public EWeaponHandType HandType;
@@ -163,6 +165,8 @@ public class ScriptableWeaponAnimationData : ScriptableObject
 		AirDownAttacks = new List<AttackAnimationData>();
 		AirDirectionAttacks = new List<AttackAnimationData>();
 
+		GapCloserAttacks = new List<AttackAnimationData>();
+
 		DefensiveAction = new List<AttackAnimationData>();
 
 		CopyDataInList(ref GroundAttacks, ref origin.GroundAttacks);
@@ -174,6 +178,8 @@ public class ScriptableWeaponAnimationData : ScriptableObject
 		CopyDataInList(ref AirUpAttacks, ref origin.AirUpAttacks);
 		CopyDataInList(ref AirDownAttacks, ref origin.AirDownAttacks);
 		CopyDataInList(ref AirDirectionAttacks, ref origin.AirDirectionAttacks);
+
+		CopyDataInList(ref GapCloserAttacks, ref origin.GapCloserAttacks);
 
 		CopyDataInList(ref DefensiveAction, ref origin.DefensiveAction);
 

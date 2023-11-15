@@ -121,7 +121,7 @@ public class GameCharacterStateMachine : AStateMachineBase<EGameCharacterState>
 		return (CurrentState.UpdateState(0, state) == state || GetCurrentStateType() == state);
 	}
 
-	[Button("FreezState")]
+	[MyBox.ButtonMethod()]
 	async private void RequestFreezState()
 	{
 		RequestStateChange(EGameCharacterState.Freez, true);

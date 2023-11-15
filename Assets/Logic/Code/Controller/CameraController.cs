@@ -1,4 +1,3 @@
-using EasyButtons;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -6,8 +5,9 @@ using UnityEngine;
 
 public class CameraController : Singelton<CameraController>
 {
-    GameCharacter gameCharacter;
+	GameCharacter gameCharacter;
     List<GameCharacter> targets = new List<GameCharacter>();
+
     [Header("Overall Values")]
     [SerializeField] Vector3 offset;
     [SerializeField] float StateToStateInterpolationSpeed = 100f;
@@ -65,14 +65,14 @@ public class CameraController : Singelton<CameraController>
     public Vector3 CameraEffectOffset { get { return cameraEffectOffset; } set { cameraEffectOffset = value; } }
 	public CameraEffectComponent CameraEffectComponent { get { return cameraEffectComponent; } }
 
-	public Vector3 velocityVelx = Vector3.zero;
-	public Vector3 velocityVely = Vector3.zero;
+	[HideInInspector] public Vector3 velocityVelx = Vector3.zero;
+	[HideInInspector] public Vector3 velocityVely = Vector3.zero;
 
-	[Button("DefaultCameraShake")]
+	[MyBox.ButtonMethod()]
 	private void DefaultCameraShake()
     {
-        if (cameraShakes.Count > TestDebugCameraShakeIndex) 
-            CameraEffectComponent.AddCameraEffect(new CameraEffectShake(this, cameraShakes[TestDebugCameraShakeIndex]));
+       if (cameraShakes.Count > TestDebugCameraShakeIndex) 
+           CameraEffectComponent.AddCameraEffect(new CameraEffectShake(this, cameraShakes[TestDebugCameraShakeIndex]));
     }
 
 	private void Start()
