@@ -151,6 +151,8 @@ public class PlayerController : ControllerBase
 	{
 		CharacterEvent previousAttackEvent = GetFistEventOfType(EGameCharacterEvent.Attack, ref gameCharacter.EventComponent.previousEventsOverTimeFrame);
 
+		gameCharacter?.PluginStateMachine?.AddPluginState(EPluginCharacterState.HoldAttack);
+
 		float directionTreshold = 0.5f;
 		Vector2 movementVector = gameCharacter.MovementInput;
 		bool hasDirection = Mathf.Abs(movementVector.y) > directionTreshold;
@@ -174,6 +176,7 @@ public class PlayerController : ControllerBase
 	}
 	void AttackEnd()
 	{
+		gameCharacter?.PluginStateMachine?.RemovePluginState(EPluginCharacterState.HoldAttack);
 		gameCharacter?.EventComponent?.RemoveHoldEvent(holdAttack);
 	}
 	void GapCloser()

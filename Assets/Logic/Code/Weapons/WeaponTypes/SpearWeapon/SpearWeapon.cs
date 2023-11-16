@@ -26,11 +26,6 @@ public class SpearWeapon : WeaponBase
 		SpawnedWeapon?.SetActive(true);
 	}
 
-    public override void UpdateWeapon(float deltaTime)
-    {
-        base.UpdateWeapon(deltaTime);
-    }
-
     public override AttackAnimationData GroundAttack(float attackDeltaTime)   
     {
       	return base.GroundAttack(attackDeltaTime);

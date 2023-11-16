@@ -12,7 +12,7 @@ public class GameCharacterAttackRecoveryState : AGameCharacterState
 
     public override void StartState(EGameCharacterState oldState)
 	{ 
-		GameCharacter.CombatComponent.AllowEarlyLeaveAttackRecovery = false;
+
 	}
 
 	public override EGameCharacterState GetStateType()
@@ -46,9 +46,13 @@ public class GameCharacterAttackRecoveryState : AGameCharacterState
 			
 			if (GameCharacter.GetHorizontalMovementInputDir().magnitude > 0)
 				return EGameCharacterState.Moving;
+
+			if (!GameCharacter.AnimController.IsInValidAttackState() && !GameCharacter.AnimController.IsInValid3BlendAimState() && !GameCharacter.AnimController.IsInValid3BlendAttackState() && !GameCharacter.AnimController.IsInValidAttackTriggerState() && !GameCharacter.AnimController.IsInValidAttackHoldState())
+			{
+				return EGameCharacterState.Standing;
+			}
 		}
-		//if (GameCharacter.CombatComponent.AttackTimer.IsFinished)
-		//	return EGameCharacterState.Standing;
+		
 
 		return GetStateType();
 	}

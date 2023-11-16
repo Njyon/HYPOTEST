@@ -16,6 +16,7 @@ public class PlayerUI : UIBase
 
 	[Header("StyleRanking")]
 	[SerializeField] Image styleRankImage;
+	[SerializeField] Image styleRankImageOutline;
 	[SerializeField] MMF_Player styleRankUpFeedback;
 	[SerializeField] MMF_Player styleRanDownFeedback;
 
@@ -166,6 +167,7 @@ public class PlayerUI : UIBase
 
 	void SetRankImage()
 	{
+		styleRankImageOutline.sprite = gameCharacter.CombatRatingComponent.StyleRanks[gameCharacter.CombatRatingComponent.CurrentStyleRankIndex].StyleImageOutline;
 		styleRankImage.sprite = gameCharacter.CombatRatingComponent.StyleRanks[gameCharacter.CombatRatingComponent.CurrentStyleRankIndex].StyleImage;
 		styleRankImage.type = Image.Type.Filled;
 		styleRankImage.fillMethod = Image.FillMethod.Vertical;

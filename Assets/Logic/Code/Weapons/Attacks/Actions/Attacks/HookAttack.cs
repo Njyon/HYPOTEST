@@ -35,6 +35,11 @@ public class HookAttack : AttackBase
 		}
 	}
 
+	public override void ActionInterupted()
+	{
+		Weapon.UnHookAllHookedCharacerts();
+	}
+
 	public override float MaxVerticalMovement()
 	{
 		return attackData.maxVerticalMovement;

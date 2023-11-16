@@ -1,5 +1,7 @@
+using Megumin.GameFramework.AI.BehaviorTree;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum EWeaponType
@@ -32,4 +34,24 @@ public class ScriptableWeapon : ScriptableObject
 	{
 		weaponCopy = WeaponBase?.instance?.CreateCopy(gameCharacter, this);
 	}
+
+	public ScriptableWeapon CreateCopy()
+	{
+		ScriptableWeapon instance = ScriptableObject.CreateInstance<ScriptableWeapon>();
+
+		instance.WeaponName = WeaponName;
+		instance.WeaponBase = WeaponBase;
+		instance.AnimationData = AnimationData;
+		instance.WeaponMeshData = WeaponMeshData;
+		instance.WeaponType = WeaponType;
+		instance.MaxChargeAmount = MaxChargeAmount;
+		instance.DefaultChargeAmount = DefaultChargeAmount;
+		instance.TimeAfterEqupingMaxChargedWeapon = TimeAfterEqupingMaxChargedWeapon;
+		instance.UIElement = UIElement;
+		instance.WeaponImage = WeaponImage;
+		instance.defaultAttackSounds = defaultAttackSounds;
+		instance.defaultHitSounds = defaultHitSounds;
+
+		return instance;
+	}	
 }

@@ -12,4 +12,5 @@ public class StyleRankingScriptableObject : ScriptableObject
 	public float PointDecreaseStopTime = 0.5f;
 	public float musicVolumeTarget = 0f;
 	public Sprite StyleImage;
+	public Sprite StyleImageOutline;
 }

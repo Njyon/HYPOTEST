@@ -34,11 +34,31 @@ MonoBehaviour:
     particleList: []
   GroundUpAttacks: []
   GroundDownAttacks: []
-  GroundDirectionAttacks: []
+  GroundDirectionAttacks:
+  - action:
+      instance:
+        rid: 4291185348513366018
+    data:
+      showProperties: 1
+      hitDetectionType: 1
+      mesh: {fileID: 0}
+      offset: {x: 1, y: 0, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 1.5
+      boxDimensions: {x: 0, y: 0, z: 0}
+      capsulHeight: 0
+    combatBranches:
+      keys: 
+      values: 
+    timedCombatBrenches:
+      keys: 
+      values: 
+    particleList: []
   AirAttacks: []
   AirUpAttacks: []
   AirDownAttacks: []
   AirDirectionAttacks: []
+  GapCloserAttacks: []
   DefensiveAction: []
   HandType: 1
   WeaponReadyPose: {fileID: 1118612455620729957, guid: f5d6297a653e5bc429981465433ae2ba,
@@ -70,3 +90,17 @@ MonoBehaviour:
           projectile: {fileID: -1432966126503069167, guid: 55f5f5ea786a500448f72c86acf4841b,
             type: 3}
           projectileSpeed: 20
+    - rid: 4291185348513366018
+      type: {class: KickAwayAttack, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 5
+          Rating: 100
+          Discharge: 100
+          attackAnimation: {fileID: 5030373877731876612, guid: ade1ae4e7f5e34b43834b60d27630a75,
+            type: 3}
+          attackTriggerAmount: 0
+          freezBetweenAttacks: 0
+          kickDirection: {x: 0, y: 0, z: 0}
+          stunTime: 0.2
+          kickStrengh: 10

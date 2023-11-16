@@ -261,6 +261,7 @@ public class CombatComponent
 
 			if (weapons[i] == null) continue;
 
+			weapons[i] = weapons[i].CreateCopy();
 			weapons[i]?.CreateWeapon(gameCharacter);
 
 			//switch (weapons[i].WeaponClassName)

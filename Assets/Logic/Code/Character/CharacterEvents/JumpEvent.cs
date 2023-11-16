@@ -11,7 +11,7 @@ public class JumpEvent : CharacterEvent
 	{
 		switch (gameCharacter.StateMachine.GetCurrentStateType())
 		{
-			case EGameCharacterState.Attack: case EGameCharacterState.Freez: case EGameCharacterState.Dodge: return false;
+			case EGameCharacterState.Attack: case EGameCharacterState.Freez: case EGameCharacterState.Dodge:  return false;
 			default: break;
 		}
 		if (gameCharacter.CombatComponent.CurrentWeapon != null && gameCharacter.CombatComponent.CurrentWeapon.IsHitDetecting) return false;
@@ -27,7 +27,7 @@ public class JumpEvent : CharacterEvent
 
 	public override void StartEvent()
 	{
-		if (gameCharacter.GameCharacterData.EnemyStepColliderScript.CanEnemyStep)
+ 		if (gameCharacter.GameCharacterData.EnemyStepColliderScript.CanEnemyStep)
 		{
 			gameCharacter.MovementComponent.EnemyStep();
 			Ultra.Utilities.Instance.DebugLogOnScreen("Succesfull EnemyStep", 2f, StringColor.White, 200, DebugAreas.Movement);

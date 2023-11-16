@@ -277,13 +277,13 @@ namespace Ultra
 			return FindObjectOfType<PlayerGameCharacter>();
 		}
 
-		public ControllerBase GetController(string controllerName)
+		public ControllerBase GetController(string controllerName, GameObject pawn)
 		{
 			ControllerBase controller = null;
 			switch (controllerName)
 			{
-				case "AIControllerBase": controller = new AIControllerBase(); break;
-				case "PlayerController": controller = new PlayerController(); break;
+				case "AIControllerBase": controller = pawn.AddComponent<AIControllerBase>(); break;
+				case "PlayerController": controller = pawn.AddComponent<PlayerController>(); break;
 				default:
 					Ultra.Utilities.Instance.DebugErrorString("HyppoUttilies", "GetController", "Unvalid Controller name, maybe forgot to Add case?");
 					break;
@@ -292,7 +292,7 @@ namespace Ultra
 		}
 		public ControllerBase SpawnController(GameObject characterToControll, ScriptableCharacter characterData)
 		{
-			ControllerBase controller = GetController(characterData.ControllerName);
+			ControllerBase controller = GetController(characterData.ControllerName, characterToControll);
 			Component comp = characterToControll.AddComponent(controller.GetType());
 			ControllerBase controllerBase = (ControllerBase)comp;
 			if (controllerBase == null)

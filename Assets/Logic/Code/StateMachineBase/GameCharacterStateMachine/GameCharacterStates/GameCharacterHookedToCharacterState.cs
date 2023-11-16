@@ -59,7 +59,7 @@ public class GameCharacterHookedToCharacterState : AGameCharacterState
 			// Gravity when enemy hits ground but u didnt
 			float yGravity = GameCharacter.MovementComponent.CalculateGravity();
 			GameCharacter.MovementComponent.MovementVelocity = new Vector3(GameCharacter.MovementComponent.MovementVelocity.x, GameCharacter.MovementComponent.MovementVelocity.y - yGravity, GameCharacter.MovementComponent.MovementVelocity.z);
-			GameCharacter.StateMachine.RequestStateChange(EGameCharacterState.Freez);
+			GameCharacter.CombatComponent.RequestFreez();
 		} else
 		{
 			// Follow Enemy

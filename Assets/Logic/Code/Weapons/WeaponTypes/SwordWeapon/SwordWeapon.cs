@@ -18,11 +18,6 @@ public class SwordWeapon : WeaponBase
 		base.UnEquipWeapon();
 	}
 
-	public override void UpdateWeapon(float deltaTime)
-	{
-		base.UpdateWeapon(deltaTime);
-	}
-
 	public override AttackAnimationData GroundAttack(float attackDeltaTime)
 	{
 		return base.GroundAttack(attackDeltaTime);

@@ -314,7 +314,12 @@ public class GameCharacter : MonoBehaviour, IDamage
 
 	public void PlayAttackSound(AnimationEvent evt)
 	{
-		CombatComponent.CurrentWeapon.PlayAttackSound(evt.intParameter);
+		CombatComponent?.CurrentWeapon?.PlayAttackSound(evt.intParameter);
+	}
+
+	public void SwitchAttackAnimEvent(AnimationEvent evt)
+	{
+		CombatComponent?.CurrentWeapon?.CurrentAction?.Action?.SwitchAnimationEvent();
 	}
 
 	#endregion
@@ -357,18 +362,19 @@ public class GameCharacter : MonoBehaviour, IDamage
 			CombatComponent.ComboBreak();
 			damageInitiator?.CombatComponent.CharacterDidDamageTo(damageInitiator, damage);
 
-			if (CombatComponent.CanRequestFreez())
-			{
-				if (StateMachine.GetCurrentStateType() == EGameCharacterState.Freez)
-				{
-					freezTimer.Start(freezTime);
-					AnimController.FreezA = !AnimController.FreezA;
-				}
-				else if (StateMachine.GetCurrentStateType() == EGameCharacterState.InAir)
-				{
-					StateMachine.RequestStateChange(EGameCharacterState.Freez);
-				}
-			}
+			if (!isPlayerCharacter) CombatComponent.RequestFreez();
+			//if (CombatComponent.CanRequestFreez())
+			//{
+			//	if (StateMachine.GetCurrentStateType() == EGameCharacterState.Freez)
+			//	{
+			//		freezTimer.Start(freezTime);
+			//		AnimController.FreezA = !AnimController.FreezA;
+			//	}
+			//	else if (StateMachine.GetCurrentStateType() == EGameCharacterState.InAir)
+			//	{
+			//		StateMachine.RequestStateChange(EGameCharacterState.Freez);
+			//	}
+			//}
 
 			damageInitiator.CombatComponent.CurrentWeapon.PlayHitSound();
 			animController.TriggerAdditiveHit();

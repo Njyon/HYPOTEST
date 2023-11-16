@@ -49,6 +49,7 @@ public class ShelfList<T>
 
 	public int ContainedItemNum(T item)
 	{
+		if (item == null) return 0;
 		int count = 0;
 		foreach (T item2 in internalList)
 		{

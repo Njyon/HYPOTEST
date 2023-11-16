@@ -840,17 +840,23 @@ public abstract class WeaponBase
 	{
 		switch (currentAttackType)
 		{
-			case EExplicitAttackType.GroundedDefaultAttack: PlayParticleEffect(groundLightAttackParticleList[attackIndex][index], CurrentAction.particleList[index]); break;
-			case EExplicitAttackType.GroundedDirectionalAttack: PlayParticleEffect(groundHeavyAttackParticleList[attackIndex][index], CurrentAction.particleList[index]); break;
-			case EExplicitAttackType.GroundedUpAttack: PlayParticleEffect(groundUpAttackParticleList[attackIndex][index], CurrentAction.particleList[index]); break;
-			case EExplicitAttackType.GroundedDownAttack: PlayParticleEffect(groundDownAttackParticleList[attackIndex][index], CurrentAction.particleList[index]); break;
-			case EExplicitAttackType.AirDefaultAttack: PlayParticleEffect(airLightAttackParticleList[attackIndex][index], CurrentAction.particleList[index]); break;
-			case EExplicitAttackType.AirDirectionalAttack: PlayParticleEffect(airHeavyAttackParticleList[attackIndex][index], CurrentAction.particleList[index]); break;
-			case EExplicitAttackType.AirDownAttack: PlayParticleEffect(airDownAttackParticleList[attackIndex][index], CurrentAction.particleList[index]); break;
-			case EExplicitAttackType.AirUpAttack: PlayParticleEffect(airUpAttackParticleList[attackIndex][index], CurrentAction.particleList[index]); break;
-			case EExplicitAttackType.DefensiveAction: PlayParticleEffect(defensiveActionParticleList[defensiveActionIndex][index], CurrentAction.particleList[index]); break;
+			case EExplicitAttackType.GroundedDefaultAttack: CheckParticleEffectsBevorPlaying(ref groundLightAttackParticleList, ref CurrentAction.particleList, index, attackIndex); break;
+			case EExplicitAttackType.GroundedDirectionalAttack: CheckParticleEffectsBevorPlaying(ref groundHeavyAttackParticleList, ref CurrentAction.particleList, index, attackIndex); break;
+			case EExplicitAttackType.GroundedUpAttack: CheckParticleEffectsBevorPlaying(ref groundUpAttackParticleList, ref CurrentAction.particleList, index, attackIndex); break;
+			case EExplicitAttackType.GroundedDownAttack: CheckParticleEffectsBevorPlaying(ref groundDownAttackParticleList, ref CurrentAction.particleList, index, attackIndex); break;
+			case EExplicitAttackType.AirDefaultAttack: CheckParticleEffectsBevorPlaying(ref airLightAttackParticleList, ref CurrentAction.particleList, index, attackIndex); break;
+			case EExplicitAttackType.AirDirectionalAttack: CheckParticleEffectsBevorPlaying(ref airHeavyAttackParticleList, ref CurrentAction.particleList, index, attackIndex); break;
+			case EExplicitAttackType.AirDownAttack: CheckParticleEffectsBevorPlaying(ref airDownAttackParticleList, ref CurrentAction.particleList, index, attackIndex); break;
+			case EExplicitAttackType.AirUpAttack: CheckParticleEffectsBevorPlaying(ref airUpAttackParticleList, ref CurrentAction.particleList, index, attackIndex); break;
+			case EExplicitAttackType.DefensiveAction: CheckParticleEffectsBevorPlaying(ref defensiveActionParticleList, ref CurrentAction.particleList, index, defensiveActionIndex); break;
 			default: break;
 		}
+	}
+
+	void CheckParticleEffectsBevorPlaying(ref List<List<ParticleSystem>> particleListList, ref List<GameObject> weaponParticleList, int index, int particleIndex)
+	{
+		if (particleListList.Count > attackIndex && particleListList[attackIndex].Count > index && CurrentAction.particleList.Count > index)
+			PlayParticleEffect(particleListList[particleIndex][index], weaponParticleList[index]);
 	}
 
 	void PlayParticleEffect(ParticleSystem particle, GameObject baseParticle)

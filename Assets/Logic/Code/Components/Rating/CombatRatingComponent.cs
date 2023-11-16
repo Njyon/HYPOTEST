@@ -93,14 +93,20 @@ public class CombatRatingComponent : RecourceBase
 
 	public void AddRatingOnHit(float damage)
 	{
+		if (gameCharacter.CombatComponent.PreviousAttacks.Count <= 0) return;
 		AttackAnimationData newestAttack = gameCharacter.CombatComponent.PreviousAttacks[0];
 		int numberOfLastAttackInList = gameCharacter.CombatComponent.PreviousAttacks.ContainedItemNum(newestAttack);
 		//float rating = newestAttack.extraData.Rating / numberOfLastAttackInList;
 		float rating = Mathf.Clamp(((gameCharacter.CombatComponent.CurrentWeapon.CurrentAction.Action.GetActionRanting() * gameCharacter.CombatComponent.ComboCount) / numberOfLastAttackInList) / 5, 10, int.MaxValue);
 
-
 		gameCharacter.CombatComponent.CurrentWeapon.Charge -= newestAttack.Action.GetActionDischarge();
 		AddCurrentValue(rating);
+		AddWeaponCharge();
+	}
+
+	public void AddRatingByAvoidingDamage(float damage)
+	{
+		AddCurrentValue(damage);
 		AddWeaponCharge();
 	}
 

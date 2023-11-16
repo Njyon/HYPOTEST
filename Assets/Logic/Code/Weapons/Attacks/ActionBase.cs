@@ -68,6 +68,7 @@ public abstract class ActionBase
 	public virtual void GroundReset() { }
 	public virtual void ImplementUI() { }
 	public virtual void RemoveUI() { }
+	public virtual void SwitchAnimationEvent() { }
 	public virtual void SuccessfullParry(GameCharacter damageInitiator, float damage) { }
 	public virtual void SuccessfullBlock(GameCharacter damageInitiator, float damage) { }
 	/// <summary>

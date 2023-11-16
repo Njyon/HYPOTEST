@@ -234,14 +234,14 @@ MonoBehaviour:
   AirDirectionAttacks:
   - action:
       instance:
-        rid: 3239357412136189971
+        rid: 4291185348513366457
     data:
       showProperties: 1
-      hitDetectionType: 2
+      hitDetectionType: 1
       mesh: {fileID: 0}
-      offset: {x: 2, y: 0, z: 0}
+      offset: {x: 0, y: 0, z: 0}
       scale: {x: 0, y: 0, z: 0}
-      radius: 1.5
+      radius: 2
       boxDimensions: {x: 3, y: 3.5, z: 2}
       capsulHeight: 0
     combatBranches:
@@ -328,7 +328,7 @@ MonoBehaviour:
       type: {class: DefaultAttack, ns: , asm: Assembly-CSharp}
       data:
         attackData:
-          Damage: 10
+          Damage: 15
           Rating: 100
           Discharge: 100
           attackAnimation: {fileID: 6166596392337147653, guid: 9318622427445ec4492672b5d4b3a3b1,
@@ -347,7 +347,7 @@ MonoBehaviour:
       type: {class: KickAwayAttack, ns: , asm: Assembly-CSharp}
       data:
         attackData:
-          Damage: 10
+          Damage: 20
           Rating: 100
           Discharge: 100
           attackAnimation: {fileID: 5837612541032910741, guid: 4fd8c38ebcab2d341a43bb8b9922b682,
@@ -379,7 +379,7 @@ MonoBehaviour:
       type: {class: KickAwayAttack, ns: , asm: Assembly-CSharp}
       data:
         attackData:
-          Damage: 10
+          Damage: 20
           Rating: 100
           Discharge: 100
           attackAnimation: {fileID: 653991229959314192, guid: b6de031bbeb110b489c0979b287d5994,
@@ -389,25 +389,11 @@ MonoBehaviour:
           kickDirection: {x: 0, y: 0, z: 80}
           stunTime: 1
           kickStrengh: 20
-    - rid: 3239357412136189971
-      type: {class: KickAwayAttack, ns: , asm: Assembly-CSharp}
-      data:
-        attackData:
-          Damage: 10
-          Rating: 100
-          Discharge: 100
-          attackAnimation: {fileID: -8595696173719005526, guid: d5861c742538ece41ba0060432996db8,
-            type: 3}
-          attackTriggerAmount: 0
-          freezBetweenAttacks: 0
-          kickDirection: {x: 0, y: 0, z: -90}
-          stunTime: 1
-          kickStrengh: 20
     - rid: 3239357430498852866
       type: {class: SmashDownAttack, ns: , asm: Assembly-CSharp}
       data:
         attackData:
-          Damage: 10
+          Damage: 20
           Rating: 100
           Discharge: 100
           downAttack: {fileID: -7975973549715124236, guid: a5cbccb0f66c24644a13264621143710,
@@ -421,7 +407,7 @@ MonoBehaviour:
       type: {class: GapCloserAttack, ns: , asm: Assembly-CSharp}
       data:
         attackData:
-          Damage: 10
+          Damage: 5
           Rating: 100
           Discharge: 100
           gapCloserAttack: {fileID: -1119112359194581809, guid: 06f7574fb6659cd4eb6440d1a04592b8,
@@ -486,3 +472,14 @@ MonoBehaviour:
           attackRange: 10
           rotationInterpSpeed: 10
           attackMovementSpeed: 40
+    - rid: 4291185348513366457
+      type: {class: HoldAttackWithHook, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 7
+          Rating: 100
+          Discharge: 100
+          attackAnimation: {fileID: -8595696173719005526, guid: 2834a0b8117a1244a95213877b243c16,
+            type: 3}
+          holdAttackAnimation: {fileID: 2981311240891123335, guid: 5c980c128bcb3ba4dbe9b5895c8109f0,
+            type: 3}

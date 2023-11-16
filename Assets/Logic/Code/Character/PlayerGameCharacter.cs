@@ -111,13 +111,13 @@ public class PlayerGameCharacter : GameCharacter
 	protected override void SuccsessfullDodge(GameCharacter damageInitiator, float damage)
 	{
 		base.SuccsessfullDodge(damageInitiator, damage);
-		combatRatingComponent.AddWeaponCharge();
+		combatRatingComponent.AddRatingByAvoidingDamage(damage);
 	}
 
 	protected override void SuccessfullParry(GameCharacter damageInitiator, float damage)
 	{
 		base.SuccessfullParry(damageInitiator, damage);
-		combatRatingComponent.AddWeaponCharge();
+		combatRatingComponent.AddRatingByAvoidingDamage(damage);
 	}
 
 	[Button("Die")]

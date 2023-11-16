@@ -45,6 +45,7 @@ public class GameCharacterAttackState : AGameCharacterState
 
 		GameCharacter.AnimController.TriggerAttack = false;
 		GameCharacter.AnimController.HoldAttack = false;
+		GameCharacter.CombatComponent.AllowEarlyLeaveAttackRecovery = false;
 
 		//GameCharacter.MovementComponent.UseGravity = false;
 
