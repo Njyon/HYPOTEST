@@ -400,6 +400,7 @@ public class CombatComponent
 				gameCharacter.AddFreezTime(freezTime);
 			}else
 			{
+				gameCharacter.StateMachine.AddLazyState(EGameCharacterState.Freez);
 				gameCharacter.StateMachine.RequestStateChange(EGameCharacterState.Freez);
 				gameCharacter.FreezTimeOverride = freezTime;
 			}
@@ -462,6 +463,7 @@ public class CombatComponent
 			FlyAwayTimer.AddTime(flyAwayTime);
 		else 
 			FlyAwayTime = flyAwayTime;
+		gameCharacter.StateMachine.RemoveLazyState(EGameCharacterState.Freez);
 		gameCharacter.StateMachine.ForceStateChange(EGameCharacterState.FlyAway, true);
 	}
 

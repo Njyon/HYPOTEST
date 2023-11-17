@@ -12,6 +12,7 @@ public class BTAttack : BTHyppoliteActionNodeBase
 	public EAttackType AttackType;
 	public bool showFeedback = true;
 	public bool canAttackInAir = false;
+	public bool updateDirection = true;
 
 	bool attackDone = false;
 	bool attackStartet = false;
@@ -29,10 +30,13 @@ public class BTAttack : BTHyppoliteActionNodeBase
 			return;
 		}
 
-		Vector3 dir = (TargetGameCharacter.MovementComponent.CharacterCenter - GameCharacter.MovementComponent.CharacterCenter).normalized;
-		GameCharacter.HorizontalMovementInput(dir.x);
-		GameCharacter.VerticalMovmentInput(dir.y);
-		
+		if (updateDirection)
+		{
+			Vector3 dir = (TargetGameCharacter.MovementComponent.CharacterCenter - GameCharacter.MovementComponent.CharacterCenter).normalized;
+			GameCharacter.HorizontalMovementInput(dir.x);
+			GameCharacter.VerticalMovmentInput(dir.y);
+		}
+
 		if (GameCharacter.MovementComponent.IsGrounded || (canAttackInAir && !GameCharacter.MovementComponent.IsGrounded))
 		{
 			GameCharacter.CombatComponent.Attack(AttackType);
@@ -54,9 +58,14 @@ public class BTAttack : BTHyppoliteActionNodeBase
 		if (cantAttack && !attackStartet) return Status.Failed;
 		if (GameCharacter == null || GameCharacter.IsGameCharacterDead) return Status.Failed;
 
-		Vector3 dir = (TargetGameCharacter.MovementComponent.CharacterCenter  - GameCharacter.MovementComponent.CharacterCenter).normalized;
-		GameCharacter.HorizontalMovementInput(dir.x);
-		GameCharacter.VerticalMovmentInput(dir.y);
+		if (updateDirection)
+		{
+			Vector3 dir = (TargetGameCharacter.MovementComponent.CharacterCenter - GameCharacter.MovementComponent.CharacterCenter).normalized;
+			GameCharacter.HorizontalMovementInput(dir.x);
+			GameCharacter.VerticalMovmentInput(dir.y);
+		}
+
+		GameCharacter.transform.rotation = GameCharacter.RotationTarget;
 
 		if (attackStartet && !attackDone)
 		{

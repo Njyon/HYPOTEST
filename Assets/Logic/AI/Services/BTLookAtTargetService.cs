@@ -27,13 +27,14 @@ public class BTLookAtTargetService : BTServiceNodeBase
 				case EGameCharacterState.DefensiveAction:
 				case EGameCharacterState.FlyAway:
 				case EGameCharacterState.MoveToPosition:
+				case EGameCharacterState.Freez:
 					break;
 				default:
 					Vector3 targetDir = (Ultra.Utilities.IgnoreAxis(TargetGameCharacter.MovementComponent.CharacterCenter, EAxis.YZ) - Ultra.Utilities.IgnoreAxis(GameCharacter.MovementComponent.CharacterCenter, EAxis.YZ)).normalized;
 
 					Ultra.Utilities.DrawArrow(GameCharacter.MovementComponent.CharacterCenter, targetDir, 1f, Color.blue, 2f, 200, DebugAreas.AI);
 					GameCharacter.RotationTarget = Quaternion.LookRotation(targetDir, Vector3.up);
-					Quaternion targetRot = Quaternion.Slerp(GameCharacter.transform.rotation, GameCharacter.RotationTarget, Time.deltaTime * GameCharacter.GameCharacterData.RoationSpeed);
+					Quaternion targetRot = Quaternion.Lerp(GameCharacter.transform.rotation, GameCharacter.RotationTarget, Time.deltaTime * GameCharacter.GameCharacterData.RoationSpeed);
 					Vector3 dir = GameCharacter.transform.rotation * Vector3.forward;
 					Vector3 cross = Vector3.Cross(GameCharacter.LastDir.normalized, dir);
 					float sign = Mathf.Sign(cross.y);

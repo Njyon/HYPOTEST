@@ -31,7 +31,11 @@ public class HookAttack : AttackBase
 			enemyCharacter.CombatComponent.HookedToCharacter = GameCharacter;
 			enemyCharacter.AnimController.ResetAnimStatesHARD();
 			Weapon.HookCharacterToCharacter(enemyCharacter);
-			if (enemyCharacter.StateMachine != null) enemyCharacter.StateMachine.RequestStateChange(EGameCharacterState.HookedToCharacter);
+			if (enemyCharacter.StateMachine != null)
+			{
+				enemyCharacter.StateMachine.RemoveLazyState(EGameCharacterState.Freez);
+				enemyCharacter.StateMachine.RequestStateChange(EGameCharacterState.HookedToCharacter);
+			}
 		}
 	}
 

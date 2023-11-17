@@ -65,19 +65,25 @@ public class GameCharacterAttackState : AGameCharacterState
 			newDir = Quaternion.LookRotation(currentDir.normalized, Vector3.up);
 		}else
 		{
-			Vector3 bounds = new Vector3(4f, 1.5f, 1f);
-			GameCharacter target = Ultra.HypoUttilies.FindCharactereInDirectionInRange(GameCharacter.MovementComponent.CharacterCenter, GameCharacter.transform.forward, bounds, ref GameCharacter.CharacterDetection.OverlappingGameCharacter);
-			Ultra.Utilities.DrawBox(GameCharacter.MovementComponent.CharacterCenter, Quaternion.identity, bounds, Color.blue, 10f, 200, DebugAreas.Combat);
-			if (target != null)
+			if (GameCharacter.IsPlayerCharacter)
 			{
-				Vector3 targetDir = target.MovementComponent.CharacterCenter - GameCharacter.MovementComponent.CharacterCenter;
-				targetDir = Ultra.Utilities.IgnoreAxis(targetDir, EAxis.YZ);
-				newDir = Quaternion.LookRotation(targetDir.normalized, Vector3.up);
-			}else
-			{
-				Vector3 currentDir = new Vector3(GameCharacter.transform.forward.x, 0, 0);
-				newDir = Quaternion.LookRotation(currentDir.normalized, Vector3.up);
+				Vector3 bounds = new Vector3(4f, 1.5f, 1f);
+				GameCharacter target = Ultra.HypoUttilies.FindCharactereInDirectionInRange(GameCharacter.MovementComponent.CharacterCenter, GameCharacter.transform.forward, bounds, ref GameCharacter.CharacterDetection.OverlappingGameCharacter);
+				Ultra.Utilities.DrawBox(GameCharacter.MovementComponent.CharacterCenter, Quaternion.identity, bounds, Color.blue, 10f, 200, DebugAreas.Combat);
+				if (target != null)
+				{
+					Vector3 targetDir = target.MovementComponent.CharacterCenter - GameCharacter.MovementComponent.CharacterCenter;
+					targetDir = Ultra.Utilities.IgnoreAxis(targetDir, EAxis.YZ);
+					newDir = Quaternion.LookRotation(targetDir.normalized, Vector3.up);
+				}
+				else
+				{
+					Vector3 currentDir = new Vector3(GameCharacter.transform.forward.x, 0, 0);
+					newDir = Quaternion.LookRotation(currentDir.normalized, Vector3.up);
+				}
 			}
+			else
+				newDir = GameCharacter.transform.rotation;
 		}
 		GameCharacter.CombatComponent.CurrentWeapon.StartAttackStateLogic();
 	}

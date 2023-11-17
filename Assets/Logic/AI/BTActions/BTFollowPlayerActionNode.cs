@@ -21,9 +21,9 @@ public class BTFollowPlayerActionNode : BTHyppoliteActionNodeBase
 		{
 			case EGameCharacterState.Attack:
 			case EGameCharacterState.AttackRecovery:
-				Vector3 dir = (TargetGameCharacter.transform.position - GameCharacter.transform.position).normalized;
-				GameCharacter.HorizontalMovementInput(dir.x);
-				GameCharacter.VerticalMovmentInput(dir.y);
+				//Vector3 dir = (TargetGameCharacter.transform.position - GameCharacter.transform.position).normalized;
+				//GameCharacter.HorizontalMovementInput(dir.x);
+				//GameCharacter.VerticalMovmentInput(dir.y);
 				return Status.Running;
 			default: break;
 		}

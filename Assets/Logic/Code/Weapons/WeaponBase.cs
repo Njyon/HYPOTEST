@@ -945,9 +945,10 @@ public abstract class WeaponBase
 				Vector3 direction = Quaternion.Euler(kickAwayDir) * GameCharacter.transform.forward;
 				enemyCharacter.MovementComponent.MovementVelocity = direction * kickAwayStrengh;
 			}
-
+			
 			Ultra.Utilities.DrawArrow(enemyCharacter.MovementComponent.CharacterCenter, enemyCharacter.MovementComponent.MovementVelocity.normalized, 5f, Color.magenta, 10f, 100, DebugAreas.Combat);
 		}
+		GameTimeManager.Instance.AddDefaultFreezFrame();
 	}
 
 	void OnMaxChargeAfterEquipTimerFinished()

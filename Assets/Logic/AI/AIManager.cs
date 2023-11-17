@@ -154,6 +154,7 @@ public class AIManager : Singelton<AIManager>
 			for (int i = 0; i < sortedMeleeAIs.Length; i++)
 			{
 				if (sortedMeleeAIs[i].gameCharacter.MovementComponent == null || GameMode.PlayerGameCharacter.MovementComponent == null) continue;
+				if (AIIsInStaggerState(sortedMeleeAIs[i])) continue;
 				if (sortedMeleeAIs[i].gameCharacter.MovementComponent.CharacterCenter.x >= GameMode.PlayerGameCharacter.MovementComponent.CharacterCenter.x)
 					rightFromPlayerSortedAiList.Add(sortedMeleeAIs[i]);
 				else
@@ -173,7 +174,7 @@ public class AIManager : Singelton<AIManager>
 			minDistance += aiList[i].gameCharacter.GameCharacterData.MinCharacterDistance;
 			float newXLocationTarget = (i == 0 ? GameMode.PlayerGameCharacter.MovementComponent.CharacterCenter.x : aiList[i - 1].gameCharacter.MovementComponent.CharacterCenter.x) + xModifier * minDistance;
 
-			aiList[i].btr.BehaviourTree.Variable.TrySetValue<Vector3>("MovementTarget", new Vector3(newXLocationTarget, 0, 0));
+			aiList[i]?.btr?.BehaviourTree?.Variable?.TrySetValue<Vector3>("MovementTarget", new Vector3(newXLocationTarget, 0, 0));
 		}
 	}
 
@@ -181,6 +182,21 @@ public class AIManager : Singelton<AIManager>
 	{
 		SceneManager.sceneLoaded += OnSceneLoaded;
 
+	}
+
+	bool AIIsInStaggerState(HyppoliteManagableAI ai)
+	{
+		switch (ai.gameCharacter.StateMachine.GetCurrentStateType())
+		{
+			case EGameCharacterState.Freez:
+			case EGameCharacterState.FlyAway:
+			case EGameCharacterState.MoveToPosition:
+			case EGameCharacterState.HookedToCharacter:
+			case EGameCharacterState.PullCharacterOnHorizontalLevel:
+				return true;
+			default: 
+				return false;
+		}
 	}
 
 	private void SetCanAttackFlagOnValidAIsAndRemoveOnOld()
@@ -195,7 +211,10 @@ public class AIManager : Singelton<AIManager>
 		for (int i = 0; i < meleeCharacterAttackAmount; i++)
 		{
 			if (i >= sortedMeleeAIs.Length) break;
-			newMeleeAIs.Add(sortedMeleeAIs[i]);
+			HyppoliteManagableAI ai = sortedMeleeAIs[i];
+			if (ai == null) continue;
+			if (AIIsInStaggerState(ai)) continue;
+			newMeleeAIs.Add(ai);
 		}
 		foreach (HyppoliteManagableAI ai in newMeleeAIs)
 		{

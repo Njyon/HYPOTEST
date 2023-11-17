@@ -32,7 +32,6 @@ public class KickAwayAttack : AttackBase
 		if (Weapon.ComboIndexInSameAttack == attackData.attackTriggerAmount)
 		{
 			Weapon.KickAway(enemyCharacter, attackData.stunTime, attackData.kickDirection, attackData.kickStrengh);
-			GameTimeManager.Instance.AddDefaultFreezFrame();
 		} else if (attackData.freezBetweenAttacks)
 		{
 			enemyCharacter.CombatComponent.RequestFreez();

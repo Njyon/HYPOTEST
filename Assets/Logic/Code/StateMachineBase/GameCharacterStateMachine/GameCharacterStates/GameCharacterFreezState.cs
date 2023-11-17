@@ -16,6 +16,7 @@ public class GameCharacterFreezState : AGameCharacterState
 
 		GameCharacter.FreezTimeOverride = 0;
 		GameCharacter.MovementComponent.VariableGravityMultiplierOverTime = GameCharacter.GameCharacterData.GravityMultiplierInAttack;
+		GameCharacter.StateMachine.RemoveLazyState(EGameCharacterState.Freez);
 		//GameCharacter.MovementComponent.UseGravity = false;
 
 		GameCharacter.FreezTimer.onTimerPaused += TimerEnded;

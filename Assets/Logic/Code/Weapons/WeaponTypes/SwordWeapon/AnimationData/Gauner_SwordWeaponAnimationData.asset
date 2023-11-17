@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8104bde8e4c1a2e42b58f845296f6b18, type: 3}
-  m_Name: EnemySword 01 deletable
+  m_Name: Gauner_SwordWeaponAnimationData
   m_EditorClassIdentifier: 
   GroundAttacks:
   - action:
@@ -53,11 +53,31 @@ MonoBehaviour:
     particleList: []
   GroundUpAttacks: []
   GroundDownAttacks: []
-  GroundDirectionAttacks: []
+  GroundDirectionAttacks:
+  - action:
+      instance:
+        rid: 4291185371449656110
+    data:
+      showProperties: 1
+      hitDetectionType: 1
+      mesh: {fileID: 0}
+      offset: {x: 1, y: 0, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 1.5
+      boxDimensions: {x: 0, y: 0, z: 0}
+      capsulHeight: 0
+    combatBranches:
+      keys: 
+      values: 
+    timedCombatBrenches:
+      keys: 
+      values: 
+    particleList: []
   AirAttacks: []
   AirUpAttacks: []
   AirDownAttacks: []
   AirDirectionAttacks: []
+  GapCloserAttacks: []
   DefensiveAction: []
   HandType: 1
   WeaponReadyPose: {fileID: -4779348543030137861, guid: 71d58fc4f3cfa474ab862c4d568fa6b9,
@@ -67,6 +87,10 @@ MonoBehaviour:
   HeadSpineLayerMovingWeight: 0.5
   ArmRMovingWeight: 0.8
   ArmLMovingWeight: 0.1
+  AimAnimations:
+    upAnimation: {fileID: 0}
+    midAnimation: {fileID: 0}
+    downAnimation: {fileID: 0}
   references:
     version: 2
     RefIds:
@@ -88,3 +112,17 @@ MonoBehaviour:
           Discharge: 100
           attackAnimation: {fileID: -8777931712289427824, guid: 98a8b764a21b0b04cb167c6681ea2179,
             type: 3}
+    - rid: 4291185371449656110
+      type: {class: KickAwayAttack, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          attackAnimation: {fileID: 3838917652119915945, guid: 58f372fd0bc5c7543b6071d42cc3f8b2,
+            type: 3}
+          attackTriggerAmount: 0
+          freezBetweenAttacks: 0
+          kickDirection: {x: 0, y: 0, z: 0}
+          stunTime: 0.2
+          kickStrengh: 10

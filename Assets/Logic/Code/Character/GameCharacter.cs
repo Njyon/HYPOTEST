@@ -214,6 +214,7 @@ public class GameCharacter : MonoBehaviour, IDamage
 	protected void Update()
 	{
 		if (!IsInitialized || !LoadingChecker.Instance.FinishLoading) return;
+		if (!isPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen("Enemy MovementInput: " + movementInput, 0f, StringColor.Green);
 		freezTimer.Update(Time.deltaTime);
 		//movementInput.x = 1;
 		EventComponent.Update(Time.deltaTime);

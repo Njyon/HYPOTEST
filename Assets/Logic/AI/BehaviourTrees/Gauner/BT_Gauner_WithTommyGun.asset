@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a24eb528ebc97814a88d65c7618bfc70, type: 3}
-  m_Name: BT_GaunerWithTommyGun
+  m_Name: BT_Gauner_WithTommyGun
   m_EditorClassIdentifier: 
   Version: 1.1.0
   <GUID>k__BackingField: 32c16873-8dad-4fb9-887a-10ccf273b417
@@ -446,6 +446,15 @@ MonoBehaviour:
     - Name: AbortType
       Type: Megumin.GameFramework.AI.BehaviorTree.AbortType
       Value: Megumin.GameFramework.AI.BehaviorTree.AbortType:LowerPriority
+  - Name: 961569de-95d7-416e-996c-e5ab2b28f30f
+    Type: BTCharacterNotStaggered
+    Member:
+    - Name: GUID
+      Type: System.String
+      Value: 961569de-95d7-416e-996c-e5ab2b28f30f
+    - Name: AbortType
+      Type: Megumin.GameFramework.AI.BehaviorTree.AbortType
+      Value: Megumin.GameFramework.AI.BehaviorTree.AbortType:-1
   - Name: bf681c22-6352-4187-ad22-3bcee5b4c419
     Type: BTTargetIsSetCondition
     Member:
@@ -563,6 +572,9 @@ MonoBehaviour:
     - Name: 0
       Type: $ref
       Value: bf681c22-6352-4187-ad22-3bcee5b4c419
+    - Name: 1
+      Type: $ref
+      Value: 961569de-95d7-416e-996c-e5ab2b28f30f
   - Name: 193980ad-971c-42d3-ac1f-bbd12c823fd8.Meta
     Type: Megumin.GameFramework.AI.BehaviorTree.NodeMeta
     Member:
