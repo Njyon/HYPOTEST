@@ -144,6 +144,18 @@ public class AnimationController
 			return defensiveActionStateHash;
 		}
 	}
+	int standingStateHash;
+	public int StandingStateHash
+	{
+		get
+		{
+			if (standingStateHash == 0)
+			{
+				standingStateHash = Animator.StringToHash("BasisLayer.OnGround.Standing");
+			}
+			return standingStateHash;
+		}
+	}
 
 	float walkRunBlend;
 	public float WalkRunBlend
@@ -1099,5 +1111,10 @@ public class AnimationController
 		gameCharacter.AnimController.InDefensiveAction = false;
 		gameCharacter.AnimController.InCombat3Blend = false;
 		gameCharacter.AnimController.FlyAway = false;
+	}
+
+	public void ForceStandingState()
+	{
+		gameCharacter.Animator.CrossFade(StandingStateHash, 0f);
 	}
 }

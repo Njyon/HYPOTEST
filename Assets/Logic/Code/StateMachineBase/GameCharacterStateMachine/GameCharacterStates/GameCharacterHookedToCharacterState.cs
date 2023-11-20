@@ -8,6 +8,7 @@ public class GameCharacterHookedToCharacterState : AGameCharacterState
 {
 	bool enemyHitGround = false;
 	Ultra.Timer backupTimer = null;
+	GameCharacter hookedCharacter;
 
 	public GameCharacterHookedToCharacterState(GameCharacterStateMachine stateMachine, GameCharacter gameCharacter) : base (stateMachine, gameCharacter)
 	{ 
@@ -29,8 +30,11 @@ public class GameCharacterHookedToCharacterState : AGameCharacterState
 
 		if (GameCharacter.CombatComponent.HookedToCharacter != null) GameCharacter.MovementComponent.MovementVelocity = GameCharacter.CombatComponent.HookedToCharacter.MovementComponent.MovementVelocity;
 
+		hookedCharacter = GameCharacter.CombatComponent.HookedToCharacter;
 		GameCharacter.MovementComponent.onMoveCollisionFlag += OnMoveCollisionFlag;
-		GameCharacter.CombatComponent.HookedToCharacter.MovementComponent.onMoveCollisionFlag += OnEnemyMoveCollisionFlag;
+		hookedCharacter.MovementComponent.onMoveCollisionFlag += OnEnemyMoveCollisionFlag;
+
+		hookedCharacter.onGameCharacterDied += OnHookedGameCharacterDied;
 	}
 
 	public override EGameCharacterState GetStateType()
@@ -83,6 +87,8 @@ public class GameCharacterHookedToCharacterState : AGameCharacterState
 	{
 		GameCharacter.MovementComponent.UseGravity = true;
 		GameCharacter.MovementComponent.InterpGravityUp();
+		if (GameCharacter != null) GameCharacter.MovementComponent.onMoveCollisionFlag -= OnMoveCollisionFlag;
+		if (hookedCharacter != null) hookedCharacter.MovementComponent.onMoveCollisionFlag -= OnEnemyMoveCollisionFlag;
 
 	}
 
@@ -119,5 +125,11 @@ public class GameCharacterHookedToCharacterState : AGameCharacterState
 	void OnBackupTimerFinished()
 	{
 		GameCharacter.CombatComponent.HookedToCharacter = null;	
+	}
+
+	void OnHookedGameCharacterDied(GameCharacter gameCharacter)
+	{
+		gameCharacter.onGameCharacterDied -= OnHookedGameCharacterDied;
+		gameCharacter.MovementComponent.onMoveCollisionFlag -= OnEnemyMoveCollisionFlag;
 	}
 }

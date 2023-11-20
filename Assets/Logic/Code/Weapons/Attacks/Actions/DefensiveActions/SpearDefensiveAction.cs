@@ -115,10 +115,10 @@ public class SpearDefensiveAction : ActionBase
 	{
 		canLeaveState = true;
 		GameCharacter.AnimController.InAimBlendTree = false;
-		Weapon.UnHookAllHookedCharacerts();
+		Weapon?.UnHookAllHookedCharacerts();
 		GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.Aim);
 		GameCharacter.RequestBestCharacterState();
-		Weapon.SpawnedWeapon.SetActive(true);
+		Weapon?.SpawnedWeapon?.SetActive(true);
 		if (defensiveSpear != null)
 			GameObject.Destroy(defensiveSpear.gameObject);
 	}

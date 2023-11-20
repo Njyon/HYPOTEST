@@ -80,12 +80,14 @@ public abstract class ActionBase
 	public virtual void ActionInterupted() { }
 	public virtual void OnGameCharacterDied(GameCharacter gameCharacter) {
 		if (this.gameCharacter != null) this.gameCharacter.onGameCharacterDied -= OnGameCharacterDied;
+		ActionInterupted();
 	}
 	public virtual void OnGameCharacterDestroyed(GameCharacter gameCharacter)
 	{
 		if (this.gameCharacter != null) this.gameCharacter.onGameCharacterDestroyed -= OnGameCharacterDestroyed;
 		if (this.gameCharacter != null) this.gameCharacter.onGameCharacterDied -= OnGameCharacterDied;
 		isActionInit = false;
+		ActionInterupted();
 	}
 
 	public virtual bool HasUIImplementation()

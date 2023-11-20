@@ -213,16 +213,27 @@ public class GameCharacter : MonoBehaviour, IDamage
 
 	protected void Update()
 	{
+		Profiler.BeginSample("GameCharacterUpdate");
 		if (!IsInitialized || !LoadingChecker.Instance.FinishLoading) return;
 		if (!isPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen("Enemy MovementInput: " + movementInput, 0f, StringColor.Green);
 		freezTimer.Update(Time.deltaTime);
 		//movementInput.x = 1;
+		Profiler.BeginSample("EventComponent");
 		EventComponent.Update(Time.deltaTime);
+		Profiler.EndSample();
+		Profiler.BeginSample("MovementComponent");
 		MovementComponent.CalculateVelocity();
 		MovementComponent.AddGravityOnMovementVelocity();
+		Profiler.BeginSample("GroundedCheck");
 		MovementComponent.CheckIfCharacterIsGrounded();
+		Profiler.EndSample();
+		Profiler.EndSample();
+		Profiler.BeginSample("CombatComponent");
 		CombatComponent?.UpdateComponent(Time.deltaTime);
+		Profiler.EndSample();
+		Profiler.BeginSample("Move");
 		MovementComponent.MoveCharacter();
+		Profiler.EndSample();
 
 		animController.Update(Time.deltaTime);
 		if (Health != null) Health.Update(Time.deltaTime);
@@ -247,6 +258,7 @@ public class GameCharacter : MonoBehaviour, IDamage
 		if (IsPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen("Current Ground Angle: " + MovementComponent.GetPossibleGroundAngle(), 0f, StringColor.Teal, 200, DebugAreas.Misc);
 		if (!IsPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen("AICurrentCharacterState: " + StateMachine.GetCurrentStateType().ToString(), 0f, StringColor.Brown, 200, DebugAreas.AI);
 #endif
+		Profiler.EndSample();
 	}
 
 	private void LateUpdate()
@@ -519,6 +531,8 @@ public class GameCharacter : MonoBehaviour, IDamage
 		Animator.enabled = false;
 		MovementComponent.CapsuleCollider.enabled = false;
 		MovementComponent.UnityMovementController.enabled = false;
+		// Request a dead state so unsubsribing from specific state delegates is easier by just calling CurrentState.End(NewState Dead)
+		StateMachine.RequestStateChange(EGameCharacterState.Dead, true);
 
 		GameObject.Destroy(gameObject, 3f);
 
