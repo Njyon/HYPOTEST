@@ -22,6 +22,7 @@ public enum EGameCharacterState
 	MoveToPosition = 12,
 	FlyAway = 13,
 	Dodge = 14,
+	Dead = 15,
 }
 
 public class GameCharacterStateMachine : AStateMachineBase<EGameCharacterState>
@@ -90,6 +91,7 @@ public class GameCharacterStateMachine : AStateMachineBase<EGameCharacterState>
 			case EGameCharacterState.PullCharacterOnHorizontalLevel: newState = new GameCharacterPullCharacterOnHorizontalLevelState(this, this.gameCharacter); break;
 			case EGameCharacterState.HookedToCharacter: newState = new GameCharacterHookedToCharacterState(this, this.gameCharacter); break;
 			case EGameCharacterState.Dodge: newState = new GameCharacterDodgeState(this, this.gameCharacter); break;
+			case EGameCharacterState.Dead: newState = new GameCharacterDeadState(this, this.gameCharacter); break;
 			default:
 				Ultra.Utilities.Instance.DebugErrorString("GameCharacterStateMaschine", "CreateState", "GameCharacterState has no Implimentation!");
 				break;

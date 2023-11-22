@@ -199,6 +199,13 @@ public class SmashDownAttack3Blend : ActionBase
 		}
 	}
 
+	public override void ActionInterupted()
+	{
+		GameCharacter.MovementComponent.onCharacterGroundedChanged -= OnCharacterGroundedChanged;
+		GameCharacter.CombatComponent.AttackTimer.onTimerFinished -= AttackTimerFinished;
+		Weapon.UnHookAllHookedCharacerts();
+	}
+
 	public override float GetActionRanting()
 	{
 		return attackData.Rating;

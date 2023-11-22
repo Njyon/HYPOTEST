@@ -65,7 +65,7 @@ public class GameCharacterFreezState : AGameCharacterState
 
 		if (GameCharacter != null && GameCharacter.FreezTimer != null) GameCharacter.FreezTimer.onTimerPaused -= TimerEnded;
 		if (GameCharacter != null && GameCharacter.FreezTimer != null) GameCharacter.FreezTimer.onTimerFinished -= TimerEnded;
-		if (GameCharacter != null && GameCharacter.MovementComponent != null)  GameCharacter.MovementComponent.onMoveCollisionFlag -= OnMoveCollisionFlag;
+		if (GameCharacter != null && GameCharacter.MovementComponent != null) GameCharacter.MovementComponent.onMoveCollisionFlag -= OnMoveCollisionFlag;
 	}
 
 	public void TimerEnded()

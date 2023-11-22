@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 public enum EAttackType
 {
@@ -219,10 +220,12 @@ public class CombatComponent
 		if (flyAwayTimer != null) flyAwayTimer.Update(deltaTime);
 		if (comboTimer != null) comboTimer.Update(deltaTime);
 		if (dodgeRecoveryTimer != null) dodgeRecoveryTimer.Update(deltaTime);
+		Profiler.BeginSample("UpdateWeapon");
 		foreach (ScriptableWeapon scriptableWeapon in weapons)
 		{
 			scriptableWeapon?.Weapon?.UpdateWeapon(deltaTime);
 		}
+		Profiler.EndSample();
 		//if (CurrentWeapon != null) CurrentWeapon.UpdateWeapon(deltaTime);
 
 		if (NextWeapon != null)

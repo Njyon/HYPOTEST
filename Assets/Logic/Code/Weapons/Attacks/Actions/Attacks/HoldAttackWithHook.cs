@@ -54,7 +54,8 @@ public class HoldAttackWithHook : AttackBase
 		GameCharacter.AnimController.InAttack = false;
 		GameCharacter.AnimController.HoldAttack = false;
 		inHoldAttack = false;
-		GameCharacter.MovementComponent.onCharacterGroundedChanged += OnCharacterGroundedChanged; 
+		GameCharacter.MovementComponent.onCharacterGroundedChanged -= OnCharacterGroundedChanged;
+		GameCharacter.AnimController.ForceStandingState();
 		GameCharacter.CombatComponent.CurrentWeapon.HitDetectionEnd();
 		GameCharacter.CombatComponent.AllowEarlyLeaveAttackRecovery = true;
 		GameCharacter.StateMachine.RequestStateChange(EGameCharacterState.AttackRecovery);
