@@ -17,6 +17,7 @@ public enum EExplicitAttackType
     AirDownAttack,
     GapCloser,
 	DefensiveAction,
+	Ultimate,
 }
 
 public enum EAnimationType
@@ -37,6 +38,7 @@ public abstract class WeaponBase
 {
 	public delegate void OnChargeValueChanged(float newCharge, float oldCharge);
 	public OnChargeValueChanged onChargeValueChanged;
+	public OnChargeValueChanged onUltChargeValueChanged;
 
 	GameCharacter gameCharacter;
     ScriptableWeapon weaponData;
@@ -54,6 +56,7 @@ public abstract class WeaponBase
 	int comboIndexInSameAttack;
 	float charge = 0;
 	float chargeAfterTime = 0;
+	float ultCharge = 0;
 	Ultra.Timer maxChargeAfterEquipTimer;
 	AttackAnimationData lastData;
 	ScriptableWeaponAnimationData animationData;
@@ -107,6 +110,24 @@ public abstract class WeaponBase
 			}
 			chargeAfterTime = value;
 		} 
+	}
+	public float UltCharge
+	{
+		get { return ultCharge; }
+		set
+		{
+			// If Ult is ready dont take it away from player, feels shity
+			if (ultCharge >= weaponData.MaxUltChargeAmount && value < weaponData.MaxUltChargeAmount) return;
+
+			value = Mathf.Clamp(value, 0, weaponData.MaxUltChargeAmount); 
+			if (ultCharge != value)
+			{
+				float oldUltCharge = ultCharge;
+				ultCharge = value;
+
+				if (onUltChargeValueChanged != null) onUltChargeValueChanged(ultCharge, oldUltCharge);
+			}
+		}
 	}
 	public Ultra.Timer MaxChargeAfterEquipTimer { get { return maxChargeAfterEquipTimer; } }
 
@@ -470,6 +491,17 @@ public abstract class WeaponBase
 		return null;
 	}
 
+	public virtual AttackAnimationData Ultimate(float attackDeltaTime)
+	{
+		if (AnimationData == null) return null;
+		if (AnimationData.GapCloserAttacks.Count > 0)
+		{
+			TryStartingAction(EExplicitAttackType.Ultimate, attackDeltaTime);
+			return CurrentAction;
+		}
+		return null;
+	}
+
 	public virtual AttackAnimationData DefensiveAction()
 	{
 		if (AnimationData == null) return null;
@@ -552,6 +584,7 @@ public abstract class WeaponBase
 			case EExplicitAttackType.AirDirectionalAttack: return AnimationData.AirDirectionAttacks;
 			case EExplicitAttackType.GapCloser: return AnimationData.GapCloserAttacks;
 			case EExplicitAttackType.DefensiveAction: return AnimationData.DefensiveAction;
+			case EExplicitAttackType.Ultimate: return AnimationData.Ultimate;
 			default:
 				Ultra.Utilities.Instance.DebugErrorString("WeaponBase", "GetAttackListBasedOnEExplicitAttackType", "Coundn't find List, ExplicitAttackType not Implemented");
 				return new List<AttackAnimationData>();
@@ -958,9 +991,9 @@ public abstract class WeaponBase
 
 	public virtual float GetDamage(float damage)
 	{
-		float chargeValue = Ultra.Utilities.Remap(Charge, 0, weaponData.MaxChargeAmount, 0.2f, 1f);
+		//float chargeValue = Ultra.Utilities.Remap(Charge, 0, weaponData.MaxChargeAmount, 0.2f, 1f);
 		//Ultra.Utilities.Instance.DebugLogOnScreen("Damage => " + CurrentAttack.extraData.Damage, 1f, StringColor.Magenta);
-		return chargeValue * damage;
+		return /*chargeValue **/ damage;
 	}
 
 	public virtual void SetTriggerAttack(AnimationClip triggerAttack)

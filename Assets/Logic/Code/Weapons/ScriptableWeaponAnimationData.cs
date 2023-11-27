@@ -139,6 +139,8 @@ public class ScriptableWeaponAnimationData : ScriptableObject
 
 	public List<AttackAnimationData> DefensiveAction;
 
+	public List<AttackAnimationData> Ultimate;
+
 	public EWeaponHandType HandType;
 	public AnimationClip WeaponReadyPose;
 	[Range(0f,1f)]
@@ -169,6 +171,8 @@ public class ScriptableWeaponAnimationData : ScriptableObject
 
 		DefensiveAction = new List<AttackAnimationData>();
 
+		Ultimate = new List<AttackAnimationData>();
+
 		CopyDataInList(ref GroundAttacks, ref origin.GroundAttacks);
 		CopyDataInList(ref GroundUpAttacks, ref origin.GroundUpAttacks);
 		CopyDataInList(ref GroundDownAttacks, ref origin.GroundDownAttacks);
@@ -182,6 +186,8 @@ public class ScriptableWeaponAnimationData : ScriptableObject
 		CopyDataInList(ref GapCloserAttacks, ref origin.GapCloserAttacks);
 
 		CopyDataInList(ref DefensiveAction, ref origin.DefensiveAction);
+
+		CopyDataInList(ref Ultimate, ref origin.Ultimate);
 
 		HandType = origin.HandType;
 		WeaponReadyPose = origin.WeaponReadyPose;

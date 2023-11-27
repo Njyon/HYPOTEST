@@ -77,6 +77,8 @@ public class ArenaSpawner : MonoBehaviour
 
 	public void StartSpawningCharacters()
 	{
+		if (!enabled) return;
+
 		if (!startedSpawning)
 		{
 			startedSpawning = true;

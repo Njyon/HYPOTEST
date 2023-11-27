@@ -269,6 +269,26 @@ MonoBehaviour:
       keys: 
       values: 
     particleList: []
+  Ultimate:
+  - action:
+      instance:
+        rid: 4291185506836283398
+    data:
+      showProperties: 0
+      hitDetectionType: 0
+      mesh: {fileID: 0}
+      offset: {x: 0, y: 0, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 0
+      boxDimensions: {x: 0, y: 0, z: 0}
+      capsulHeight: 0
+    combatBranches:
+      keys: 
+      values: 
+    timedCombatBrenches:
+      keys: 
+      values: 
+    particleList: []
   HandType: 0
   WeaponReadyPose: {fileID: -931667488845356766, guid: a8be00c9d0a9e8240b1d6429b3847810,
     type: 3}
@@ -474,3 +494,11 @@ MonoBehaviour:
           attackRange: 10
           rotationInterpSpeed: 10
           attackMovementSpeed: 40
+    - rid: 4291185506836283398
+      type: {class: UltimateAttack, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          attackAnimation: {fileID: 0}

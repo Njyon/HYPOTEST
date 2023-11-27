@@ -291,6 +291,26 @@ MonoBehaviour:
       keys: 
       values: 
     particleList: []
+  Ultimate:
+  - action:
+      instance:
+        rid: 4291185598052696066
+    data:
+      showProperties: 0
+      hitDetectionType: 0
+      mesh: {fileID: 0}
+      offset: {x: 0, y: 0, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 0
+      boxDimensions: {x: 0, y: 0, z: 0}
+      capsulHeight: 0
+    combatBranches:
+      keys: 
+      values: 
+    timedCombatBrenches:
+      keys: 
+      values: 
+    particleList: []
   HandType: 1
   WeaponReadyPose: {fileID: 8247377969438304865, guid: 45559a67ce8bc1b459718cc4ddb18506,
     type: 3}
@@ -483,3 +503,17 @@ MonoBehaviour:
             type: 3}
           holdAttackAnimation: {fileID: 2981311240891123335, guid: 5c980c128bcb3ba4dbe9b5895c8109f0,
             type: 3}
+    - rid: 4291185598052696066
+      type: {class: WaterUltimate, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          attackAnimation: {fileID: 0}
+          wavePrefab: {fileID: 5348164756413397880, guid: 315b2274a17d0244e9f96197a0ff8a65,
+            type: 3}
+          waveSpawnDistanceFromCharacter: 2
+          waveKnockupRange: 5
+          waveSpeed: 10
+          waveLifeTime: 5

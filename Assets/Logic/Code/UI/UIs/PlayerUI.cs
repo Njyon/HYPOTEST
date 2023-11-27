@@ -1,4 +1,5 @@
 using MoreMountains.Feedbacks;
+using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -36,7 +37,21 @@ public class PlayerUI : UIBase
 	[SerializeField] DodgebarElemnt dodgeBarPrefab;
 	List<Image> dodgeBars;
 
+	[Header("Ult")]
+	[SerializeField] Image ultUIElement;
+	[SerializeField] Image ultUIElementBackground;
+	[SerializeField] MMF_Player showUltUI;
+	[SerializeField] MMF_Player hideUltUI;
+
 	PlayerGameCharacter gameCharacter;
+
+	void Awake()
+	{
+		ultUIElement.SetAlpha(0f);
+		ultUIElementBackground.SetAlpha(0f);
+
+		LoadedUI();
+	}
 
 	public void Init(PlayerGameCharacter playerCharacter)
 	{
@@ -58,6 +73,9 @@ public class PlayerUI : UIBase
 			weaponUIs.Add(weaponVisualizer);
 		}
 
+		gameCharacter.CombatComponent.onWeaponChanged += OnWeaponChanged;
+		OnWeaponChanged(gameCharacter.CombatComponent.CurrentWeapon, null, gameCharacter);
+
 		comboText.alpha = 0f;
 
 		dodgeBars = new List<Image>();
@@ -77,6 +95,8 @@ public class PlayerUI : UIBase
 			gameCharacter.CombatRatingComponent.onCurrentValueChange -= OnStyleValueChanged;
 			gameCharacter.CombatComponent.onComboCountChanged -= OnComboCountChanged;
 			gameCharacter.onGameCharacterAggroChanged -= OnAggroChanged;
+			gameCharacter.CombatComponent.onWeaponChanged -= OnWeaponChanged;
+			 if (gameCharacter.CombatComponent.CurrentWeapon != null) gameCharacter.CombatComponent.CurrentWeapon.onUltChargeValueChanged -= OnUltChargeValueChanged;
 		}
 		weaponUIs.Clear();
 	}
@@ -95,11 +115,6 @@ public class PlayerUI : UIBase
 	{
 		healthbar.rectTransform.sizeDelta = new Vector2(value, healthbar.rectTransform.sizeDelta.y);
 		healthbarBackGround.rectTransform.sizeDelta = new Vector2(value, healthbar.rectTransform.sizeDelta.y);
-	}
-
-	void Awake()
-	{
-		LoadedUI();	
 	}
 
 	void Update()
@@ -231,6 +246,37 @@ public class PlayerUI : UIBase
 			{
 				// Hide Ranking
 			}
+		}
+	}
+
+	void OnWeaponChanged(WeaponBase newWeapon, WeaponBase oldWeapon, GameCharacter gameCharacter)
+	{
+		if (oldWeapon != null)
+		{
+			oldWeapon.onUltChargeValueChanged -= OnUltChargeValueChanged;
+		}
+
+		if (newWeapon != null)
+		{
+			newWeapon.onUltChargeValueChanged += OnUltChargeValueChanged;
+			ultUIElement.sprite = newWeapon.WeaponData.WeaponImage;
+			OnUltChargeValueChanged(newWeapon.UltCharge, 0);
+		}else
+		{
+			// Hide UI if weapon is null
+			OnUltChargeValueChanged(0, 0);
+		}
+	}
+
+	void OnUltChargeValueChanged(float newCharge, float oldCharge)
+	{
+		if (newCharge >= gameCharacter.CombatComponent.CurrentWeapon.WeaponData.MaxUltChargeAmount)
+		{
+			showUltUI.PlayFeedbacks();
+		}
+		else
+		{
+			hideUltUI.PlayFeedbacks();	
 		}
 	}
 }

@@ -11,7 +11,8 @@ public enum EAttackType
 	AttackHorizontal,
 	AttackUp,
 	AttackDown,
-	GapCloser
+	GapCloser,
+	Ultimate
 }
 
 public enum EComboChangeType
@@ -334,6 +335,7 @@ public class CombatComponent
 				case EAttackType.AttackUp: newAttack = CurrentWeapon?.GroundUpAttack(deltaAttackTime); break;
 				case EAttackType.AttackDown: newAttack = CurrentWeapon?.GroundDownAttack(deltaAttackTime); break;
 				case EAttackType.GapCloser: newAttack = CurrentWeapon?.GapCloserAttack(deltaAttackTime); break;
+				case EAttackType.Ultimate: newAttack = CurrentWeapon?.Ultimate(deltaAttackTime); break;
 				default: break;
 			}
 		}else
@@ -345,6 +347,7 @@ public class CombatComponent
 				case EAttackType.AttackUp: newAttack = CurrentWeapon?.AirUpAttack(deltaAttackTime); break;
 				case EAttackType.AttackDown: newAttack = CurrentWeapon?.AirDownAttack(deltaAttackTime); break;
 				case EAttackType.GapCloser: newAttack = CurrentWeapon?.GapCloserAttack(deltaAttackTime); break;
+				case EAttackType.Ultimate: newAttack = CurrentWeapon?.Ultimate(deltaAttackTime); break;
 				default: break;
 			}
 		}

@@ -23,6 +23,7 @@ public class ScriptableWeapon : ScriptableObject
 	public float MaxChargeAmount = 1000f;
 	public float DefaultChargeAmount = 700f;
 	public float TimeAfterEqupingMaxChargedWeapon = 3f;
+	public float MaxUltChargeAmount = 100f;
 	public GameObject UIElement;
 	public Sprite WeaponImage;
 	public List<SoundEffect> defaultAttackSounds;
