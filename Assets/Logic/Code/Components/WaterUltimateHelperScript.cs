@@ -12,6 +12,7 @@ public class WaterUltimateHelperScript : MonoBehaviour
 	GameCharacter gameCharacter;
 	float speed;
 	float lifeTime;
+	bool isInit = false;
 
 	public void Awake()
 	{
@@ -26,13 +27,17 @@ public class WaterUltimateHelperScript : MonoBehaviour
 		this.speed = speed;
 		GameObject.Destroy(gameObject, lifeTime);
 		lifeTime = 0;
+		isInit = true;
 	}
 
 	void Update()
 	{
-		lifeTime += Time.deltaTime;	
-		CollisionFlags collflag = characterController.Move(transform.forward * (speed * Time.deltaTime));
+		if (!isInit) return;
 
+		lifeTime += Time.deltaTime;
+		//characterController.Move(transform.forward * (Physics.gravity.y * Time.deltaTime));
+		CollisionFlags collflag = characterController.Move(characterController.transform.forward.normalized * (speed * Time.deltaTime));
+		
 		if (lifeTime > 1f)
 		{
 			if ((collflag & CollisionFlags.CollidedSides) != 0)

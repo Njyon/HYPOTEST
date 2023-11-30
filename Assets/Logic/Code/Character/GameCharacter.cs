@@ -24,6 +24,7 @@ public class GameCharacter : MonoBehaviour, IDamage
 	GameCharacterMovementComponent movementComponent;
 	RigDataComponent rigDataComponent;
 	Rigidbody rigidbody;
+	BuffComponent buffComponent;
 	Vector2 movementInput;
 	int currentJumpAmount = 0;
 	bool isPlayerCharacter = false;
@@ -78,6 +79,7 @@ public class GameCharacter : MonoBehaviour, IDamage
 	public ParticleSystemPool SuccsessfullDodgeParticlePool { get { return succsessfullDodgeParticlePool; } }
 	public ParticleSystemPool DodgeParticleSystemPool { get { return dodgeParticleSystemPool; } }
 	public GameObject DataWorldHolder { get { return dataWorldHolder; } }
+	public BuffComponent BuffComponent { get { return buffComponent; } }
 	public bool CharacterHasAggro => aggroedCharacters.Count > 0;
 
 #if UNITY_EDITOR
@@ -156,6 +158,7 @@ public class GameCharacter : MonoBehaviour, IDamage
 		pluginStateMachine.Init(this);
 		animController = new AnimationController(this);
 		combatComponent = new CombatComponent(this);
+		buffComponent = new BuffComponent(this);
 
 		GameObject characterDetectionObject = GameObject.Instantiate(GameAssets.Instance.characterDetection, transform);
 		characterDetection = characterDetectionObject.GetComponent<GameCharacterDetection>();
@@ -213,31 +216,22 @@ public class GameCharacter : MonoBehaviour, IDamage
 
 	protected void Update()
 	{
-		Profiler.BeginSample("GameCharacterUpdate");
 		if (!IsInitialized || !LoadingChecker.Instance.FinishLoading) return;
-		if (!isPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen("Enemy MovementInput: " + movementInput, 0f, StringColor.Green);
-		freezTimer.Update(Time.deltaTime);
+		if (!isPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen("Enemy MovementInput: " + movementInput, 0f, StringColor.Green, 200, DebugAreas.AI);
+		float deltaTime = Time.deltaTime;
+		freezTimer.Update(deltaTime);
 		//movementInput.x = 1;
-		Profiler.BeginSample("EventComponent");
-		EventComponent.Update(Time.deltaTime);
-		Profiler.EndSample();
-		Profiler.BeginSample("MovementComponent");
+		EventComponent.Update(deltaTime);
 		MovementComponent.CalculateVelocity();
 		MovementComponent.AddGravityOnMovementVelocity();
-		Profiler.BeginSample("GroundedCheck");
 		MovementComponent.CheckIfCharacterIsGrounded();
-		Profiler.EndSample();
-		Profiler.EndSample();
-		Profiler.BeginSample("CombatComponent");
-		CombatComponent?.UpdateComponent(Time.deltaTime);
-		Profiler.EndSample();
-		Profiler.BeginSample("Move");
+		CombatComponent?.UpdateComponent(deltaTime);
 		MovementComponent.MoveCharacter();
-		Profiler.EndSample();
+		buffComponent.Update(deltaTime);
 
-		animController.Update(Time.deltaTime);
-		if (Health != null) Health.Update(Time.deltaTime);
-		if (StaggerComponent != null) StaggerComponent.Update(Time.deltaTime);
+		animController.Update(deltaTime);
+		if (Health != null) Health.Update(deltaTime);
+		if (StaggerComponent != null) StaggerComponent.Update(deltaTime);
 
 
 #if UNITY_EDITOR
@@ -337,7 +331,7 @@ public class GameCharacter : MonoBehaviour, IDamage
 
 	#endregion
 
-	public void DoDamage(GameCharacter damageInitiator, float damage, bool removeCharge = true)
+	public void DoDamage(GameCharacter damageInitiator, float damage, bool shouldStagger = true, bool removeCharge = true)
 	{
 		if (damageInitiator != null)
 		{
@@ -375,7 +369,7 @@ public class GameCharacter : MonoBehaviour, IDamage
 			CombatComponent.ComboBreak();
 			damageInitiator?.CombatComponent.CharacterDidDamageTo(damageInitiator, damage);
 
-			if (!isPlayerCharacter) CombatComponent.RequestFreez();
+			if (!isPlayerCharacter && shouldStagger) CombatComponent.RequestFreez();
 			//if (CombatComponent.CanRequestFreez())
 			//{
 			//	if (StateMachine.GetCurrentStateType() == EGameCharacterState.Freez)
@@ -389,7 +383,6 @@ public class GameCharacter : MonoBehaviour, IDamage
 			//	}
 			//}
 
-			damageInitiator.CombatComponent.CurrentWeapon.PlayHitSound();
 			animController.TriggerAdditiveHit();
 			OnDamaged(damageInitiator, damage, removeCharge);
 			damageInitiator?.AddRatingOnHit(damage);

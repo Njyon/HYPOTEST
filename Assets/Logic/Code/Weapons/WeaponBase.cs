@@ -62,6 +62,7 @@ public abstract class WeaponBase
 	ScriptableWeaponAnimationData animationData;
 	int lastAttackSoundIndex;
 	int lastHitSoundIndex;
+	bool shouldPlayHitSound = true;
 
 	// Particle Save
 	List<List<ParticleSystem>> groundLightAttackParticleList;
@@ -86,6 +87,7 @@ public abstract class WeaponBase
 	public int ComboIndexInSameAttack { get { return comboIndexInSameAttack; } }
 	public List<GameObject> HitObjects { get { return hitObjects; } }	
 	public int AttackIndex { get { return attackIndex; } }
+	public bool ShouldPlayHitSound { get { return shouldPlayHitSound; } set { shouldPlayHitSound = value; } }
 	public ScriptableWeaponAnimationData AnimationData { 
 		get {
 			if (animationData == null)
@@ -308,7 +310,7 @@ public abstract class WeaponBase
 				Charge = Mathf.Lerp(Charge, weaponData.DefaultChargeAmount, Time.deltaTime * 0.5f);
 			}
 		}
-
+		ShouldPlayHitSound = true;
 		HitDetection();
 	}
 
@@ -791,6 +793,11 @@ public abstract class WeaponBase
 			case EExplicitAttackType.AirUpAttack: AirUpAttackHit(other.gameObject); break;
 			case EExplicitAttackType.DefensiveAction: DefensiveActionHit(other.gameObject); break;
 			default: break;
+		}
+		if (ShouldPlayHitSound)
+		{
+			PlayHitSound();
+			ShouldPlayHitSound = false;
 		}
 	}
 

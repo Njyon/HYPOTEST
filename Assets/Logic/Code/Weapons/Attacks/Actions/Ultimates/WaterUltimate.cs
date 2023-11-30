@@ -12,6 +12,11 @@ public class WaterUltimateData : AttackData
 	public float waveKnockupRange = 5f;
 	public float waveSpeed = 5f;
 	public float waveLifeTime = 5f;
+	public WaterDrop waterDropPrefab;
+	public float WaterUltBuffDuration = 10f;
+	public float WaterUltTimeBetweenBursts = 0.2f;
+	public int BurstAmount = 3;
+	public float WaterDropSpeed = 5f;
 }
 
 public class WaterUltimate : AttackBase
@@ -19,6 +24,17 @@ public class WaterUltimate : AttackBase
 	public WaterUltimateData attackData;
 	WaterUltimateHelperScript rightWave;
 	WaterUltimateHelperScript leftWave;
+	WaterDropPool waterDropPool;
+
+	public override void Init(GameCharacter gameCharacter, WeaponBase weapon, InitAction action = null)
+	{
+		if (!IsActionInit)
+		{
+			waterDropPool = new WaterDropPool(attackData.waterDropPrefab, gameCharacter.DataWorldHolder, 10);
+		}
+		base.Init(gameCharacter, weapon, action);
+
+	}
 
 	public override void StartAction()
 	{
@@ -36,6 +52,8 @@ public class WaterUltimate : AttackBase
 		rightWave = SpawnWave(rightWavePos, Vector3.right);
 		leftWave = SpawnWave(leftWavePos, Vector3.left);
 
+		GameCharacter.BuffComponent.AddBuff(new WaterUltimateBuff(GameCharacter, attackData.WaterUltBuffDuration, waterDropPool, attackData.WaterUltTimeBetweenBursts, attackData.BurstAmount, attackData.WaterDropSpeed));
+
 	}
 
 	Vector3 GetWaveSpawnPoint(Vector3 worldPos)
@@ -52,7 +70,7 @@ public class WaterUltimate : AttackBase
 
 	WaterUltimateHelperScript SpawnWave(Vector3 spawnPosition, Vector3 dir)
 	{
-		WaterUltimateHelperScript wave = GameObject.Instantiate(attackData.wavePrefab, GameCharacter.DataWorldHolder.transform);
+		WaterUltimateHelperScript wave = GameObject.Instantiate(attackData.wavePrefab, GameCharacter.DataWorldHolder.transform, true);
 		wave.name = ">> " + wave.name;
 		wave.transform.rotation = Quaternion.LookRotation(dir);
 		wave.transform.position = spawnPosition;
@@ -66,13 +84,8 @@ public class WaterUltimate : AttackBase
 	{
 		if (other == GameCharacter || other.Team == GameCharacter.Team) return;
 
-		other.DoDamage(GameCharacter, attackData.Damage);
-		if (other.CombatComponent.CanRequestMoveTo())
-		{
-			other.CombatComponent.HookedToCharacter = GameCharacter;
-			other.CombatComponent.MoveToPosition = other.MovementComponent.CharacterCenter + Vector3.up * attackData.waveKnockupRange;
-
-		}
+		other.DoDamage(GameCharacter, attackData.Damage, false);
+		other.CombatComponent.RequestMoveTo(GameCharacter, other.MovementComponent.CharacterCenter + Vector3.up * attackData.waveKnockupRange);
 	}
 
 	public override void ActionInterupted()

@@ -78,6 +78,7 @@ public class CombatComponent
 	Ultra.Timer dodgeRecoveryTimer;
 	PositionCheck aimPositionCheck;
 	bool allowEarlyLeaveAttackRecovery = false;
+	Ultra.Timer gapCloserTimer = null;
 
 	public ScriptableWeapon[] Weapons { get { return weapons; } }
 	public Ultra.Timer AttackTimer { get { return attackTimer; } }
@@ -163,6 +164,7 @@ public class CombatComponent
 		dodgesLeft = gameCharacter.GameCharacterData.MaxDodgeAmount;
 		dodgeRecoveryTimer = new Ultra.Timer(gameCharacter.GameCharacterData.DodgeRecoveryTime, true);
 		aimPositionCheck = new PositionCheck();
+		gapCloserTimer = new Ultra.Timer(0.2f);
 	}
 
 	~CombatComponent()
@@ -221,12 +223,11 @@ public class CombatComponent
 		if (flyAwayTimer != null) flyAwayTimer.Update(deltaTime);
 		if (comboTimer != null) comboTimer.Update(deltaTime);
 		if (dodgeRecoveryTimer != null) dodgeRecoveryTimer.Update(deltaTime);
-		Profiler.BeginSample("UpdateWeapon");
+		if (gapCloserTimer != null) gapCloserTimer.Update(deltaTime);	
 		foreach (ScriptableWeapon scriptableWeapon in weapons)
 		{
 			scriptableWeapon?.Weapon?.UpdateWeapon(deltaTime);
 		}
-		Profiler.EndSample();
 		//if (CurrentWeapon != null) CurrentWeapon.UpdateWeapon(deltaTime);
 
 		if (NextWeapon != null)
@@ -323,6 +324,15 @@ public class CombatComponent
 		if (NextWeapon != null)
 			UpdateWeapon();
 
+		// Start gapCloser cooldown or return if in cooldown
+		if (attackType == EAttackType.GapCloser && gapCloserTimer.IsRunning)
+		{
+			return;
+		} else if (attackType == EAttackType.GapCloser)
+		{
+			gapCloserTimer.Start();
+		}
+
 		// Used for attackTracking for Evaluate CombatRating
 		AttackAnimationData newAttack = null;
 
@@ -410,6 +420,17 @@ public class CombatComponent
 				gameCharacter.StateMachine.RequestStateChange(EGameCharacterState.Freez);
 				gameCharacter.FreezTimeOverride = freezTime;
 			}
+		}
+	}
+
+	public void RequestMoveTo(GameCharacter initiator, Vector3 position)
+	{
+		if (CanRequestMoveTo())
+		{
+			hookedToCharacter = initiator;
+			MoveToPosition = position;
+
+			gameCharacter.StateMachine.RequestStateChange(EGameCharacterState.MoveToPosition, true);
 		}
 	}
 

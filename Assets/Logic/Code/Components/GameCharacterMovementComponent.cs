@@ -375,25 +375,19 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	{
 		RaycastHit groundHitCapsul;
 		RaycastHit groundHitRayCast;
-		Profiler.BeginSample("IsGroundedCheck");
 		if (IsGroundedCheck(CharacterCenter, out groundHitCapsul))
 		{
-			Profiler.EndSample();
-			Profiler.BeginSample("LayerCheck");
 			if (groundHitCapsul.transform.gameObject.layer == characterLayer)
 			{
 				IsGroundedIntern = false;
 				return;
 			}
-			Profiler.EndSample();
 
-			Profiler.BeginSample("Ray");
 			Vector3 castOrigin = new Vector3(groundHitCapsul.point.x, groundHitCapsul.point.y + 1f, groundHitCapsul.point.z);
 			if (Physics.Raycast(castOrigin, groundHitCapsul.point - castOrigin, out groundHitRayCast, Vector3.Distance(castOrigin, groundHitCapsul.point) + 0.1f, gameCharacter.IgnoreCharacterLayer, QueryTriggerInteraction.UseGlobal))
 				RayCastGroundHit = new NullableHit(groundHitRayCast);
 			else
 				RayCastGroundHit = null;
-			Profiler.EndSample();
 
 			PossibleGround = new NullableHit(groundHitCapsul);
 			IsGroundedIntern = true;
@@ -404,15 +398,12 @@ public class GameCharacterMovementComponent : MonoBehaviour
 		}
 		else
 		{
-			Profiler.EndSample();
 			IsGroundedIntern = false;
 		}
-		Profiler.EndSample();
 	}
 
 	public bool IsGroundedCheck(Vector3 center, out RaycastHit newHit)
 	{
-		Profiler.BeginSample("CapsulCast");
 		return Ultra.Utilities.CapsulCast(center, capsuleCollider.height, capsuleCollider.radius, Vector3.down * (0.1f + minDistance), out newHit, Color.cyan.WithAlpha(0.35f), 100, DebugAreas.Movement, gameCharacter.DefaultLayer, QueryTriggerInteraction.Ignore);
 	}
 
