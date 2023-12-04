@@ -30,7 +30,7 @@ public class BTAimShoot : BTHyppoliteActionNodeBase
 
 		if (lr == null)
 		{
-			lr = GameObject.Instantiate(GameAssets.Instance.laserLineRenderer, GameCharacter.DataWorldHolder.transform);
+			lr = GameObject.Instantiate(GameAssets.Instance.laserLineRenderer, GameCharacter.CreateHolderChild("RangeWeaponLineRendererHolder").transform);
 		}
 		if (weaponObjData != null)
 		{

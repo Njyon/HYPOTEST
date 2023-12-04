@@ -36,7 +36,22 @@ public class WaterUltimateHelperScript : MonoBehaviour
 
 		lifeTime += Time.deltaTime;
 		//characterController.Move(transform.forward * (Physics.gravity.y * Time.deltaTime));
-		CollisionFlags collflag = characterController.Move(characterController.transform.forward.normalized * (speed * Time.deltaTime));
+		Vector3 prevPos = transform.position;
+		Vector3 moveDir = transform.forward.normalized * (speed * Time.deltaTime);
+		RaycastHit hit;
+		if (Physics.Raycast(transform.position, Vector3.down, out hit, 2f, -5, QueryTriggerInteraction.Ignore))
+		{
+			moveDir = Vector3.ProjectOnPlane(moveDir, hit.normal);
+		}else
+		{
+			moveDir = new Vector3(moveDir.x * 10, Physics.gravity.y, moveDir.z  * 10);
+		}
+		CollisionFlags collflag = characterController.Move(moveDir);
+
+		// Weird bug fix for when wave moves to in World.Zero point
+		float dist = Vector3.Distance(transform.position, prevPos);
+		if (dist > moveDir.magnitude * 2f) 
+			transform.position = prevPos;
 		
 		if (lifeTime > 1f)
 		{

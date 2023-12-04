@@ -19,7 +19,7 @@ public class EnemyGameCharacter : GameCharacter
 	public override void CustomAwake()
 	{
 		base.CustomAwake();
-		attackFeedbackPool = new ParticleSystemPool(GameAssets.Instance.DefaultAttackFeedback, DataWorldHolder, 1);
+		attackFeedbackPool = new ParticleSystemPool(GameAssets.Instance.DefaultAttackFeedback, CreateHolderChild("AttackFeedbackHolder"), 1);
 
 		if (btRunner != null)
 		{

@@ -53,8 +53,13 @@ public class WaterUltimateBuff : ABuff
 		for (int i = 0; i < delta; i++) 
 		{
 			WaterDrop drop = waterDropPool.GetValue();
+			drop.TrailRenderer.Clear();
+			drop.TrailRenderer.enabled = false;
+
 			drop.transform.position = GameCharacter.MovementComponent.CharacterCenter + new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(0, 2), UnityEngine.Random.Range(-1, 1));
 			drop.Init(GameCharacter, GameCharacter.CharacterDetection.OverlappingGameCharacter[i % GameCharacter.CharacterDetection.OverlappingGameCharacter.Count], waterDropPool, waterDropSpeed);
+			
+			drop.TrailRenderer.enabled = true;
 		}
 
 	}

@@ -10,7 +10,12 @@ public class WaterDrop : MonoBehaviour
     GameCharacter gameCharacter = null;
     GameCharacter target = null;
     WaterDropPool pool = null;
+    TrailRenderer tr;
+    Vector3 startPos;
+    float t;
     float speed;
+
+    public TrailRenderer TrailRenderer { get { return tr; } }
 
 	public void Init(GameCharacter owner, GameCharacter target, WaterDropPool pool, float speed)
 	{
@@ -19,6 +24,8 @@ public class WaterDrop : MonoBehaviour
         this.target = target;
         this.pool = pool;
         this.speed = speed;
+        startPos = transform.position;
+        t = 0;
 
         this.target.onGameCharacterDied += OnGameCharacterDied;
 	}
@@ -30,16 +37,20 @@ public class WaterDrop : MonoBehaviour
     }
 
 	void Awake()
-    {
-        isInit = false;
-    }
+	{
+        tr = GetComponent<TrailRenderer>();
+		isInit = false;
+		startPos = transform.position;
+		t = 0;
+	}
 
     void Update()
     {
         if (isInit && gameCharacter != null && target != null)
         {
-            transform.position = Vector3.Slerp(transform.position, target.transform.position, Time.deltaTime * speed);
-            if (transform.position.IsNearlyEqual(target.transform.position, 1f))
+            t += Time.deltaTime * speed;
+            transform.position = Vector3.Slerp(startPos, target.MovementComponent.CharacterCenter, t);
+            if (t >= 1)
             {
                 pool.ReturnValue(this);
                 target.DoDamage(gameCharacter, 10f);

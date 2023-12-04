@@ -21,7 +21,7 @@ public class ShootAttack : AttackBase
 	public override void Init(GameCharacter gameCharacter, WeaponBase weapon, InitAction action = null)
 	{
 		base.Init(gameCharacter, weapon, () => {
-			projectilePool = new ProjectilePool(attackData.projectile, gameCharacter.DataWorldHolder, 5);
+			projectilePool = new ProjectilePool(attackData.projectile, gameCharacter.CreateHolderChild("BulletProjectileHolder"), 5);
 		});
 
 		if (lastWeapon != GameCharacter.CombatComponent.CurrentWeapon)

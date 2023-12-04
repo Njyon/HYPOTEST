@@ -30,7 +30,7 @@ public class WaterUltimate : AttackBase
 	{
 		if (!IsActionInit)
 		{
-			waterDropPool = new WaterDropPool(attackData.waterDropPrefab, gameCharacter.DataWorldHolder, 10);
+			waterDropPool = new WaterDropPool(attackData.waterDropPrefab, gameCharacter.CreateHolderChild("WaterDropPool"), 10);
 		}
 		base.Init(gameCharacter, weapon, action);
 
@@ -41,7 +41,7 @@ public class WaterUltimate : AttackBase
 		if (rightWave != null) rightWave.gameCharacterDetection.onOverlapEnter -= OnOverlapEnter;
 		if (leftWave != null) leftWave.gameCharacterDetection.onOverlapEnter -= OnOverlapEnter;
 
-		Vector3 characterWorldPos = GameCharacter.MovementComponent.CharacterCenter;
+		Vector3 characterWorldPos = GameCharacter.MovementComponent.CharacterCenter + Vector3.up * attackData.waveSpawnDistanceFromCharacter;
 
 		Vector3 rightWavePos = characterWorldPos + Vector3.right * attackData.waveSpawnDistanceFromCharacter;
 		Vector3 leftWavePos = characterWorldPos + Vector3.left * attackData.waveSpawnDistanceFromCharacter;
