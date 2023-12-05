@@ -5,6 +5,8 @@ using System.Linq;
 using Unity.Mathematics;
 using UnityEditor;
 using UnityEngine;
+using static Megumin.Binding.BindingEditor;
+using static UnityEditor.Progress;
 
 [Flags]
 public enum DebugAreas
@@ -137,14 +139,8 @@ namespace Ultra {
 #endif
 		public static bool IsNearlyEqual(float a, float b, float epsilon)
 		{
-			if (a >= b - epsilon && a <= b + epsilon)
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
+			return (a >= b - epsilon && a <= b + epsilon);
+			
 		}
 		public static bool IsNearlyEqual(Vector3 a, Vector3 b, Vector3 epsilon)
 		{

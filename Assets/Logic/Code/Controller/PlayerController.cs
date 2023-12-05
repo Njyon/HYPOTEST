@@ -13,7 +13,6 @@ public class PlayerController : ControllerBase
 	CameraController camController;
 	PlayerGameCharacter gameCharacter;
 
-	public CharacterSpawner spawner;
 	AttackEvent holdAttack;
 	float defaultHoldTime = 0.4f;
 
@@ -96,6 +95,7 @@ public class PlayerController : ControllerBase
 		playerInputs.Default.DefensiveAction.canceled += ctx => DefensiveActionEnd();
 		playerInputs.Default.Dodge.performed += ctx => Dodge();
 		playerInputs.Default.GapCloser.performed += ctx => GapCloser();
+		playerInputs.Default.Ultimate.performed += ctx => Ultimate();
 
 		playerInputs.Default.ForceFrameRate.performed += ctx => ForceFrameRate();
 		playerInputs.Default.DebugPauseGame.performed += ctx => DebugPauseGame();
@@ -214,6 +214,12 @@ public class PlayerController : ControllerBase
 		Ultra.Utilities.Instance.debugAreas = 0;
 	}
 
+	void Ultimate()
+	{
+		CharacterEvent previousAttackEvent = GetFistEventOfType(EGameCharacterEvent.Attack, ref gameCharacter.EventComponent.previousEventsOverTimeFrame);
+		gameCharacter?.EventComponent?.AddEvent(new AttackEvent(gameCharacter, EAttackType.Ultimate, previousAttackEvent != null ? previousAttackEvent.inputTime : -1));
+	}
+
 	private void Update()
 	{
 
@@ -282,7 +288,11 @@ public class PlayerController : ControllerBase
 
 	void DebugButton03()
 	{
-		spawner.Spawn();
+		foreach (ScriptableWeapon sWeapon in gameCharacter.CombatComponent.Weapons)
+		{
+			if (sWeapon == null || sWeapon.Weapon == null) continue;
+			sWeapon.Weapon.UltCharge = sWeapon.MaxUltChargeAmount;
+		} 
 	}
 
 	void DebugButton04()

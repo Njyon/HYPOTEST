@@ -30,7 +30,7 @@ public class BTAimShoot : BTHyppoliteActionNodeBase
 
 		if (lr == null)
 		{
-			lr = GameObject.Instantiate(GameAssets.Instance.laserLineRenderer, GameCharacter.DataWorldHolder.transform);
+			lr = GameObject.Instantiate(GameAssets.Instance.laserLineRenderer, GameCharacter.CreateHolderChild("RangeWeaponLineRendererHolder").transform);
 		}
 		if (weaponObjData != null)
 		{
@@ -45,7 +45,7 @@ public class BTAimShoot : BTHyppoliteActionNodeBase
 	{
 		if (aimTimer != null) aimTimer.Update(Time.deltaTime);
 
-		if (weaponObjData != null) lr.SetPosition(0, weaponObjData.weaponTip.transform.position);
+		if (weaponObjData != null && lr != null) lr.SetPosition(0, weaponObjData.weaponTip.transform.position);
 		Vector3 dir = TargetGameCharacter.MovementComponent.CharacterCenter - weaponObjData.weaponTip.transform.position;
 		RaycastHit[] hits = Physics.RaycastAll(weaponObjData.weaponTip.transform.position, dir.normalized, dir.magnitude, -5, QueryTriggerInteraction.Ignore);
 		RaycastHit finalHit = new RaycastHit();

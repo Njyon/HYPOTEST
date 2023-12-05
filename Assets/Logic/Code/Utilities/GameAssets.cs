@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Megumin.GameFramework.AI.BehaviorTree;
+using UnityEditor;
 
 public class GameAssets : MonoBehaviour
 {

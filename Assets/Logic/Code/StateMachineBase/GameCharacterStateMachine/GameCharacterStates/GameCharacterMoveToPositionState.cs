@@ -7,6 +7,8 @@ public class GameCharacterMoveToPositionState : AGameCharacterState
 	float interpolationSpeed = 2f;
 	float distenceMultiplier = 10f;
 	bool sideHit = false;
+	float moveToStartDistance;
+	Vector3 startPos;
 	public GameCharacterMoveToPositionState(GameCharacterStateMachine stateMachine, GameCharacter gameCharacter) : base (stateMachine, gameCharacter)
 	{ }
 
@@ -16,6 +18,9 @@ public class GameCharacterMoveToPositionState : AGameCharacterState
 		GameCharacter.AnimController.InFreez = true;
 		GameCharacter.MovementComponent.UseGravity = false;
 		GameCharacter.MovementComponent.MoveThroughCharacterLayer();
+
+		startPos = GameCharacter.MovementComponent.CharacterCenter;
+		moveToStartDistance = Vector3.Distance(GameCharacter.MovementComponent.CharacterCenter, GameCharacter.CombatComponent.MoveToPosition);
 
 		GameCharacter.MovementComponent.onMoveCollisionFlag += OnMoveCollisionFlag;
 	}
@@ -35,7 +40,7 @@ public class GameCharacterMoveToPositionState : AGameCharacterState
 	public override void ExecuteState(float deltaTime)
 	{
 		GameCharacter.MovementComponent.MovementVelocity = (GameCharacter.CombatComponent.MoveToPosition - GameCharacter.transform.position).normalized * (interpolationSpeed * (Vector3.Distance(GameCharacter.transform.position, GameCharacter.CombatComponent.MoveToPosition) * distenceMultiplier));
-		if (Ultra.Utilities.IsNearlyEqual(GameCharacter.transform.position, GameCharacter.CombatComponent.MoveToPosition, 0.4f))
+		if (moveToStartDistance < Vector3.Distance(startPos, GameCharacter.MovementComponent.CharacterCenter))
 		{
 			// Arived at Location
 			if (GameCharacter.CombatComponent.HookedToCharacter != null) GameCharacter.CombatComponent.HookedToCharacter.CharacterMoveToPositionStateCharacterOnDestination(GameCharacter);

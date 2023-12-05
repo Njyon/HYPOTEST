@@ -120,6 +120,7 @@ public class CombatRatingComponent : RecourceBase
 			float chargeDelta = Mathf.Clamp((CurrentValue * limiter) / (gameCharacter.CombatComponent.EquipedWeapons - 1), 50, 200);
 			//Ultra.Utilities.Instance.DebugLogOnScreen("ChargeDelta => " + chargeDelta, 1f, StringColor.Random());
 			weapon.Weapon.Charge += chargeDelta;
+			weapon.Weapon.UltCharge += (chargeDelta /10);
 		}
 	}
 
@@ -134,6 +135,7 @@ public class CombatRatingComponent : RecourceBase
 				{
 					if (sWeapon == null || sWeapon.Weapon == null) continue;
 					sWeapon.Weapon.Charge -= 200;
+					sWeapon.Weapon.UltCharge -= 5;
 				}
 			}
 			UpdateStyleRank();
