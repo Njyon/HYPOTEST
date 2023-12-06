@@ -68,7 +68,7 @@ public class GameCharacterAttackState : AGameCharacterState
 			if (GameCharacter.IsPlayerCharacter)
 			{
 				Vector3 bounds = new Vector3(4f, 1.5f, 1f);
-				GameCharacter target = Ultra.HypoUttilies.FindCharactereInDirectionInRange(GameCharacter.MovementComponent.CharacterCenter, GameCharacter.transform.forward, bounds, ref GameCharacter.CharacterDetection.OverlappingGameCharacter);
+				GameCharacter target = Ultra.HypoUttilies.FindCharactereInDirectionInRange(GameCharacter.MovementComponent.CharacterCenter, GameCharacter.transform.forward, bounds, ref GameCharacter.CharacterDetection.DetectedGameCharacters);
 				Ultra.Utilities.DrawBox(GameCharacter.MovementComponent.CharacterCenter, Quaternion.identity, bounds, Color.blue, 10f, 200, DebugAreas.Combat);
 				if (target != null)
 				{

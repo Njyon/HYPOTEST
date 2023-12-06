@@ -27,7 +27,7 @@ public class PlayerCharacterDetection : CharacterDetection<PlayerGameCharacter>
 		PlayerGameCharacter player = (PlayerGameCharacter)target;
 		if (player == null) return;
 		if (onOverlapExit != null) onOverlapExit(player);
-		OverlappingGameCharacter.Remove(player);
+		DetectedGameCharacters.Remove(player);
 		OnTriggerExitCall(player);
 	}
 }

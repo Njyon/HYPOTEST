@@ -20,7 +20,7 @@ public class GameCharacterDetection : CharacterDetection<GameCharacter>
 	{
 		if (target == null) return;
 		if (onOverlapExit != null) onOverlapExit(target);
-		OverlappingGameCharacter.Remove(target);
+		DetectedGameCharacters.Remove(target);
 		OnTriggerExitCall(target);
 	}
 }

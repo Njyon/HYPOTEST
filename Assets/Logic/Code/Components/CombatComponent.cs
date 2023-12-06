@@ -386,24 +386,28 @@ public class CombatComponent
 	public bool CanRequestFlyAway()
 	{
 		if (gameCharacter.IsGameCharacterDead) return false;
+		if (gameCharacter.PluginStateMachine.ContainsPluginState(EPluginCharacterState.IFrame)) return false;
 		return gameCharacter.StaggerComponent.IsStaggerable;
 	}
 
 	public bool CanRequestFreez()
 	{
 		if (gameCharacter.IsGameCharacterDead) return false;
+		if (gameCharacter.PluginStateMachine.ContainsPluginState(EPluginCharacterState.IFrame)) return false;
 		return gameCharacter.StaggerComponent.IsStaggerable;
 	}
 
 	public bool CanGetHooked()
 	{
 		if (gameCharacter.IsGameCharacterDead) return false;
+		if (gameCharacter.PluginStateMachine.ContainsPluginState(EPluginCharacterState.IFrame)) return false;
 		return gameCharacter.StaggerComponent.IsStaggerable;
 	}
 
 	public bool CanRequestMoveTo()
 	{
 		if (gameCharacter.IsGameCharacterDead) return false;
+		if (gameCharacter.PluginStateMachine.ContainsPluginState(EPluginCharacterState.IFrame)) return false;
 		return gameCharacter.StaggerComponent.IsStaggerable;
 	}
 

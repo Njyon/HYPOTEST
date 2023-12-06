@@ -1034,7 +1034,7 @@ public abstract class WeaponBase
 		gameCharacter.AnimController.InAttack = false;
 	}
 
-	public void PlayAttackSound(int index)
+	public void PlayAttackSound(int index = -1)
 	{
 		if (WeaponData.defaultAttackSounds.Count <= 0) return;
 

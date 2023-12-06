@@ -67,7 +67,7 @@ public class SmashDownAttack3Blend : ActionBase
 		StartFalling = false;
 
 		Vector3 maxDir = (GameCharacter.transform.forward + Vector3.down).normalized;
-		GameCharacter target = Ultra.HypoUttilies.FindCHaracterNearestToDirectionWithMinAngel(GameCharacter.MovementComponent.CharacterCenter, Vector3.down, GameCharacter.transform.forward, 45f, ref GameCharacter.CharacterDetection.OverlappingGameCharacter);
+		GameCharacter target = Ultra.HypoUttilies.FindCHaracterNearestToDirectionWithMinAngel(GameCharacter.MovementComponent.CharacterCenter, Vector3.down, GameCharacter.transform.forward, 45f, ref GameCharacter.CharacterDetection.DetectedGameCharacters);
 		GameCharacter.AnimController.Combat3BlendDir = 0f;
 		backupFallTimer.Start();
 		if (target == null)

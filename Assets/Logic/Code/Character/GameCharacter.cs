@@ -7,11 +7,13 @@ using UnityEngine.Profiling;
 
 public class GameCharacter : MonoBehaviour, IDamage
 {
-	public delegate void OnGameCharacterDied(GameCharacter gameCharacter);
+	public delegate void GameCharacterEventWithGameCharacter(GameCharacter gameCharacter);
 	public delegate void OnGameCharacterEvent();
-	public OnGameCharacterDied onGameCharacterDied;
-	public OnGameCharacterDied onGameCharacterDestroyed;
+	public GameCharacterEventWithGameCharacter onGameCharacterDied;
+	public GameCharacterEventWithGameCharacter onGameCharacterDestroyed;
 	public OnGameCharacterEvent onGameCharacterAggroChanged;
+	public GameCharacterEventWithGameCharacter onGameCharacterGotArroged;
+	public GameCharacterEventWithGameCharacter onGameCharacterStoppedBeingArroged;
 
 	GameCharacterStateMachine stateMachine;
 	GameCharacterPluginStateMachine pluginStateMachine;
@@ -567,6 +569,7 @@ public class GameCharacter : MonoBehaviour, IDamage
 		aggroedCharacter.onGameCharacterDestroyed += OnAggroedCharactersDies;
 
 		if (onGameCharacterAggroChanged != null) onGameCharacterAggroChanged();
+		if (onGameCharacterGotArroged != null) onGameCharacterGotArroged(aggroedCharacter);
 	}
 
 	void OnAggroedCharactersDies(GameCharacter diedCharacter)
@@ -589,6 +592,7 @@ public class GameCharacter : MonoBehaviour, IDamage
 		RemoveNullsFromAggroedCharacters();
 
 		if (onGameCharacterAggroChanged != null) onGameCharacterAggroChanged();
+		if (onGameCharacterStoppedBeingArroged != null) onGameCharacterStoppedBeingArroged(aggroedCharacter);
 	}
 
 	void RemoveNullsFromAggroedCharacters()

@@ -15,13 +15,24 @@ public class TeleportUltData : AttackData
 public class TeleportToEnemyUlt : AttackBase
 {
 	public TeleportUltData attackData;
+	GameCharacter target;
 	Vector3 teleportVector;
 	bool shouldMove = false;
+	int lastAttackIndex = 0;
+	bool teleportRightSide = false;
 
 	public override void StartAction()
 	{
-		int enemyAmount = GameCharacter.CharacterDetection.OverlappingGameCharacter.Count;
+		int enemyAmount = GameCharacter.CharacterDetection.DetectedGameCharacters.Count;
+		if (enemyAmount == 0) return;
+
 		int teleportAmount = Mathf.Max(attackData.minTeleportAmount, enemyAmount);
+
+		GameCharacter.StateMachine.RequestStateChange(EGameCharacterState.Attack);
+		GameCharacter.CombatComponent.CurrentWeapon.AttackAnimType = EAttackAnimType.Default;
+		lastAttackIndex = UnityEngine.Random.Range(0, attackData.teleportAnimations.Count);
+		GameCharacter.AnimController.Attack(attackData.teleportAnimations[lastAttackIndex]);
+		GameCharacter.PluginStateMachine.AddPluginState(EPluginCharacterState.IFrame);
 
 		FreezAllEnemiesAndSubscribe();
 
@@ -31,18 +42,32 @@ public class TeleportToEnemyUlt : AttackBase
 
 	async void TeleportAttacks(int teleportAmount)
 	{
-		bool teleportRightSide = false;
+		teleportRightSide = false;
 		for (int i = 0; i < teleportAmount; i++)
 		{
-			int characterIndex = i % GameCharacter.CharacterDetection.OverlappingGameCharacter.Count;
-			GameCharacter gc = GameCharacter.CharacterDetection.OverlappingGameCharacter[characterIndex];
-			Vector3 telportPos = gc.MovementComponent.CharacterCenter + (teleportRightSide ? Vector3.right : Vector3.left) * gc.GameCharacterData.MinCharacterDistance;
+			if (GameCharacter.CharacterDetection.DetectedGameCharacters.Count == 0) return; 
+
+			int characterIndex = i % GameCharacter.CharacterDetection.DetectedGameCharacters.Count;
+			target = GameCharacter.CharacterDetection.DetectedGameCharacters[characterIndex];
+			Vector3 telportPos = target.MovementComponent.CharacterCenter + (teleportRightSide ? Vector3.right : Vector3.left) * (target.GameCharacterData.MinCharacterDistance + GameCharacter.GameCharacterData.MinCharacterDistance);
 			Vector3 moveDir = telportPos - GameCharacter.MovementComponent.CharacterCenter;
+
+			int attackIndex = UnityEngine.Random.Range(0, attackData.teleportAnimations.Count);
+			if (attackIndex == lastAttackIndex)
+			{
+				attackIndex++;
+				attackIndex = attackIndex % attackData.teleportAnimations.Count;
+			}
+			GameCharacter.AnimController.Attack(attackData.teleportAnimations[attackIndex]);
+			lastAttackIndex = attackIndex;
 
 			teleportVector = moveDir;
 			shouldMove = true;
 
-			await new WaitForSecondsRealtime(attackData.timebetweenHits);
+			GameCharacter.CombatComponent.CurrentWeapon.PlayAttackSound();
+			DoDamage(target.gameObject, attackData.Damage);
+
+			await new WaitForSeconds(attackData.timebetweenHits);
 
 			teleportRightSide = !teleportRightSide;
 		}
@@ -61,11 +86,16 @@ public class TeleportToEnemyUlt : AttackBase
 		{
 			GameCharacter.MovementComponent.MovementVelocity = Vector3.zero;
 		}
+
+		//Vector3 rotationDir = target.MovementComponent.CharacterCenter - teleportVector;
+		GameCharacter.RotateToDir(teleportRightSide ? Vector3.left : Vector3.right);
+		GameCharacter.RotationTarget = GameCharacter.transform.rotation;
+		//Ultra.Utilities.DrawArrow(GameCharacter.MovementComponent.CharacterCenter, rotationDir.normalized, rotationDir.magnitude, Color.red);
 	}
 
 	void FreezAllEnemiesAndSubscribe()
 	{
-		foreach (GameCharacter gc in GameCharacter.CharacterDetection.OverlappingGameCharacter)
+		foreach (GameCharacter gc in GameCharacter.CharacterDetection.DetectedGameCharacters)
 		{
 			gc.Animator.speed = 0;
 			gc.onGameCharacterDied += GameCharacterDied;
@@ -74,7 +104,7 @@ public class TeleportToEnemyUlt : AttackBase
 
 	void UnfreezEnemiesAndUnsubscribe()
 	{
-		foreach (GameCharacter gc in GameCharacter.CharacterDetection.OverlappingGameCharacter)
+		foreach (GameCharacter gc in GameCharacter.CharacterDetection.DetectedGameCharacters)
 		{
 			EndEffectOnEnemy(gc);
 		}
@@ -96,6 +126,10 @@ public class TeleportToEnemyUlt : AttackBase
 		base.ActionInterupted();
 		UnfreezEnemiesAndUnsubscribe();
 		GameCharacter.MovementComponent.ActivateStepup();
+		GameCharacter.AnimController.InAttack = false;
+		GameCharacter.CombatComponent.AllowEarlyLeaveAttackRecovery = true;
+		GameCharacter.StateMachine.RequestStateChange(EGameCharacterState.AttackRecovery);
+		GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.IFrame);
 	}
 
 	public override ActionBase CreateCopy()
