@@ -117,7 +117,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 1
+  m_RenderPostProcessing: 0
   m_Antialiasing: 1
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -151,7 +151,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: {x: 0, y: 2, z: -10}
-  StateToStateInterpolationSpeed: 5
   moveSpeedx: 3
   moveSpeedy: 1.5
   lookAhead: 1
@@ -159,11 +158,15 @@ MonoBehaviour:
   damping: 0.04
   clampY: {x: 1.5, y: 5}
   clampX: {x: -5, y: 5}
+  defaultZoomSpeed: 1
+  multiOffset: {x: 0, y: 2, z: -20}
+  multiInterpSpeed: 5
   smoothTime: 0.5
-  minZoom: 5
-  maxZoom: 20
+  minFoV: 20
+  maxFoV: 80
   zoomLimiter: 50
-  minDistance: 0
+  minDistance: 10
+  multiZoomSpeed: 2
   TestDebugCameraShakeIndex: 0
   cameraShakes:
   - {fileID: 11400000, guid: 678251e2aa16b53448e47af1c98cc52e, type: 2}

@@ -47,7 +47,7 @@ public class DefaultCameraState : ACameraState
 		Vector3 targetDirection = CameraController.Targets[0].MovementComponent.Velocity * (CameraController.LookAhead * CameraController.Speed);
 		//Ultra.Utilities.DrawArrow(target, targetDirection, 1f, Color.blue);
 
-		Vector3 newTargetLocation = new Vector3(target.x, target.y, CameraController.FinalCameraPosition.z);
+		Vector3 newTargetLocation = new Vector3(target.x, target.y, CameraController.Offset.z);
 
 		// Move the camera towards the target position and direction
 		Vector3 targetPosition = newTargetLocation + targetDirection;   // Vector3.SmoothDamp(CameraController.FinalCameraPosition, newTargetLocation + targetDirection, ref camerVel, CameraController.Damping, Mathf.Infinity, Time.deltaTime);
@@ -73,6 +73,7 @@ public class DefaultCameraState : ACameraState
 		y = Mathf.Clamp(yPos.y, yMin, yMax);
 
 		CameraController.FinalCameraPosition = new Vector3(x, y, CameraController.CameraTargetPosition.z);
+		CameraController.FinalFoV = Mathf.Lerp(CameraController.FinalFoV, CameraController.DefaultZoom, Time.deltaTime * CameraController.DefaultZoomSpeed);
 		Ultra.Utilities.DrawWireSphere(CameraController.FinalCameraPosition, 1, Color.green, 0);
 	}
 

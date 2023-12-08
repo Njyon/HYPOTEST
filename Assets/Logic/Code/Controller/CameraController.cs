@@ -8,25 +8,26 @@ public class CameraController : Singelton<CameraController>
 	GameCharacter gameCharacter;
     List<GameCharacter> targets = new List<GameCharacter>();
 
-    [Header("Overall Values")]
-    [SerializeField] Vector3 offset;
-    [SerializeField] float StateToStateInterpolationSpeed = 100f;
-
     [Header("DefaultValues")]
-    public float moveSpeedx = 5f;
+	[SerializeField] Vector3 offset;
+	public float moveSpeedx = 5f;
     public float moveSpeedy = 5f;
     public float lookAhead = 2f;
     public float speed = 5f;
     public float damping = 0.01f;
     public Vector2 clampY = new Vector2(-5, 5);
     public Vector2 clampX = new Vector2(-5, 5);
+	[SerializeField] float defaultZoomSpeed = 1f;
 
     [Header("MultiTargetValues")]
-    [SerializeField] float smoothTime = 0.5f;  // Die Zeit, die die Kamera braucht, um sich zu interpolieren
-    [SerializeField] float minZoom = 5f;  // Die minimale Zoomstufe der Kamera
-    [SerializeField] float maxZoom = 20f;  // Die maximale Zoomstufe der Kamera
+	[SerializeField] Vector3 multiOffset;
+    [SerializeField] float multiInterpSpeed = 1f;
+	[SerializeField] float smoothTime = 0.5f;  // Die Zeit, die die Kamera braucht, um sich zu interpolieren
+    [SerializeField] float minFoV = 5f;  // Die minimale Zoomstufe der Kamera
+    [SerializeField] float maxFoV = 20f;  // Die maximale Zoomstufe der Kamera
     [SerializeField] float zoomLimiter = 50f;  // Die maximale Entfernung zwischen den Zielen, die die Kamera verfolgt
     [SerializeField] float minDistance = 10f; // Mindestentfernung der Kamera zu den Targets
+    [SerializeField] float multiZoomSpeed = 2f; // zoom speed interpotlation
 
     [Header("Effects")]
     [SerializeField] int TestDebugCameraShakeIndex = 0;
@@ -34,29 +35,34 @@ public class CameraController : Singelton<CameraController>
 
     Vector3 velocity;
     Camera cam;
-    float zoomVelocity;
+    float zoomTarget;
     CameraStateMachine stateMachine;
     Vector3 cameraTargetPosition;
     Vector3 finalCameraPosition;
     Vector3 cameraEffectOffset;
     CameraEffectComponent cameraEffectComponent;
+    float defaultZoom;
 
     public List<GameCharacter> Targets { get { return targets; } }
     public CameraStateMachine StateMachine { get { return stateMachine; } }
     public Camera Camera { get { return cam; } }   
     public Vector3 Offset { get { return offset; } }
+    public Vector3 MultiOffset { get { return multiOffset; } }
     public Vector3 Velocity { get { return velocity; } set { velocity = value; } }
-    public float ZoomVelocity { get { return zoomVelocity; } set { zoomVelocity = value; } }
+    public float FinalFoV { get { return zoomTarget; } set { zoomTarget = value; } }
     public float MinDistance { get { return minDistance; } }    
     public float ZoomLimiter { get { return zoomLimiter; } }
-    public float MaxZoom { get { return maxZoom; } }
-    public float MinZoom { get { return minZoom; } }
+    public float MaxFoV { get { return maxFoV; } }
+    public float MinFOV { get { return minFoV; } }
     public float SmoothTime { get { return smoothTime; } }
     public float MoveSpeedx { get { return moveSpeedx; } }
     public float MoveSpeedy { get { return moveSpeedy; } }
     public float LookAhead { get { return lookAhead; } }
     public float Speed { get { return speed; } }
     public float Damping { get { return damping; } }
+    public float MultiZoomSpeed { get { return multiZoomSpeed; } }
+    public float DefaultZoomSpeed { get { return defaultZoomSpeed; } }
+    public float MultiInterpSpeed { get { return multiInterpSpeed; } }
     public Vector2 ClampX { get { return clampX; } }
     public Vector2 ClampY { get { return clampY; } }
     public Vector3 CameraTargetPosition { get { return cameraTargetPosition; } set { cameraTargetPosition = value; } }
@@ -64,6 +70,7 @@ public class CameraController : Singelton<CameraController>
     public Vector3 FinalCameraPosition { get { return finalCameraPosition; } set { finalCameraPosition = value; } }
     public Vector3 CameraEffectOffset { get { return cameraEffectOffset; } set { cameraEffectOffset = value; } }
 	public CameraEffectComponent CameraEffectComponent { get { return cameraEffectComponent; } }
+    public float DefaultZoom { get { return defaultZoom; } }
 
 	[HideInInspector] public Vector3 velocityVelx = Vector3.zero;
 	[HideInInspector] public Vector3 velocityVely = Vector3.zero;
@@ -79,6 +86,8 @@ public class CameraController : Singelton<CameraController>
     {
         cam = GetComponent<Camera>();
         cameraEffectComponent = new CameraEffectComponent(this);
+        defaultZoom = cam.fieldOfView;
+        FinalFoV = defaultZoom;
         CameraEffectComponent.Init();
     }
 
@@ -105,7 +114,8 @@ public class CameraController : Singelton<CameraController>
     {
 		CameraEffectComponent.Update(Time.deltaTime);
         transform.position = FinalCameraPosition + CameraEffectOffset;
-        CameraEffectOffset = Vector3.zero;
+        cam.fieldOfView = FinalFoV;
+		CameraEffectOffset = Vector3.zero;
 	}
 
 	void OnDestroy()

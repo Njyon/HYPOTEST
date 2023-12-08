@@ -36,42 +36,32 @@ public class MultiTargetCamerState : ACameraState
 
 	public override void LateExecuteState(float deltaTime)
 	{
-		if (CameraController.Targets.Count == 0) return;
+		if (CameraController.Targets.Count <= 1) return;
 
-		// Ermittlung der Bounding Box, die alle Targets umschließt
-		Bounds bounds = new Bounds(CameraController.Targets[0].transform.position, Vector3.zero);
-		for (int i = 0; i < CameraController.Targets.Count; i++)
+		// Berechne den Mittelpunkt der Ziele
+		Bounds characterBounds = GetCharacterBounds();
+		float longerBoundsSide = Mathf.Max(characterBounds.size.x, characterBounds.size.y);
+
+		float fovTarget = Mathf.Lerp(CameraController.MinFOV, CameraController.MaxFoV, longerBoundsSide / CameraController.ZoomLimiter);
+		CameraController.FinalFoV = Mathf.Lerp(CameraController.FinalFoV, fovTarget, Time.deltaTime * CameraController.MultiZoomSpeed);
+		CameraController.FinalCameraPosition = Vector3.Lerp(CameraController.FinalCameraPosition, characterBounds.center + CameraController.MultiOffset, Time.deltaTime * CameraController.MultiInterpSpeed);
+	}
+
+	Bounds GetCharacterBounds()
+	{
+		// Berechne den Mittelpunkt der Ziele
+		if (CameraController.Targets.Count == 1)
 		{
-			bounds.Encapsulate(CameraController.Targets[i].transform.position);
+			return new Bounds(CameraController.Targets[0].MovementComponent.CharacterCenter, Vector3.zero);
 		}
 
-		// Berechnung der neuen Kamera-Position
-		Vector3 targetPos = bounds.center + CameraController.Offset;
-		float distance = Mathf.Max(bounds.size.x, bounds.size.y) / 2f / Mathf.Tan(CameraController.Camera.fieldOfView / 2f * Mathf.Deg2Rad);
+		Bounds bounds = new Bounds(CameraController.Targets[0].MovementComponent.CharacterCenter, Vector3.zero);
+		foreach (GameCharacter target in CameraController.Targets)
+		{
+			bounds.Encapsulate(target.MovementComponent.CharacterCenter);
+		}
 
-		// Anpassung der Kamera-Zoomstufe, um die mindestens Entfernung und minimale Zoomstufe zu berücksichtigen
-		float zoomVel = CameraController.ZoomVelocity;
-		float zoomLevel = Mathf.SmoothDamp(CameraController.Camera.orthographicSize, distance, ref zoomVel, CameraController.SmoothTime);
-		CameraController.ZoomVelocity = zoomVel;
-
-		zoomLevel = Mathf.Clamp(zoomLevel, CameraController.MinZoom, CameraController.MaxZoom);
-		distance = Mathf.Clamp(distance, CameraController.MinDistance, Mathf.Infinity);
-
-		// Berechnung der Kamera-Position auf der Z-Achse
-		targetPos += Vector3.back * distance;
-
-		// Interpolation der Kamera-Position
-		Vector3 vel = CameraController.Velocity;
-		CameraController.CameraTargetPosition = Vector3.SmoothDamp(CameraController.CameraTargetPosition, targetPos, ref vel, CameraController.SmoothTime);
-		CameraController.Velocity = vel;
-
-		// Ausrichtung der Kamera
-		//CameraController.transform.LookAt(bounds.center);
-
-		Vector3 xPos = Vector3.SmoothDamp(CameraController.transform.position, Vector3.ProjectOnPlane(CameraController.CameraTargetPosition, Vector3.up), ref CameraController.velocityVelx, 1 / CameraController.MoveSpeedx);
-		Vector3 yPos = Vector3.SmoothDamp(CameraController.transform.position, Vector3.ProjectOnPlane(CameraController.CameraTargetPosition, Vector3.right), ref CameraController.velocityVely, 1 / CameraController.MoveSpeedy);
-
-		CameraController.FinalCameraPosition = new Vector3(xPos.x, yPos.y, CameraController.CameraTargetPosition.z);
+		return bounds;
 	}
 
 	public override void EndState(ECameraStates newState)
