@@ -33,7 +33,7 @@ public class FollowAttack3Blend : ActionBase
 
 		startPostion = GameCharacter.MovementComponent.CharacterCenter;
 
-		targetCharacter = Ultra.HypoUttilies.FindCharactereNearestToDirectionWithRangeWithAngleTreshHold(GameCharacter.MovementComponent.CharacterCenter, (GameCharacter.MovementInput.magnitude <= 0) ? GameCharacter.transform.forward : GameCharacter.MovementInput, attackData.attackRange, ref GameCharacter.CharacterDetection.OverlappingGameCharacter);
+		targetCharacter = Ultra.HypoUttilies.FindCharactereNearestToDirectionWithRangeWithAngleTreshHold(GameCharacter.MovementComponent.CharacterCenter, (GameCharacter.MovementInput.magnitude <= 0) ? GameCharacter.transform.forward : GameCharacter.MovementInput, attackData.attackRange, ref GameCharacter.CharacterDetection.DetectedGameCharacters);
 		if (targetCharacter != null)
 		{
 			Vector3 dirToPlayer = GameCharacter.MovementComponent.CharacterCenter - targetCharacter.MovementComponent.CharacterCenter;

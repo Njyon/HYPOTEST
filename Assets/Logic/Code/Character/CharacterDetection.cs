@@ -12,7 +12,7 @@ public class CharacterDetection<T> : MonoBehaviour where T : GameCharacter
 	[SerializeField] Collider collider;
 	public Collider Collider { get { return collider; } }
 
-	public List<T> OverlappingGameCharacter = new List<T>();
+	public List<T> DetectedGameCharacters = new List<T>();
 
 	public void Awake()
 	{
@@ -29,9 +29,9 @@ public class CharacterDetection<T> : MonoBehaviour where T : GameCharacter
 		if (other.transform == this.transform.parent) return;
 
 		T template = other.gameObject.GetComponent<T>();
-		if (template != null && !OverlappingGameCharacter.Contains(template))
+		if (template != null && !DetectedGameCharacters.Contains(template))
 		{
-			OverlappingGameCharacter.Add(template);
+			DetectedGameCharacters.Add(template);
 			OnTriggerEnterCall(template);
 			if (onOverlapEnter != null) onOverlapEnter(template);
 		}
@@ -47,7 +47,7 @@ public class CharacterDetection<T> : MonoBehaviour where T : GameCharacter
 		T template = other.gameObject.GetComponent<T>();
 		if (template != null)
 		{
-			OverlappingGameCharacter.Remove(template);
+			DetectedGameCharacters.Remove(template);
 			OnTriggerExitCall(template);
 			if (onOverlapExit != null) onOverlapExit(template);
 		}

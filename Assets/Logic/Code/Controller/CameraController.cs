@@ -85,8 +85,10 @@ public class CameraController : Singelton<CameraController>
     public void OnPosses(GameObject newTarget)
     {
         gameCharacter = newTarget.GetComponent<GameCharacter>();
+        gameCharacter.onGameCharacterGotArroged += AddGameCharacterToTargets;
+        gameCharacter.onGameCharacterStoppedBeingArroged += RemoveGameCharacterFromTargets;
 
-        targets.Add(gameCharacter);
+		targets.Add(gameCharacter);
         transform.position = newTarget.transform.position + offset;
 
         stateMachine = gameObject.AddComponent<CameraStateMachine>();
@@ -94,21 +96,41 @@ public class CameraController : Singelton<CameraController>
     }
 
 
-	private void Update()
+	void Update()
 	{
 		
 	}
 
-	private void LateUpdate()
+	void LateUpdate()
     {
 		CameraEffectComponent.Update(Time.deltaTime);
         transform.position = FinalCameraPosition + CameraEffectOffset;
         CameraEffectOffset = Vector3.zero;
 	}
 
-    public void ShakeCamerea(int index)
+	void OnDestroy()
+	{
+        if (gameCharacter != null)
+        {
+		    gameCharacter.onGameCharacterGotArroged -= AddGameCharacterToTargets;
+		    gameCharacter.onGameCharacterStoppedBeingArroged -= RemoveGameCharacterFromTargets;
+        }
+
+	}
+
+	public void ShakeCamerea(int index)
     {
 		if (cameraShakes.Count > index)
 			CameraEffectComponent.AddCameraEffect(new CameraEffectShake(this, cameraShakes[index]));
 	}
+
+    void AddGameCharacterToTargets(GameCharacter aggroedGameCharacter)
+    {
+        targets.Add(aggroedGameCharacter);
+    }
+
+    void RemoveGameCharacterFromTargets(GameCharacter removedAggroGameChracter)
+    {
+        targets.Remove(removedAggroGameChracter);
+    }
 }

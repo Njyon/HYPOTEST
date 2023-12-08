@@ -19,7 +19,7 @@ public class MultiTargetCamerState : ACameraState
 
 	public override ECameraStates UpdateState(float deltaTime, ECameraStates newStateRequest)
 	{
-		if (CameraController.Targets.Count > 1) return ECameraStates.Default;
+		if (CameraController.Targets.Count <= 1) return ECameraStates.Default;
 
 		return GetStateType();
 	}
@@ -66,7 +66,7 @@ public class MultiTargetCamerState : ACameraState
 		CameraController.Velocity = vel;
 
 		// Ausrichtung der Kamera
-		CameraController.transform.LookAt(bounds.center);
+		//CameraController.transform.LookAt(bounds.center);
 
 		Vector3 xPos = Vector3.SmoothDamp(CameraController.transform.position, Vector3.ProjectOnPlane(CameraController.CameraTargetPosition, Vector3.up), ref CameraController.velocityVelx, 1 / CameraController.MoveSpeedx);
 		Vector3 yPos = Vector3.SmoothDamp(CameraController.transform.position, Vector3.ProjectOnPlane(CameraController.CameraTargetPosition, Vector3.right), ref CameraController.velocityVely, 1 / CameraController.MoveSpeedy);

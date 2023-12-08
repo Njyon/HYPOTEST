@@ -17,9 +17,9 @@ public class UltimateAttack : AttackBase
 	public override void StartAction()
 	{
 		// Cant be a foreach because Detection count gets changed becasue of dead
-		for (int i = 0; i < GameCharacter.CharacterDetection.OverlappingGameCharacter.Count; i++)
+		for (int i = 0; i < GameCharacter.CharacterDetection.DetectedGameCharacters.Count; i++)
 		{
-			GameCharacter gc = GameCharacter.CharacterDetection.OverlappingGameCharacter[i];
+			GameCharacter gc = GameCharacter.CharacterDetection.DetectedGameCharacters[i];
 			float health = gc.Health.CurrentValue;
 			gc.DoDamage(GameCharacter, health);
 		}
