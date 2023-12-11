@@ -496,7 +496,7 @@ public abstract class WeaponBase
 	public virtual AttackAnimationData Ultimate(float attackDeltaTime)
 	{
 		if (AnimationData == null) return null;
-		if (AnimationData.GapCloserAttacks.Count > 0)
+		if (AnimationData.Ultimate.Count > 0 && UltCharge >= weaponData.MaxUltChargeAmount)
 		{
 			TryStartingAction(EExplicitAttackType.Ultimate, attackDeltaTime);
 			return CurrentAction;

@@ -35,6 +35,10 @@ public class GameCharacterAttackRecoveryState : AGameCharacterState
 			default: break;
 		}
 
+
+		if (GameCharacter.MovementComponent.IsInJump)
+			return GameCharacter.GetBestCharacterState();
+
 		if (GameCharacter.CombatComponent.AttackTimer.IsFinished)
 		{
 			return GameCharacter.GetBestCharacterState();

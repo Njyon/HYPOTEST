@@ -106,6 +106,9 @@ public class GameCharacterAttackState : AGameCharacterState
 			default: break;
 		}
 
+		if (GameCharacter.MovementComponent.IsInJump)
+			return GameCharacter.GetBestCharacterState();
+
 		return GetStateType();
 	}
 
