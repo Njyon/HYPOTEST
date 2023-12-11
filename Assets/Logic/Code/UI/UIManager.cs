@@ -24,7 +24,7 @@ public class UIManager : Singelton<UIManager>
 
 	[Header("SceneNames")]
 	[SerializeField] string titelScreenName = "TitelScreen";
-	[SerializeField] string mainMenuName = "MainMenu";
+	[SerializeField] string mainMenuName = "MainMenu(CrossPlatform)";
 	[SerializeField] string startSceneName = "StartScene";
 	[SerializeField] string gameModeSelectionName = "GameModeSelector";
 	[SerializeField] string difficultySelectionName = "DifficultySelection";
@@ -81,6 +81,9 @@ public class UIManager : Singelton<UIManager>
 			{
 				LoadSceneAsync(titelScreenName, LoadSceneMode.Additive, null);
 				showTitelScreen = false;
+			}else
+			{
+				LoadMainMenu();
 			}
 		}
 	}
