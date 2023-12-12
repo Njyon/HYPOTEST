@@ -36,7 +36,7 @@ public class MultiTargetCamerState : ACameraState
 
 	public override void LateExecuteState(float deltaTime)
 	{
-		if (CameraController.Targets.Count <= 1) return;
+		if (CameraController.Targets.Count <= 1 || deltaTime == 0) return;
 
 		// Berechne den Mittelpunkt der Ziele
 		Bounds characterBounds = GetCharacterBounds();

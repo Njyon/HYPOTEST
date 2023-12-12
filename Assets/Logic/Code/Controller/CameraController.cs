@@ -1,3 +1,4 @@
+using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -112,6 +113,12 @@ public class CameraController : Singelton<CameraController>
 
 	void LateUpdate()
     {
+        if (float.IsNaN(FinalCameraPosition.x) || float.IsNaN(FinalCameraPosition.y))
+        {
+            FinalCameraPosition = transform.position;
+			return;
+        }
+
 		CameraEffectComponent.Update(Time.deltaTime);
         transform.position = FinalCameraPosition + CameraEffectOffset;
         cam.fieldOfView = FinalFoV;

@@ -38,7 +38,7 @@ public class DefaultCameraState : ACameraState
 
 	public override void LateExecuteState(float deltaTime)
 	{
-		if (!GameCharacter.IsInitialized) return;
+		if (!GameCharacter.IsInitialized || deltaTime == 0) return;
 
 		if (CameraController.Targets.Count <= 0 || CameraController.Targets[0] == null) return;
 		Vector3 target = CameraController.Targets[0].MovementComponent.CharacterCenter;
@@ -63,8 +63,8 @@ public class DefaultCameraState : ACameraState
 
 		CameraController.CameraTargetPosition = new Vector3(x, y, CameraController.CameraTargetPosition.z);
 
-		Vector3 xPos = Vector3.SmoothDamp(CameraController.FinalCameraPosition, Vector3.ProjectOnPlane(CameraController.CameraTargetPosition, Vector3.up), ref CameraController.velocityVelx, 1 / CameraController.MoveSpeedx, Mathf.Infinity, Time.deltaTime);
-		Vector3 yPos = Vector3.SmoothDamp(CameraController.FinalCameraPosition, Vector3.ProjectOnPlane(CameraController.CameraTargetPosition, Vector3.right), ref CameraController.velocityVely, 1 / CameraController.MoveSpeedy, Mathf.Infinity, Time.deltaTime);
+		Vector3 xPos = Vector3.SmoothDamp(CameraController.FinalCameraPosition, Vector3.ProjectOnPlane(CameraController.CameraTargetPosition, Vector3.up), ref CameraController.velocityVelx, 1 / CameraController.MoveSpeedx, Mathf.Infinity, deltaTime);
+		Vector3 yPos = Vector3.SmoothDamp(CameraController.FinalCameraPosition, Vector3.ProjectOnPlane(CameraController.CameraTargetPosition, Vector3.right), ref CameraController.velocityVely, 1 / CameraController.MoveSpeedy, Mathf.Infinity, deltaTime);
 
 		Ultra.Utilities.DrawWireSphere(xPos, 1, Color.cyan, 0);
 		Ultra.Utilities.DrawWireSphere(yPos, 1, Color.magenta, 0);

@@ -15,6 +15,7 @@ namespace Michsky.UI.Reach
         public GameObject firstSelected;
         public List<PanelManager> panels = new List<PanelManager>();
         public List<ButtonManager> buttons = new List<ButtonManager>();
+        public List<Dropdown> dropdowns = new List<Dropdown>();
         public List<SettingsElement> settingsElements = new List<SettingsElement>();
         public List<ModeSelector> modeSelectors = new List<ModeSelector>();
         [Tooltip("Objects in this list will be enabled when the gamepad is un-plugged.")]
@@ -241,7 +242,17 @@ namespace Michsky.UI.Reach
             }
         }
 
-        public void AddSettingsElement(SettingsElement se)
+		public void AddDropDown(Dropdown dpd)
+		{
+			dropdowns.Add(dpd);
+
+			if (gamepadEnabled == true && dpd.useUINavigation == false)
+			{
+				dpd.AddUINavigation();
+			}
+		}
+
+		public void AddSettingsElement(SettingsElement se)
         {
             settingsElements.Add(se);
 

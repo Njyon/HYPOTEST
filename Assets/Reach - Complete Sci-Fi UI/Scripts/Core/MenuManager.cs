@@ -20,13 +20,14 @@ namespace Michsky.UI.Reach
 
         void Awake()
         {
-            if (initPanel != null) { initPanel.gameObject.SetActive(true); }
-            if (splashScreen != null) { splashScreen.gameObject.SetActive(false); }
+            //if (initPanel != null) { initPanel.gameObject.SetActive(true); }
+            if (splashScreen != null) { splashScreen.gameObject.SetActive(true); }
         }
 
         void Start()
         {
-            StartCoroutine("StartInitialize");
+            //StartCoroutine("StartInitialize");
+            Initialize();
         }
 
         public void DisableSplashScreen() 
@@ -55,32 +56,33 @@ namespace Michsky.UI.Reach
                 enableSplashAfter = true;
             }
 
-            //if (UIManagerAsset.enableSplashScreen)
-            //{
-            //    if (splashScreen == null)
-            //    {
-            //        Debug.LogError("<b>[Reach UI]</b> Splash Screen is enabled but its resource is missing. Please assign the correct variable for 'Splash Screen'.", this);
-            //        return;
-            //    }
-            //
-            //    // Getting in and out animation length
-            //    AnimationClip[] clips = splashScreen.runtimeAnimatorController.animationClips;
-            //    splashInTime = clips[0].length;
-            //    splashOutTime = clips[1].length;
-            //
-            //    splashScreen.enabled = true;
-            //    splashScreen.gameObject.SetActive(true);
-            //    StartCoroutine("DisableSplashScreenAnimator");
-            //
-            //    if (UIManagerAsset.showSplashScreenOnce)
-            //    {
-            //        GameObject tempHelper = new GameObject();
-            //        tempHelper.name = "[Reach UI - Splash Screen Helper]";
-            //        DontDestroyOnLoad(tempHelper);
-            //    }
-            //}
-            //else
-            //{
+            if (UIManagerAsset.enableSplashScreen)
+            {
+                if (splashScreen == null)
+                {
+                    Debug.LogError("<b>[Reach UI]</b> Splash Screen is enabled but its resource is missing. Please assign the correct variable for 'Splash Screen'.", this);
+                    return;
+                }
+
+                // Getting in and out animation length
+                AnimationClip[] clips = splashScreen.runtimeAnimatorController.animationClips;
+                splashInTime = clips[0].length;
+                splashOutTime = clips[1].length;
+
+                splashScreen.enabled = true;
+                splashScreen.gameObject.SetActive(true);
+                StartCoroutine("DisableSplashScreenAnimator");
+
+                if (UIManagerAsset.showSplashScreenOnce)
+                {
+                    GameObject tempHelper = new GameObject();
+                    tempHelper.name = "[Reach UI - Splash Screen Helper]";
+                    DontDestroyOnLoad(tempHelper);
+                }
+            }
+
+            else
+            {
                 if (mainContent == null)
                 {
                     Debug.LogError("<b>[Reach UI]</b> 'Main Panels' is missing. Please assign the correct variable for 'Main Panels'.", this);
@@ -90,7 +92,7 @@ namespace Michsky.UI.Reach
                 if (splashScreen != null) { splashScreen.gameObject.SetActive(false); }
                 mainContent.gameObject.SetActive(false);
                 StartCoroutine("FinalizeSplashScreen");
-            //}
+            }
 
             if (enableSplashAfter && UIManagerAsset.showSplashScreenOnce)
             {
@@ -100,25 +102,25 @@ namespace Michsky.UI.Reach
 
         IEnumerator StartInitialize()
         {
-            yield return new WaitForSecondsRealtime(0);
-            //if (initPanel != null) { initPanel.FadeOut(); }
+            yield return new WaitForSecondsRealtime(0.1f);
+            if (initPanel != null) { initPanel.FadeOut(); }
             Initialize();
         }
 
         IEnumerator DisableSplashScreenAnimator()
         {
-            yield return new WaitForSecondsRealtime(0);
-            //splashScreen.enabled = false;
+            yield return new WaitForSecondsRealtime(splashInTime + 0.1f);
+            splashScreen.enabled = false;
         }
 
         IEnumerator FinalizeSplashScreen()
         {
-            // yield return new WaitForSecondsRealtime(splashOutTime + 0.1f);
-            //
-            //if (UIManagerAsset != null && UIManagerAsset.enableSplashScreen == true) 
-            //{
-            //    splashScreen.gameObject.SetActive(false); 
-            //}
+            yield return new WaitForSecondsRealtime(splashOutTime + 0.1f);
+           
+            if (UIManagerAsset != null && UIManagerAsset.enableSplashScreen == true) 
+            {
+                splashScreen.gameObject.SetActive(false); 
+            }
 
             mainContent.gameObject.SetActive(true);
 
@@ -126,7 +128,6 @@ namespace Michsky.UI.Reach
             { 
                 EventSystem.current.SetSelectedGameObject(controllerManager.firstSelected); 
             }
-            yield return new WaitForSecondsRealtime(0);
         }
     }
 }

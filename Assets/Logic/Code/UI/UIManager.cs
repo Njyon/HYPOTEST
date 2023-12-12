@@ -64,7 +64,7 @@ public class UIManager : Singelton<UIManager>
 		}
 
 		DontDestroyOnLoad(gameObject);
-		LoadTitelScreenIfWanted();
+		//LoadTitelScreenIfWanted();
 	}
 
 	void Start()

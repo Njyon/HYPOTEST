@@ -46,7 +46,9 @@ namespace Michsky.UI.Reach
 
         public enum ChapterState { Locked, Unlocked, Completed, Current }
 
-        [System.Serializable]
+        public List<ChapterIdentifier> Identifiers { get { return identifiers; } }
+
+		[System.Serializable]
         public class ChapterItem
         {
             public string chapterID;

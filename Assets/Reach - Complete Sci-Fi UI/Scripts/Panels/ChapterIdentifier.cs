@@ -15,6 +15,7 @@ namespace Michsky.UI.Reach
         public ButtonManager continueButton;
         public ButtonManager playButton;
         public ButtonManager replayButton;
+        public ModeSelector difficultySelector;
         public GameObject completedIndicator;
         public GameObject unlockedIndicator;
         public GameObject lockedIndicator;
@@ -37,6 +38,7 @@ namespace Michsky.UI.Reach
                 if (continueButton != null) { cm.AddButton(continueButton); }
                 if (playButton != null) { cm.AddButton(playButton); }
                 if (replayButton != null) { cm.AddButton(replayButton); }
+                if (difficultySelector != null) { cm.AddModeSelector(difficultySelector); }
             }
         }
 
@@ -55,8 +57,9 @@ namespace Michsky.UI.Reach
             continueButton.gameObject.SetActive(true);
             playButton.gameObject.SetActive(false);
             replayButton.gameObject.SetActive(true);
+			difficultySelector.gameObject.SetActive(false);
 
-            isLocked = false;
+			isLocked = false;
             isCurrent = true;
             continueButton.isInteractable = true;
             replayButton.isInteractable = true;
@@ -71,8 +74,9 @@ namespace Michsky.UI.Reach
             continueButton.gameObject.SetActive(false);
             playButton.gameObject.SetActive(true);
             replayButton.gameObject.SetActive(false);
+			difficultySelector.gameObject.SetActive(false);
 
-            isLocked = true;
+			isLocked = true;
             isCurrent = false;
             playButton.isInteractable = false;
         }
@@ -86,8 +90,9 @@ namespace Michsky.UI.Reach
             continueButton.gameObject.SetActive(false);
             playButton.gameObject.SetActive(true);
             replayButton.gameObject.SetActive(false);
+			difficultySelector.gameObject.SetActive(true);
 
-            isLocked = false;
+			isLocked = false;
             isCurrent = false;
             playButton.isInteractable = true;
         }
@@ -101,8 +106,9 @@ namespace Michsky.UI.Reach
             continueButton.gameObject.SetActive(false);
             playButton.gameObject.SetActive(false);
             replayButton.gameObject.SetActive(true);
+			difficultySelector.gameObject.SetActive(true);
 
-            isLocked = false;
+			isLocked = false;
             isCurrent = false;
             replayButton.isInteractable = true;
         }
