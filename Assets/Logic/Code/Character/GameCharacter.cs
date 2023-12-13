@@ -428,29 +428,7 @@ public class GameCharacter : MonoBehaviour, IDamage
 
 	public void RequestBestCharacterState(bool force = false)
 	{
-		if (CheckIfCharacterIsInAir())
-		{
-			StateMachine.RequestStateChange(EGameCharacterState.InAir, force);
-			return;
-		}
-
-		if (CheckIfCharacterIsOnSteepGround())
-		{
-			StateMachine.RequestStateChange(EGameCharacterState.InAir, force);
-			return;
-		}
-
-		if (CheckIfCharacterIsMoving())
-		{
-			StateMachine.RequestStateChange(EGameCharacterState.Moving, force);
-			return;
-		}
-
-		if (CheckIfCharacterIsStanding())
-		{
-			StateMachine.RequestStateChange(EGameCharacterState.Standing, force);
-			return;
-		}
+		StateMachine.RequestStateChange(GetBestCharacterState(), force);
 	}
 
 	public EGameCharacterState GetBestCharacterState()

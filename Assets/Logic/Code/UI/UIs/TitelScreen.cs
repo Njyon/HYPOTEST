@@ -9,20 +9,11 @@ public class TitelScreen : UIBase
 {
     [SerializeField] TMPro.TextMeshProUGUI titel;
     [SerializeField] TMPro.TextMeshProUGUI pressText;
-
-    [SerializeField] MMF_Player fadeIn;
-    [SerializeField] MMF_Player fadeOut;
-
-    public MMF_Player FadeOut { get { return fadeOut; } }
+	[SerializeField] Animator animController;
 
     async void Awake()
     {
         LoadedUI();
-		fadeIn.Initialization();
-		fadeOut.Initialization();
-
-		titel.alpha = 0f;
-        pressText.alpha = 0f;
 
         await new WaitForSeconds(0.1f);
 
@@ -31,7 +22,6 @@ public class TitelScreen : UIBase
 
 	void Start()
 	{
-		fadeIn.PlayFeedbacks();
 
 	}
 
@@ -42,8 +32,7 @@ public class TitelScreen : UIBase
 
 	private void StartRemovingTitelScreen()
 	{
-		fadeIn.StopFeedbacks();
-		fadeOut.PlayFeedbacks();
+		animController?.SetTrigger("Trigger");
 	}
 
 	public void RemoveTitelScreen()

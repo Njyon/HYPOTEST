@@ -23,6 +23,8 @@ public class GameCharacterFreezState : AGameCharacterState
 		GameCharacter.FreezTimer.onTimerFinished += TimerEnded;
 		GameCharacter.MovementComponent.onMoveCollisionFlag += OnMoveCollisionFlag;
 
+		GameCharacter.AnimController.ResetAnimStatesHARD();
+
 		GameCharacter.AnimController.InFreez = true;
 	}
 
