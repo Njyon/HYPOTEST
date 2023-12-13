@@ -14,8 +14,9 @@ Material:
   m_ValidKeywords:
   - DR_CEL_EXTRA_ON
   - DR_OUTLINE_ON
+  - DR_RIM_ON
   - _CELPRIMARYMODE_SINGLE
-  - _TEXTUREBLENDINGMODE_MULTIPLY
+  - _TEXTUREBLENDINGMODE_ADD
   m_InvalidKeywords:
   - _FLAT_SHADOWS_ENABLED
   - _FLAT_SPECULAR_ENABLED
@@ -32,7 +33,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: f1b544e059206e94982244a584e02298, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -97,14 +98,14 @@ Material:
     - _FlatRimEdgeSmoothness: 0
     - _FlatRimEnabled: 1
     - _FlatRimLightAlign: 0
-    - _FlatRimSize: 0.305
+    - _FlatRimSize: 0.281
     - _FlatShadowsEnabled: 1
     - _FlatSmoothness: 0.362
     - _FlatSpecularEdgeSmoothness: 0.034
     - _FlatSpecularEnabled: 1
     - _FlatSpecularSize: 0.392
     - _FlatSpecularSmoothness: 0.5
-    - _Flatness: 0.57
+    - _Flatness: 0.485
     - _FlatnessExtra: 0.885
     - _FlatnessSecondary: 1
     - _GlossMapScale: 1
@@ -133,12 +134,12 @@ Material:
     - _OverrideShadowsEnabled: 1
     - _Parallax: 0.02
     - _QueueOffset: 0
-    - _RimEnabled: 0
+    - _RimEnabled: 1
     - _SecondaryColor: 1
     - _SecondaryColorEnabled: 1
-    - _SelfShadingSize: 0.051
+    - _SelfShadingSize: 0.013
     - _SelfShadingSizeExtra: 0.43
-    - _ShadowEdgeSize: 0.183
+    - _ShadowEdgeSize: 0.145
     - _ShadowEdgeSizeExtra: 0.389
     - _ShadowEdgeSmoothness: 0.071
     - _ShadowFalloff: 0.01
@@ -147,7 +148,7 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
-    - _TextureBlendingMode: 0
+    - _TextureBlendingMode: 1
     - _TextureImpact: 1
     - _UVSec: 0
     - _UnityShadowMode: 0
