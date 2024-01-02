@@ -49,13 +49,10 @@ public class PlayerGameCharacter : GameCharacter
 
 	new protected void Update()
 	{
-		Profiler.BeginSample("PlayerUpdate");
 		if (!IsInitialized) return;
 		base.Update();
 		combatRatingComponent?.Update(Time.deltaTime);
 		Ultra.Utilities.Instance.DebugLogOnScreen("Current StyleRank => " + combatRatingComponent.CurrentValue, 0f, StringColor.Red);
-		Profiler.EndSample();
-
 	}
 
 	new protected void OnDestroy()

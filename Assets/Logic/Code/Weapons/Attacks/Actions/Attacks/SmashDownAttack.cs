@@ -39,7 +39,6 @@ public class SmashDownAttack : AttackBase
 
 	public override void OnHit(GameObject hitObj)
 	{
-		Profiler.BeginSample("SmashOnHit");
 		GameCharacter enemyCharacter = hitObj.GetComponent<GameCharacter>();
 		if (enemyCharacter == null || enemyCharacter.StateMachine == null || enemyCharacter.CombatComponent == null) return;
 		if (enemyCharacter.StateMachine.CanSwitchToStateOrIsState(EGameCharacterState.HookedToCharacter))
@@ -48,7 +47,6 @@ public class SmashDownAttack : AttackBase
 			Weapon.HookCharacterToCharacter(enemyCharacter);
 			enemyCharacter.StateMachine.RequestStateChange(EGameCharacterState.HookedToCharacter);
 		}
-		Profiler.EndSample();
 	}
 
 	void OnMoveCollisionFlag(CollisionFlags collisionFlag)
@@ -65,7 +63,6 @@ public class SmashDownAttack : AttackBase
 
 	void OnAirDownHitLanding()
 	{
-		Profiler.BeginSample("SmashDOwnOnAirDownHitLanding");
 		landed = true;
 		GameCharacter.MovementComponent.onMoveCollisionFlag -= OnMoveCollisionFlag;
 		GameCharacter.CombatComponent.AttackTimer.onTimerFinished -= AttackTimerFinished;
@@ -76,34 +73,27 @@ public class SmashDownAttack : AttackBase
 		{
 			OnGroundAttackHit(obj);
 		}
-		Profiler.EndSample();
 	}
 
 	void OnGroundAttackHit(GameObject hitObject)
 	{
-		Profiler.BeginSample("SmashDownDoDamage");
 		DoDamage(hitObject, attackData.Damage);
-		Profiler.EndSample();
 	}
 
 	public override void PostAttackStateLogic(float deltaTime)
 	{
-		Profiler.BeginSample("SmashDownPostAttackLogic");
 		base.PostAttackStateLogic(deltaTime);
 		UpdateAirDownAttack(deltaTime);
-		Profiler.EndSample();
 	}
 
 	void UpdateAirDownAttack(float deltaTime)
 	{
-		Profiler.BeginSample("SmashDownUpdateAirDownAttack");
 		if (!landed && startFalling)
 		{
 			Vector3 velocity = GameCharacter.MovementComponent.MovementVelocity;
 			velocity = new Vector3(velocity.x, velocity.y - attackData.speed, velocity.z);
 			GameCharacter.MovementComponent.MovementVelocity = velocity;
 		}
-		Profiler.EndSample();
 	}
 
 	public override void AttackPhaseStart()

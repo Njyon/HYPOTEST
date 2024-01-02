@@ -24,7 +24,6 @@ public class AIControllerBase : ControllerBase
 
 	async private void SetupGameCharacter(GameObject pawn)
 	{
-		Profiler.BeginSample("Init new GameCharacter");
 		gameCharacter = pawn.AddComponent<EnemyGameCharacter>();
 		LoadingChecker.Instance.Tasks.Add(Task.Run(async () => {
 			while (!gameCharacter.IsInitialized)
@@ -50,8 +49,6 @@ public class AIControllerBase : ControllerBase
 
 		gameCharacter.onGameCharacterDied += OnGameCharacterDied;
 		gameCharacter.Team = HyppoliteTeam.TeamEnemy;
-
-		Profiler.EndSample();
 
 		await new WaitUntil(() => UIManager.Instance.Canvas != null);
 		enemyInfo = UIManager.Instance.GetEnemyInfo(gameCharacter);
