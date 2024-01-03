@@ -56,6 +56,8 @@ public class UIManager : Singelton<UIManager>
 
 	void Awake()
 	{
+		Application.targetFrameRate = 150;
+
 		// Might be wrong
 		Object[] lol = FindObjectsOfType<UIManager>();
 		if (lol.Length > 1)
@@ -125,7 +127,7 @@ public class UIManager : Singelton<UIManager>
 
 	public void LoadMainMenu()
 	{
-		LoadSceneAsync(mainMenuName, LoadSceneMode.Additive, null);
+		LoadSceneAsync(mainMenuName, LoadSceneMode.Single, null);
 	}
 
 	public void LoadGameModeSelection()

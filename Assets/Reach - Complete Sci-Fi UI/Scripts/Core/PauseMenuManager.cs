@@ -67,7 +67,7 @@ namespace Michsky.UI.Reach
         public void OpenPauseMenu()
         {
             if (isOn == true) { return; }
-            if (setTimeScale == true) { Time.timeScale = 0; }
+            if (setTimeScale == true) { GameTimeManager.Instance.ToggleTimeManipulation("PauseMenu", 0f); }
             if (inputBlockDuration > 0)
             {
                 AllowClosing(false);
@@ -94,7 +94,7 @@ namespace Michsky.UI.Reach
         public void ClosePauseMenu()
         {
             if (isOn == false || allowClosing == false) { return; }
-            if (setTimeScale == true) { Time.timeScale = 1; }
+            if (setTimeScale == true) { GameTimeManager.Instance.ToggleTimeManipulation("PauseMenu", 1f); ; }
             if (panelManager != null) { panelManager.HideCurrentPanel(); }
 
             StopCoroutine("DisablePauseCanvas");

@@ -17,6 +17,7 @@ public class LoadingChecker : Singelton<LoadingChecker>
 	bool finishLoading = true;
 	public bool FinishLoading { get { return finishLoading; } }
 
+
 	public async void StartCheckingLoading()
 	{
 		finishLoading = false;
@@ -29,10 +30,17 @@ public class LoadingChecker : Singelton<LoadingChecker>
 				if (asyncOperation == null) { loading = true; continue; }
 				if (!asyncOperation.isDone) loading = true;
 			}
-			await new WaitForSeconds(0.1f);
+			await new WaitForSecondsRealtime(0.1f);
 		}
 		await Task.WhenAll(Tasks);
 		finishLoading = true;
 		if (onLoadingFinished != null) onLoadingFinished();
+		ClearLoadingCache();
+	}
+
+	public void ClearLoadingCache()
+	{
+		tasks.Clear();
+		asyncOperations.Clear();
 	}
 }
