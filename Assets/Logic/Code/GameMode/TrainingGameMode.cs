@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class TrainingGameMode : GameModeBase
 {
+	public override bool AllowDamage()
+	{
+		return false;
+	}
+
 	public override void Create()
 	{
 		base.Create();

@@ -10,6 +10,8 @@ namespace Ultra
 {
 	public class HypoUttilies : Singelton<HypoUttilies>
 	{
+		static public GameModeBase gameModeBase;
+
 		public static List<ScriptableCharacter> GetAllCharacters()
 		{
 #if UNITY_EDITOR
@@ -235,6 +237,7 @@ namespace Ultra
 			gameModeObj.name = gameMode.name;
 			DontDestroyOnLoad(gameModeObj);
 			gameMode.Create();
+			gameModeBase = gameMode;
 			return gameMode;
 		}
 
