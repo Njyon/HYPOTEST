@@ -12,7 +12,7 @@ public enum GameDifficultyLevel
 	HyppoliteMustDie
 }
 
-public class GameModeBase : MonoBehaviour
+public abstract class GameModeBase : MonoBehaviour
 {
 
 	PlayerGameCharacter playerCharacter;
@@ -31,4 +31,6 @@ public class GameModeBase : MonoBehaviour
 	{
 
 	}
+
+	public abstract bool AllowDamage();
 }
