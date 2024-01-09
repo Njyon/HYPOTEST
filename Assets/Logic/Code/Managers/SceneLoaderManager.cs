@@ -5,6 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoaderManager : Singelton<SceneLoaderManager>
 {
+	public void LoadStoryLevel00()
+	{
+		LoadScene("TestLevelMain01");
+	}
+
 	public void LoadStoryLevel01()
 	{
 		LoadScene("StoryLevelArt");
@@ -13,6 +18,22 @@ public class SceneLoaderManager : Singelton<SceneLoaderManager>
 	public void LoadTrainingsMap()
 	{
 		LoadScene("TrainingMap");
+	}
+
+	public void LoadLevel(int index)
+	{
+		switch (index)
+		{
+			case -1:
+				LoadTrainingsMap();
+				break;
+			case 0:
+				LoadStoryLevel00();
+				break;
+			default: 
+				LoadStoryLevel01();
+				break;
+		}
 	}
 
 	private void LoadScene(string sceneName)

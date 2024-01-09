@@ -426,7 +426,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: db29e29da505c4348be353a9303e4de2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: cb08b30013038eb4cbcaa1d284a31f08, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -43280,7 +43280,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 993.1917, y: -533.6117}
-  m_SizeDelta: {x: 1986.3834, y: 160}
+  m_SizeDelta: {x: 1986.3834, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1237934199
 GameObject:
@@ -66997,7 +66997,7 @@ MonoBehaviour:
   chapters:
   - chapterID: Chapter 1
     title: Chapter 1
-    background: {fileID: 21300000, guid: 2a66010c2c342db4f8e38d821184083b, type: 3}
+    background: {fileID: 21300000, guid: 77eedffcf11739447a846c955c0ca13d, type: 3}
     description: This is a description field. You can say something about the chapter
       here. This is a multi-line field and is automatically sized depending on its
       content. You can also use any TMP-supported rich text. You can use the 'Chapter
@@ -67012,7 +67012,7 @@ MonoBehaviour:
         - m_Target: {fileID: 1955896822}
           m_TargetAssemblyTypeName: StoryModusPanelHelper, Assembly-CSharp
           m_MethodName: onContinue
-          m_Mode: 1
+          m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -67027,7 +67027,7 @@ MonoBehaviour:
         - m_Target: {fileID: 1955896822}
           m_TargetAssemblyTypeName: StoryModusPanelHelper, Assembly-CSharp
           m_MethodName: OnPlay
-          m_Mode: 1
+          m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -67042,7 +67042,7 @@ MonoBehaviour:
         - m_Target: {fileID: 1955896822}
           m_TargetAssemblyTypeName: StoryModusPanelHelper, Assembly-CSharp
           m_MethodName: OnRepeat
-          m_Mode: 1
+          m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -67053,7 +67053,7 @@ MonoBehaviour:
           m_CallState: 2
   - chapterID: Chapter 2
     title: Chapter 2
-    background: {fileID: 21300000, guid: b8203f22905be8649936b198dd1f2994, type: 3}
+    background: {fileID: 21300000, guid: f093bca85734d4f4f9502a6fffe9cc0b, type: 3}
     description: This is a description field. You can say something about the chapter
       here. This is a multi-line field and is automatically sized depending on its
       content. You can also use any TMP-supported rich text. You can use the 'Chapter
@@ -67068,11 +67068,11 @@ MonoBehaviour:
         - m_Target: {fileID: 1955896822}
           m_TargetAssemblyTypeName: StoryModusPanelHelper, Assembly-CSharp
           m_MethodName: onContinue
-          m_Mode: 1
+          m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
+            m_IntArgument: 1
             m_FloatArgument: 0
             m_StringArgument: 
             m_BoolArgument: 0
@@ -67083,7 +67083,7 @@ MonoBehaviour:
         - m_Target: {fileID: 1955896822}
           m_TargetAssemblyTypeName: StoryModusPanelHelper, Assembly-CSharp
           m_MethodName: OnPlay
-          m_Mode: 1
+          m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -67098,7 +67098,7 @@ MonoBehaviour:
         - m_Target: {fileID: 1955896822}
           m_TargetAssemblyTypeName: StoryModusPanelHelper, Assembly-CSharp
           m_MethodName: OnRepeat
-          m_Mode: 1
+          m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -67109,7 +67109,7 @@ MonoBehaviour:
           m_CallState: 2
   - chapterID: Chapter 3
     title: Chapter 3
-    background: {fileID: 21300000, guid: a2b9a1d3ebcc88345916f0128c9cbc0e, type: 3}
+    background: {fileID: 21300000, guid: f093bca85734d4f4f9502a6fffe9cc0b, type: 3}
     description: This is a description field. You can say something about the chapter
       here. This is a multi-line field and is automatically sized depending on its
       content. You can also use any TMP-supported rich text. You can use the 'Chapter
@@ -67124,7 +67124,7 @@ MonoBehaviour:
         - m_Target: {fileID: 1955896822}
           m_TargetAssemblyTypeName: StoryModusPanelHelper, Assembly-CSharp
           m_MethodName: onContinue
-          m_Mode: 1
+          m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -67139,7 +67139,7 @@ MonoBehaviour:
         - m_Target: {fileID: 1955896822}
           m_TargetAssemblyTypeName: StoryModusPanelHelper, Assembly-CSharp
           m_MethodName: OnPlay
-          m_Mode: 1
+          m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -67154,7 +67154,7 @@ MonoBehaviour:
         - m_Target: {fileID: 1955896822}
           m_TargetAssemblyTypeName: StoryModusPanelHelper, Assembly-CSharp
           m_MethodName: OnRepeat
-          m_Mode: 1
+          m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -67165,7 +67165,7 @@ MonoBehaviour:
           m_CallState: 2
   - chapterID: Chapter 4
     title: Chapter 4
-    background: {fileID: 21300000, guid: c8ecd8f6dcfe2314e9d327bdf3402b90, type: 3}
+    background: {fileID: 21300000, guid: f093bca85734d4f4f9502a6fffe9cc0b, type: 3}
     description: This is a description field. You can say something about the chapter
       here. This is a multi-line field and is automatically sized depending on its
       content. You can also use any TMP-supported rich text. You can use the 'Chapter
@@ -67180,7 +67180,7 @@ MonoBehaviour:
         - m_Target: {fileID: 1955896822}
           m_TargetAssemblyTypeName: StoryModusPanelHelper, Assembly-CSharp
           m_MethodName: onContinue
-          m_Mode: 1
+          m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -67195,7 +67195,7 @@ MonoBehaviour:
         - m_Target: {fileID: 1955896822}
           m_TargetAssemblyTypeName: StoryModusPanelHelper, Assembly-CSharp
           m_MethodName: OnPlay
-          m_Mode: 1
+          m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -67210,7 +67210,7 @@ MonoBehaviour:
         - m_Target: {fileID: 1955896822}
           m_TargetAssemblyTypeName: StoryModusPanelHelper, Assembly-CSharp
           m_MethodName: OnRepeat
-          m_Mode: 1
+          m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
