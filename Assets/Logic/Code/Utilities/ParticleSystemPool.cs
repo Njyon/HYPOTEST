@@ -20,7 +20,7 @@ public class ParticleSystemPool : ComponentPoolBase<ParticleSystem>
 
 	public override ParticleSystem GetValue()
 	{
-		if (!IsTStackInit) InitStack();
+		if (!IsTStackInit || ElementsInStackAreNull()) InitStack();
 
 		if (NoMoreTInStack)
 			SpawnValue();
@@ -58,5 +58,10 @@ public class ParticleSystemPool : ComponentPoolBase<ParticleSystem>
 		go.GetComponent<ParticleSystemCallBackComponent>().onParticleSystemStopped -= OnParticleSystemStopped;
 		var ps = go.GetComponent<ParticleSystem>();
 		ReturnValue(ps);
+	}
+
+	protected override void DestroyElement(ParticleSystem element)
+	{
+		GameObject.Destroy(element.gameObject);
 	}
 }

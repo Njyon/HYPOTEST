@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class MusicManager : Singelton<MusicManager>
 {
-    bool isPlaying = false;
     bool shouldStop = false;
     float volumeTarget = 0;
     float lerpSpeedUp = 0.05f;
@@ -27,7 +26,7 @@ public class MusicManager : Singelton<MusicManager>
 
     void Update()
     {
-        if (isPlaying)
+        if (MusicSource.isPlaying)
         {
 			if (MusicSource != null && MusicSource.volume != volumeTarget)
 			{
@@ -36,16 +35,16 @@ public class MusicManager : Singelton<MusicManager>
             if (MusicSource.volume == 0)
             {
                 Stop();
-            }
+				MusicSource.Stop();
+			}
 		}
        
     }
 
     public void Play()
     {
-        if (!isPlaying)
+        if (!MusicSource.isPlaying)
         {
-            isPlaying = true;
             shouldStop = false;
 
 			MusicSource.clip = GetMusicClip();
@@ -56,11 +55,11 @@ public class MusicManager : Singelton<MusicManager>
 
     public void Stop()
     {
-        if (isPlaying && !shouldStop)
+        if (MusicSource.isPlaying && !shouldStop)
         {
             shouldStop = true;
-            volumeTarget = 0; 
-        }
+            volumeTarget = 0;
+		}
     }
 
     public void SetVolumeTarget(float volume)
