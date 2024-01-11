@@ -16,10 +16,13 @@ public class PlayerUI : UIBase
 	[SerializeField] float healthbarBackGroundSpeed = 1f;
 
 	[Header("StyleRanking")]
+	[SerializeField] CanvasGroup styleRankingGroup;
 	[SerializeField] Image styleRankImage;
 	[SerializeField] Image styleRankImageOutline;
 	[SerializeField] MMF_Player styleRankUpFeedback;
-	[SerializeField] MMF_Player styleRanDownFeedback;
+	[SerializeField] MMF_Player styleRankDownFeedback;
+	[SerializeField] MMF_Player showStyleRankFeedback;
+	[SerializeField] MMF_Player hideStyleRankFeedback;
 
 	[Header("Weapons")]
 	[SerializeField] List<GameObject> weaponAnkers;
@@ -51,6 +54,7 @@ public class PlayerUI : UIBase
 		ultUIElementBackground.SetAlpha(0f);
 
 		LoadedUI();
+		styleRankingGroup.alpha = 0f;
 	}
 
 	public void Init(PlayerGameCharacter playerCharacter)
@@ -175,7 +179,7 @@ public class PlayerUI : UIBase
 		{
 			// RankDown
 			SetRankImage();
-			styleRanDownFeedback.PlayFeedbacks();
+			styleRankDownFeedback.PlayFeedbacks();
 
 		}
 	}
@@ -241,10 +245,12 @@ public class PlayerUI : UIBase
 			if (gameCharacter.CharacterHasAggro)
 			{
 				// Show Ranking
+				showStyleRankFeedback?.PlayFeedbacks();
 			}
 			else
 			{
 				// Hide Ranking
+				hideStyleRankFeedback?.PlayFeedbacks();
 			}
 		}
 	}

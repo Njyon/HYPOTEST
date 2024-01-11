@@ -34,7 +34,7 @@ public class GameTimeManager : Singelton<GameTimeManager>
 		timeManipulationList.Clear();
 		toDeletedManiplulations.Clear();
 
-        Time.timeScale = 1f;
+		CurrentTimeMultiplier = 1f;
 	}
 
 	public float CurrentTimeMultiplier { get { return currentTimeMultiplier; } 
@@ -118,6 +118,11 @@ public class GameTimeManager : Singelton<GameTimeManager>
 
     void RemoveManipulation(float manipulation)
 	{
+        if (manipulation == 0)
+        {
+            CurrentTimeMultiplier = 1f;
+            return;
+		}
 		CurrentTimeMultiplier /= manipulation;
 	}
 
