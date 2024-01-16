@@ -12,7 +12,7 @@ public class AudioSourcePool : MonoBehaviourPoolBase<AudioComponent>
 
 	public override AudioComponent GetValue()
 	{
-		if (!IsTStackInit) InitStack();
+		if (!IsTStackInit || ElementsInStackAreNull()) InitStack();
 
 		if (NoMoreTInStack)
 			SpawnValue();
@@ -32,6 +32,12 @@ public class AudioSourcePool : MonoBehaviourPoolBase<AudioComponent>
 	protected override void DeactivateValue(AudioComponent value)
 	{
 		value.gameObject.SetActive(false);
+	}
+
+	protected override void DestroyElement(AudioComponent element)
+	{
+		if (element.Equals(null)) return;
+		GameObject.Destroy(element.gameObject);
 	}
 
 	void OnAudioSourceFinished(AudioComponent value)

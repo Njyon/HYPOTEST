@@ -19,7 +19,7 @@ public class StoryModusPanelHelper : MonoBehaviour
 		}
 	}
 
-	public void OnPlay()
+	public void OnPlay(int index)
 	{
 		if (chapterManager == null) return;
 		StoryGameMode storyGameMode = DestroyAllAndCreateNewGameMode<StoryGameMode>();
@@ -27,10 +27,10 @@ public class StoryModusPanelHelper : MonoBehaviour
 		GameDifficultyLevel difficultyLevel = GetDifficultySetting();
 		storyGameMode.GameDifficultyLevel = difficultyLevel;
 
-		SceneLoaderManager.Instance.LoadStoryLevel01();
+		SceneLoaderManager.Instance.LoadLevel(index);
 	}
 
-	public void OnRepeat()
+	public void OnRepeat(int index)
 	{
 		if (chapterManager == null) return;
 
@@ -39,15 +39,15 @@ public class StoryModusPanelHelper : MonoBehaviour
 		GameDifficultyLevel difficultyLevel = GetDifficultySetting();
 		storyGameMode.GameDifficultyLevel = difficultyLevel;
 
-		SceneLoaderManager.Instance.LoadStoryLevel01();
+		SceneLoaderManager.Instance.LoadLevel(index);
 	}
 
-	public void onContinue()
+	public void onContinue(int index)
 	{
 		if (chapterManager == null) return;
 		// Get Last DificultyLevel or discord option
 
-		SceneLoaderManager.Instance.LoadStoryLevel01();
+		SceneLoaderManager.Instance.LoadLevel(index);
 	}
 
 	GameDifficultyLevel GetDifficultySetting()

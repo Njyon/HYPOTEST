@@ -21,4 +21,10 @@ public class ProjectilePool : MonoBehaviourPoolBase<WeaponProjectile>
 		value?.TurnOff();
 		value?.gameObject.SetActive(false);
 	}
+
+	protected override void DestroyElement(WeaponProjectile element)
+	{
+		if (element.Equals(null)) return;
+		GameObject.Destroy(element.gameObject);
+	}
 }

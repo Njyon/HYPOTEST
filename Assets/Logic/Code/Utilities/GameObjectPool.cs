@@ -27,7 +27,7 @@ public class GameObjectPool : GameObjectPoolBase
 
 	public override GameObject GetValue()
 	{
-		if (!IsTStackInit) InitStack();
+		if (!IsTStackInit || ElementsInStackAreNull()) InitStack();
 
 		if (NoMoreTInStack)
 			SpawnValue();
@@ -52,5 +52,10 @@ public class GameObjectPool : GameObjectPoolBase
 		GameObject go = GameObject.Instantiate(instance, Parent.transform);
 		stack.Push(go);
 		DeactivateValue(go);
+	}
+
+	protected override void DestroyElement(GameObject element)
+	{
+		GameObject.Destroy(element);
 	}
 }

@@ -311,6 +311,10 @@ public abstract class WeaponBase
 			}
 		}
 		ShouldPlayHitSound = true;
+
+		if (ishitDetecting && (gameCharacter.StateMachine.CurrentState.GetStateType() != EGameCharacterState.Attack && gameCharacter.StateMachine.CurrentState.GetStateType() != EGameCharacterState.AttackRecovery))
+			HitDetectionEnd();
+
 		HitDetection();
 	}
 

@@ -37,9 +37,14 @@ public abstract class MonoBehaviourPoolBase<T> : PoolBase<T> where T : MonoBehav
 		this.parent = parent;
 	}
 
+	public void SetParent(GameObject parent)
+	{
+		this.parent = parent;
+	}
+
 	public override T GetValue()
 	{
-		if (!IsTStackInit) InitStack();
+		if (!IsTStackInit || ElementsInStackAreNull()) InitStack();
 
 		if (NoMoreTInStack)
 			SpawnValue();
@@ -85,7 +90,7 @@ public abstract class ComponentPoolBase<T> : PoolBase<T> where T : Component
 
 	public override T GetValue()
 	{
-		if (!IsTStackInit) InitStack();
+		if (!IsTStackInit || ElementsInStackAreNull()) InitStack();
 
 		if (NoMoreTInStack)
 			SpawnValue();

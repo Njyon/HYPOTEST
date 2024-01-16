@@ -5,8 +5,6 @@ using System.Linq;
 using Unity.Mathematics;
 using UnityEditor;
 using UnityEngine;
-using static Megumin.Binding.BindingEditor;
-using static UnityEditor.Progress;
 
 [Flags]
 public enum DebugAreas

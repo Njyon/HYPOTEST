@@ -49,13 +49,33 @@ public class UIManager : Singelton<UIManager>
 
 	bool showTitelScreen = true;
 
-	Stack<EnemyInfo> enemyInfoStack;
-	bool NoMoreEnemyInfo => enemyInfoStack.Count <= 0;
-	bool IsEnemyStackInit => enemyInfoStack != null;
-	int enemyStackMinSize = 5;
+	GameObject enemyInfoHolder;
+	GameObject EnemyInfoHolder { 
+		get {
+			if (enemyInfoHolder == null)
+			{
+				enemyInfoHolder = new GameObject(">> EnemyInfoHolder");
+				enemyInfoHolder.transform.parent = Canvas.transform;
+			}
+			return enemyInfoHolder;
+		} 
+	}
+	EnemyInfoPool enemyInfoPool;
+	public EnemyInfoPool EnemyInfoPool { 
+		get { 
+			if (enemyInfoPool == null)
+			{
+				enemyInfoPool = new EnemyInfoPool(GameAssets.Instance.EnemyInfo, EnemyInfoHolder);
+			}
+			if (enemyInfoPool.Parent.Equals(null)) enemyInfoPool.SetParent(EnemyInfoHolder);
+			return enemyInfoPool;
+		} 
+	}
 
 	void Awake()
 	{
+		Application.targetFrameRate = 150;
+
 		// Might be wrong
 		Object[] lol = FindObjectsOfType<UIManager>();
 		if (lol.Length > 1)
@@ -125,7 +145,7 @@ public class UIManager : Singelton<UIManager>
 
 	public void LoadMainMenu()
 	{
-		LoadSceneAsync(mainMenuName, LoadSceneMode.Additive, null);
+		LoadSceneAsync(mainMenuName, LoadSceneMode.Single, null);
 	}
 
 	public void LoadGameModeSelection()
@@ -192,44 +212,13 @@ public class UIManager : Singelton<UIManager>
 
 	public EnemyInfo GetEnemyInfo(GameCharacter character)
 	{
-		if (character == null) return null;
-		if (!IsEnemyStackInit) InitEnemyStack();
-	
-		if (NoMoreEnemyInfo)
-			SpawnEnemyInfo();
-		EnemyInfo enemyInfo = enemyInfoStack.Pop();
-		enemyInfo.gameObject.SetActive(true);
+		EnemyInfo enemyInfo = EnemyInfoPool.GetValue();
 		enemyInfo.Init(character);
 		return enemyInfo;
 	}
 
 	public void ReturnEnemyInfo(EnemyInfo enemyInfo)
 	{
-		if (enemyInfo == null) return;
-		enemyInfo.gameObject.SetActive(false);
-		if (IsEnemyStackInit)
-			enemyInfoStack.Push(enemyInfo);
-	}
-
-	void InitEnemyStack()
-	{
-		enemyInfoStack = new Stack<EnemyInfo>();
-		for (int i = 0; i < enemyStackMinSize; i++)
-		{
-			SpawnEnemyInfo();
-		}
-	}
-
-	private void SpawnEnemyInfo()
-	{
-		if (Canvas == null)
-		{
-			Ultra.Utilities.Instance.DebugErrorString("UIManager", "InitEnemyInfo", "Canvas was null!");
-			return;
-		}
-		GameObject enemyInfoObj = GameObject.Instantiate(GameAssets.Instance.EnemyInfo, Canvas.transform);
-		EnemyInfo enemyInfo = enemyInfoObj.GetComponent<EnemyInfo>();
-		enemyInfoStack.Push(enemyInfo);
-		enemyInfoObj.SetActive(false);
+		EnemyInfoPool.ReturnValue(enemyInfo);
 	}
 }

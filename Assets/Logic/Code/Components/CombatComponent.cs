@@ -381,6 +381,9 @@ public class CombatComponent
 	{
 		if (NextWeapon != null) 
 			CheckIfCanSwitchWeapon(newState.GetStateType());
+
+		if (newState?.GetStateType() != EGameCharacterState.Attack && oldState?.GetStateType() == EGameCharacterState.AttackRecovery)
+			CurrentWeapon?.HitDetectionEnd();
 	}
 
 	public bool CanRequestFlyAway()

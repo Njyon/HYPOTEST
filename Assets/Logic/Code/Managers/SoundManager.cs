@@ -31,13 +31,19 @@ public class SoundManager : Singelton<SoundManager>
 
 	void Awake()
 	{
-		SoundHolder = new GameObject(">> Sound Holder");
+		SoundHolder = CreateHolder();
 		audioSourcePool = new AudioSourcePool(GameAssets.Instance.SoundObject, SoundHolder, 10);
 	}
 
 	public void PlaySound(SoundEffect soundEffect)
 	{
+		if (audioSourcePool.Parent == null) audioSourcePool.SetParent(CreateHolder());
 		AudioComponent ac = audioSourcePool.GetValue();
 		ac.Play(soundEffect);
+	}
+
+	GameObject CreateHolder()
+	{
+		return new GameObject(">> Sound Holder");
 	}
 }

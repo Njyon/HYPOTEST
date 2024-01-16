@@ -19,6 +19,15 @@ public abstract class PoolBase<T>
 	protected Stack<T> stack;
 	protected bool NoMoreTInStack => stack.Count <= 0;
 	protected bool IsTStackInit => stack != null;
+	protected bool ElementsInStackAreNull() { 
+		foreach(T element in stack) {
+			if (element.Equals(null))
+				return true;
+		}
+		return false;
+	}
+	
+
 	int minStackSize;
 
 	public abstract T GetValue();
@@ -36,10 +45,21 @@ public abstract class PoolBase<T>
 
 	protected void InitStack()
 	{
+		if (stack != null)
+		{
+			foreach(T element in stack)
+			{
+				DestroyElement(element);
+			}
+			stack.Clear();
+		}
+
 		stack = new Stack<T>();
 		for (int i = 0; i < minStackSize; i++)
 		{
 			SpawnValue();
 		}
 	}
+
+	protected abstract void DestroyElement(T element);
 }

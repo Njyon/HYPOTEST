@@ -180,8 +180,7 @@ public class AIManager : Singelton<AIManager>
 
 	void OnDestroy()
 	{
-		SceneManager.sceneLoaded += OnSceneLoaded;
-
+		SceneManager.sceneLoaded -= OnSceneLoaded;
 	}
 
 	bool AIIsInStaggerState(HyppoliteManagableAI ai)

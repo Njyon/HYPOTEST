@@ -23,6 +23,6 @@ public class AudioComponent : MonoBehaviour
 	async void WaitUntilFinished(float time)
 	{
 		await new WaitForSecondsRealtime(time);
-		if (onAudioSpurceFinished != null) onAudioSpurceFinished(this);
+		if (this != null && onAudioSpurceFinished != null) onAudioSpurceFinished(this);
 	}
 }

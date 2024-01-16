@@ -28,6 +28,15 @@ public class GameTimeManager : Singelton<GameTimeManager>
     List<TimedTimeManipulation> timeManipulationList = new List<TimedTimeManipulation>();
 	List<TimedTimeManipulation> toDeletedManiplulations = new List<TimedTimeManipulation>();
 
+    public void ClearAllTimeManipulations()
+    {
+		timeManipulators.Clear();
+		timeManipulationList.Clear();
+		toDeletedManiplulations.Clear();
+
+		CurrentTimeMultiplier = 1f;
+	}
+
 	public float CurrentTimeMultiplier { get { return currentTimeMultiplier; } 
         private set 
         { 
@@ -109,6 +118,11 @@ public class GameTimeManager : Singelton<GameTimeManager>
 
     void RemoveManipulation(float manipulation)
 	{
+        if (manipulation == 0)
+        {
+            CurrentTimeMultiplier = 1f;
+            return;
+		}
 		CurrentTimeMultiplier /= manipulation;
 	}
 

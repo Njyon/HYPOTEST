@@ -440,7 +440,7 @@ MonoBehaviour:
   spawnableCharacterData: {fileID: 11400000, guid: 5d57b0db7b655c94aaee381d44c01845,
     type: 2}
   index: 7
-  autoSpawn: 0
+  autoSpawn: 1
 --- !u!4 &75406530
 Transform:
   m_ObjectHideFlags: 0
@@ -751,7 +751,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5af8a0655f7cb374d8a9bd737d983339, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isMasterLoader: 1
+  isMasterLoader: 0
   scenes: []
 --- !u!4 &449853498
 Transform:
@@ -1480,6 +1480,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: GaunerWithTommyGun
+      objectReference: {fileID: 0}
+    - target: {fileID: 6749374297865281263, guid: cc6a30807f781f8478110f16324eb503,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 6749374297865281263, guid: cc6a30807f781f8478110f16324eb503,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6749374297865281263, guid: cc6a30807f781f8478110f16324eb503,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.01
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

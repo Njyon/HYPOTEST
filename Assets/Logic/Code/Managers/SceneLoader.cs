@@ -17,7 +17,12 @@ public class SceneLoader : MonoBehaviour
 	void Start()
 	{
 		if (Application.isPlaying && isMasterLoader)
+		{
 			UIManager.Instance.LoadLoadingScreen();
+			LoadingChecker.Instance.ClearLoadingCache();
+			GameTimeManager.Instance.ClearAllTimeManipulations();
+		}
+
 		for (int i = 0; i < scenes.Count; i++)
 		{
 			if (Application.isPlaying)
@@ -34,7 +39,8 @@ public class SceneLoader : MonoBehaviour
 		if (Application.isPlaying)
 		{
 			// Load Ingame Pause Menu
-			LoadingChecker.Instance.AsyncOperations.Add(SceneManager.LoadSceneAsync("InGameSettingsMenu", LoadSceneMode.Additive));
+			if (isMasterLoader)
+				LoadingChecker.Instance.AsyncOperations.Add(SceneManager.LoadSceneAsync("InGameSettingsMenu", LoadSceneMode.Additive));
 
 			LoadingChecker.Instance.onLoadingFinished += LoadingDone;
 			LoadingChecker.Instance.StartCheckingLoading();
@@ -43,6 +49,7 @@ public class SceneLoader : MonoBehaviour
 
 	async void LoadingDone()
 	{
+		LoadingChecker.Instance.onLoadingFinished -= LoadingDone;
 		if (isMasterLoader)
 		{
 			if (scenes.Count > 0)
@@ -51,6 +58,7 @@ public class SceneLoader : MonoBehaviour
 				{
 					string sceneName = System.IO.Path.GetFileNameWithoutExtension(scenes[0]);
 					SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName));
+					Time.timeScale = 1;
 				}
 				else
 					SceneManager.SetActiveScene(SceneManager.GetSceneByPath(scenes[0]));
