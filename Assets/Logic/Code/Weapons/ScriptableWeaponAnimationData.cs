@@ -143,6 +143,7 @@ public class ScriptableWeaponAnimationData : ScriptableObject
 
 	public EWeaponHandType HandType;
 	public AnimationClip WeaponReadyPose;
+	public AnimationClip WeaponReadyPoseRun;
 	[Range(0f,1f)]
 	public float WeaponReadyWeight = 1f;
 	public float WeaponReadyInterpSpeed = 5f;
@@ -191,6 +192,7 @@ public class ScriptableWeaponAnimationData : ScriptableObject
 
 		HandType = origin.HandType;
 		WeaponReadyPose = origin.WeaponReadyPose;
+		WeaponReadyPoseRun = origin.WeaponReadyPoseRun;
 		WeaponReadyWeight = origin.WeaponReadyWeight;
 		WeaponReadyInterpSpeed = origin.WeaponReadyInterpSpeed;
 		HeadSpineLayerMovingWeight = origin.HeadSpineLayerMovingWeight;

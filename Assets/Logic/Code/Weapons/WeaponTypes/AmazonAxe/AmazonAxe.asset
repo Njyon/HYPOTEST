@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 195a2d880f624c94da0b98858da2e759, type: 3}
+  m_Name: AmazonAxe
+  m_EditorClassIdentifier: 
+  WeaponName: AmazonAxe
+  WeaponBase:
+    instance:
+      rid: 3394043233698578434
+  AnimationData:
+    keys:
+    - Hyppolite
+    values:
+    - {fileID: 11400000, guid: 91b8e7086a1954c4d93fb02faff27266, type: 2}
+  WeaponMeshData: {fileID: 11400000, guid: 4658e592120a7244eb4cbf5f5e6ed1d5, type: 2}
+  WeaponType: 0
+  MaxChargeAmount: 1000
+  DefaultChargeAmount: 700
+  TimeAfterEqupingMaxChargedWeapon: 3
+  MaxUltChargeAmount: 100
+  UIElement: {fileID: 2407642077447747131, guid: 543551c3f1b4ea34697fd6e5e0b10751,
+    type: 3}
+  WeaponImage: {fileID: 21300000, guid: 967a9a69cf7ce3d41a2268fd2a1ad478, type: 3}
+  defaultAttackSounds: []
+  defaultHitSounds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 3394043233698578434
+      type: {class: AmazonAxe, ns: , asm: Assembly-CSharp}
+      data: 

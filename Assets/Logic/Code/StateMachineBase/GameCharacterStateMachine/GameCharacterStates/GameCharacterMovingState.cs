@@ -11,6 +11,8 @@ public class GameCharacterMovingState : AGameCharacterState
 	{
 		SetSlopStrenghToZero(oldState);
 		GameCharacter.AnimController.InterpSecondaryMotionLayerWeight(0, 10f);
+
+		GameCharacter.CombatComponent.CurrentWeapon.SetWeapnReadyPoseRun();
 	}
 
 	public override EGameCharacterState GetStateType()
@@ -108,5 +110,6 @@ public class GameCharacterMovingState : AGameCharacterState
 	{
 		GameCharacter.AnimController.InterpSecondaryMotionLayerWeight(1, 10f);
 
+		GameCharacter.CombatComponent.CurrentWeapon.SetWeaponReadyPose();
 	}
 }

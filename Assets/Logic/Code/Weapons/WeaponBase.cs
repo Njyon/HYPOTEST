@@ -170,7 +170,7 @@ public abstract class WeaponBase
 
     public virtual void EquipWeapon()
 	{
-		SetUpWeaponAnimationData();
+		SetWeaponReadyPose();
 		GameCharacter.PluginStateMachine.AddPluginState(EPluginCharacterState.WeaponReady);
 		SpawnVisualWeaponMesh();
 		SetUpHitDetectionMeshLogic();
@@ -565,9 +565,16 @@ public abstract class WeaponBase
 		CurrentAction?.Action?.OnHit(hitObj);
 	}
 
-	void SetUpWeaponAnimationData()
+	public void SetWeaponReadyPose()
 	{
 		if (AnimationData != null) gameCharacter.AnimController.SetBodyLayerAnimClip(AnimationData.WeaponReadyPose);
+	}
+
+	public void SetWeapnReadyPoseRun()
+	{
+		if (AnimationData == null || AnimationData.WeaponReadyPoseRun == null) return;
+
+		gameCharacter.AnimController.SetBodyLayerAnimClip(AnimationData.WeaponReadyPoseRun);
 	}
 
 	public IDamage GetDamageInterface(GameObject obj)
