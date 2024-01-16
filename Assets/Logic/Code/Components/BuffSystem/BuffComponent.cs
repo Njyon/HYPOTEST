@@ -6,18 +6,37 @@ public enum EBuff
 {
     Unknown,
     WaterUltimate,
+    ForceAim,
 }
 
 public class BuffComponent
 {
     GameCharacter gameCharacter;
-    List<ABuff> buffList = new List<ABuff>();  
+    List<ABuff> buffList = new List<ABuff>();
 
     public BuffComponent(GameCharacter owener)
     {
         gameCharacter = owener;
 
     }
+
+    public bool IsBuffActive(EBuff buffType)
+    {
+		ABuff foundBuff = buffList.Find((e) => { return e.GetBuffType() == buffType; });
+        return foundBuff != null;
+	}
+
+    public void AddTimeToActiveBuff(EBuff buffType, float addDuration)
+	{
+		ABuff foundBuff = buffList.Find((e) => { return e.GetBuffType() == buffType; });
+        foundBuff.DurationTimer.AddTime(addDuration);
+	}
+
+    public void ResetDurationOffActiveBuff(EBuff buffType)
+	{
+		ABuff foundBuff = buffList.Find((e) => { return e.GetBuffType() == buffType; });
+        foundBuff.DurationTimer.Start();
+	}
 
     public void AddBuff(ABuff buff)
 	{
@@ -47,6 +66,8 @@ public class BuffComponent
 
 	async void OnBuffFinished(ABuff buff)
     {
+        if (buff == null) return;
+
         buff.onBuffFinished -= OnBuffFinished;
         buff.BuffEnds();
         await new WaitForEndOfFrame();

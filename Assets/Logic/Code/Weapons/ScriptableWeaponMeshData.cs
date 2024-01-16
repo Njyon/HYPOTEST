@@ -1,6 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+[Serializable]
+public class SecondWeaponOffsets
+{
+	public Vector3 WeaponOffset = Vector3.zero;
+	public Vector3 WeaponRotationEuler = Vector3.zero;
+	public Vector3 WeaponScale = Vector3.one;
+}
 
 [CreateAssetMenu(fileName = "New WeaponMeshData", menuName = "Assets/Weapons/WeaponMeshData")]
 public class ScriptableWeaponMeshData : ScriptableObject
@@ -11,4 +20,5 @@ public class ScriptableWeaponMeshData : ScriptableObject
 	public Vector3 WeaponRotationEuler = Vector3.zero;
 	public Vector3 WeaponScale = Vector3.one;
 	public bool cascadeurSetUp = true;
+	public SecondWeaponOffsets secondWeaponOffsets;
 }
