@@ -94,6 +94,7 @@ public class ShootAttack : AttackBase
 
 	void OnTimerFinished()
 	{
+		GameCharacter.CombatComponent.AttackTimer.onTimerFinished -= OnTimerFinished;
 		GameCharacter.AnimController.InAddativeState = false;
 		GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.Shoot);
 	}

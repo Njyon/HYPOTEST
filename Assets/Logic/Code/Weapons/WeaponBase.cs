@@ -43,6 +43,7 @@ public abstract class WeaponBase
 	GameCharacter gameCharacter;
     ScriptableWeapon weaponData;
     GameObject spawnedWeapon;
+    GameObject secondSpawnedWeapon;
     GameObject spawnedWeaponBones;
 	EExplicitAttackType currentAttackType;
 	EExplicitAttackType lastAttackType;
@@ -78,6 +79,7 @@ public abstract class WeaponBase
 	public GameCharacter GameCharacter { get { return gameCharacter; } }
     public ScriptableWeapon WeaponData { get { return weaponData; } }
     public GameObject SpawnedWeapon { get { return spawnedWeapon; } }
+    public GameObject SecondSpawnedWeapon { get { return secondSpawnedWeapon; } }
     public GameObject SpawnedWeaponBones { get { return spawnedWeaponBones; } }
 	public bool IsHitDetecting { get { return ishitDetecting; } }
 	public AttackAnimationData CurrentAction { get { return GetAttackAnimationData(); } }
@@ -272,6 +274,11 @@ public abstract class WeaponBase
 				case EWeaponHandType.RightHand:
 					if (weaponData.WeaponMeshData.WeaponMesh == null) break;
 					spawnedWeapon = GameObject.Instantiate(WeaponData.WeaponMeshData.WeaponMesh, gameCharacter.GameCharacterData.HandROnjectPoint);
+					spawnedWeapon.transform.position = Vector3.zero;
+					spawnedWeapon.transform.rotation = Quaternion.identity;
+					spawnedWeapon.transform.localScale = Vector3.one;
+					spawnedWeapon.transform.localPosition = Vector3.zero;
+					spawnedWeapon.transform.localRotation = Quaternion.identity;
 					spawnedWeapon.transform.Translate(WeaponData.WeaponMeshData.WeaponOffset, Space.Self);
 					spawnedWeapon.transform.rotation = Quaternion.Euler(spawnedWeapon.transform.rotation.eulerAngles + WeaponData.WeaponMeshData.WeaponRotationEuler);
 					spawnedWeapon.transform.localScale = WeaponData.WeaponMeshData.WeaponScale;
@@ -279,6 +286,11 @@ public abstract class WeaponBase
 				case EWeaponHandType.LeftHand:
 					if (weaponData.WeaponMeshData.WeaponMesh == null) break;
 					spawnedWeapon = GameObject.Instantiate(WeaponData.WeaponMeshData.WeaponMesh, gameCharacter.GameCharacterData.HandLOnjectPoint);
+					spawnedWeapon.transform.position = Vector3.zero;
+					spawnedWeapon.transform.rotation = Quaternion.identity;
+					spawnedWeapon.transform.localScale = Vector3.one;
+					spawnedWeapon.transform.localPosition = Vector3.zero;
+					spawnedWeapon.transform.localRotation = Quaternion.identity;
 					spawnedWeapon.transform.Translate(WeaponData.WeaponMeshData.WeaponOffset, Space.Self);
 					spawnedWeapon.transform.rotation = Quaternion.Euler(spawnedWeapon.transform.rotation.eulerAngles + WeaponData.WeaponMeshData.WeaponRotationEuler);
 					spawnedWeapon.transform.localScale = WeaponData.WeaponMeshData.WeaponScale;
@@ -286,6 +298,28 @@ public abstract class WeaponBase
 				case EWeaponHandType.NoHands:
 					if (weaponData.WeaponMeshData.WeaponMesh == null) break;
 					spawnedWeapon = GameObject.Instantiate(WeaponData.WeaponMeshData.WeaponMesh, gameCharacter.transform);
+					break;
+				case EWeaponHandType.Both:
+					if (weaponData.WeaponMeshData.WeaponMesh == null) break;
+					spawnedWeapon = GameObject.Instantiate(WeaponData.WeaponMeshData.WeaponMesh, gameCharacter.GameCharacterData.HandROnjectPoint);
+					spawnedWeapon.transform.position = Vector3.zero;
+					spawnedWeapon.transform.rotation = Quaternion.identity;
+					spawnedWeapon.transform.localScale = Vector3.one;
+					spawnedWeapon.transform.localPosition = Vector3.zero;
+					spawnedWeapon.transform.localRotation = Quaternion.identity;
+					spawnedWeapon.transform.Translate(WeaponData.WeaponMeshData.WeaponOffset, Space.Self);
+					spawnedWeapon.transform.localRotation = Quaternion.Euler(WeaponData.WeaponMeshData.WeaponRotationEuler);
+					spawnedWeapon.transform.localScale = WeaponData.WeaponMeshData.WeaponScale;
+
+					secondSpawnedWeapon = GameObject.Instantiate(WeaponData.WeaponMeshData.WeaponMesh, gameCharacter.GameCharacterData.HandLOnjectPoint);
+					secondSpawnedWeapon.transform.position = Vector3.zero;
+					secondSpawnedWeapon.transform.rotation = Quaternion.identity;
+					secondSpawnedWeapon.transform.localScale = Vector3.one;
+					secondSpawnedWeapon.transform.localPosition = Vector3.zero;
+					secondSpawnedWeapon.transform.localRotation = Quaternion.identity;
+					secondSpawnedWeapon.transform.Translate(WeaponData.WeaponMeshData.secondWeaponOffsets.WeaponOffset, Space.Self);
+					secondSpawnedWeapon.transform.localRotation = Quaternion.Euler(WeaponData.WeaponMeshData.secondWeaponOffsets.WeaponRotationEuler);
+					secondSpawnedWeapon.transform.localScale = WeaponData.WeaponMeshData.secondWeaponOffsets.WeaponScale;
 					break;
 				default:
 					break;
@@ -565,6 +599,20 @@ public abstract class WeaponBase
 		CurrentAction?.Action?.OnHit(hitObj);
 	}
 
+	public void SetWeaponReadyPoseBasedOnStates()
+	{
+			if (GameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.Moving)
+		{
+			if (GameCharacter.PluginStateMachine.ContainsPluginState(EPluginCharacterState.Aim))
+				SetAimWeaponReadyPoseRun();
+			else
+				SetWeapnReadyPoseRun();
+		} else
+		{
+			SetWeaponReadyPose();
+		}
+	}
+
 	public void SetWeaponReadyPose()
 	{
 		if (AnimationData != null) gameCharacter.AnimController.SetBodyLayerAnimClip(AnimationData.WeaponReadyPose);
@@ -575,6 +623,13 @@ public abstract class WeaponBase
 		if (AnimationData == null || AnimationData.WeaponReadyPoseRun == null) return;
 
 		gameCharacter.AnimController.SetBodyLayerAnimClip(AnimationData.WeaponReadyPoseRun);
+	}
+
+	public void SetAimWeaponReadyPoseRun()
+	{
+		if (AnimationData == null || AnimationData.AimData.AimWeaponReadyPoseRun == null) return;
+
+		gameCharacter.AnimController.SetBodyLayerAnimClip(AnimationData.AimData.AimWeaponReadyPoseRun);
 	}
 
 	public IDamage GetDamageInterface(GameObject obj)

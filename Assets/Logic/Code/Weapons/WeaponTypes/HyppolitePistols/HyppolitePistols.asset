@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 195a2d880f624c94da0b98858da2e759, type: 3}
+  m_Name: HyppolitePistols
+  m_EditorClassIdentifier: 
+  WeaponName: HyppolitePistols
+  WeaponBase:
+    instance:
+      rid: 3394043234958442498
+  AnimationData:
+    keys:
+    - Hyppolite
+    values:
+    - {fileID: 11400000, guid: 368684ebfa3c2ce459b9db8b9231b575, type: 2}
+  WeaponMeshData: {fileID: 11400000, guid: 513f9aabcbe4bf04a905b3c32ea6650c, type: 2}
+  WeaponType: 1
+  MaxChargeAmount: 1000
+  DefaultChargeAmount: 700
+  TimeAfterEqupingMaxChargedWeapon: 3
+  MaxUltChargeAmount: 100
+  UIElement: {fileID: 2407642077447747131, guid: 543551c3f1b4ea34697fd6e5e0b10751,
+    type: 3}
+  WeaponImage: {fileID: 21300000, guid: 3495d57a21101d540b3f4ef75b9a7af3, type: 3}
+  defaultAttackSounds: []
+  defaultHitSounds: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 3394043234958442498
+      type: {class: HyppolitePistols, ns: , asm: Assembly-CSharp}
+      data: 

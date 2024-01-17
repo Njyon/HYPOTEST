@@ -714,5 +714,13 @@ namespace Ultra {
 		{
 			return new Color(UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f), alpha);
 		}
+
+		public static Quaternion MirrorQuaternion(Quaternion q, Vector3 axis)
+		{
+			Quaternion inverseQuaternion = Quaternion.Inverse(q);
+			Quaternion mirroredQuaternion = Quaternion.FromToRotation(axis, -axis) * inverseQuaternion * Quaternion.FromToRotation(-axis, axis);
+
+			return mirroredQuaternion;
+		}
 	}
 }

@@ -1,0 +1,112 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8104bde8e4c1a2e42b58f845296f6b18, type: 3}
+  m_Name: HyppolitePistol_AnimationData
+  m_EditorClassIdentifier: 
+  GroundAttacks:
+  - action:
+      instance:
+        rid: 3394043234958442499
+    data:
+      showProperties: 0
+      hitDetectionType: 0
+      mesh: {fileID: 0}
+      offset: {x: 0, y: 0, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 0
+      boxDimensions: {x: 0, y: 0, z: 0}
+      capsulHeight: 0
+    combatBranches:
+      keys: 
+      values: 
+    timedCombatBrenches:
+      keys: 
+      values: 
+    particleList: []
+  - action:
+      instance:
+        rid: 3394043234958442505
+    data:
+      showProperties: 0
+      hitDetectionType: 0
+      mesh: {fileID: 0}
+      offset: {x: 0, y: 0, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 0
+      boxDimensions: {x: 0, y: 0, z: 0}
+      capsulHeight: 0
+    combatBranches:
+      keys: 
+      values: 
+    timedCombatBrenches:
+      keys: 
+      values: 
+    particleList: []
+  GroundUpAttacks: []
+  GroundDownAttacks: []
+  GroundDirectionAttacks: []
+  AirAttacks: []
+  AirUpAttacks: []
+  AirDownAttacks: []
+  AirDirectionAttacks: []
+  GapCloserAttacks: []
+  DefensiveAction: []
+  Ultimate: []
+  HandType: 3
+  WeaponReadyPose: {fileID: -8791291815918580731, guid: ce7d4e5fbccc3cc4a9459f4d28a7d5cb,
+    type: 3}
+  WeaponReadyPoseRun: {fileID: -7531815829942883746, guid: 1c8d9455cac5e5c47ace0e505374fb0c,
+    type: 3}
+  WeaponReadyWeight: 1
+  WeaponReadyInterpSpeed: 5
+  HeadSpineLayerMovingWeight: 0
+  ArmRMovingWeight: 0
+  ArmLMovingWeight: 0
+  AimAnimations:
+    upAnimation: {fileID: 2504339909996264544, guid: ac25ab8ce62e9784e8275194f8003398,
+      type: 3}
+    midAnimation: {fileID: 5399008720770460614, guid: b009216de11acb14e94c4d10f0666644,
+      type: 3}
+    downAnimation: {fileID: 2185689523451455929, guid: 7cdc8473f5c53d444b38a720310f4142,
+      type: 3}
+  AimData:
+    AimWeaponReadyPoseRun: {fileID: -4846802448412792837, guid: d2c7422476739c54799f9299dd06b1eb,
+      type: 3}
+    WeaponReadyInterpSpeed: 5
+    HeadSpineLayerMovingWeight: 0.969
+    ArmRMovingWeight: 1
+    ArmLMovingWeight: 1
+  references:
+    version: 2
+    RefIds:
+    - rid: 3394043234958442499
+      type: {class: ShootAttackNoProjectile, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          shootAddativeAnimation: {fileID: 7400000, guid: 683cb7b85983592499c3504f0908666e,
+            type: 2}
+          leftHand: 1
+          forceAimDuration: 5
+    - rid: 3394043234958442505
+      type: {class: ShootAttackNoProjectile, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          shootAddativeAnimation: {fileID: 7400000, guid: c787490bcddb4504484c55d3e2a0dd4a,
+            type: 2}
+          leftHand: 0
+          forceAimDuration: 5

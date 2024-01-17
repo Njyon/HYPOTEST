@@ -71,6 +71,7 @@ public class GameCharacterWeaponReadyPluginState : AGameCharacterPluginState
 	private void WeaponLayerBasedOnState(EGameCharacterState newState)
 	{
 		if (GameCharacter.CombatComponent.CurrentWeapon.AnimationData == null) return;
+		if (GameCharacter.PluginStateMachine.ContainsPluginState(EPluginCharacterState.Aim)) return;
 		switch (newState)
 		{
 			case EGameCharacterState.Attack:

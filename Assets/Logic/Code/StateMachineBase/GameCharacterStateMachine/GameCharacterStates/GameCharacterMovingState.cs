@@ -12,7 +12,7 @@ public class GameCharacterMovingState : AGameCharacterState
 		SetSlopStrenghToZero(oldState);
 		GameCharacter.AnimController.InterpSecondaryMotionLayerWeight(0, 10f);
 
-		GameCharacter.CombatComponent.CurrentWeapon.SetWeapnReadyPoseRun();
+		GameCharacter.CombatComponent.CurrentWeapon.SetWeaponReadyPoseBasedOnStates();
 	}
 
 	public override EGameCharacterState GetStateType()

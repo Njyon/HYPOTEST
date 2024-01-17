@@ -122,6 +122,19 @@ public class testlol
 	public AttackAnimationHitDetectionData data;
 }
 
+[Serializable]
+public class AimData
+{
+	public AnimationClip AimWeaponReadyPoseRun;
+	public float WeaponReadyInterpSpeed = 5f;
+	[Range(0f, 1f)]
+	public float HeadSpineLayerMovingWeight = 0.5f;
+	[Range(0f, 1f)]
+	public float ArmRMovingWeight = 0.5f;
+	[Range(0f, 1f)]
+	public float ArmLMovingWeight = 0.5f;
+}
+
 [CreateAssetMenu(fileName = "New WeaponAnimationData", menuName = "Assets/Weapons/WeaponAnimationData")]
 public class ScriptableWeaponAnimationData : ScriptableObject
 {
@@ -155,6 +168,7 @@ public class ScriptableWeaponAnimationData : ScriptableObject
 	public float ArmLMovingWeight = 0.5f;
 
 	public AimBlendAnimations AimAnimations;
+	public AimData AimData;
 
 	public void Copy(ScriptableWeaponAnimationData origin)
 	{
@@ -199,6 +213,7 @@ public class ScriptableWeaponAnimationData : ScriptableObject
 		ArmRMovingWeight = origin.ArmRMovingWeight;
 		ArmLMovingWeight = origin.ArmLMovingWeight;
 		AimAnimations = origin.AimAnimations;
+		AimData = origin.AimData;
 	}
 
 	void CopyDataInList(ref List<AttackAnimationData> copy, ref List<AttackAnimationData> origin)
