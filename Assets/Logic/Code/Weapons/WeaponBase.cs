@@ -601,15 +601,18 @@ public abstract class WeaponBase
 
 	public void SetWeaponReadyPoseBasedOnStates()
 	{
-			if (GameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.Moving)
+ 		switch (GameCharacter.StateMachine.GetCurrentStateType())
 		{
-			if (GameCharacter.PluginStateMachine.ContainsPluginState(EPluginCharacterState.Aim))
-				SetAimWeaponReadyPoseRun();
-			else
-				SetWeapnReadyPoseRun();
-		} else
-		{
-			SetWeaponReadyPose();
+			case EGameCharacterState.InAir:
+			case EGameCharacterState.Moving:
+				if (GameCharacter.PluginStateMachine.ContainsPluginState(EPluginCharacterState.Aim))
+					SetAimWeaponReadyPoseRun();
+				else
+					SetWeapnReadyPoseRun();
+				break;
+			default:
+				SetWeaponReadyPose();
+				break;
 		}
 	}
 

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.LowLevel;
 
 public class GameCharacterWeaponReadyPluginState : AGameCharacterPluginState
 {
@@ -16,6 +17,9 @@ public class GameCharacterWeaponReadyPluginState : AGameCharacterPluginState
 	public override void AddState()
 	{
 		GameCharacter.StateMachine.onStateChanged += OnGameCharacterStateChange;
+		GameCharacter.PluginStateMachine.onPluginStateActivated += OnPluginStateActivated;
+		GameCharacter.PluginStateMachine.onPluginStateDeactivated += OnPluginStateDeactivated;
+		GameCharacter.MovementComponent.onCharacterFinishedJumping += OnFinishedJumping;
 		GameCharacter.EventComponent.onCharacterEventTriggered += CharacterEvent;
 	}
 
@@ -43,7 +47,10 @@ public class GameCharacterWeaponReadyPluginState : AGameCharacterPluginState
 	public override void RemoveState()
 	{
 		GameCharacter.StateMachine.onStateChanged -= OnGameCharacterStateChange;
+		GameCharacter.PluginStateMachine.onPluginStateActivated -= OnPluginStateActivated;
+		GameCharacter.PluginStateMachine.onPluginStateDeactivated -= OnPluginStateDeactivated;
 		GameCharacter.EventComponent.onCharacterEventTriggered -= CharacterEvent;
+		GameCharacter.MovementComponent.onCharacterFinishedJumping -= OnFinishedJumping;
 	}
 
 	public override bool WantsToBeActive()
@@ -93,7 +100,7 @@ public class GameCharacterWeaponReadyPluginState : AGameCharacterPluginState
 				break;
 			case EGameCharacterState.Moving:
 			case EGameCharacterState.Sliding:
-				GameCharacter.AnimController.SetLegLayerWeight(0);
+				GameCharacter.AnimController.InterpLegLayerWeight(0, GameCharacter.CombatComponent.CurrentWeapon.AnimationData.WeaponReadyInterpSpeed);
 				SetMovingWeaponUpperBodyLayer();
 				break;
 			default:
@@ -134,5 +141,23 @@ public class GameCharacterWeaponReadyPluginState : AGameCharacterPluginState
 				break;
 			default: break;
 		}
+	}
+
+	void OnPluginStateActivated(EPluginCharacterState activatedStateType)
+	{
+		if (IsActive())
+			WeaponLayerBasedOnState(GameCharacter.StateMachine.GetCurrentStateType());
+	}
+
+	void OnPluginStateDeactivated(EPluginCharacterState activatedStateType)
+	{
+		if (IsActive())
+			WeaponLayerBasedOnState(GameCharacter.StateMachine.GetCurrentStateType());
+	}
+
+	void OnFinishedJumping()
+	{
+		if (IsActive())
+			WeaponLayerBasedOnState(GameCharacter.StateMachine.GetCurrentStateType());
 	}
 }

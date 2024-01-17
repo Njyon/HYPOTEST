@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ public enum EGameCharacterAnimatiorLayers
 	ArmLLayer,
 	UpperBodyLayer,
 	RotationLayer,
+	UpperBodyAddativeLayer,
 	SecondaryMotionLayer,
 	HitLayer,
 }
@@ -76,6 +78,10 @@ public class AnimationController
 	int additiveBStateIndex;
 	int inAddativeStateIndex;
 	int inAddativeAStateIndex;
+	int upperBodyAddativeLayerIndex;
+	int inUpperBodyAddativeStateIndex;
+	int upperBodyAddativeAStateIndex;
+	int inUpperBodyAddativeAIndex;
 
 	float minMalkSpeed;
 	bool startWalkRunBlendInterp = true;
@@ -612,6 +618,32 @@ public class AnimationController
 			}
 		}
 	}
+	bool inUpperBodyAddativeState = false;
+	public bool InUpperBodyAddativeState
+	{
+		get { return inUpperBodyAddativeState; }
+		set
+		{
+			if (inUpperBodyAddativeState != value)
+			{
+				inUpperBodyAddativeState = value;
+				gameCharacter.Animator.SetBool(inUpperBodyAddativeStateIndex, inUpperBodyAddativeState);
+			}
+		}
+	}
+	bool inUpperBodyAddativeAState = false;
+	public bool InUpperBodyAddativeAState
+	{
+		get { return inUpperBodyAddativeAState; }
+		set
+		{
+			if (inUpperBodyAddativeAState != value)
+			{
+				inUpperBodyAddativeAState = value;
+				gameCharacter.Animator.SetBool(inUpperBodyAddativeAIndex, inUpperBodyAddativeAState);
+			}
+		}
+	}
 
 	bool blockRotation = false;
 	public bool BlockRotation { get { return blockRotation; } set { blockRotation = value; } }
@@ -681,6 +713,10 @@ public class AnimationController
 		additiveBStateIndex = Animator.StringToHash("AdditiveBState");
 		inAddativeStateIndex = Animator.StringToHash("InAddativeState");
 		inAddativeAStateIndex = Animator.StringToHash("InAddativeAState");
+		upperBodyAddativeLayerIndex = gameCharacter.Animator.GetLayerIndex("UpperBodyAddativeLayer");
+		inUpperBodyAddativeStateIndex = Animator.StringToHash("InUpperBodyAddativeState");
+		upperBodyAddativeAStateIndex = Animator.StringToHash("UpperBodyAdditiveAState");
+		inUpperBodyAddativeAIndex = Animator.StringToHash("InUpperBodyAddativeA");
 
 		overrideController = new AnimatorOverrideController(gameCharacter.Animator.runtimeAnimatorController);
 
@@ -823,12 +859,16 @@ public class AnimationController
 		bool isBlendAState = IsInState(inAimBlendTreeAStateIndex, upperBodyLayerIndex);
 		if (isBlendAState)
 		{
+			if (overrideController["AimBlendSpaceMidA"].GetInstanceID() == anims.midAnimation.GetInstanceID()) return;
+
 			overrideController["AimBlendSpaceUpB"] = anims.upAnimation;
 			overrideController["AimBlendSpaceMidB"] = anims.midAnimation;
 			overrideController["AimBlendSpaceDownB"] = anims.downAnimation;
 		}
 		else
 		{
+			if (overrideController["AimBlendSpaceMidB"].GetInstanceID() == anims.midAnimation.GetInstanceID()) return;
+
 			overrideController["AimBlendSpaceUpA"] = anims.upAnimation;
 			overrideController["AimBlendSpaceMidA"] = anims.midAnimation;
 			overrideController["AimBlendSpaceDownA"] = anims.downAnimation;
@@ -867,6 +907,22 @@ public class AnimationController
 		}
 		gameCharacter.Animator.runtimeAnimatorController = overrideController;
 		InAddativeAState = !inAddativeAState;
+	}
+
+	public void ApplyUpperBodyAddativeAnimationToState(AnimationClip addativeAnimation)
+	{
+		bool inUpperBodyAddativeAState = IsInState(upperBodyAddativeAStateIndex, upperBodyAddativeLayerIndex);
+		Ultra.Utilities.Instance.DebugLogOnScreen("In Upper Body A State:" + inUpperBodyAddativeAState.ToString(), 1f, StringColor.Darkblue);
+		if (inUpperBodyAddativeAState)
+		{
+			overrideController["UpperBodyAddativeB"] = addativeAnimation;
+		}
+		else
+		{
+			overrideController["UpperBodyAddativeA"] = addativeAnimation;
+		}
+		gameCharacter.Animator.runtimeAnimatorController = overrideController;
+		InUpperBodyAddativeAState = !inUpperBodyAddativeAState;
 	}
 
 	private bool IsInState(int stateIndex, int layerIndex = 0)
@@ -1050,10 +1106,18 @@ public class AnimationController
 	{
 		if (HeadSpineArmIsA)
 		{
+			// Check if we already in correct Body Anim. Check Needs to be reverse B Check A && A Checks B
+			// Needed for unesesary Interpolations between anims States
+			if (overrideController["BodyLayerA"].GetInstanceID() == clip.GetInstanceID())
+				return;
 			overrideController["BodyLayerB"] = clip;
 		}
 		else
 		{
+			// Check if we already in correct Body Anim. Check Needs to be reverse B Check A && A Checks B
+			// Needed for unesesary Interpolations between anims States
+			if (overrideController["BodyLayerB"].GetInstanceID() == clip.GetInstanceID())
+				return;
 			overrideController["BodyLayerA"] = clip;
 		}
 		gameCharacter.Animator.runtimeAnimatorController = overrideController;
@@ -1083,22 +1147,25 @@ public class AnimationController
 
 	public int GetLayerIndex(EGameCharacterAnimatiorLayers layer)
 	{
-		switch (layer)
-		{
-			case EGameCharacterAnimatiorLayers.BasisLayer: return 0;
-			case EGameCharacterAnimatiorLayers.SpineLayer: return 1;
-			case EGameCharacterAnimatiorLayers.LegLayer: return 2;
-			case EGameCharacterAnimatiorLayers.HeadLayer: return 3;
-			case EGameCharacterAnimatiorLayers.ArmRLayer: return 4;
-			case EGameCharacterAnimatiorLayers.ArmLLayer: return 5;
-			case EGameCharacterAnimatiorLayers.UpperBodyLayer: return 6;
-			case EGameCharacterAnimatiorLayers.RotationLayer: return 7;
-			case EGameCharacterAnimatiorLayers.SecondaryMotionLayer: return 8;
-			case EGameCharacterAnimatiorLayers.HitLayer: return 9;
-			default:
-				Ultra.Utilities.Instance.DebugErrorString("AnimationController", "GetLayerIndex", "Layer was not defined!");
-				return -1;
-		}
+		return (int)layer;
+		// Was i high? wtf is this!
+		//switch (layer)
+		//{
+		//	case EGameCharacterAnimatiorLayers.BasisLayer: return 0;
+		//	case EGameCharacterAnimatiorLayers.SpineLayer: return 1;
+		//	case EGameCharacterAnimatiorLayers.LegLayer: return 2;
+		//	case EGameCharacterAnimatiorLayers.HeadLayer: return 3;
+		//	case EGameCharacterAnimatiorLayers.ArmRLayer: return 4;
+		//	case EGameCharacterAnimatiorLayers.ArmLLayer: return 5;
+		//	case EGameCharacterAnimatiorLayers.UpperBodyLayer: return 6;
+		//	case EGameCharacterAnimatiorLayers.RotationLayer: return 7;
+		//	case EGameCharacterAnimatiorLayers.UpperBodyAddativeLayer: return 8;
+		//	case EGameCharacterAnimatiorLayers.SecondaryMotionLayer: return 9;
+		//	case EGameCharacterAnimatiorLayers.HitLayer: return 10;
+		//	default:
+		//		Ultra.Utilities.Instance.DebugErrorString("AnimationController", "GetLayerIndex", "Layer was not defined!");
+		//		return -1;
+		//}
 	}
 
 	public void ResetAnimStatesHARD()

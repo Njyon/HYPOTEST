@@ -33,8 +33,9 @@ public class ShootAttackNoProjectile : AttackBase
 	{
 		if (weaponObjData == null) return;
 
-		GameCharacter.AnimController.ApplyAddativeAnimationToAddativeState(attackData.shootAddativeAnimation);
-		GameCharacter.AnimController.InAddativeState = true;
+		GameCharacter.AnimController.ApplyUpperBodyAddativeAnimationToState(attackData.shootAddativeAnimation);
+		GameCharacter.AnimController.InUpperBodyAddativeState = true;
+		GameCharacter.AnimController.InterpUpperBodyLayerWeight(1);
 		GameCharacter.CombatComponent.AttackTimer.onTimerFinished += OnTimerFinished;
 		GameCharacter.CombatComponent.AttackTimer.Start(attackData.shootAddativeAnimation.length);
 		GameCharacter.PluginStateMachine.AddPluginState(EPluginCharacterState.Shoot);
@@ -73,14 +74,14 @@ public class ShootAttackNoProjectile : AttackBase
 	{
 		GameCharacter.CombatComponent.AttackTimer.onTimerFinished -= OnTimerFinished;
 		GameCharacter.CombatComponent.AttackTimer.Stop();
-		GameCharacter.AnimController.InAddativeState = false;
+		GameCharacter.AnimController.InUpperBodyAddativeState = false;
 		GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.Shoot);
 	}
 
 	void OnTimerFinished()
 	{
 		GameCharacter.CombatComponent.AttackTimer.onTimerFinished -= OnTimerFinished;
-		GameCharacter.AnimController.InAddativeState = false;
+		GameCharacter.AnimController.InUpperBodyAddativeState = false;
 		GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.Shoot);
 	}
 

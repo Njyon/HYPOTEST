@@ -54,7 +54,45 @@ MonoBehaviour:
   GroundUpAttacks: []
   GroundDownAttacks: []
   GroundDirectionAttacks: []
-  AirAttacks: []
+  AirAttacks:
+  - action:
+      instance:
+        rid: 3394043257062686722
+    data:
+      showProperties: 0
+      hitDetectionType: 0
+      mesh: {fileID: 0}
+      offset: {x: 0, y: 0, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 0
+      boxDimensions: {x: 0, y: 0, z: 0}
+      capsulHeight: 0
+    combatBranches:
+      keys: 
+      values: 
+    timedCombatBrenches:
+      keys: 
+      values: 
+    particleList: []
+  - action:
+      instance:
+        rid: 3394043257062686724
+    data:
+      showProperties: 0
+      hitDetectionType: 0
+      mesh: {fileID: 0}
+      offset: {x: 0, y: 0, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 0
+      boxDimensions: {x: 0, y: 0, z: 0}
+      capsulHeight: 0
+    combatBranches:
+      keys: 
+      values: 
+    timedCombatBrenches:
+      keys: 
+      values: 
+    particleList: []
   AirUpAttacks: []
   AirDownAttacks: []
   AirDirectionAttacks: []
@@ -82,7 +120,7 @@ MonoBehaviour:
     AimWeaponReadyPoseRun: {fileID: -4846802448412792837, guid: d2c7422476739c54799f9299dd06b1eb,
       type: 3}
     WeaponReadyInterpSpeed: 5
-    HeadSpineLayerMovingWeight: 0.969
+    HeadSpineLayerMovingWeight: 0.749
     ArmRMovingWeight: 1
     ArmLMovingWeight: 1
   references:
@@ -95,7 +133,7 @@ MonoBehaviour:
           Damage: 10
           Rating: 100
           Discharge: 100
-          shootAddativeAnimation: {fileID: 7400000, guid: 683cb7b85983592499c3504f0908666e,
+          shootAddativeAnimation: {fileID: 7400000, guid: dbc7e32806d5f55458345cb0198eadfe,
             type: 2}
           leftHand: 1
           forceAimDuration: 5
@@ -106,7 +144,29 @@ MonoBehaviour:
           Damage: 10
           Rating: 100
           Discharge: 100
-          shootAddativeAnimation: {fileID: 7400000, guid: c787490bcddb4504484c55d3e2a0dd4a,
+          shootAddativeAnimation: {fileID: 7400000, guid: d39bc59276e4ee848a7a93df939863f0,
+            type: 2}
+          leftHand: 0
+          forceAimDuration: 5
+    - rid: 3394043257062686722
+      type: {class: ShootAttackNoProjectile, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          shootAddativeAnimation: {fileID: 7400000, guid: dbc7e32806d5f55458345cb0198eadfe,
+            type: 2}
+          leftHand: 0
+          forceAimDuration: 5
+    - rid: 3394043257062686724
+      type: {class: ShootAttackNoProjectile, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          shootAddativeAnimation: {fileID: 7400000, guid: d39bc59276e4ee848a7a93df939863f0,
             type: 2}
           leftHand: 0
           forceAimDuration: 5
