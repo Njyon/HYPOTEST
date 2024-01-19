@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 using UnityEngine.UIElements;
 
 public enum RigType
@@ -67,6 +68,10 @@ public class GameCharacterData : MonoBehaviour
 	[Header("Bones")]
 	[SerializeField] Transform root;
 	[SerializeField] string headBoneName = "head.x";
+	[SerializeField] Rig baseRig;
+	[SerializeField] ChainIKConstraint chestCorrectionIK;
+	[SerializeField] TwoBoneIKConstraint forcePosition_FootIK_R;
+	[SerializeField] TwoBoneIKConstraint forcePosition_FootIK_L;
 
 	[Header("Combat")]
 	[SerializeField] float characterDetectionRange = 30f;
@@ -140,6 +145,11 @@ public class GameCharacterData : MonoBehaviour
 
 	public Transform Root { get { return root; } }
 	public string HeadBoneName { get { return headBoneName; } }
+
+	public Rig BaseRig { get { return baseRig; } }
+	public ChainIKConstraint ChestCorrectionIK { get { return chestCorrectionIK; } }
+	public TwoBoneIKConstraint ForcePosition_FootIK_R { get { return forcePosition_FootIK_R; } }
+	public TwoBoneIKConstraint ForcePosition_FootIK_L { get { return forcePosition_FootIK_L; } }
 
 	public float CharacterDetectionRange { get { return characterDetectionRange; } }
 	public int CombatAttackListLenght { get { return combatAttackListLenght; } }

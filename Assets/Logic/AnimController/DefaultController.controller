@@ -652,7 +652,7 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.1
+  m_TransitionDuration: 0.2
   m_TransitionOffset: 0
   m_ExitTime: 0
   m_HasExitTime: 0
@@ -1827,7 +1827,7 @@ AnimatorStateTransition:
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -3927479624858803881}
   m_Solo: 0
-  m_Mute: 0
+  m_Mute: 1
   m_IsExit: 0
   serializedVersion: 3
   m_TransitionDuration: 0.25
@@ -2568,8 +2568,8 @@ AnimatorState:
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
-  - {fileID: 4851981996666835131}
   - {fileID: -2628242269198050885}
+  - {fileID: 4851981996666835131}
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
@@ -3693,7 +3693,7 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.1
+  m_TransitionDuration: 0.2
   m_TransitionOffset: 0
   m_ExitTime: 0
   m_HasExitTime: 0
@@ -4638,7 +4638,7 @@ AnimatorController:
   - serializedVersion: 5
     m_Name: SpineLayer
     m_StateMachine: {fileID: -4810510687250913996}
-    m_Mask: {fileID: 31900000, guid: ea5d915010af07241aa59d43ba29f1e2, type: 2}
+    m_Mask: {fileID: 31900000, guid: 9f93c5fb762bdba49b0ed22e019cde11, type: 2}
     m_Motions: []
     m_Behaviours: []
     m_BlendingMode: 0
@@ -4650,7 +4650,7 @@ AnimatorController:
   - serializedVersion: 5
     m_Name: LegLayer
     m_StateMachine: {fileID: -9021802041374447122}
-    m_Mask: {fileID: 31900000, guid: e606a33620893c344ad6a153d752dcc7, type: 2}
+    m_Mask: {fileID: 31900000, guid: 8d90dd95d34df4147b3dabb135df7bb3, type: 2}
     m_Motions: []
     m_Behaviours: []
     m_BlendingMode: 0
@@ -4662,7 +4662,7 @@ AnimatorController:
   - serializedVersion: 5
     m_Name: HeadLayer
     m_StateMachine: {fileID: 6233703424024292978}
-    m_Mask: {fileID: 31900000, guid: d1d59daa2f0fee54b976a3b68a236c3b, type: 2}
+    m_Mask: {fileID: 31900000, guid: bacbd70d12039f04e883b285e49adbd7, type: 2}
     m_Motions: []
     m_Behaviours: []
     m_BlendingMode: 0
@@ -4674,7 +4674,7 @@ AnimatorController:
   - serializedVersion: 5
     m_Name: ArmRLayer
     m_StateMachine: {fileID: -2054057432582174024}
-    m_Mask: {fileID: 31900000, guid: f52feff09b7c5684c948d8884bfa9cbf, type: 2}
+    m_Mask: {fileID: 31900000, guid: ad0c7a93616a00249b56b1838e244ef1, type: 2}
     m_Motions: []
     m_Behaviours: []
     m_BlendingMode: 0
@@ -4686,7 +4686,7 @@ AnimatorController:
   - serializedVersion: 5
     m_Name: ArmLLayer
     m_StateMachine: {fileID: -8895025256942408557}
-    m_Mask: {fileID: 31900000, guid: 418657ace7fa88c4c9140e4daf4f1bad, type: 2}
+    m_Mask: {fileID: 31900000, guid: 50c2efda654f4594bbdeed1a62b99772, type: 2}
     m_Motions: []
     m_Behaviours: []
     m_BlendingMode: 0
@@ -4698,7 +4698,7 @@ AnimatorController:
   - serializedVersion: 5
     m_Name: UpperBodyLayer
     m_StateMachine: {fileID: 436643658370008838}
-    m_Mask: {fileID: 31900000, guid: 0fbf3b85c93901d4d8f9fc8853f38618, type: 2}
+    m_Mask: {fileID: 31900000, guid: 4827b7c4de51ea94ba71918d0a2921a3, type: 2}
     m_Motions: []
     m_Behaviours: []
     m_BlendingMode: 0
@@ -4722,7 +4722,7 @@ AnimatorController:
   - serializedVersion: 5
     m_Name: UpperBodyAddativeLayer
     m_StateMachine: {fileID: -6395093900996568718}
-    m_Mask: {fileID: 31900000, guid: 030d6407dd14a6b419e4980453892094, type: 2}
+    m_Mask: {fileID: 31900000, guid: 13cdc02e0d8c4e641b1fa685aaf1863e, type: 2}
     m_Motions: []
     m_Behaviours: []
     m_BlendingMode: 1
@@ -5207,12 +5207,12 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0
+  m_TransitionDuration: 0.2
   m_TransitionOffset: 0
   m_ExitTime: 0
   m_HasExitTime: 0
   m_HasFixedDuration: 1
-  m_InterruptionSource: 0
+  m_InterruptionSource: 2
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
 --- !u!1101 &1121073013613850534
@@ -5365,7 +5365,7 @@ AnimatorStateTransition:
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -3927479624858803881}
   m_Solo: 0
-  m_Mute: 0
+  m_Mute: 1
   m_IsExit: 0
   serializedVersion: 3
   m_TransitionDuration: 0.25
@@ -6646,12 +6646,12 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0
+  m_TransitionDuration: 0.2
   m_TransitionOffset: 0
   m_ExitTime: 0
   m_HasExitTime: 0
   m_HasFixedDuration: 1
-  m_InterruptionSource: 0
+  m_InterruptionSource: 2
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
 --- !u!1101 &4930103625701088171
@@ -6843,7 +6843,7 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 1
   serializedVersion: 3
-  m_TransitionDuration: 0
+  m_TransitionDuration: 0.2
   m_TransitionOffset: 0
   m_ExitTime: 0
   m_HasExitTime: 0
@@ -7748,7 +7748,7 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 1
   serializedVersion: 3
-  m_TransitionDuration: 0
+  m_TransitionDuration: 0.2
   m_TransitionOffset: 0
   m_ExitTime: 0
   m_HasExitTime: 0

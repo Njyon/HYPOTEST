@@ -105,7 +105,7 @@ public class GameCharacterWeaponReadyPluginState : AGameCharacterPluginState
 				break;
 			default:
 				SetDefaultWeaponUpperBodyLayer();
-				SetDefaultWeaponLowerBodyLayer(); 
+				SetDefaultWeaponLowerBodyLayer();
 				break;
 		}
 	}

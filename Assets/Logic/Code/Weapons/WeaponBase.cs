@@ -146,6 +146,8 @@ public abstract class WeaponBase
 		//if (weaponData.AnimationData.ContainsKey(gameCharacter.CharacterData.Name)) animationData = weaponData.AnimationData[gameCharacter.CharacterData.Name].Copy();
 	}
 
+	~WeaponBase() { }
+
 	public virtual void InitWeapon()
 	{
 		if (AnimationData == null) return;
@@ -206,8 +208,9 @@ public abstract class WeaponBase
 			MaxChargeAfterEquipTimer.Stop();
 			OnMaxChargeAfterEquipTimerFinished();
 		}
-		GameObject.Destroy(spawnedWeapon);
-		GameObject.Destroy(spawnedWeaponBones);
+		if (spawnedWeapon != null) GameObject.Destroy(spawnedWeapon);
+		if (secondSpawnedWeapon != null) GameObject.Destroy(secondSpawnedWeapon);
+		if (spawnedWeaponBones != null) GameObject.Destroy(spawnedWeaponBones);
 
 		CurrentAction?.Action?.ActionInterupted();
 

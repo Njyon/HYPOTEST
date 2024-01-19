@@ -19,8 +19,8 @@ public class GameCharacterAimPluginState : AGameCharacterPluginState
 		base.Active();
 		GameCharacter.AnimController.InAimBlendTree = true;
 		GameCharacter.CombatComponent.CurrentWeapon.SetWeaponReadyPoseBasedOnStates();
-		GameCharacter.AnimController.InterpUpperBodyLayerWeight(1);
-
+		GameCharacter.AnimController.SetUpperBodyLayerWeight(1);
+		//GameCharacter.AnimController.InterpChectCorrectionWeight(1, 10);
 
 		OnGameCharacterStateChange(GameCharacter.StateMachine.CurrentState, null);
 
@@ -31,6 +31,7 @@ public class GameCharacterAimPluginState : AGameCharacterPluginState
 		base.Deactive();
 		GameCharacter.AnimController.InAimBlendTree = false;
 		GameCharacter.AnimController.InterpUpperBodyLayerWeight(0);
+		//GameCharacter.AnimController.InterpChectCorrectionWeight(0);
 
 		GameCharacter.CombatComponent.CurrentWeapon.SetWeaponReadyPoseBasedOnStates();
 	}
@@ -110,12 +111,15 @@ public class GameCharacterAimPluginState : AGameCharacterPluginState
 			case EGameCharacterState.Sliding:
 				GameCharacter.AnimController.SetLegLayerWeight(0);
 				GameCharacter.AnimController.SetUpperBodyLayerWeight(0);
-				SetMovingWeaponUpperBodyLayer();
+				GameCharacter.AnimController.SetSpineLayerWeight(GameCharacter.CombatComponent.CurrentWeapon.AnimationData.AimData.HeadSpineLayerMovingWeight);
+				GameCharacter.AnimController.SetHeadLayerWeight(GameCharacter.CombatComponent.CurrentWeapon.AnimationData.AimData.HeadSpineLayerMovingWeight);
+				GameCharacter.AnimController.SetArmRLayerWeight(GameCharacter.CombatComponent.CurrentWeapon.AnimationData.AimData.ArmRMovingWeight);
+				GameCharacter.AnimController.SetArmLLayerWeight(GameCharacter.CombatComponent.CurrentWeapon.AnimationData.AimData.ArmLMovingWeight);
 				break;
 			default:
 				SetDefaultWeaponUpperBodyLayer();
 				SetDefaultWeaponLowerBodyLayer();
-				GameCharacter.AnimController.SetUpperBodyLayerWeight(1);
+				GameCharacter.AnimController.InterpUpperBodyLayerWeight(1, 10);
 				break;
 		}
 		GameCharacter.AnimController.InAimBlendTree = true;

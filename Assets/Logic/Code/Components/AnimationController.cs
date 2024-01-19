@@ -101,6 +101,9 @@ public class AnimationController
 	float upperBodyLayerInterpSpeed;
 	float addativeLayerInterpTarget;
 	float addativeLayerInterpSpeed;
+	float chestCorrectionTargetInterpSpeed;
+	float forcePositionFootIKRTargetInterpSpeed;
+	float forcePositionFootIKLTargetInterpSpeed;
 
 	int holdStateHash;
 	public int HoldStateHash
@@ -645,6 +648,17 @@ public class AnimationController
 		}
 	}
 
+	float chestCorrectionIKTarget;
+	public float ChestCorrectionIKTarget { get { return chestCorrectionIKTarget; } }
+	float forcePositionFootIKRTarget;
+	public float ForcePositionFootIKRTarget { get { return forcePositionFootIKRTarget; } }
+	float forcePositionFootIKLTarget;
+	public float ForcePositionFootIKLTarget { get { return forcePositionFootIKLTarget; } }
+
+	public float ChestCorrectionIK { get { return gameCharacter.GameCharacterData.ChestCorrectionIK.weight; } set { gameCharacter.GameCharacterData.ChestCorrectionIK.weight = value; } }
+	public float ForcePositionFootIKR { get { return gameCharacter.GameCharacterData.ForcePosition_FootIK_R.weight; } set { gameCharacter.GameCharacterData.ForcePosition_FootIK_R.weight = value; } }
+	public float ForcePositionFootIKL { get { return gameCharacter.GameCharacterData.ForcePosition_FootIK_L.weight; } set { gameCharacter.GameCharacterData.ForcePosition_FootIK_L.weight = value; } }
+
 	bool blockRotation = false;
 	public bool BlockRotation { get { return blockRotation; } set { blockRotation = value; } }
 
@@ -765,6 +779,9 @@ public class AnimationController
 		SecondaryMotionLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(secondaryMotionLayerIndex), secondaryMotionLayerInterpTarget, deltaTime * secondaryMotionLayerInterpSpeed);
 		UpperBodyLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(upperBodyLayerIndex), upperBodyLayerInterpTarget, deltaTime * upperBodyLayerInterpSpeed);
 		AddativeLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(addativeLayerIndex), addativeLayerInterpTarget, deltaTime * addativeLayerInterpSpeed);
+		ChestCorrectionIK = Mathf.Lerp(ChestCorrectionIK, ChestCorrectionIKTarget, deltaTime * chestCorrectionTargetInterpSpeed);
+		ForcePositionFootIKR = Mathf.Lerp(ForcePositionFootIKR, ForcePositionFootIKRTarget, deltaTime * forcePositionFootIKRTargetInterpSpeed);
+		ForcePositionFootIKL = Mathf.Lerp(ForcePositionFootIKL, ForcePositionFootIKLTarget, deltaTime * forcePositionFootIKLTargetInterpSpeed);
 	}
 
 	private void RotationLayer(float deltaTime)
@@ -1183,5 +1200,36 @@ public class AnimationController
 	public void ForceStandingState()
 	{
 		gameCharacter.Animator.CrossFade(StandingStateHash, 0f);
+	}
+
+	public void InterpChectCorrectionWeight(float target, float speed = 5f)
+	{
+		chestCorrectionIKTarget = target;
+		chestCorrectionTargetInterpSpeed = speed;
+	}
+	public void SetChestCorrectionWeight(float weight)
+	{
+		chestCorrectionIKTarget = weight;
+		ChestCorrectionIK = weight;
+	}
+	public void InterpFPFootIKRWeight(float target, float speed = 5f)
+	{
+		forcePositionFootIKRTarget = target;
+		forcePositionFootIKRTargetInterpSpeed = speed;
+	}
+	public void SetFPFootIKRWeight(float weight)
+	{
+		forcePositionFootIKRTarget = weight;
+		ForcePositionFootIKR = weight;
+	}
+	public void InterpFPFootIKLWeight(float target, float speed = 5f)
+	{
+		forcePositionFootIKLTarget = target;
+		forcePositionFootIKLTargetInterpSpeed = speed;
+	}
+	public void SetFPFootIKLWeight(float weight)
+	{
+		forcePositionFootIKLTarget = weight;
+		ForcePositionFootIKL = weight;
 	}
 }

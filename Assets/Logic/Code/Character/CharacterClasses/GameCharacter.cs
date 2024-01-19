@@ -163,6 +163,10 @@ public class GameCharacter : MonoBehaviour, IDamage
 		combatComponent = new CombatComponent(this);
 		buffComponent = new BuffComponent(this);
 
+		AnimController.SetChestCorrectionWeight(0);
+		AnimController.SetFPFootIKLWeight(0);
+		AnimController.SetFPFootIKRWeight(0);
+
 		GameObject characterDetectionObject = GameObject.Instantiate(GameAssets.Instance.characterDetection, transform);
 		characterDetection = characterDetectionObject.GetComponent<GameCharacterDetection>();
 		characterDetection.onOverlapEnter += OnCharacterDetectionOverlapEnter;
