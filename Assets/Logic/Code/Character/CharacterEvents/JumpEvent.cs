@@ -42,5 +42,14 @@ public class JumpEvent : CharacterEvent
 		if (gameCharacter.IsPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen("JumpVel: " + jumpVelocity, 2f, 200, DebugAreas.Movement);
 
 		gameCharacter.AnimController.ResetAnimStatesHARD();
+		gameCharacter.AnimController.SetUpperBodyLayerWeight(0);
+		gameCharacter.AnimController.SetSpineLayerWeight(0);
+		gameCharacter.AnimController.SetLegLayerWeight(0);
+		gameCharacter.AnimController.SetArmLLayerWeight(0);
+		gameCharacter.AnimController.SetArmRLayerWeight(0);
+		gameCharacter.AnimController.SetHeadLayerWeight(0);
+		gameCharacter.AnimController.SetChestCorrectionWeight(0);
+		gameCharacter.AnimController.SetFPFootIKLWeight(0);
+		gameCharacter.AnimController.SetFPFootIKRWeight(0);
 	}
 }

@@ -599,7 +599,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 			int jumpIndex = gameCharacter.CurrentJumpAmount - 1;
 			jumpIndex = jumpIndex % gameCharacter.CharacterData.CharacterAnimationData.Jumps.Count;
 			float animLenght = gameCharacter.CharacterData.CharacterAnimationData.Jumps[jumpIndex].length;
-			yield return new WaitForSeconds(animLenght);
+			yield return new WaitForSeconds(animLenght + 0.1f);
 			IsInJump = false;
 		}
 	}

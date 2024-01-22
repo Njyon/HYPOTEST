@@ -25,7 +25,7 @@ public class GameCharacterFlyAwayState : AGameCharacterState
 	}
 
 	public override EGameCharacterState GetStateType()
-	{
+	{ 
 		return EGameCharacterState.FlyAway;
 	}
 

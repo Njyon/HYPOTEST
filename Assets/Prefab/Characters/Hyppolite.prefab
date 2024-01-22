@@ -283,8 +283,8 @@ MonoBehaviour:
     m_TargetPositionWeight: 1
     m_TargetRotationWeight: 1
     m_HintWeight: 1
-    m_MaintainTargetPositionOffset: 0
-    m_MaintainTargetRotationOffset: 0
+    m_MaintainTargetPositionOffset: 1
+    m_MaintainTargetRotationOffset: 1
 --- !u!1 &4782757965234466333
 GameObject:
   m_ObjectHideFlags: 0
@@ -2900,6 +2900,8 @@ MonoBehaviour:
   headBoneName: head.x
   baseRig: {fileID: 7972582267546062339}
   chestCorrectionIK: {fileID: 5010028788119381693}
+  forcePosition_FootIK_R: {fileID: 6909107654423940581}
+  forcePosition_FootIK_L: {fileID: 7030506247782066058}
   characterDetectionRange: 30
   combatAttackListLenght: 10
   iFramesTime: 0.2
