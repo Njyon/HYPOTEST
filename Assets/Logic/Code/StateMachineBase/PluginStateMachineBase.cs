@@ -85,7 +85,8 @@ public abstract class PluginStateMachineBase<T> : MonoBehaviour
 		removeState?.Deactive();
 		removeState?.RemoveState();
 		bool removed = DictionaryOfPluginStates.Remove(stateType);
-		if (removed && onPluginStateRemoved != null) onPluginStateRemoved(stateType);
+		if (removed && onPluginStateDeactivated != null) onPluginStateDeactivated(removeState.GetStateType());
+		if (removed && onPluginStateRemoved != null) onPluginStateRemoved(removeState.GetStateType());
 		return removed;
 	}
 

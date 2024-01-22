@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Mathematics;
+using UnityEngine.InputSystem.LowLevel;
 
 public class GameCharacterAimPluginState : AGameCharacterPluginState
 {
@@ -19,9 +20,7 @@ public class GameCharacterAimPluginState : AGameCharacterPluginState
 		GameCharacter.AnimController.InAimBlendTree = true;
 		GameCharacter.CombatComponent.CurrentWeapon.SetWeaponReadyPoseBasedOnStates();
 		GameCharacter.AnimController.SetUpperBodyLayerWeight(1);
-
-		GameCharacter.StateMachine.onStateChanged += OnGameCharacterStateChange;
-		GameCharacter.EventComponent.onCharacterEventTriggered += CharacterEvent;
+		//GameCharacter.AnimController.InterpChectCorrectionWeight(1, 10);
 
 		OnGameCharacterStateChange(GameCharacter.StateMachine.CurrentState, null);
 
@@ -31,23 +30,24 @@ public class GameCharacterAimPluginState : AGameCharacterPluginState
 	{
 		base.Deactive();
 		GameCharacter.AnimController.InAimBlendTree = false;
-		GameCharacter.AnimController.SetUpperBodyLayerWeight(0);
+		GameCharacter.AnimController.InterpUpperBodyLayerWeight(0);
+		//GameCharacter.AnimController.InterpChectCorrectionWeight(0);
 
 		GameCharacter.CombatComponent.CurrentWeapon.SetWeaponReadyPoseBasedOnStates();
-
-		GameCharacter.StateMachine.onStateChanged -= OnGameCharacterStateChange;
-		GameCharacter.EventComponent.onCharacterEventTriggered -= CharacterEvent;
-
 	}
 
 	public override void AddState()
 	{
-	
+		GameCharacter.StateMachine.onStateChanged += OnGameCharacterStateChange;
+		GameCharacter.EventComponent.onCharacterEventTriggered += CharacterEvent;
+		GameCharacter.MovementComponent.onCharacterFinishedJumping += OnFinishedJumping;
 	}
 	
 	public override void RemoveState()
 	{
-	
+		GameCharacter.StateMachine.onStateChanged -= OnGameCharacterStateChange;
+		GameCharacter.EventComponent.onCharacterEventTriggered -= CharacterEvent;
+		GameCharacter.MovementComponent.onCharacterFinishedJumping -= OnFinishedJumping;
 	}
 
 	public override bool WantsToBeActive()
@@ -106,25 +106,23 @@ public class GameCharacterAimPluginState : AGameCharacterPluginState
 				GameCharacter.AnimController.InterpArmRLayerWeight(0, GameCharacter.CombatComponent.CurrentWeapon.AnimationData.WeaponReadyInterpSpeed * 2);
 				GameCharacter.AnimController.InterpArmLLayerWeight(0, GameCharacter.CombatComponent.CurrentWeapon.AnimationData.WeaponReadyInterpSpeed * 2);
 				break;
-			//case EGameCharacterState.InAir:
-			//	GameCharacter.AnimController.InterpSpineLayerWeight(0, GameCharacter.CombatComponent.CurrentWeapon.AnimationData.WeaponReadyInterpSpeed);
-			//	GameCharacter.AnimController.InterpLegLayerWeight(0, GameCharacter.CombatComponent.CurrentWeapon.AnimationData.WeaponReadyInterpSpeed);
-			//	GameCharacter.AnimController.InterpHeadLayerWeight(0, GameCharacter.CombatComponent.CurrentWeapon.AnimationData.WeaponReadyInterpSpeed);
-			//	GameCharacter.AnimController.InterpArmRLayerWeight(0, GameCharacter.CombatComponent.CurrentWeapon.AnimationData.WeaponReadyInterpSpeed);
-			//	GameCharacter.AnimController.InterpArmLLayerWeight(0, GameCharacter.CombatComponent.CurrentWeapon.AnimationData.WeaponReadyInterpSpeed);
-			//	break;
 			case EGameCharacterState.Moving:
+			case EGameCharacterState.InAir:
 			case EGameCharacterState.Sliding:
 				GameCharacter.AnimController.SetLegLayerWeight(0);
 				GameCharacter.AnimController.SetUpperBodyLayerWeight(0);
-				SetMovingWeaponUpperBodyLayer();
+				GameCharacter.AnimController.SetSpineLayerWeight(GameCharacter.CombatComponent.CurrentWeapon.AnimationData.AimData.HeadSpineLayerMovingWeight);
+				GameCharacter.AnimController.SetHeadLayerWeight(GameCharacter.CombatComponent.CurrentWeapon.AnimationData.AimData.HeadSpineLayerMovingWeight);
+				GameCharacter.AnimController.SetArmRLayerWeight(GameCharacter.CombatComponent.CurrentWeapon.AnimationData.AimData.ArmRMovingWeight);
+				GameCharacter.AnimController.SetArmLLayerWeight(GameCharacter.CombatComponent.CurrentWeapon.AnimationData.AimData.ArmLMovingWeight);
 				break;
 			default:
 				SetDefaultWeaponUpperBodyLayer();
 				SetDefaultWeaponLowerBodyLayer();
-				GameCharacter.AnimController.SetUpperBodyLayerWeight(1);
+				GameCharacter.AnimController.InterpUpperBodyLayerWeight(1, 10);
 				break;
 		}
+		GameCharacter.AnimController.InAimBlendTree = true;
 	}
 
 	void SetDefaultWeaponUpperBodyLayer()
@@ -158,5 +156,11 @@ public class GameCharacterAimPluginState : AGameCharacterPluginState
 				break;
 			default: break;
 		}
+	}
+
+	void OnFinishedJumping()
+	{
+		if (IsActive())
+			WeaponLayerBasedOnState(GameCharacter.StateMachine.GetCurrentStateType());
 	}
 }

@@ -146,6 +146,8 @@ public abstract class WeaponBase
 		//if (weaponData.AnimationData.ContainsKey(gameCharacter.CharacterData.Name)) animationData = weaponData.AnimationData[gameCharacter.CharacterData.Name].Copy();
 	}
 
+	~WeaponBase() { }
+
 	public virtual void InitWeapon()
 	{
 		if (AnimationData == null) return;
@@ -206,8 +208,9 @@ public abstract class WeaponBase
 			MaxChargeAfterEquipTimer.Stop();
 			OnMaxChargeAfterEquipTimerFinished();
 		}
-		GameObject.Destroy(spawnedWeapon);
-		GameObject.Destroy(spawnedWeaponBones);
+		if (spawnedWeapon != null) GameObject.Destroy(spawnedWeapon);
+		if (secondSpawnedWeapon != null) GameObject.Destroy(secondSpawnedWeapon);
+		if (spawnedWeaponBones != null) GameObject.Destroy(spawnedWeaponBones);
 
 		CurrentAction?.Action?.ActionInterupted();
 
@@ -601,15 +604,18 @@ public abstract class WeaponBase
 
 	public void SetWeaponReadyPoseBasedOnStates()
 	{
-			if (GameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.Moving)
+ 		switch (GameCharacter.StateMachine.GetCurrentStateType())
 		{
-			if (GameCharacter.PluginStateMachine.ContainsPluginState(EPluginCharacterState.Aim))
-				SetAimWeaponReadyPoseRun();
-			else
-				SetWeapnReadyPoseRun();
-		} else
-		{
-			SetWeaponReadyPose();
+			case EGameCharacterState.InAir:
+			case EGameCharacterState.Moving:
+				if (GameCharacter.PluginStateMachine.ContainsPluginState(EPluginCharacterState.Aim))
+					SetAimWeaponReadyPoseRun();
+				else
+					SetWeapnReadyPoseRun();
+				break;
+			default:
+				SetWeaponReadyPose();
+				break;
 		}
 	}
 

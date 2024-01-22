@@ -13,8 +13,9 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	public OnMoveCollisionFlag onMoveCollisionFlag;
 	public delegate void OnCharacterGroundedChanged(bool newState);
 	public OnCharacterGroundedChanged onCharacterGroundedChanged;
-	public delegate void OnCharacterGroundReset();
-	public OnCharacterGroundReset onCharacterGroundReset;
+	public delegate void OnCharacteroMoveEvent();
+	public OnCharacteroMoveEvent onCharacterGroundReset;
+	public OnCharacteroMoveEvent onCharacterFinishedJumping;
 
 	/// <summary>
 	/// Endless Timer
@@ -88,6 +89,10 @@ public class GameCharacterMovementComponent : MonoBehaviour
 			{
 				StopCoroutine(IsJumping());
 				StartCoroutine(IsJumping());
+			}
+			if (!value && isInJump)
+			{
+				if (onCharacterFinishedJumping != null) onCharacterFinishedJumping();
 			}
 			isInJump = value;
 
@@ -589,8 +594,14 @@ public class GameCharacterMovementComponent : MonoBehaviour
 
 	IEnumerator IsJumping()
 	{
-		yield return new WaitForSeconds(0.2f);
-		IsInJump = false;
+		if (gameCharacter.CharacterData.CharacterAnimationData.Jumps.Count > 0)
+		{
+			int jumpIndex = gameCharacter.CurrentJumpAmount - 1;
+			jumpIndex = jumpIndex % gameCharacter.CharacterData.CharacterAnimationData.Jumps.Count;
+			float animLenght = gameCharacter.CharacterData.CharacterAnimationData.Jumps[jumpIndex].length;
+			yield return new WaitForSeconds(animLenght);
+			IsInJump = false;
+		}
 	}
 }
 

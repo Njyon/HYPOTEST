@@ -15,26 +15,19 @@ public class ShootAttackNoProjectileData : AttackData
 public class ShootAttackNoProjectile : AttackBase
 {
 	public ShootAttackNoProjectileData attackData;
-	WeaponBase lastWeapon;
 	WeaponObjData weaponObjData;
 
 	public override void Init(GameCharacter gameCharacter, WeaponBase weapon, InitAction action = null)
 	{
 		base.Init(gameCharacter, weapon, action);
 
-		if (lastWeapon != GameCharacter.CombatComponent.CurrentWeapon)
-		{
-			lastWeapon = GameCharacter.CombatComponent.CurrentWeapon;
-			weaponObjData = attackData.leftHand ? GameCharacter.CombatComponent.CurrentWeapon.SpawnedWeapon.GetComponent<WeaponObjData>() : GameCharacter.CombatComponent.CurrentWeapon.SecondSpawnedWeapon.GetComponent<WeaponObjData>();
-		}
+		weaponObjData = attackData.leftHand ? GameCharacter.CombatComponent.CurrentWeapon.SpawnedWeapon.GetComponent<WeaponObjData>() : GameCharacter.CombatComponent.CurrentWeapon.SecondSpawnedWeapon.GetComponent<WeaponObjData>();
 	}
 
 	public override void StartAction()
 	{
-		if (weaponObjData == null) return;
-
-		GameCharacter.AnimController.ApplyAddativeAnimationToAddativeState(attackData.shootAddativeAnimation);
-		GameCharacter.AnimController.InAddativeState = true;
+		GameCharacter.AnimController.ApplyUpperBodyAddativeAnimationToState(attackData.shootAddativeAnimation);
+		GameCharacter.AnimController.InUpperBodyAddativeState = true;
 		GameCharacter.CombatComponent.AttackTimer.onTimerFinished += OnTimerFinished;
 		GameCharacter.CombatComponent.AttackTimer.Start(attackData.shootAddativeAnimation.length);
 		GameCharacter.PluginStateMachine.AddPluginState(EPluginCharacterState.Shoot);
@@ -73,14 +66,14 @@ public class ShootAttackNoProjectile : AttackBase
 	{
 		GameCharacter.CombatComponent.AttackTimer.onTimerFinished -= OnTimerFinished;
 		GameCharacter.CombatComponent.AttackTimer.Stop();
-		GameCharacter.AnimController.InAddativeState = false;
+		GameCharacter.AnimController.InUpperBodyAddativeState = false;
 		GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.Shoot);
 	}
 
 	void OnTimerFinished()
 	{
 		GameCharacter.CombatComponent.AttackTimer.onTimerFinished -= OnTimerFinished;
-		GameCharacter.AnimController.InAddativeState = false;
+		GameCharacter.AnimController.InUpperBodyAddativeState = false;
 		GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.Shoot);
 	}
 
