@@ -16,12 +16,16 @@ public class ShootAttackNoProjectile : AttackBase
 {
 	public ShootAttackNoProjectileData attackData;
 	WeaponObjData weaponObjData;
+	ParticleSystemPool shootFlashParticlePool;
+	ParticleSystemPool hitParticlePool;
 
 	public override void Init(GameCharacter gameCharacter, WeaponBase weapon, InitAction action = null)
 	{
 		base.Init(gameCharacter, weapon, action);
 
 		weaponObjData = attackData.leftHand ? GameCharacter.CombatComponent.CurrentWeapon.SpawnedWeapon.GetComponent<WeaponObjData>() : GameCharacter.CombatComponent.CurrentWeapon.SecondSpawnedWeapon.GetComponent<WeaponObjData>();
+		shootFlashParticlePool = weapon.GetRangeWeaponFlashParticlePool();
+		hitParticlePool = weapon.GetRangeWeaponHitParticlePool();
 	}
 
 	public override void StartAction()
@@ -31,11 +35,11 @@ public class ShootAttackNoProjectile : AttackBase
 		GameCharacter.CombatComponent.AttackTimer.onTimerFinished += OnTimerFinished;
 		GameCharacter.CombatComponent.AttackTimer.Start(attackData.shootAddativeAnimation.length);
 		GameCharacter.PluginStateMachine.AddPluginState(EPluginCharacterState.Shoot);
-		AddForceAimBuff();
 		GameCharacter.AnimController.ApplyBlendTree(GameCharacter.CombatComponent.CurrentWeapon.WeaponData.AnimationData[GameCharacter.CharacterData.Name].AimAnimations);
 		Weapon.PlayAttackSound(0);
+		SpawnWeaponFlash();
 
-		GameCharacter target = Ultra.HypoUttilies.FindCharactereNearestToDirection(GameCharacter.MovementComponent.CharacterCenter, GameCharacter.MovementInput, ref GameCharacter.CharacterDetection.DetectedGameCharacters);
+		GameCharacter target = Ultra.HypoUttilies.FindCharactereNearestToDirection(GameCharacter.MovementComponent.CharacterCenter, GameCharacter.MovementInput.magnitude > 0 ? GameCharacter.MovementInput : GameCharacter.transform.forward, ref GameCharacter.CharacterDetection.DetectedGameCharacters);
 		GameCharacter.CombatComponent.AimCharacter = target;
 
 		Vector3 weaponTipPos = weaponObjData.weaponTip.transform.position;
@@ -50,8 +54,10 @@ public class ShootAttackNoProjectile : AttackBase
 			if (iDamage != null)
 			{
 				iDamage.DoDamage(GameCharacter, attackData.Damage);
+				SpawnDamageHitEffect(hit);
 			}
 		}
+		AddForceAimBuff();
 	}
 
 	void AddForceAimBuff()
@@ -75,6 +81,24 @@ public class ShootAttackNoProjectile : AttackBase
 		GameCharacter.CombatComponent.AttackTimer.onTimerFinished -= OnTimerFinished;
 		GameCharacter.AnimController.InUpperBodyAddativeState = false;
 		GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.Shoot);
+	}
+
+	void SpawnWeaponFlash()
+	{
+		ParticleSystem ps = shootFlashParticlePool.GetValue();
+		ps.transform.parent = weaponObjData.transform;
+		ps.transform.position = weaponObjData.weaponTip.transform.position;
+		ps.transform.rotation = weaponObjData.transform.rotation;
+	}
+
+	void SpawnDamageHitEffect(RaycastHit hit)
+	{
+		GameCharacter gc = hit.collider.GetComponent<GameCharacter>();
+		ParticleSystem ps = hitParticlePool.GetValue();
+		ps.transform.parent = hit.collider.transform;
+		if (gc != null) ps.transform.position = gc.MovementComponent.CharacterCenter;
+		else ps.transform.position = hit.point;
+
 	}
 
 	public override ActionBase CreateCopy()

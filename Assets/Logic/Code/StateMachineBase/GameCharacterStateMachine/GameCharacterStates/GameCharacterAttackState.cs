@@ -67,25 +67,40 @@ public class GameCharacterAttackState : AGameCharacterState
 		{
 			if (GameCharacter.IsPlayerCharacter)
 			{
-				Vector3 bounds = new Vector3(4f, 1.5f, 1f);
-				GameCharacter target = Ultra.HypoUttilies.FindCharactereInDirectionInRange(GameCharacter.MovementComponent.CharacterCenter, GameCharacter.transform.forward, bounds, ref GameCharacter.CharacterDetection.DetectedGameCharacters);
-				Ultra.Utilities.DrawBox(GameCharacter.MovementComponent.CharacterCenter, Quaternion.identity, bounds, Color.blue, 10f, 200, DebugAreas.Combat);
-				if (target != null)
+				switch(GameCharacter.CombatComponent.CurrentWeapon.WeaponData.WeaponType)
 				{
-					Vector3 targetDir = target.MovementComponent.CharacterCenter - GameCharacter.MovementComponent.CharacterCenter;
-					targetDir = Ultra.Utilities.IgnoreAxis(targetDir, EAxis.YZ);
-					newDir = Quaternion.LookRotation(targetDir.normalized, Vector3.up);
+					case EWeaponType.Ranged:
+						GameCharacter rangeTarget = Ultra.HypoUttilies.FindCharactereNearestToDirection(GameCharacter.MovementComponent.CharacterCenter, GameCharacter.MovementInput.magnitude > 0 ? GameCharacter.MovementInput : GameCharacter.transform.forward, ref GameCharacter.CharacterDetection.DetectedGameCharacters);
+						SetNewRotationDir(rangeTarget);
+						break;
+					default:
+						Vector3 bounds = new Vector3(4f, 1.5f, 1f);
+						GameCharacter target = Ultra.HypoUttilies.FindCharactereInDirectionInRange(GameCharacter.MovementComponent.CharacterCenter, GameCharacter.transform.forward, bounds, ref GameCharacter.CharacterDetection.DetectedGameCharacters);
+						Ultra.Utilities.DrawBox(GameCharacter.MovementComponent.CharacterCenter, Quaternion.identity, bounds, Color.blue, 10f, 200, DebugAreas.Combat);
+						SetNewRotationDir(target);
+						break;
 				}
-				else
-				{
-					Vector3 currentDir = new Vector3(GameCharacter.transform.forward.x, 0, 0);
-					newDir = Quaternion.LookRotation(currentDir.normalized, Vector3.up);
-				}
+		
 			}
 			else
 				newDir = GameCharacter.transform.rotation;
 		}
 		GameCharacter.CombatComponent.CurrentWeapon.StartAttackStateLogic();
+	}
+
+	private void SetNewRotationDir(GameCharacter target)
+	{
+		if (target != null)
+		{
+			Vector3 targetDir = target.MovementComponent.CharacterCenter - GameCharacter.MovementComponent.CharacterCenter;
+			targetDir = Ultra.Utilities.IgnoreAxis(targetDir, EAxis.YZ);
+			newDir = Quaternion.LookRotation(targetDir.normalized, Vector3.up);
+		}
+		else
+		{
+			Vector3 currentDir = new Vector3(GameCharacter.transform.forward.x, 0, 0);
+			newDir = Quaternion.LookRotation(currentDir.normalized, Vector3.up);
+		}
 	}
 
 	public override EGameCharacterState GetStateType()
@@ -126,10 +141,12 @@ public class GameCharacterAttackState : AGameCharacterState
 		} else {
 			InAirMovement();
 			CombatMovement(deltaTime, initYVelocity, GameCharacter.MovementComponent.MovementVelocity.x /*initXVelocity*/, ref lerpTimeY, ref lerpTimeX, ref currentYPosAnimCurve, false);
-			if (GameCharacter.AnimController.GetUpMovementCurve == 0) {
-				float value = GameCharacter.GameCharacterData.GravitationOverTime.Evaluate(GameCharacter.MovementComponent.InAirTimer.CurrentTime);
-				GameCharacter.MovementComponent.MovementVelocity = new Vector3(GameCharacter.MovementComponent.MovementVelocity.x, Mathf.Clamp(GameCharacter.MovementComponent.MovementVelocity.y, -value, GameCharacter.MovementComponent.IsInJump ? int.MaxValue : value), GameCharacter.MovementComponent.MovementVelocity.z);
-			}
+			
+			/// MOVED TO GRAVITY CALCULATION BECAUSE OF SHOOT ATTACK
+			//if (GameCharacter.AnimController.GetUpMovementCurve == 0) {
+			//	float value = GameCharacter.GameCharacterData.GravitationOverTime.Evaluate(GameCharacter.MovementComponent.InAirTimer.CurrentTime);
+			//	GameCharacter.MovementComponent.MovementVelocity = new Vector3(GameCharacter.MovementComponent.MovementVelocity.x, Mathf.Clamp(GameCharacter.MovementComponent.MovementVelocity.y, -value, GameCharacter.MovementComponent.IsInJump ? int.MaxValue : value), GameCharacter.MovementComponent.MovementVelocity.z);
+			//}
 		}
 
 
