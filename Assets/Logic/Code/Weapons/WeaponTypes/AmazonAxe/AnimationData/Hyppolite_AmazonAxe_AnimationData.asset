@@ -12,7 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8104bde8e4c1a2e42b58f845296f6b18, type: 3}
   m_Name: Hyppolite_AmazonAxe_AnimationData
   m_EditorClassIdentifier: 
-  GroundAttacks: []
+  GroundAttacks:
+  - action:
+      instance:
+        rid: 3394043415080730626
+    data:
+      showProperties: 0
+      hitDetectionType: 0
+      mesh: {fileID: 0}
+      offset: {x: 0, y: 0, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 0
+      boxDimensions: {x: 0, y: 0, z: 0}
+      capsulHeight: 0
+    combatBranches:
+      keys: 
+      values: 
+    timedCombatBrenches:
+      keys: 
+      values: 
+    particleList: []
   GroundUpAttacks: []
   GroundDownAttacks: []
   GroundDirectionAttacks: []
@@ -37,6 +56,21 @@ MonoBehaviour:
     upAnimation: {fileID: 0}
     midAnimation: {fileID: 0}
     downAnimation: {fileID: 0}
+  AimData:
+    AimWeaponReadyPoseRun: {fileID: 0}
+    WeaponReadyInterpSpeed: 5
+    HeadSpineLayerMovingWeight: 0.5
+    ArmRMovingWeight: 0.5
+    ArmLMovingWeight: 0.5
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 3394043415080730626
+      type: {class: DefaultAttack, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          attackAnimation: {fileID: 8659754900779921402, guid: 43ca050a868c0f5499cc099978edd1aa,
+            type: 3}

@@ -82,6 +82,7 @@ public class AnimationController
 	int inUpperBodyAddativeStateIndex;
 	int upperBodyAddativeAStateIndex;
 	int inUpperBodyAddativeAIndex;
+	int moveBackwardsIndex;
 
 	float minMalkSpeed;
 	bool startWalkRunBlendInterp = true;
@@ -647,6 +648,19 @@ public class AnimationController
 			}
 		}
 	}
+	bool moveBackwards = false;
+	public bool MoveBackwards
+	{
+		get { return moveBackwards; }
+		set
+		{
+			if (moveBackwards != value)
+			{
+				moveBackwards = value;
+				gameCharacter.Animator.SetBool(moveBackwardsIndex, moveBackwards);
+			}
+		}
+	}
 
 	float chestCorrectionIKTarget;
 	public float ChestCorrectionIKTarget { get { return chestCorrectionIKTarget; } }
@@ -731,6 +745,7 @@ public class AnimationController
 		inUpperBodyAddativeStateIndex = Animator.StringToHash("InUpperBodyAddativeState");
 		upperBodyAddativeAStateIndex = Animator.StringToHash("UpperBodyAdditiveAState");
 		inUpperBodyAddativeAIndex = Animator.StringToHash("InUpperBodyAddativeA");
+		moveBackwardsIndex = Animator.StringToHash("MoveBackwards");
 
 		overrideController = new AnimatorOverrideController(gameCharacter.Animator.runtimeAnimatorController);
 

@@ -1,5 +1,6 @@
 using Megumin.GameFramework.AI;
 using Megumin.GameFramework.AI.BehaviorTree;
+using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -31,6 +32,11 @@ public class BTLookAtTargetService : BTServiceNodeBase
 					break;
 				default:
 					Vector3 targetDir = (Ultra.Utilities.IgnoreAxis(TargetGameCharacter.MovementComponent.CharacterCenter, EAxis.YZ) - Ultra.Utilities.IgnoreAxis(GameCharacter.MovementComponent.CharacterCenter, EAxis.YZ)).normalized;
+
+					if (GameCharacter.MovementInput.magnitude > 0)
+						GameCharacter.AnimController.MoveBackwards = targetDir.normalized.ToVector2() != GameCharacter.MovementInput.normalized;
+					else
+						GameCharacter.AnimController.MoveBackwards = false;
 
 					Ultra.Utilities.DrawArrow(GameCharacter.MovementComponent.CharacterCenter, targetDir, 1f, Color.blue, 2f, 200, DebugAreas.AI);
 					GameCharacter.RotationTarget = Quaternion.LookRotation(targetDir, Vector3.up);
@@ -65,6 +71,7 @@ public class BTLookAtTargetService : BTServiceNodeBase
 	{
 		base.OnExit(result, options);
 
+		GameCharacter.AnimController.MoveBackwards = false;
 		GameCharacter?.PluginStateMachine?.AddPluginState(EPluginCharacterState.LookInVelocityDirection);
 	}
 }

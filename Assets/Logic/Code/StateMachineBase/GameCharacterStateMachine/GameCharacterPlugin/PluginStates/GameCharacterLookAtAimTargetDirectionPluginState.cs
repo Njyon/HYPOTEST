@@ -1,3 +1,4 @@
+using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,6 +21,8 @@ public class GameCharacterLookAtAimTargetDirectionPluginState : AGameCharacterPl
 	public override void Deactive()
 	{
 		base.Deactive();
+
+		GameCharacter.AnimController.MoveBackwards = false;
 	}
 
 	public override void AddState()
@@ -53,6 +56,11 @@ public class GameCharacterLookAtAimTargetDirectionPluginState : AGameCharacterPl
 				default:
 					Vector3 targetPos = GameCharacter.CombatComponent.AimCharacter != null ? (Ultra.Utilities.IgnoreAxis(GameCharacter.CombatComponent.AimCharacter.MovementComponent.CharacterCenter, EAxis.YZ)) : (Ultra.Utilities.IgnoreAxis(GameCharacter.CombatComponent.AimPositionCheck.Position, EAxis.YZ));
 					Vector3 targetDir = (targetPos - Ultra.Utilities.IgnoreAxis(GameCharacter.MovementComponent.CharacterCenter, EAxis.YZ)).normalized;
+
+					if (GameCharacter.MovementInput.magnitude > 0)
+						GameCharacter.AnimController.MoveBackwards = targetDir.normalized.ToVector2() != GameCharacter.MovementInput.normalized;
+					else
+						GameCharacter.AnimController.MoveBackwards = false;
 
 					Ultra.Utilities.DrawArrow(GameCharacter.MovementComponent.CharacterCenter, targetDir, 1f, Color.blue, 2f, 200, DebugAreas.Combat);
 					GameCharacter.RotationTarget = Quaternion.LookRotation(targetDir, Vector3.up);
