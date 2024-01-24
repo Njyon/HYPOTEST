@@ -362,6 +362,11 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	public float CalculateGravity()
 	{
 		float gravity = 0;
+		if ((gameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.Attack || gameCharacter.CombatComponent.AttackTimer.IsRunning) && gameCharacter.AnimController.GetUpMovementCurve == 0)
+		{
+			float value = gameCharacter.GameCharacterData.GravitationOverTime.Evaluate(gameCharacter.MovementComponent.InAirTimer.CurrentTime);
+			gameCharacter.MovementComponent.MovementVelocity = new Vector3(gameCharacter.MovementComponent.MovementVelocity.x, Mathf.Clamp(gameCharacter.MovementComponent.MovementVelocity.y, -value, gameCharacter.MovementComponent.IsInJump ? int.MaxValue : value), gameCharacter.MovementComponent.MovementVelocity.z);
+		}
 		if (VariableGravityMultiplierOverTime < 1)
 		{
 			gravity = gameCharacter.GameCharacterData.MovmentGravity * VariableGravityMultiplierOverTime;
@@ -599,7 +604,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 			int jumpIndex = gameCharacter.CurrentJumpAmount - 1;
 			jumpIndex = jumpIndex % gameCharacter.CharacterData.CharacterAnimationData.Jumps.Count;
 			float animLenght = gameCharacter.CharacterData.CharacterAnimationData.Jumps[jumpIndex].length;
-			yield return new WaitForSeconds(animLenght);
+			yield return new WaitForSeconds(animLenght + 0.1f);
 			IsInJump = false;
 		}
 	}

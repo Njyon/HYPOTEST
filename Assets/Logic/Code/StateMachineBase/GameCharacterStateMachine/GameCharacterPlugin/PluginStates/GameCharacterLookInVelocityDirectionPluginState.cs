@@ -47,6 +47,7 @@ public class GameCharacterLookInVelocityDirectionPluginState : AGameCharacterPlu
 				return false;
 			default: break;
 		}
+		if (GameCharacter.PluginStateMachine.ContainsPluginState(EPluginCharacterState.LookAtAimTargetDirection)) return false;
 		return true;
 	}
 

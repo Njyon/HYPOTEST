@@ -5,7 +5,10 @@ using UnityEngine;
 
 public class HyppolitePistols : WeaponBase
 {
-    public HyppolitePistols() { }
+	ParticleSystemPool shootParticlePool;
+	ParticleSystemPool hitParticlePool;
+
+	public HyppolitePistols() { }
 	public HyppolitePistols(GameCharacter gameCharacter, ScriptableWeapon weaponData) : base(gameCharacter, weaponData)
 	{ }
 
@@ -31,6 +34,8 @@ public class HyppolitePistols : WeaponBase
 		GameCharacter.MovementComponent.onCharacterFinishedJumping += OnFinishedJumping;
 		GameCharacter.EventComponent.onCharacterEventTriggered += OnCharacterEvent;
 
+		shootParticlePool = new ParticleSystemPool(GameAssets.Instance.hyppolitePistolShootEffect, GameCharacter.CreateHolderChild("PistolFlashParticlePool"));
+		hitParticlePool = new ParticleSystemPool(GameAssets.Instance.hyppolitePistolHitEffect, GameCharacter.CreateHolderChild("PistolHitParticlePool"));
 
 		GameCharacter.AnimController.InterpChectCorrectionWeight(1);
 		GameCharacter.AnimController.InterpFPFootIKLWeight(1);
@@ -161,6 +166,16 @@ public class HyppolitePistols : WeaponBase
 			default:
 				break;
 		}
+	}
+
+	public override ParticleSystemPool GetRangeWeaponFlashParticlePool()
+	{
+		return shootParticlePool;
+	}
+
+	public override ParticleSystemPool GetRangeWeaponHitParticlePool()
+	{
+		return hitParticlePool;
 	}
 
 	public override WeaponBase CreateCopy(GameCharacter gameCharacter, ScriptableWeapon weapon)

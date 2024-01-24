@@ -655,9 +655,9 @@ public class AnimationController
 	float forcePositionFootIKLTarget;
 	public float ForcePositionFootIKLTarget { get { return forcePositionFootIKLTarget; } }
 
-	public float ChestCorrectionIK { get { return gameCharacter.GameCharacterData.ChestCorrectionIK.weight; } set { gameCharacter.GameCharacterData.ChestCorrectionIK.weight = value; } }
-	public float ForcePositionFootIKR { get { return gameCharacter.GameCharacterData.ForcePosition_FootIK_R.weight; } set { gameCharacter.GameCharacterData.ForcePosition_FootIK_R.weight = value; } }
-	public float ForcePositionFootIKL { get { return gameCharacter.GameCharacterData.ForcePosition_FootIK_L.weight; } set { gameCharacter.GameCharacterData.ForcePosition_FootIK_L.weight = value; } }
+	public float ChestCorrectionIK { get { return gameCharacter.GameCharacterData.ChestCorrectionIK != null ? gameCharacter.GameCharacterData.ChestCorrectionIK.weight : -1; } set { if (gameCharacter.GameCharacterData.ChestCorrectionIK != null) gameCharacter.GameCharacterData.ChestCorrectionIK.weight = value; } }
+	public float ForcePositionFootIKR { get { return gameCharacter.GameCharacterData.ForcePosition_FootIK_R != null ? gameCharacter.GameCharacterData.ForcePosition_FootIK_R.weight : -1; } set { if (gameCharacter.GameCharacterData.ForcePosition_FootIK_R != null) gameCharacter.GameCharacterData.ForcePosition_FootIK_R.weight = value; } }
+	public float ForcePositionFootIKL { get { return gameCharacter.GameCharacterData.ForcePosition_FootIK_L != null ? gameCharacter.GameCharacterData.ForcePosition_FootIK_L.weight : -1; } set { if (gameCharacter.GameCharacterData.ForcePosition_FootIK_L != null) gameCharacter.GameCharacterData.ForcePosition_FootIK_L.weight = value; } }
 
 	bool blockRotation = false;
 	public bool BlockRotation { get { return blockRotation; } set { blockRotation = value; } }

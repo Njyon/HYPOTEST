@@ -90,8 +90,8 @@ public class GameCharacterInAirState : AGameCharacterState
 				GameCharacter.MovementComponent.MovementVelocity = test; 
 				break;	
 		}
-	
-		GameCharacter.MovementComponent.IsInJump = false;
+		// Needed?
+		//GameCharacter.MovementComponent.IsInJump = false;
 	}
 
 

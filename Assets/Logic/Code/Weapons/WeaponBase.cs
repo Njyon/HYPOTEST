@@ -1146,5 +1146,15 @@ public abstract class WeaponBase
 		lastHitSoundIndex = randIndex;
 	}
 
+	public virtual ParticleSystemPool GetRangeWeaponFlashParticlePool()
+	{
+		return null;
+	}
+
+	public virtual ParticleSystemPool GetRangeWeaponHitParticlePool()
+	{
+		return null;
+	}
+
 	public abstract WeaponBase CreateCopy(GameCharacter gameCharacter, ScriptableWeapon weapon);
 }

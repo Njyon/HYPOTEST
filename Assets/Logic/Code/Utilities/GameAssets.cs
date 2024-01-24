@@ -34,4 +34,6 @@ public class GameAssets : MonoBehaviour
 	public AudioSource MusicObject;
 	public LineRenderer laserLineRenderer;
 	public AudioComponent SoundObject;
+	public ParticleSystem hyppolitePistolShootEffect;
+	public ParticleSystem hyppolitePistolHitEffect;
 }

@@ -390,6 +390,7 @@ public class GameCharacter : MonoBehaviour, IDamage
 			//		StateMachine.RequestStateChange(EGameCharacterState.Freez);
 			//	}
 			//}
+			AnimController.SwitchFreezState();
 
 			animController.TriggerAdditiveHit();
 			OnDamaged(damageInitiator, damage, removeCharge);

@@ -110,7 +110,8 @@ public class GameCharacterAimPluginState : AGameCharacterPluginState
 			case EGameCharacterState.InAir:
 			case EGameCharacterState.Sliding:
 				GameCharacter.AnimController.SetLegLayerWeight(0);
-				GameCharacter.AnimController.SetUpperBodyLayerWeight(0);
+				//GameCharacter.AnimController.SetUpperBodyLayerWeight(0);
+				GameCharacter.AnimController.SetUpperBodyLayerWeight(1);
 				GameCharacter.AnimController.SetSpineLayerWeight(GameCharacter.CombatComponent.CurrentWeapon.AnimationData.AimData.HeadSpineLayerMovingWeight);
 				GameCharacter.AnimController.SetHeadLayerWeight(GameCharacter.CombatComponent.CurrentWeapon.AnimationData.AimData.HeadSpineLayerMovingWeight);
 				GameCharacter.AnimController.SetArmRLayerWeight(GameCharacter.CombatComponent.CurrentWeapon.AnimationData.AimData.ArmRMovingWeight);
