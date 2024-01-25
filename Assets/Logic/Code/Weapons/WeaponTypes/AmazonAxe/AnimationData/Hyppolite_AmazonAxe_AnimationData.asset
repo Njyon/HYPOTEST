@@ -32,6 +32,25 @@ MonoBehaviour:
       keys: 
       values: 
     particleList: []
+  - action:
+      instance:
+        rid: 3394043438153334787
+    data:
+      showProperties: 0
+      hitDetectionType: 0
+      mesh: {fileID: 0}
+      offset: {x: 0, y: 0, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 0
+      boxDimensions: {x: 0, y: 0, z: 0}
+      capsulHeight: 0
+    combatBranches:
+      keys: 
+      values: 
+    timedCombatBrenches:
+      keys: 
+      values: 
+    particleList: []
   GroundUpAttacks: []
   GroundDownAttacks: []
   GroundDirectionAttacks: []
@@ -73,4 +92,13 @@ MonoBehaviour:
           Rating: 100
           Discharge: 100
           attackAnimation: {fileID: 8659754900779921402, guid: 43ca050a868c0f5499cc099978edd1aa,
+            type: 3}
+    - rid: 3394043438153334787
+      type: {class: DefaultAttack, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          attackAnimation: {fileID: 7606349934984104643, guid: fe4de85f5b7dec244a37709ed2927800,
             type: 3}

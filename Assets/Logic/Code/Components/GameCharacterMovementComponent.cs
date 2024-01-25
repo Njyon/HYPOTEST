@@ -48,6 +48,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	Vector3 movementOverride;
 	float variableGravityMultiplierOverTime = 1;
 	Coroutine gravityCoroutine;
+	bool ignoreGravity = false;
 
 	/// <summary>
 	/// Endless Timer
@@ -80,6 +81,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	public Vector3 MovementOverride { get { return movementOverride; } set { movementOverride = value; } }
 	public float VariableGravityMultiplierOverTime { get { return variableGravityMultiplierOverTime; } set { variableGravityMultiplierOverTime = value; } }
 	public int CharacterLayer { get { return characterLayer; } }
+	public bool IgnoreGravity { get { return ignoreGravity; } set { ignoreGravity = value; } }	
 	public bool IsInJump
 	{
 		get { return isInJump; }
@@ -362,6 +364,9 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	public float CalculateGravity()
 	{
 		float gravity = 0;
+
+		if (IgnoreGravity) return gravity;
+
 		if ((gameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.Attack || gameCharacter.CombatComponent.AttackTimer.IsRunning) && gameCharacter.AnimController.GetUpMovementCurve == 0)
 		{
 			float value = gameCharacter.GameCharacterData.GravitationOverTime.Evaluate(gameCharacter.MovementComponent.InAirTimer.CurrentTime);

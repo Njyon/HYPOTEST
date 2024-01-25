@@ -42,6 +42,7 @@ public class SmashDownAttack3Blend : ActionBase
 			{
 				GameCharacter.MovementComponent.MoveThroughCharacterLayer();
 				Weapon.HitDetectionStart();
+				GameCharacter.MovementComponent.IgnoreGravity = true;
 			}
 		}
 	}
@@ -128,6 +129,7 @@ public class SmashDownAttack3Blend : ActionBase
 	void OnAirDownHitLanding()
 	{
 		landed = true;
+		GameCharacter.MovementComponent.IgnoreGravity = false;
 		GameCharacter.MovementComponent.onCharacterGroundedChanged -= OnCharacterGroundedChanged;
 		GameCharacter.CombatComponent.AttackTimer.onTimerFinished -= AttackTimerFinished;
 		GameCharacter.AnimController.InCombat3Blend = false;
@@ -204,6 +206,7 @@ public class SmashDownAttack3Blend : ActionBase
 		GameCharacter.MovementComponent.onCharacterGroundedChanged -= OnCharacterGroundedChanged;
 		GameCharacter.CombatComponent.AttackTimer.onTimerFinished -= AttackTimerFinished;
 		Weapon.UnHookAllHookedCharacerts();
+		GameCharacter.MovementComponent.IgnoreGravity = false;
 	}
 
 	public override float GetActionRanting()

@@ -64,6 +64,7 @@ public class SmashDownAttack : AttackBase
 	void OnAirDownHitLanding()
 	{
 		landed = true;
+		GameCharacter.MovementComponent.IgnoreGravity = false;
 		GameCharacter.MovementComponent.onMoveCollisionFlag -= OnMoveCollisionFlag;
 		GameCharacter.CombatComponent.AttackTimer.onTimerFinished -= AttackTimerFinished;
 
@@ -100,6 +101,7 @@ public class SmashDownAttack : AttackBase
 	{
 		base.AttackPhaseStart();
 		startFalling = true;
+		GameCharacter.MovementComponent.IgnoreGravity = true;
 	}
 
 	public override void EndAttackStateLogic()
@@ -112,6 +114,7 @@ public class SmashDownAttack : AttackBase
 		GameCharacter.CombatComponent.AttackTimer.onTimerFinished -= AttackTimerFinished;
 		GameCharacter.MovementComponent.onMoveCollisionFlag -= OnMoveCollisionFlag;
 		Weapon.UnHookAllHookedCharacerts();
+		GameCharacter.MovementComponent.IgnoreGravity = false;
 	}
 
 	public override float GetActionRanting()

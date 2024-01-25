@@ -26,33 +26,41 @@ MonoBehaviour:
   MaxChargeAmount: 1000
   DefaultChargeAmount: 700
   TimeAfterEqupingMaxChargedWeapon: 3
+  MaxUltChargeAmount: 100
   UIElement: {fileID: 2407642077447747131, guid: 543551c3f1b4ea34697fd6e5e0b10751,
     type: 3}
   WeaponImage: {fileID: -6205461316961850552, guid: fe42c8b526e77e54ab91d0590272d9e8,
     type: 3}
   defaultAttackSounds:
   - audioClip: {fileID: 8300000, guid: 9ed019d38281b5a42a254f006d812e1c, type: 3}
-    volume: 1
+    volume: 0.5
     pitch: 1
     randomPitch: 1
     randPitch: 0.116
     randomValue: 1
     randVolume: 0.074
   - audioClip: {fileID: 8300000, guid: 6eb8bcc953cd4fb4ca4f80afda070c08, type: 3}
-    volume: 1
+    volume: 0.5
     pitch: 1
     randomPitch: 1
     randPitch: 0.063
     randomValue: 1
     randVolume: 0.045
   - audioClip: {fileID: 8300000, guid: 49ae41bea9d0d3e4dabc5005626542c5, type: 3}
-    volume: 1
+    volume: 0.5
     pitch: 1
     randomPitch: 1
     randPitch: 0.123
     randomValue: 1
     randVolume: 0.086
-  defaultHitSounds: []
+  defaultHitSounds:
+  - audioClip: {fileID: 8300000, guid: 846f5213aa515bc41932ea155990a3be, type: 3}
+    volume: 1
+    pitch: 1
+    randomPitch: 1
+    randPitch: 0.1
+    randomValue: 1
+    randVolume: 0.026
   references:
     version: 2
     RefIds:
