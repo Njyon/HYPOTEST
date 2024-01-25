@@ -561,7 +561,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 
 	public void CheckIfACharacterIsToCloseToMoveTo(out bool isValidHit, out RaycastHit validHit)
 	{
-		float lenght = gameCharacter.CombatComponent.CurrentWeapon.CurrentAction.Action.GetStopMovingRange();
+		float lenght = CheckAction() ? gameCharacter.CombatComponent.CurrentWeapon.CurrentAction.Action.GetStopMovingRange() : 1f;
 		Vector3 currentDir = Vector3.zero;
 		if (gameCharacter.MovementInput.x != 0)
 		{
@@ -585,6 +585,11 @@ public class GameCharacterMovementComponent : MonoBehaviour
 			validHit = hit;
 			break;
 		}
+	}
+
+	bool CheckAction()
+	{
+		return (gameCharacter.CombatComponent.CurrentWeapon != null && gameCharacter.CombatComponent.CurrentWeapon.CurrentAction != null && gameCharacter.CombatComponent.CurrentWeapon.CurrentAction.Action != null);
 	}
 
 	IEnumerator InterpGravity(float time)

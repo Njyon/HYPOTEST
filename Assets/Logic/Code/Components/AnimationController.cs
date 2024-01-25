@@ -177,7 +177,7 @@ public class AnimationController
 			if (walkRunBlend != value)
 			{
 				walkRunBlend = value;
-				gameCharacter.Animator.SetFloat(walkRunBlendID, walkRunBlend);
+				gameCharacter.Animator?.SetFloat(walkRunBlendID, walkRunBlend);
 			}
 		}
 	}
@@ -191,7 +191,7 @@ public class AnimationController
 			if (strideBlend != value)
 			{
 				strideBlend = value;
-				gameCharacter.Animator.SetFloat(strideBlendID, strideBlend);
+				gameCharacter.Animator?.SetFloat(strideBlendID, strideBlend);
 			}
 		}
 	}
@@ -204,7 +204,7 @@ public class AnimationController
 			if (standingPlayRate != value)
 			{
 				standingPlayRate = value;
-				gameCharacter.Animator.SetFloat(standingPlayRateID, standingPlayRate);
+				gameCharacter.Animator?.SetFloat(standingPlayRateID, standingPlayRate);
 			}
 		}
 	}
@@ -217,7 +217,7 @@ public class AnimationController
 			if (isGrounded != value)
 			{
 				isGrounded = value;
-				gameCharacter.Animator.SetBool(isGroundedID, isGrounded);
+				gameCharacter.Animator?.SetBool(isGroundedID, isGrounded);
 			}
 		}
 	}
@@ -230,7 +230,7 @@ public class AnimationController
 			if (isMoving != value)
 			{
 				isMoving = value;
-				gameCharacter.Animator.SetBool(isMovingID, isMoving);
+				gameCharacter.Animator?.SetBool(isMovingID, isMoving);
 			}
 		}
 	}
@@ -259,7 +259,7 @@ public class AnimationController
 			if (fallingBlend != value)
 			{
 				fallingBlend = value;
-				gameCharacter.Animator.SetFloat(fallingBlendID, fallingBlend);
+				gameCharacter.Animator?.SetFloat(fallingBlendID, fallingBlend);
 			}
 		}
 	}
@@ -272,7 +272,7 @@ public class AnimationController
 			if (layerA != value)
 			{
 				layerA = value;
-				gameCharacter.Animator.SetBool(layerAID, layerA);
+				gameCharacter.Animator?.SetBool(layerAID, layerA);
 			}
 		}
 	}
@@ -384,7 +384,7 @@ public class AnimationController
 			if (inAttack != value)
 			{
 				inAttack = value;
-				gameCharacter.Animator.SetBool(inAttackIndex, inAttack);
+				gameCharacter.Animator?.SetBool(inAttackIndex, inAttack);
 			}
 		}
 	}
@@ -397,7 +397,7 @@ public class AnimationController
 			if (attackA != value)
 			{
 				attackA = value;
-				gameCharacter.Animator.SetBool(attackAIndex, attackA);
+				gameCharacter.Animator?.SetBool(attackAIndex, attackA);
 			}
 		}
 	}
@@ -410,7 +410,7 @@ public class AnimationController
 			if (inFreez != value)
 			{
 				inFreez = value;
-				gameCharacter.Animator.SetBool(inFreezIndex, inFreez);
+				gameCharacter.Animator?.SetBool(inFreezIndex, inFreez);
 			}
 		}
 	}
@@ -423,7 +423,7 @@ public class AnimationController
 			if (freezA != value)
 			{
 				freezA = value;
-				gameCharacter.Animator.SetBool(freezAIndex, freezA);
+				gameCharacter.Animator?.SetBool(freezAIndex, freezA);
 			}
 		}
 	}
@@ -436,7 +436,7 @@ public class AnimationController
 			if (holdAttack != value)
 			{
 				holdAttack = value;
-				gameCharacter.Animator.SetBool(holdAttackIndex, holdAttack);
+				gameCharacter.Animator?.SetBool(holdAttackIndex, holdAttack);
 			}
 		}
 	}
@@ -449,7 +449,7 @@ public class AnimationController
 			if (triggerAttack != value)
 			{
 				triggerAttack = value;
-				gameCharacter.Animator.SetBool(triggerAttackIndex, triggerAttack);
+				gameCharacter.Animator?.SetBool(triggerAttackIndex, triggerAttack);
 			}
 		}
 	}
@@ -462,7 +462,7 @@ public class AnimationController
 			if (inDefensiveAction != value)
 			{
 				inDefensiveAction = value;
-				gameCharacter.Animator.SetBool(inDefensiveActionIndex, inDefensiveAction);
+				gameCharacter.Animator?.SetBool(inDefensiveActionIndex, inDefensiveAction);
 			}
 		}
 	}
@@ -475,7 +475,7 @@ public class AnimationController
 			if (inAimBlendTree != value)
 			{
 				inAimBlendTree = value;
-				gameCharacter.Animator.SetBool(inAimBlendTreeIndex, inAimBlendTree);
+				gameCharacter.Animator?.SetBool(inAimBlendTreeIndex, inAimBlendTree);
 			}
 		}
 	}
@@ -488,7 +488,7 @@ public class AnimationController
 			if (inAimBlendTreeA != value)
 			{
 				inAimBlendTreeA = value;
-				gameCharacter.Animator.SetBool(inAimBlendTreeAIndex, inAimBlendTreeA);
+				gameCharacter.Animator?.SetBool(inAimBlendTreeAIndex, inAimBlendTreeA);
 			}
 		}
 	}
@@ -501,7 +501,7 @@ public class AnimationController
 			if (aimBlend != value)
 			{
 				aimBlend = value;
-				gameCharacter.Animator.SetFloat(aimBlendIndex, aimBlend);
+				gameCharacter.Animator?.SetFloat(aimBlendIndex, aimBlend);
 			}
 		}
 	}
@@ -514,7 +514,7 @@ public class AnimationController
 			if (inUpperBodyLayerA != value)
 			{
 				inUpperBodyLayerA = value;
-				gameCharacter.Animator.SetBool(inUpperBodyLayerAIndex, inUpperBodyLayerA);
+				gameCharacter.Animator?.SetBool(inUpperBodyLayerAIndex, inUpperBodyLayerA);
 			}
 		}
 	}
@@ -527,7 +527,7 @@ public class AnimationController
 			if (flyAway != value)
 			{
 				flyAway = value;
-				gameCharacter.Animator.SetBool(flyAwayIndex, flyAway);
+				gameCharacter.Animator?.SetBool(flyAwayIndex, flyAway);
 			}
 		}
 	}
@@ -540,7 +540,7 @@ public class AnimationController
 			if (flyAwayDir != value)
 			{
 				flyAwayDir = value;
-				gameCharacter.Animator.SetFloat(flyAwayDirIndex, flyAwayDir);
+				gameCharacter.Animator?.SetFloat(flyAwayDirIndex, flyAwayDir);
 			}
 		}
 	}
@@ -553,7 +553,7 @@ public class AnimationController
 			if (inCombat3Blend != value)
 			{
 				inCombat3Blend = value;
-				gameCharacter.Animator.SetBool(inCombat3BlendIndex, inCombat3Blend);
+				gameCharacter.Animator?.SetBool(inCombat3BlendIndex, inCombat3Blend);
 			}
 		}
 	}
@@ -566,7 +566,7 @@ public class AnimationController
 			if (combat3BlendDir != value)
 			{
 				combat3BlendDir = value;
-				gameCharacter.Animator.SetFloat(combat3BlendDirIndex, combat3BlendDir);
+				gameCharacter.Animator?.SetFloat(combat3BlendDirIndex, combat3BlendDir);
 			}
 		}
 	}
@@ -579,7 +579,7 @@ public class AnimationController
 			if (inCombat3BlendStateA != value)
 			{
 				inCombat3BlendStateA = value;
-				gameCharacter.Animator.SetBool(inCombat3BlendStateAIndex, inCombat3BlendStateA);
+				gameCharacter.Animator?.SetBool(inCombat3BlendStateAIndex, inCombat3BlendStateA);
 			}
 		}
 	}
@@ -592,7 +592,7 @@ public class AnimationController
 			if (inDodge != value)
 			{
 				inDodge = value;
-				gameCharacter.Animator.SetBool(inDodgeIndex, inDodge);
+				gameCharacter.Animator?.SetBool(inDodgeIndex, inDodge);
 			}
 		}
 	}
@@ -605,7 +605,7 @@ public class AnimationController
 			if (inAddativeState != value)
 			{
 				inAddativeState = value;
-				gameCharacter.Animator.SetBool(inAddativeStateIndex, inAddativeState);
+				gameCharacter.Animator?.SetBool(inAddativeStateIndex, inAddativeState);
 			}
 		}
 	}
@@ -618,7 +618,7 @@ public class AnimationController
 			if (inAddativeAState != value)
 			{
 				inAddativeAState = value;
-				gameCharacter.Animator.SetBool(inAddativeAStateIndex, inAddativeAState);
+				gameCharacter.Animator?.SetBool(inAddativeAStateIndex, inAddativeAState);
 			}
 		}
 	}
@@ -631,7 +631,7 @@ public class AnimationController
 			if (inUpperBodyAddativeState != value)
 			{
 				inUpperBodyAddativeState = value;
-				gameCharacter.Animator.SetBool(inUpperBodyAddativeStateIndex, inUpperBodyAddativeState);
+				gameCharacter.Animator?.SetBool(inUpperBodyAddativeStateIndex, inUpperBodyAddativeState);
 			}
 		}
 	}
@@ -644,7 +644,7 @@ public class AnimationController
 			if (inUpperBodyAddativeAState != value)
 			{
 				inUpperBodyAddativeAState = value;
-				gameCharacter.Animator.SetBool(inUpperBodyAddativeAIndex, inUpperBodyAddativeAState);
+				gameCharacter.Animator?.SetBool(inUpperBodyAddativeAIndex, inUpperBodyAddativeAState);
 			}
 		}
 	}
@@ -657,7 +657,7 @@ public class AnimationController
 			if (moveBackwards != value)
 			{
 				moveBackwards = value;
-				gameCharacter.Animator.SetBool(moveBackwardsIndex, moveBackwards);
+				gameCharacter.Animator?.SetBool(moveBackwardsIndex, moveBackwards);
 			}
 		}
 	}

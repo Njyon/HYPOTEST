@@ -34,6 +34,7 @@ public class SmashDownAttack : AttackBase
 		GameCharacter.CombatComponent.AttackTimer.onTimerFinished -= AttackTimerFinished;
 		Weapon.SetHoldAttack(attackData.downAttackHold);
 		startFalling = true;
+		GameCharacter.MovementComponent.IgnoreGravity = true;
 
 	}
 
