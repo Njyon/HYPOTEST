@@ -64,7 +64,7 @@ public abstract class AGameCharacterState : IState<EGameCharacterState>
 		lerpTimeY += deltaTime * (GameCharacter.MovementComponent.IsGrounded ? GameCharacter.GameCharacterData.GroundToZeroVelYInAttackSpeed : GameCharacter.GameCharacterData.AirToZeroVelYInAttackSpeed);
 		lerpTimeX += deltaTime * (GameCharacter.MovementComponent.IsGrounded ? GameCharacter.GameCharacterData.GroundToZeroVelXInAttackSpeed : GameCharacter.GameCharacterData.AirToZeroVelXInAttackSpeed);
 		float yMotion = GameCharacter.MovementComponent.RootmotionVector.y + Mathf.Lerp(initYVelocity, 0, lerpTimeY) + yPosFromAnimCurveDelta;
-		float xMotion = isValidHit ? 0 : Mathf.Clamp(GameCharacter.MovementComponent.RootmotionVector.x + Mathf.Lerp(initXVelocity, 0, lerpTimeX), -GameCharacter.GameCharacterData.MaxMovementSpeed, GameCharacter.GameCharacterData.MaxMovementSpeed);
+		float xMotion = isValidHit ? 0 : Mathf.Clamp(GameCharacter.MovementComponent.RootmotionVector.x + Mathf.Lerp(initXVelocity, 0, lerpTimeX), int.MinValue /*-GameCharacter.GameCharacterData.MaxMovementSpeed*/, int.MaxValue /*GameCharacter.GameCharacterData.MaxMovementSpeed*/);
 		Vector3 rootmotionVector = new Vector3(xMotion, yMotion, 0);
 
 		// Move Along Ground

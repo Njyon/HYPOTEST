@@ -1,3 +1,4 @@
+using MyBox;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,6 +14,18 @@ public enum EWeaponHandType
 	LeftHand,
 	Both,
 }
+
+[Serializable]
+public class AttackParticleData
+{
+	public ParticleSystem ParticleSystem;
+	public Vector3 Offset;
+	public bool attachToCharacter;
+	[ConditionalField("attachToCharacter")] public bool removeAfterTime;
+	[ConditionalField("removeAfterTime")] public float removeTime;
+	[ConditionalField("attachToCharacter")] public bool attachToSpecialBone;
+	[ConditionalField("attachToSpecialBone")] public string boneName;
+} 
 
 [Serializable]
 public class AttackAnimationData
@@ -34,7 +47,7 @@ public class AttackAnimationData
 	public AttackAnimationHitDetectionData data;
 	public SerializableDictionary<EExplicitAttackType, int> combatBranches;
 	public SerializableDictionary<EExplicitAttackType, int> timedCombatBrenches;
-	public List<GameObject> particleList;
+	public List<AttackParticleData> particleList;
 
 	public AttackAnimationData Copy()
 	{

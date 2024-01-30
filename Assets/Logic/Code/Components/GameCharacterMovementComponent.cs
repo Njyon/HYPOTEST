@@ -48,6 +48,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	Vector3 movementOverride;
 	float variableGravityMultiplierOverTime = 1;
 	Coroutine gravityCoroutine;
+	bool ignoreGravity = false;
 
 	/// <summary>
 	/// Endless Timer
@@ -80,6 +81,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	public Vector3 MovementOverride { get { return movementOverride; } set { movementOverride = value; } }
 	public float VariableGravityMultiplierOverTime { get { return variableGravityMultiplierOverTime; } set { variableGravityMultiplierOverTime = value; } }
 	public int CharacterLayer { get { return characterLayer; } }
+	public bool IgnoreGravity { get { return ignoreGravity; } set { ignoreGravity = value; } }	
 	public bool IsInJump
 	{
 		get { return isInJump; }
@@ -362,6 +364,9 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	public float CalculateGravity()
 	{
 		float gravity = 0;
+
+		if (IgnoreGravity) return gravity;
+
 		if ((gameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.Attack || gameCharacter.CombatComponent.AttackTimer.IsRunning) && gameCharacter.AnimController.GetUpMovementCurve == 0)
 		{
 			float value = gameCharacter.GameCharacterData.GravitationOverTime.Evaluate(gameCharacter.MovementComponent.InAirTimer.CurrentTime);
@@ -556,7 +561,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 
 	public void CheckIfACharacterIsToCloseToMoveTo(out bool isValidHit, out RaycastHit validHit)
 	{
-		float lenght = gameCharacter.CombatComponent.CurrentWeapon.CurrentAction.Action.GetStopMovingRange();
+		float lenght = CheckAction() ? gameCharacter.CombatComponent.CurrentWeapon.CurrentAction.Action.GetStopMovingRange() : 1f;
 		Vector3 currentDir = Vector3.zero;
 		if (gameCharacter.MovementInput.x != 0)
 		{
@@ -580,6 +585,11 @@ public class GameCharacterMovementComponent : MonoBehaviour
 			validHit = hit;
 			break;
 		}
+	}
+
+	bool CheckAction()
+	{
+		return (gameCharacter.CombatComponent.CurrentWeapon != null && gameCharacter.CombatComponent.CurrentWeapon.CurrentAction != null && gameCharacter.CombatComponent.CurrentWeapon.CurrentAction.Action != null);
 	}
 
 	IEnumerator InterpGravity(float time)

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -965,19 +966,49 @@ public abstract class WeaponBase
 		}
 	}
 
-	void CheckParticleEffectsBevorPlaying(ref List<List<ParticleSystem>> particleListList, ref List<GameObject> weaponParticleList, int index, int particleIndex)
+	void CheckParticleEffectsBevorPlaying(ref List<List<ParticleSystem>> particleListList, ref List<AttackParticleData> weaponParticleList, int index, int particleIndex)
 	{
 		if (particleListList.Count > attackIndex && particleListList[attackIndex].Count > index && CurrentAction.particleList.Count > index)
 			PlayParticleEffect(particleListList[particleIndex][index], weaponParticleList[index]);
 	}
 
-	void PlayParticleEffect(ParticleSystem particle, GameObject baseParticle)
+	void PlayParticleEffect(ParticleSystem particle, AttackParticleData partilceData)
 	{
 		particle.transform.parent = GameCharacter.GameCharacterData.Root;
-		particle.transform.localPosition = baseParticle.transform.localPosition;
-		particle.transform.localRotation = baseParticle.transform.localRotation;
+		particle.transform.position = Vector3.zero;
+		particle.transform.localPosition = partilceData.ParticleSystem.transform.localPosition;
+		particle.transform.localRotation = partilceData.ParticleSystem.transform.localRotation;
+		particle.transform.Translate(partilceData.Offset, Space.Self);
+		if (partilceData.attachToCharacter)
+		{
+			if (partilceData.attachToSpecialBone)
+			{
+				Transform bone = GameCharacter.RigDataComponent.Bones[partilceData.boneName];
+				if (bone != null)
+					particle.transform.parent = bone;
+				else
+					Ultra.Utilities.Instance.DebugErrorString("WeaponBase", "PlayParticleEffect", "Bone Name was invalid!");
+			}
+			else
+			{
+				particle.transform.parent = GameCharacter.GameCharacterData.Root;
+			}
+
+			if (partilceData.removeAfterTime)
+			{
+				ParticleDelayedActionHelper psHelper = particle.GetComponent<ParticleDelayedActionHelper>();
+				if (psHelper == null)
+				{
+					psHelper = particle.AddComponent<ParticleDelayedActionHelper>();
+				}
+				psHelper.DetachParticleEffectFromParentAfterTime(particle, partilceData.removeTime);
+			}
+		}
+		else
+		{
+			particle.transform.parent = null;
+		}
 		particle.Play();
-		particle.transform.parent = null;
 	}
 
 	void InitParticleForAttackList(ref List<AttackAnimationData> animList, ref List<List<ParticleSystem>> particleList)
@@ -987,10 +1018,10 @@ public abstract class WeaponBase
 			particleList.Add(new List<ParticleSystem>());
 			for (int j = 0; j < animList[i].particleList.Count; j++)
 			{
-				GameObject particle = GameObject.Instantiate(animList[i].particleList[j], GameCharacter.GameCharacterData.Root);
+				if (animList[i].particleList[j].ParticleSystem == null) continue;
+				ParticleSystem particle = GameObject.Instantiate(animList[i].particleList[j].ParticleSystem, GameCharacter.GameCharacterData.Root);
 				particle.name = ">> " + particle.name;
-				ParticleSystem particleSystem = particle.GetComponent<ParticleSystem>();
-				particleList[i].Add(particleSystem);
+				particleList[i].Add(particle);
 			}
 		}
 	}

@@ -62,6 +62,7 @@ public class ParticleSystemPool : ComponentPoolBase<ParticleSystem>
 
 	protected override void DestroyElement(ParticleSystem element)
 	{
-		GameObject.Destroy(element.gameObject);
+		if (element != null && element.gameObject != null)
+			GameObject.Destroy(element.gameObject);
 	}
 }

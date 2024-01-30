@@ -32,7 +32,10 @@ MonoBehaviour:
       keys: 
       values: 
     particleList:
-    - {fileID: 8879091116122474129, guid: f3f9164d70091c540896d86f4404dd90, type: 3}
+    - ParticleSystem: {fileID: 8790017704387476883, guid: f3f9164d70091c540896d86f4404dd90,
+        type: 3}
+      Offset: {x: 0, y: 0, z: 0}
+      attachToCharacter: 0
   - action:
       instance:
         rid: 3239357412136189963
@@ -52,7 +55,10 @@ MonoBehaviour:
       keys: 
       values: 
     particleList:
-    - {fileID: 1024023815955427625, guid: 23c09f94d36567f4782a0ef308409d7c, type: 3}
+    - ParticleSystem: {fileID: 932989390638434859, guid: 23c09f94d36567f4782a0ef308409d7c,
+        type: 3}
+      Offset: {x: 0, y: 0, z: 0}
+      attachToCharacter: 0
   - action:
       instance:
         rid: 3239357412136189965
@@ -72,7 +78,10 @@ MonoBehaviour:
       keys: 
       values: 
     particleList:
-    - {fileID: 1048237185546698715, guid: 19a0399fe5f4e61479bff443c9f3f77d, type: 3}
+    - ParticleSystem: {fileID: 885305662908510151, guid: 19a0399fe5f4e61479bff443c9f3f77d,
+        type: 3}
+      Offset: {x: 0, y: 0, z: 0}
+      attachToCharacter: 0
   GroundUpAttacks:
   - action:
       instance:
@@ -314,6 +323,7 @@ MonoBehaviour:
   HandType: 1
   WeaponReadyPose: {fileID: 8247377969438304865, guid: 45559a67ce8bc1b459718cc4ddb18506,
     type: 3}
+  WeaponReadyPoseRun: {fileID: 0}
   WeaponReadyWeight: 1
   WeaponReadyInterpSpeed: 5
   HeadSpineLayerMovingWeight: 0.5
@@ -323,6 +333,12 @@ MonoBehaviour:
     upAnimation: {fileID: 0}
     midAnimation: {fileID: 0}
     downAnimation: {fileID: 0}
+  AimData:
+    AimWeaponReadyPoseRun: {fileID: 0}
+    WeaponReadyInterpSpeed: 5
+    HeadSpineLayerMovingWeight: 0.5
+    ArmRMovingWeight: 0.5
+    ArmLMovingWeight: 0.5
   references:
     version: 2
     RefIds:

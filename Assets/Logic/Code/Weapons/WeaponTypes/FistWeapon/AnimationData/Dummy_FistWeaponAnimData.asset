@@ -292,6 +292,7 @@ MonoBehaviour:
   HandType: 0
   WeaponReadyPose: {fileID: -931667488845356766, guid: a8be00c9d0a9e8240b1d6429b3847810,
     type: 3}
+  WeaponReadyPoseRun: {fileID: 0}
   WeaponReadyWeight: 1
   WeaponReadyInterpSpeed: 5
   HeadSpineLayerMovingWeight: 0
@@ -301,6 +302,12 @@ MonoBehaviour:
     upAnimation: {fileID: 0}
     midAnimation: {fileID: 0}
     downAnimation: {fileID: 0}
+  AimData:
+    AimWeaponReadyPoseRun: {fileID: 0}
+    WeaponReadyInterpSpeed: 5
+    HeadSpineLayerMovingWeight: 0.5
+    ArmRMovingWeight: 0.5
+    ArmLMovingWeight: 0.5
   references:
     version: 2
     RefIds:

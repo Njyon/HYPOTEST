@@ -29,12 +29,142 @@ MonoBehaviour:
       keys: 
       values: 
     timedCombatBrenches:
+      keys: 01000000
+      values: 03000000
+    particleList:
+    - ParticleSystem: {fileID: 8251727119289463180, guid: 43f16b7a4b2afa149a2eba873581f97e,
+        type: 3}
+      Offset: {x: 0, y: 0, z: 0}
+      attachToCharacter: 0
+      removeAfterTime: 0
+      removeTime: 0
+      attachToSpecialBone: 0
+      boneName: 
+  - action:
+      instance:
+        rid: 3394043438153334787
+    data:
+      showProperties: 0
+      hitDetectionType: 0
+      mesh: {fileID: 0}
+      offset: {x: 0, y: 0, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 0
+      boxDimensions: {x: 0, y: 0, z: 0}
+      capsulHeight: 0
+    combatBranches:
+      keys: 02000000
+      values: 01000000
+    timedCombatBrenches:
+      keys: 
+      values: 
+    particleList:
+    - ParticleSystem: {fileID: 4714083565633070685, guid: c87ab61aff7d7d547a38f927090d5761,
+        type: 3}
+      Offset: {x: 0, y: 0, z: 0}
+      attachToCharacter: 1
+      removeAfterTime: 1
+      removeTime: 0.1
+      attachToSpecialBone: 0
+      boneName: 
+  - action:
+      instance:
+        rid: 3394043529011658756
+    data:
+      showProperties: 0
+      hitDetectionType: 0
+      mesh: {fileID: 0}
+      offset: {x: 0, y: 0, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 0
+      boxDimensions: {x: 0, y: 0, z: 0}
+      capsulHeight: 0
+    combatBranches:
+      keys: 01000000
+      values: 00000000
+    timedCombatBrenches:
+      keys: 
+      values: 
+    particleList: []
+  - action:
+      instance:
+        rid: 3394043460989747203
+    data:
+      showProperties: 0
+      hitDetectionType: 0
+      mesh: {fileID: 0}
+      offset: {x: 0, y: 0, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 0
+      boxDimensions: {x: 0, y: 0, z: 0}
+      capsulHeight: 0
+    combatBranches:
+      keys: 01000000
+      values: 04000000
+    timedCombatBrenches:
+      keys: 
+      values: 
+    particleList: []
+  - action:
+      instance:
+        rid: 3394043529011658758
+    data:
+      showProperties: 0
+      hitDetectionType: 0
+      mesh: {fileID: 0}
+      offset: {x: 0, y: 0, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 0
+      boxDimensions: {x: 0, y: 0, z: 0}
+      capsulHeight: 0
+    combatBranches:
+      keys: 
+      values: 
+    timedCombatBrenches:
       keys: 
       values: 
     particleList: []
   GroundUpAttacks: []
   GroundDownAttacks: []
-  GroundDirectionAttacks: []
+  GroundDirectionAttacks:
+  - action:
+      instance:
+        rid: 3394043529011658761
+    data:
+      showProperties: 0
+      hitDetectionType: 0
+      mesh: {fileID: 0}
+      offset: {x: 0, y: 0, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 0
+      boxDimensions: {x: 0, y: 0, z: 0}
+      capsulHeight: 0
+    combatBranches:
+      keys: 02000000
+      values: 00000000
+    timedCombatBrenches:
+      keys: 
+      values: 
+    particleList: []
+  - action:
+      instance:
+        rid: 3394043529011658752
+    data:
+      showProperties: 0
+      hitDetectionType: 0
+      mesh: {fileID: 0}
+      offset: {x: 0, y: 0, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 0
+      boxDimensions: {x: 0, y: 0, z: 0}
+      capsulHeight: 0
+    combatBranches:
+      keys: 
+      values: 
+    timedCombatBrenches:
+      keys: 
+      values: 
+    particleList: []
   AirAttacks: []
   AirUpAttacks: []
   AirDownAttacks: []
@@ -73,4 +203,63 @@ MonoBehaviour:
           Rating: 100
           Discharge: 100
           attackAnimation: {fileID: 8659754900779921402, guid: 43ca050a868c0f5499cc099978edd1aa,
+            type: 3}
+    - rid: 3394043438153334787
+      type: {class: DefaultAttack, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          attackAnimation: {fileID: 7606349934984104643, guid: fe4de85f5b7dec244a37709ed2927800,
+            type: 3}
+    - rid: 3394043460989747203
+      type: {class: DefaultAttack, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          attackAnimation: {fileID: -5187059768003692152, guid: 2052d569d8d43f04784998ecc551d930,
+            type: 3}
+    - rid: 3394043529011658752
+      type: {class: KickAwayAttack, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          attackAnimation: {fileID: -2868848845091028495, guid: bf1cab2665094604c81f873df229fad0,
+            type: 3}
+          attackTriggerAmount: 0
+          freezBetweenAttacks: 0
+          kickDirection: {x: 0, y: 0, z: 0}
+          stunTime: 1
+          kickStrengh: 1
+    - rid: 3394043529011658756
+      type: {class: DefaultAttack, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          attackAnimation: {fileID: -8730876463769736231, guid: 717762ca8f1b641488bbae629f17d983,
+            type: 3}
+    - rid: 3394043529011658758
+      type: {class: DefaultAttack, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          attackAnimation: {fileID: -1700675559905714862, guid: a276c39e0df3c3447afd7bea4b70d26c,
+            type: 3}
+    - rid: 3394043529011658761
+      type: {class: DefaultAttack, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          attackAnimation: {fileID: 6715987950356515489, guid: 4452e99acba5dc34c8d13f38ff7fcf90,
             type: 3}

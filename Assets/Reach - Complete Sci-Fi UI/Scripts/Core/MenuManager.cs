@@ -28,7 +28,9 @@ namespace Michsky.UI.Reach
         {
             //StartCoroutine("StartInitialize");
             Initialize();
-        }
+
+			Application.targetFrameRate = 150;
+		}
 
         public void DisableSplashScreen() 
         {

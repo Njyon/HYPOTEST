@@ -7,12 +7,13 @@ public class GameCharacterAttackRecoveryState : AGameCharacterState
 	float lerpTimeY;
 	float lerpTimeX;
 	float currentYPosAnimCurve;
+	Vector3 initVelocity;
 	public GameCharacterAttackRecoveryState(GameCharacterStateMachine stateMachine, GameCharacter gameCharacter) : base (stateMachine, gameCharacter)
 	{ }
 
     public override void StartState(EGameCharacterState oldState)
-	{ 
-
+	{
+		initVelocity = GameCharacter.MovementComponent.MovementVelocity;
 	}
 
 	public override EGameCharacterState GetStateType()
@@ -68,7 +69,7 @@ public class GameCharacterAttackRecoveryState : AGameCharacterState
 
 		if (GameCharacter.MovementComponent.IsGrounded) {
 			//OnGroundMovement();
-			//CombatMovement(deltaTime, initYVelocity, initXVelocity, ref lerpTimeY, ref lerpTimeX, ref currentYPosAnimCurve);
+			CombatMovement(deltaTime, initVelocity.y, initVelocity.x, ref lerpTimeY, ref lerpTimeX, ref currentYPosAnimCurve, GameCharacter.MovementComponent.IsGrounded);
 		} else {
 			InAirMovement();
 			//CombatMovement(deltaTime, GameCharacter.MovementComponent.CalculateGravity() /*initYVelocity*/, GameCharacter.MovementComponent.MovementVelocity.x /*initXVelocity*/, ref lerpTimeY, ref lerpTimeX, ref currentYPosAnimCurve, false);
