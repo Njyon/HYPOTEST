@@ -173,6 +173,7 @@ public class GameCharacterAttackState : AGameCharacterState
 			case EGameCharacterState.FlyAway: 
 			case EGameCharacterState.Dodge:
 				GameCharacter.CombatComponent.AttackTimer.Stop();
+				//GameCharacter.MovementComponent.UseGravity = true;
 				break;
 			default:
 				break;

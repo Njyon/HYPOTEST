@@ -13,4 +13,9 @@ public class StoryGameMode : GameModeBase
 	{
 		base.Create();
 	}
+
+	public StoryModeSpecificData GetStoryModeData()
+	{
+		return GameAssets.Instance.storyModeSpecificData;
+	}
 }

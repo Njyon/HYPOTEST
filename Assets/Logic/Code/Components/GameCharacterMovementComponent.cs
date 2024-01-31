@@ -13,6 +13,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	public OnMoveCollisionFlag onMoveCollisionFlag;
 	public delegate void OnCharacterGroundedChanged(bool newState);
 	public OnCharacterGroundedChanged onCharacterGroundedChanged;
+	public OnCharacterGroundedChanged onCharacterIgnoreGravityChanged;
 	public delegate void OnCharacteroMoveEvent();
 	public OnCharacteroMoveEvent onCharacterGroundReset;
 	public OnCharacteroMoveEvent onCharacterFinishedJumping;
@@ -81,7 +82,14 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	public Vector3 MovementOverride { get { return movementOverride; } set { movementOverride = value; } }
 	public float VariableGravityMultiplierOverTime { get { return variableGravityMultiplierOverTime; } set { variableGravityMultiplierOverTime = value; } }
 	public int CharacterLayer { get { return characterLayer; } }
-	public bool IgnoreGravity { get { return ignoreGravity; } set { ignoreGravity = value; } }	
+	public bool IgnoreGravity { 
+		get { return ignoreGravity; }
+		set 
+		{ 
+			ignoreGravity = value;
+			if (onCharacterIgnoreGravityChanged != null) onCharacterIgnoreGravityChanged(ignoreGravity);
+		}
+	}	
 	public bool IsInJump
 	{
 		get { return isInJump; }
@@ -367,7 +375,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 
 		if (IgnoreGravity) return gravity;
 
-		if ((gameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.Attack || gameCharacter.CombatComponent.AttackTimer.IsRunning) && gameCharacter.AnimController.GetUpMovementCurve == 0)
+		if ((InCombatState() || gameCharacter.CombatComponent.AttackTimer.IsRunning) && gameCharacter.AnimController.GetUpMovementCurve == 0)
 		{
 			float value = gameCharacter.GameCharacterData.GravitationOverTime.Evaluate(gameCharacter.MovementComponent.InAirTimer.CurrentTime);
 			gameCharacter.MovementComponent.MovementVelocity = new Vector3(gameCharacter.MovementComponent.MovementVelocity.x, Mathf.Clamp(gameCharacter.MovementComponent.MovementVelocity.y, -value, gameCharacter.MovementComponent.IsInJump ? int.MaxValue : value), gameCharacter.MovementComponent.MovementVelocity.z);
@@ -384,6 +392,17 @@ public class GameCharacterMovementComponent : MonoBehaviour
 			gravity = gameCharacter.GameCharacterData.MovmentGravity;
 
 		return gravity * Time.deltaTime;
+	}
+
+	private bool InCombatState()
+	{
+		switch (gameCharacter.StateMachine.GetCurrentStateType())
+		{
+			case EGameCharacterState.Attack: case EGameCharacterState.AttackRecovery:
+				return true;
+			default:
+				return false;
+		}
 	}
 
 	public void CheckIfCharacterIsGrounded()
@@ -590,6 +609,16 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	bool CheckAction()
 	{
 		return (gameCharacter.CombatComponent.CurrentWeapon != null && gameCharacter.CombatComponent.CurrentWeapon.CurrentAction != null && gameCharacter.CombatComponent.CurrentWeapon.CurrentAction.Action != null);
+	}
+
+	/// <summary>
+	///  Only use in GameCharacterNoGravityPluginState or when u know what u are doing!
+	///  c++ friend class behaviour would be better but dont know of any in C#
+	/// </summary>
+	/// <param name="state"></param>
+	public void DONTUSEChangeIgnoreGravity(bool state)
+	{
+		ignoreGravity = state;
 	}
 
 	IEnumerator InterpGravity(float time)

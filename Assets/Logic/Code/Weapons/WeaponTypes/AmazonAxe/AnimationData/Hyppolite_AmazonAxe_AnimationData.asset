@@ -148,7 +148,34 @@ MonoBehaviour:
       removeTime: 0
       attachToSpecialBone: 0
       boneName: 
-  GroundUpAttacks: []
+  GroundUpAttacks:
+  - action:
+      instance:
+        rid: 3394043573766979584
+    data:
+      showProperties: 1
+      hitDetectionType: 1
+      mesh: {fileID: 0}
+      offset: {x: 1, y: 0, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 2
+      boxDimensions: {x: 0, y: 0, z: 0}
+      capsulHeight: 0
+    combatBranches:
+      keys: 
+      values: 
+    timedCombatBrenches:
+      keys: 
+      values: 
+    particleList:
+    - ParticleSystem: {fileID: 5114028486583406972, guid: 643f36f8421d47d4a9c7168ae4f7b73c,
+        type: 3}
+      Offset: {x: 0, y: 0, z: 0}
+      attachToCharacter: 1
+      removeAfterTime: 0
+      removeTime: 0.3
+      attachToSpecialBone: 0
+      boneName: 
   GroundDownAttacks: []
   GroundDirectionAttacks:
   - action:
@@ -217,6 +244,14 @@ MonoBehaviour:
         type: 3}
       Offset: {x: 0, y: 0, z: 0}
       attachToCharacter: 0
+      removeAfterTime: 0
+      removeTime: 0
+      attachToSpecialBone: 0
+      boneName: 
+    - ParticleSystem: {fileID: 6205271340894539323, guid: d7cabc0c767394d40989d9959a751575,
+        type: 3}
+      Offset: {x: 0, y: 0, z: 0}
+      attachToCharacter: 1
       removeAfterTime: 0
       removeTime: 0
       attachToSpecialBone: 0
@@ -334,3 +369,13 @@ MonoBehaviour:
           kickDirection: {x: 0, y: 0, z: 45}
           stunTime: 0.7
           kickStrengh: 10
+    - rid: 3394043573766979584
+      type: {class: HookAttack, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          attackAnimation: {fileID: 2016032977205509021, guid: 70e7acde4bff0534d940d3cadf4c89c0,
+            type: 3}
+          maxVerticalMovement: 7

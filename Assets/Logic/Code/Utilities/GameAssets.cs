@@ -36,4 +36,7 @@ public class GameAssets : MonoBehaviour
 	public AudioComponent SoundObject;
 	public ParticleSystem hyppolitePistolShootEffect;
 	public ParticleSystem hyppolitePistolHitEffect;
+	public DefaultGameModeData gameModeData;
+	public StoryModeSpecificData storyModeSpecificData;
+	public TrainingModeSpecificData trainingModeSpecificData;
 }

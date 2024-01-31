@@ -7,6 +7,7 @@ public enum EBuff
     Unknown,
     WaterUltimate,
     ForceAim,
+    NoGravity,
 }
 
 public class BuffComponent

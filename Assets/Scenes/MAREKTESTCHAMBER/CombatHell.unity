@@ -908,7 +908,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particleSystem:
-  - {fileID: 814478410}
+  - {fileID: 7881355391028030098}
 --- !u!1 &663329985
 GameObject:
   m_ObjectHideFlags: 0
@@ -1045,51 +1045,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &814478409
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1084609620}
-    m_Modifications:
-    - target: {fileID: 7083846764381607355, guid: c915650badb83c146861f98e309a16f7,
-        type: 3}
-      propertyPath: m_Name
-      value: Axe_LightAttack03
-      objectReference: {fileID: 0}
-    - target: {fileID: 7411958135091933105, guid: c915650badb83c146861f98e309a16f7,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 7411958135091933105, guid: c915650badb83c146861f98e309a16f7,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 180
-      objectReference: {fileID: 0}
-    - target: {fileID: 7411958135091933105, guid: c915650badb83c146861f98e309a16f7,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 98
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: c915650badb83c146861f98e309a16f7, type: 3}
---- !u!198 &814478410 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 4714083565633070685, guid: c915650badb83c146861f98e309a16f7,
-    type: 3}
-  m_PrefabInstance: {fileID: 814478409}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &814478411 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7411958135091933105, guid: c915650badb83c146861f98e309a16f7,
-    type: 3}
-  m_PrefabInstance: {fileID: 814478409}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &820882754
 GameObject:
   m_ObjectHideFlags: 0
@@ -2987,7 +2942,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4436805663696350335, guid: 43ca050a868c0f5499cc099978edd1aa,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 814478411}
+      addedObject: {fileID: 609517483178594897}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 43ca050a868c0f5499cc099978edd1aa,
         type: 3}
@@ -3182,6 +3137,51 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3230938088941717855, guid: d0d316b2b7c56334c84c743d7d1e3fc5,
     type: 3}
   m_PrefabInstance: {fileID: 1408932872}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &609517483178594897 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1437563820769743260, guid: 643f36f8421d47d4a9c7168ae4f7b73c,
+    type: 3}
+  m_PrefabInstance: {fileID: 2250507918081530557}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &2250507918081530557
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1084609620}
+    m_Modifications:
+    - target: {fileID: 1437563820769743260, guid: 643f36f8421d47d4a9c7168ae4f7b73c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 133.463
+      objectReference: {fileID: 0}
+    - target: {fileID: 1437563820769743260, guid: 643f36f8421d47d4a9c7168ae4f7b73c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -5.390991
+      objectReference: {fileID: 0}
+    - target: {fileID: 1437563820769743260, guid: 643f36f8421d47d4a9c7168ae4f7b73c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 88.594
+      objectReference: {fileID: 0}
+    - target: {fileID: 2560699665586874371, guid: 643f36f8421d47d4a9c7168ae4f7b73c,
+        type: 3}
+      propertyPath: m_Name
+      value: Axe_UpAttack01
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 643f36f8421d47d4a9c7168ae4f7b73c, type: 3}
+--- !u!198 &7881355391028030098 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 5114028486583406972, guid: 643f36f8421d47d4a9c7168ae4f7b73c,
+    type: 3}
+  m_PrefabInstance: {fileID: 2250507918081530557}
   m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

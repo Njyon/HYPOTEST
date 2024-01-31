@@ -10,7 +10,17 @@ namespace Ultra
 {
 	public class HypoUttilies : Singelton<HypoUttilies>
 	{
-		static public GameModeBase gameModeBase;
+		static GameModeBase gameModeBase;
+		static public GameModeBase GameMode { 
+			get 
+			{ 
+				if (gameModeBase == null)
+				{
+					gameModeBase = GetGameMode();
+				}
+				return gameModeBase;
+			} 
+		}
 
 		public static List<ScriptableCharacter> GetAllCharacters()
 		{

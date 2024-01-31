@@ -973,7 +973,7 @@ public abstract class WeaponBase
 			PlayParticleEffect(particleListList[particleIndex][index], weaponParticleList[index]);
 	}
 
-	void PlayParticleEffect(ParticleSystem particle, AttackParticleData partilceData)
+	async void PlayParticleEffect(ParticleSystem particle, AttackParticleData partilceData)
 	{
 		particle.transform.parent = GameCharacter.GameCharacterData.Root;
 		particle.transform.position = Vector3.zero;
@@ -1014,6 +1014,9 @@ public abstract class WeaponBase
 		{
 			particle.transform.parent = null;
 		}
+		particle.Clear(true);
+		particle.Play();
+		particle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
 		particle.Play();
 	}
 

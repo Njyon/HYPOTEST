@@ -53,7 +53,7 @@ public class ShootAttackNoProjectile : AttackBase
 			IDamage iDamage = hit.collider?.GetComponent<IDamage>();
 			if (iDamage != null)
 			{
-				iDamage.DoDamage(GameCharacter, attackData.Damage);
+				iDamage.DoDamage(GameCharacter, attackData.Damage, true, true, false);
 				SpawnDamageHitEffect(hit);
 			}
 		}

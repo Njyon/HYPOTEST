@@ -189,6 +189,7 @@ public class GameCharacter : MonoBehaviour, IDamage
 		SetupPartilcePools();
 
 		PluginStateMachine.AddPluginState(EPluginCharacterState.LookInVelocityDirection);
+		PluginStateMachine.AddPluginState(EPluginCharacterState.IgnoreGravityRuleState);
 
 		isInitialized = true;
 	}
@@ -337,7 +338,7 @@ public class GameCharacter : MonoBehaviour, IDamage
 
 	#endregion
 
-	public void DoDamage(GameCharacter damageInitiator, float damage, bool shouldStagger = true, bool removeCharge = true)
+	public void DoDamage(GameCharacter damageInitiator, float damage, bool shouldStagger = true, bool removeCharge = true, bool shouldFreezGame = true)
 	{
 		if (damageInitiator != null)
 		{
@@ -365,7 +366,7 @@ public class GameCharacter : MonoBehaviour, IDamage
 			}
 		}
 
-		if (HypoUttilies.gameModeBase == null || HypoUttilies.gameModeBase.AllowDamage()) 
+		if (HypoUttilies.GameMode == null || HypoUttilies.GameMode.AllowDamage()) 
 			Health.AddCurrentValue(-damage);
 
 		StaggerComponent.AddCurrentValue(-damage);
@@ -396,7 +397,7 @@ public class GameCharacter : MonoBehaviour, IDamage
 			OnDamaged(damageInitiator, damage, removeCharge);
 			damageInitiator?.AddRatingOnHit(damage);
 
-			GameTimeManager.Instance.AddDefaultFreezFrame();
+			if (shouldFreezGame) GameTimeManager.Instance.AddDefaultFreezFrame();
 		}
 	}
 
