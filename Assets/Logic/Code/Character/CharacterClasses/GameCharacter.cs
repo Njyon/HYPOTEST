@@ -395,6 +395,8 @@ public class GameCharacter : MonoBehaviour, IDamage
 			animController.TriggerAdditiveHit();
 			OnDamaged(damageInitiator, damage, removeCharge);
 			damageInitiator?.AddRatingOnHit(damage);
+
+			GameTimeManager.Instance.AddDefaultFreezFrame();
 		}
 	}
 

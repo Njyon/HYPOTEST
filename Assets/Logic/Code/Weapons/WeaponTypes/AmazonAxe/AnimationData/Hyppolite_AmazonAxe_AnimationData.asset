@@ -17,12 +17,12 @@ MonoBehaviour:
       instance:
         rid: 3394043415080730626
     data:
-      showProperties: 0
-      hitDetectionType: 0
+      showProperties: 1
+      hitDetectionType: 1
       mesh: {fileID: 0}
-      offset: {x: 0, y: 0, z: 0}
+      offset: {x: 1, y: 0, z: 0}
       scale: {x: 0, y: 0, z: 0}
-      radius: 0
+      radius: 2
       boxDimensions: {x: 0, y: 0, z: 0}
       capsulHeight: 0
     combatBranches:
@@ -44,12 +44,12 @@ MonoBehaviour:
       instance:
         rid: 3394043438153334787
     data:
-      showProperties: 0
-      hitDetectionType: 0
+      showProperties: 1
+      hitDetectionType: 1
       mesh: {fileID: 0}
-      offset: {x: 0, y: 0, z: 0}
+      offset: {x: 1, y: 0, z: 0}
       scale: {x: 0, y: 0, z: 0}
-      radius: 0
+      radius: 2
       boxDimensions: {x: 0, y: 0, z: 0}
       capsulHeight: 0
     combatBranches:
@@ -69,14 +69,14 @@ MonoBehaviour:
       boneName: 
   - action:
       instance:
-        rid: 3394043529011658756
+        rid: 3394043550350180386
     data:
-      showProperties: 0
-      hitDetectionType: 0
+      showProperties: 1
+      hitDetectionType: 1
       mesh: {fileID: 0}
-      offset: {x: 0, y: 0, z: 0}
+      offset: {x: 1, y: 0, z: 0}
       scale: {x: 0, y: 0, z: 0}
-      radius: 0
+      radius: 2
       boxDimensions: {x: 0, y: 0, z: 0}
       capsulHeight: 0
     combatBranches:
@@ -85,17 +85,25 @@ MonoBehaviour:
     timedCombatBrenches:
       keys: 
       values: 
-    particleList: []
+    particleList:
+    - ParticleSystem: {fileID: 4714083565633070685, guid: c915650badb83c146861f98e309a16f7,
+        type: 3}
+      Offset: {x: 0, y: 0, z: 0}
+      attachToCharacter: 1
+      removeAfterTime: 1
+      removeTime: 0.1
+      attachToSpecialBone: 0
+      boneName: 
   - action:
       instance:
         rid: 3394043460989747203
     data:
-      showProperties: 0
-      hitDetectionType: 0
+      showProperties: 1
+      hitDetectionType: 1
       mesh: {fileID: 0}
-      offset: {x: 0, y: 0, z: 0}
+      offset: {x: 1, y: 0, z: 0}
       scale: {x: 0, y: 0, z: 0}
-      radius: 0
+      radius: 2
       boxDimensions: {x: 0, y: 0, z: 0}
       capsulHeight: 0
     combatBranches:
@@ -104,17 +112,25 @@ MonoBehaviour:
     timedCombatBrenches:
       keys: 
       values: 
-    particleList: []
+    particleList:
+    - ParticleSystem: {fileID: 8132082852167780818, guid: 2dffcdc1ca91d334b8f2f07eec33d80f,
+        type: 3}
+      Offset: {x: 0, y: 0, z: 0}
+      attachToCharacter: 0
+      removeAfterTime: 0
+      removeTime: 0
+      attachToSpecialBone: 0
+      boneName: 
   - action:
       instance:
-        rid: 3394043529011658758
+        rid: 3394043550350180385
     data:
-      showProperties: 0
-      hitDetectionType: 0
+      showProperties: 1
+      hitDetectionType: 1
       mesh: {fileID: 0}
-      offset: {x: 0, y: 0, z: 0}
+      offset: {x: 1, y: 0, z: 0}
       scale: {x: 0, y: 0, z: 0}
-      radius: 0
+      radius: 2
       boxDimensions: {x: 0, y: 0, z: 0}
       capsulHeight: 0
     combatBranches:
@@ -123,20 +139,28 @@ MonoBehaviour:
     timedCombatBrenches:
       keys: 
       values: 
-    particleList: []
+    particleList:
+    - ParticleSystem: {fileID: 8132082852167780818, guid: 2dffcdc1ca91d334b8f2f07eec33d80f,
+        type: 3}
+      Offset: {x: 0, y: 0, z: 0}
+      attachToCharacter: 0
+      removeAfterTime: 0
+      removeTime: 0
+      attachToSpecialBone: 0
+      boneName: 
   GroundUpAttacks: []
   GroundDownAttacks: []
   GroundDirectionAttacks:
   - action:
       instance:
-        rid: 3394043529011658761
+        rid: 3394043550350180384
     data:
-      showProperties: 0
-      hitDetectionType: 0
+      showProperties: 1
+      hitDetectionType: 1
       mesh: {fileID: 0}
       offset: {x: 0, y: 0, z: 0}
       scale: {x: 0, y: 0, z: 0}
-      radius: 0
+      radius: 3
       boxDimensions: {x: 0, y: 0, z: 0}
       capsulHeight: 0
     combatBranches:
@@ -145,26 +169,58 @@ MonoBehaviour:
     timedCombatBrenches:
       keys: 
       values: 
-    particleList: []
+    particleList:
+    - ParticleSystem: {fileID: 1031510943269133725, guid: de9a79baa3db0c44b9c3c8b58e0d15ee,
+        type: 3}
+      Offset: {x: 0, y: 0, z: 0}
+      attachToCharacter: 1
+      removeAfterTime: 0
+      removeTime: 0
+      attachToSpecialBone: 1
+      boneName: root
+    - ParticleSystem: {fileID: 8251727119289463180, guid: 1611ee8b4576eb74ebf07d2bc81873e6,
+        type: 3}
+      Offset: {x: 0, y: 0, z: 0}
+      attachToCharacter: 0
+      removeAfterTime: 0
+      removeTime: 0
+      attachToSpecialBone: 0
+      boneName: root
   - action:
       instance:
         rid: 3394043529011658752
     data:
-      showProperties: 0
-      hitDetectionType: 0
+      showProperties: 1
+      hitDetectionType: 1
       mesh: {fileID: 0}
       offset: {x: 0, y: 0, z: 0}
       scale: {x: 0, y: 0, z: 0}
-      radius: 0
+      radius: 3
       boxDimensions: {x: 0, y: 0, z: 0}
       capsulHeight: 0
     combatBranches:
       keys: 
       values: 
     timedCombatBrenches:
-      keys: 
-      values: 
-    particleList: []
+      keys: 01000000
+      values: 03000000
+    particleList:
+    - ParticleSystem: {fileID: 6205271340894539323, guid: d7cabc0c767394d40989d9959a751575,
+        type: 3}
+      Offset: {x: 0, y: 0, z: 0}
+      attachToCharacter: 1
+      removeAfterTime: 0
+      removeTime: 0
+      attachToSpecialBone: 0
+      boneName: 
+    - ParticleSystem: {fileID: 4561197034961137637, guid: 5809e2ab1b54b704fb35dc95ab84c563,
+        type: 3}
+      Offset: {x: 0, y: 0, z: 0}
+      attachToCharacter: 0
+      removeAfterTime: 0
+      removeTime: 0
+      attachToSpecialBone: 0
+      boneName: 
   AirAttacks: []
   AirUpAttacks: []
   AirDownAttacks: []
@@ -231,31 +287,13 @@ MonoBehaviour:
           Discharge: 100
           attackAnimation: {fileID: -2868848845091028495, guid: bf1cab2665094604c81f873df229fad0,
             type: 3}
-          attackTriggerAmount: 0
-          freezBetweenAttacks: 0
-          kickDirection: {x: 0, y: 0, z: 0}
+          attackTriggerAmount: 1
+          freezBetweenAttacks: 1
+          kickDirection: {x: 0, y: 0, z: 90}
           stunTime: 1
-          kickStrengh: 1
-    - rid: 3394043529011658756
-      type: {class: DefaultAttack, ns: , asm: Assembly-CSharp}
-      data:
-        attackData:
-          Damage: 10
-          Rating: 100
-          Discharge: 100
-          attackAnimation: {fileID: -8730876463769736231, guid: 717762ca8f1b641488bbae629f17d983,
-            type: 3}
-    - rid: 3394043529011658758
-      type: {class: DefaultAttack, ns: , asm: Assembly-CSharp}
-      data:
-        attackData:
-          Damage: 10
-          Rating: 100
-          Discharge: 100
-          attackAnimation: {fileID: -1700675559905714862, guid: a276c39e0df3c3447afd7bea4b70d26c,
-            type: 3}
-    - rid: 3394043529011658761
-      type: {class: DefaultAttack, ns: , asm: Assembly-CSharp}
+          kickStrengh: 20
+    - rid: 3394043550350180384
+      type: {class: KickAwayAttack, ns: , asm: Assembly-CSharp}
       data:
         attackData:
           Damage: 10
@@ -263,3 +301,36 @@ MonoBehaviour:
           Discharge: 100
           attackAnimation: {fileID: 6715987950356515489, guid: 4452e99acba5dc34c8d13f38ff7fcf90,
             type: 3}
+          attackTriggerAmount: 1
+          freezBetweenAttacks: 1
+          kickDirection: {x: 0, y: 0, z: 45}
+          stunTime: 1
+          kickStrengh: 20
+    - rid: 3394043550350180385
+      type: {class: KickAwayAttack, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          attackAnimation: {fileID: -1700675559905714862, guid: a276c39e0df3c3447afd7bea4b70d26c,
+            type: 3}
+          attackTriggerAmount: 2
+          freezBetweenAttacks: 1
+          kickDirection: {x: 0, y: 0, z: 90}
+          stunTime: 0.5
+          kickStrengh: 10
+    - rid: 3394043550350180386
+      type: {class: KickAwayAttack, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          attackAnimation: {fileID: -8730876463769736231, guid: 717762ca8f1b641488bbae629f17d983,
+            type: 3}
+          attackTriggerAmount: 0
+          freezBetweenAttacks: 0
+          kickDirection: {x: 0, y: 0, z: 45}
+          stunTime: 0.7
+          kickStrengh: 10

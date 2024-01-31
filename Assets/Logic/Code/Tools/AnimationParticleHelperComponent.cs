@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AnimationParticleHelperComponent : MonoBehaviour
 {
-    [SerializeField] ParticleSystem particleSystem;
+    [SerializeField] List<ParticleSystem> particleSystem;
 
     void Start()
     {
@@ -16,9 +16,9 @@ public class AnimationParticleHelperComponent : MonoBehaviour
         
     }
 
-	public void StartParticleEffect()
+	public void StartParticleEffect(AnimationEvent evt)
 	{
-        particleSystem.Play();
+        particleSystem[evt.intParameter].Play();
 
 	}
 }

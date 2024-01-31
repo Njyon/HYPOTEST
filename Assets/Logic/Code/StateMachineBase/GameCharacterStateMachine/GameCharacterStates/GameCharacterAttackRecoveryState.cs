@@ -91,6 +91,16 @@ public class GameCharacterAttackRecoveryState : AGameCharacterState
 
 	public override void EndState(EGameCharacterState newState)
 	{
+		switch (newState)
+		{
+			case EGameCharacterState.Attack:
+				// Force Remove Hit Detection so new Hit can be processed from NextAttack
+				GameCharacter.CombatComponent.CurrentWeapon.HitDetectionEnd();
+				break;
+			default: 
+				break;
+		}
+
 		GameCharacter.AnimController.InAttack = false;
 		GameCharacter.AnimController.HoldAttack = false;
 		GameCharacter.AnimController.TriggerAttack = false;

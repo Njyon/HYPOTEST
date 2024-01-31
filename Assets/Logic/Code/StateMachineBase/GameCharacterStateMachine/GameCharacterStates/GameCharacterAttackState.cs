@@ -165,6 +165,19 @@ public class GameCharacterAttackState : AGameCharacterState
 
 	public override void EndState(EGameCharacterState newState)
 	{
+		switch (newState)
+		{
+			case EGameCharacterState.HookedToCharacter: 
+			case EGameCharacterState.PullCharacterOnHorizontalLevel: 
+			case EGameCharacterState.Freez: 
+			case EGameCharacterState.FlyAway: 
+			case EGameCharacterState.Dodge:
+				GameCharacter.CombatComponent.AttackTimer.Stop();
+				break;
+			default:
+				break;
+		}
+
 		//GameCharacter.MovementComponent.UseGravity = true;
 		GameCharacter.MovementComponent.InterpGravityUp();
 		GameCharacter.transform.rotation = newDir;
