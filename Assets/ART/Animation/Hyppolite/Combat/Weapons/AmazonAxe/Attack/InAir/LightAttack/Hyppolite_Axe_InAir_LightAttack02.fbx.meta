@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: bf1cab2665094604c81f873df229fad0
+guid: a0192ef1d6b9547448ccadcfa3cab626
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -33,11 +33,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Hyppolite_Axe_Ground_LightAttack03
-      takeName: Hyppolite_Axe_Ground_LightAttack03
-      internalID: -2868848845091028495
+      name: Hyppolite_Axe_InAir_LightAttack02
+      takeName: Hyppolite_Axe_InAir_LightAttack02
+      internalID: 8643493368973827826
       firstFrame: 0
-      lastFrame: 127
+      lastFrame: 68
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -57,85 +57,36 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.23387097
-        functionName: HitDetectionEventStart
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 1
-        messageOptions: 0
-      - time: 0.25268817
-        functionName: StartParticleEffect
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.27688172
-        functionName: StartCameraShake
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.34605625
-        functionName: HitDetectionEventEnd
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 1
-        messageOptions: 0
-      - time: 0.4032258
-        functionName: StartParticleEffect
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 2
-        messageOptions: 0
-      - time: 0.5403226
-        functionName: StartParticleEffect
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 1
-        messageOptions: 0
-      - time: 0.56182796
-        functionName: HitDetectionEventStart
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 1
-        messageOptions: 0
-      - time: 0.5833333
-        functionName: StartCameraShake
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 1
-        messageOptions: 0
-      - time: 0.62096775
-        functionName: HitDetectionEventEnd
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 1
-        messageOptions: 0
-      - time: 0.8763441
+      - time: 0.5510753
         functionName: AttackRecoveryEvent
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.37365592
+      - time: 0.3924731
         functionName: HitDetectionEventStart
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.47311828
+      - time: 0.4919355
         functionName: HitDetectionEventEnd
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.36827958
+        functionName: StartParticleEffect
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.40591398
+        functionName: StartCameraShake
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0

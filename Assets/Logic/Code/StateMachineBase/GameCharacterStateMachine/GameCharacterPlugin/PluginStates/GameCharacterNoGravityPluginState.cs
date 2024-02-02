@@ -17,14 +17,14 @@ public class GameCharacterNoGravityPluginState : AGameCharacterPluginState
 	{
 		base.Active();
 
-		GameCharacter.MovementComponent.DONTUSEChangeIgnoreGravity(true);
+		//GameCharacter.MovementComponent.DONTUSEChangeIgnoreGravity(true);
 	}
 
 	public override void Deactive()
 	{
 		base.Deactive();
 
-		GameCharacter.MovementComponent.DONTUSEChangeIgnoreGravity(false);
+		//GameCharacter.MovementComponent.DONTUSEChangeIgnoreGravity(false);
 	}
 
 	public override void AddState()
@@ -69,7 +69,7 @@ public class GameCharacterNoGravityPluginState : AGameCharacterPluginState
 	void OnCharacterGroundedChanged(bool newState)
 	{
 		// Maybe need a negative Flag for forcing Gravity On Maybe via Buff or PluginState
-		if (!newState)
-			GameCharacter.MovementComponent.DONTUSEChangeIgnoreGravity(WantsToBeActive());
+		//if (!newState)
+		//	GameCharacter.MovementComponent.DONTUSEChangeIgnoreGravity(WantsToBeActive());
 	}
 }
