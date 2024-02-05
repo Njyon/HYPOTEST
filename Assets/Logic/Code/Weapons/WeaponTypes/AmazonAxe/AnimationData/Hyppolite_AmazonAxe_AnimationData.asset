@@ -366,7 +366,26 @@ MonoBehaviour:
       attachToSpecialBone: 0
       boneName: 
   AirUpAttacks: []
-  AirDownAttacks: []
+  AirDownAttacks:
+  - action:
+      instance:
+        rid: 5432272561313939461
+    data:
+      showProperties: 1
+      hitDetectionType: 1
+      mesh: {fileID: 0}
+      offset: {x: 1, y: 0, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 2
+      boxDimensions: {x: 0, y: 0, z: 0}
+      capsulHeight: 0
+    combatBranches:
+      keys: 
+      values: 
+    timedCombatBrenches:
+      keys: 
+      values: 
+    particleList: []
   AirDirectionAttacks: []
   GapCloserAttacks: []
   DefensiveAction: []
@@ -523,3 +542,34 @@ MonoBehaviour:
           Discharge: 100
           attackAnimation: {fileID: -9138193387971112475, guid: 41b1d08902eb6474b920b320a78686d5,
             type: 3}
+    - rid: 5432272561313939461
+      type: {class: SmashDownAttack3Blend, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          downAttack:
+            upAnimation: {fileID: 7989731862715274236, guid: 7f187994557463f4f9eccbff158fc809,
+              type: 3}
+            midAnimation: {fileID: 7989731862715274236, guid: 7f187994557463f4f9eccbff158fc809,
+              type: 3}
+            downAnimation: {fileID: 7989731862715274236, guid: 7f187994557463f4f9eccbff158fc809,
+              type: 3}
+          downAttackHold:
+            upAnimation: {fileID: -9168892136339230726, guid: 901be4c1c9560ad4f82631d11f1f3372,
+              type: 3}
+            midAnimation: {fileID: -1753034752782203198, guid: c60163e5941a9c54b9731a5d3281ed24,
+              type: 3}
+            downAnimation: {fileID: -1753034752782203198, guid: c60163e5941a9c54b9731a5d3281ed24,
+              type: 3}
+          trigger: {fileID: -141227297894769681, guid: 80403d096dcc92148a591edaded7b454,
+            type: 3}
+          smashDownDistance: 0.2
+          interpSpeed: 10
+          speed: 40
+        landingData:
+          stunTime: 0.2
+          kickDir: {x: 0, y: 0, z: 0}
+          kickStrenght: 1
+          freezTimeAftetKick: 1
