@@ -8,12 +8,13 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Hippolyte
-  m_Shader: {fileID: -6465566751694194690, guid: 11ce39ebd99592b46b027dcbba63b0e5,
+  m_Shader: {fileID: -6465566751694194690, guid: 57c8c28b37a6fd04c9dd11069081602a,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - _ENABLELIGHTMAP
+  - _ENABLESMOOTHLIGHT
   - _MAIN_LIGHT_SHADOWS
   - _MAIN_LIGHT_SHADOWS_CASCADE
   - _SHADOWS_SOFT
@@ -50,6 +51,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _DetailNormalMap:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DiffuseTexture:
+        m_Texture: {fileID: 2800000, guid: 4155ac1a48a3061419b1b806a8c13804, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
@@ -99,6 +104,7 @@ Material:
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
+    - _CellshadingSharpness: 10
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 2
@@ -108,13 +114,15 @@ Material:
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _ENABLELIGHTMAP: 1
-    - _ENABLESMOOTHLIGHT: 0
+    - _ENABLESMOOTHLIGHT: 1
     - _EnvironmentReflections: 1
     - _Fresnel: 2.12
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _LightContribution: 0.405
+    - _HitIntensity: 0
+    - _LightContribution: 1
+    - _LightRange: 5
     - _MAIN_LIGHT_SHADOWS: 1
     - _MAIN_LIGHT_SHADOWS_CASCADE: 1
     - _Metallic: 0
@@ -141,9 +149,12 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DiffuseTexture: {r: 0.21176472, g: 0.21176472, b: 0.21176472, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _HitColor: {r: 1, g: 1, b: 1, a: 0}
     - _MixShadowColor: {r: 0.14311142, g: 0.14311142, b: 0.1509434, a: 0}
+    - _ShadowTexture: {r: 0.62264144, g: 0.20852616, b: 0.20852616, a: 0}
+    - _ShadowTint: {r: 0.5270559, g: 0.622699, b: 0.7924528, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _SpecularColor: {r: 0.509434, g: 0.3244037, b: 0.3244037, a: 0}
+    - _SpecularColor: {r: 0, g: 0, b: 0, a: 0}
     - _ToonRamp_Tint: {r: 0.764151, g: 0.764151, b: 0.764151, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &5782944275232063716
