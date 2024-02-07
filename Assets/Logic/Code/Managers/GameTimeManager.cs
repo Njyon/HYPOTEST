@@ -126,8 +126,14 @@ public class GameTimeManager : Singelton<GameTimeManager>
 		CurrentTimeMultiplier /= manipulation;
 	}
 
-    public void AddDefaultFreezFrame()
+    public void AddHeavyFreezFrame()
     {
-		AddTimedManipulation("Default", 0.1f, 0.1f); // Stay Hardcoded until satifing default
+        RemoveTimedManipulation("DefaultFreez");
+		AddTimedManipulation("HeavyFreez", 0.13f, 0.1f); // Stay Hardcoded until satifing default
+	}
+	public void AddDefaultFreezFrame()
+	{
+        if (timeManipulators.ContainsKey("HeavyFreez")) return;
+		AddTimedManipulation("DefaultFreez", 0.08f, 0.20f); // Stay Hardcoded until satifing default
 	}
 }

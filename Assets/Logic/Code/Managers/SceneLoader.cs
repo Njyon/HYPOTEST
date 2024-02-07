@@ -12,6 +12,7 @@ using UnityEditor.SceneManagement;
 public class SceneLoader : MonoBehaviour
 {
 	public bool isMasterLoader = true;
+	public bool test = false;
 	[SerializeField] List<string> scenes = new List<string>();
 
 	void Start()
@@ -39,7 +40,7 @@ public class SceneLoader : MonoBehaviour
 		if (Application.isPlaying)
 		{
 			// Load Ingame Pause Menu
-			if (isMasterLoader)
+			if (isMasterLoader || test)
 				LoadingChecker.Instance.AsyncOperations.Add(SceneManager.LoadSceneAsync("InGameSettingsMenu", LoadSceneMode.Additive));
 
 			LoadingChecker.Instance.onLoadingFinished += LoadingDone;

@@ -32,5 +32,10 @@ public abstract class GameModeBase : MonoBehaviour
 
 	}
 
+	public DefaultGameModeData GetDefaultGameModeData()
+	{
+		return GameAssets.Instance.gameModeData;
+	}
+
 	public abstract bool AllowDamage();
 }

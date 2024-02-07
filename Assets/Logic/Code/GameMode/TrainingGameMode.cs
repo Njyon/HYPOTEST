@@ -13,4 +13,9 @@ public class TrainingGameMode : GameModeBase
 	{
 		base.Create();
 	}
+
+	public TrainingModeSpecificData GetTrainingModeSpecificData()
+	{
+		return GameAssets.Instance.trainingModeSpecificData;
+	}
 }

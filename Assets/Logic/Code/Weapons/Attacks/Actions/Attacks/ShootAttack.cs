@@ -75,7 +75,7 @@ public class ShootAttack : AttackBase
 	{
 		if (iDamage == null) return;
 		if (iDamage.GetTeam() == GameCharacter.GetTeam()) return;
-		iDamage.DoDamage(GameCharacter, attackData.Damage, false);
+		iDamage.DoDamage(GameCharacter, attackData.Damage, false, true, false);
 		projectilePool.ReturnValue(projectile);
 	}
 

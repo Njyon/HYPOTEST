@@ -703,6 +703,7 @@ public abstract class WeaponBase
 			}
 			else if (currentAttackType != EExplicitAttackType.Unknown && CurrentAction.combatBranches.TryGetValue(explicitAttackType, out int i))
 			{
+				currentAttackType = explicitAttackType;
 				attackIndex = i;
 				return true;
 			}
@@ -972,7 +973,7 @@ public abstract class WeaponBase
 			PlayParticleEffect(particleListList[particleIndex][index], weaponParticleList[index]);
 	}
 
-	void PlayParticleEffect(ParticleSystem particle, AttackParticleData partilceData)
+	async void PlayParticleEffect(ParticleSystem particle, AttackParticleData partilceData)
 	{
 		particle.transform.parent = GameCharacter.GameCharacterData.Root;
 		particle.transform.position = Vector3.zero;
@@ -985,7 +986,12 @@ public abstract class WeaponBase
 			{
 				Transform bone = GameCharacter.RigDataComponent.Bones[partilceData.boneName];
 				if (bone != null)
+				{
 					particle.transform.parent = bone;
+					particle.transform.localPosition = partilceData.ParticleSystem.transform.localPosition;
+					particle.transform.localRotation = partilceData.ParticleSystem.transform.localRotation;
+					particle.transform.Translate(partilceData.Offset, Space.Self);
+				}
 				else
 					Ultra.Utilities.Instance.DebugErrorString("WeaponBase", "PlayParticleEffect", "Bone Name was invalid!");
 			}
@@ -1008,6 +1014,9 @@ public abstract class WeaponBase
 		{
 			particle.transform.parent = null;
 		}
+		particle.Clear(true);
+		particle.Play();
+		particle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
 		particle.Play();
 	}
 
@@ -1091,7 +1100,7 @@ public abstract class WeaponBase
 			
 			Ultra.Utilities.DrawArrow(enemyCharacter.MovementComponent.CharacterCenter, enemyCharacter.MovementComponent.MovementVelocity.normalized, 5f, Color.magenta, 10f, 100, DebugAreas.Combat);
 		}
-		GameTimeManager.Instance.AddDefaultFreezFrame();
+		GameTimeManager.Instance.AddHeavyFreezFrame();
 	}
 
 	void OnMaxChargeAfterEquipTimerFinished()
