@@ -8,6 +8,8 @@ public enum EBuff
     WaterUltimate,
     ForceAim,
     NoGravity,
+    OnHitEffect,
+    OnHitShaderEffect,
 }
 
 public class BuffComponent

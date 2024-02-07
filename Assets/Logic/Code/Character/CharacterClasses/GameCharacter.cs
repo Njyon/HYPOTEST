@@ -50,6 +50,9 @@ public class GameCharacter : MonoBehaviour, IDamage
 	ParticleSystemPool succsessfullDodgeParticlePool;
 	GameObject dataWorldHolder;
 	List<GameCharacter> aggroedCharacters = new List<GameCharacter>();
+	List<SkinnedMeshRenderer> skinnedMeshRenderers = new List<SkinnedMeshRenderer>();
+	int materialHitColorIndex;
+	int materialHitIntensityIndex;
 
 	bool isInitialized = false;
 	public bool IsInitialized { get { return isInitialized; } }
@@ -84,6 +87,28 @@ public class GameCharacter : MonoBehaviour, IDamage
 	public GameObject DataWorldHolder { get { return dataWorldHolder; } }
 	public BuffComponent BuffComponent { get { return buffComponent; } }
 	public bool CharacterHasAggro => aggroedCharacters.Count > 0;
+	public List<SkinnedMeshRenderer> SkinnedMeshRenderers { get { return skinnedMeshRenderers; } }
+
+	public int MaterialHitColorIndex { 
+		get 
+		{ 
+			if (materialHitColorIndex == 0)
+			{
+				materialHitColorIndex = Shader.PropertyToID("_HitColor");
+			}
+			return materialHitColorIndex;
+		} 
+	}
+	public int MaterialHitIntensityIndex {
+		get 
+		{
+			if (materialHitIntensityIndex == 0)
+			{
+				materialHitIntensityIndex = Shader.PropertyToID("_HitIntensity");
+			}
+			return materialHitIntensityIndex;
+		} 
+	}
 
 #if UNITY_EDITOR
 	//[DebugGUIGraph(min: 0, max: 9, r: 0, g: 1, b: 1, autoScale: true)]
@@ -190,6 +215,15 @@ public class GameCharacter : MonoBehaviour, IDamage
 
 		PluginStateMachine.AddPluginState(EPluginCharacterState.LookInVelocityDirection);
 		PluginStateMachine.AddPluginState(EPluginCharacterState.IgnoreGravityRuleState);
+
+		for (int i = 0; i < transform.childCount; i++)
+		{
+			Transform child = transform.GetChild(i);
+			SkinnedMeshRenderer skinnedMeshRenderer = child.GetComponent<SkinnedMeshRenderer>();
+
+			if (skinnedMeshRenderer != null)
+				skinnedMeshRenderers.Add(skinnedMeshRenderer);
+		}
 
 		isInitialized = true;
 	}
@@ -397,7 +431,13 @@ public class GameCharacter : MonoBehaviour, IDamage
 			OnDamaged(damageInitiator, damage, removeCharge);
 			damageInitiator?.AddRatingOnHit(damage);
 
+			DefaultGameModeData data = Ultra.HypoUttilies.GameMode.GetDefaultGameModeData();
+			BuffComponent.AddBuff(new OnHitEffectBuff(this, data.hitWiggleTime, data.hitWiggleHalfLenghtRange, data.hitWiggleFrequency));
+			BuffComponent.AddBuff(new OnHitShaderEffect(this, data.shaderEffectTime));
+
 			if (shouldFreezGame) GameTimeManager.Instance.AddDefaultFreezFrame();
+			
+
 		}
 	}
 

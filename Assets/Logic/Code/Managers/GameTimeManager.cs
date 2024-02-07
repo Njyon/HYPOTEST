@@ -128,12 +128,14 @@ public class GameTimeManager : Singelton<GameTimeManager>
 
     public void AddHeavyFreezFrame()
     {
-        RemoveTimedManipulation("DefaultFreez");
-		AddTimedManipulation("HeavyFreez", 0.13f, 0.1f); // Stay Hardcoded until satifing default
+		DefaultGameModeData data = Ultra.HypoUttilies.GameMode.GetDefaultGameModeData();
+        RemoveTimedManipulation(data.defaultHitFreezString);
+		AddTimedManipulation(data.heavytHitFreezString, data.heavyHitFreezTime, data.heavyHitFreezTimeManipulation); 
 	}
 	public void AddDefaultFreezFrame()
 	{
-        if (timeManipulators.ContainsKey("HeavyFreez")) return;
-		AddTimedManipulation("DefaultFreez", 0.08f, 0.20f); // Stay Hardcoded until satifing default
+        DefaultGameModeData data = Ultra.HypoUttilies.GameMode.GetDefaultGameModeData();
+        if (timeManipulators.ContainsKey(data.heavytHitFreezString)) return;
+		AddTimedManipulation(data.defaultHitFreezString, data.defaultHitFreezTime, data.defaultHitFreezTimeManipulation);
 	}
 }

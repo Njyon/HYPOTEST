@@ -68,6 +68,7 @@ public class GameCharacterData : MonoBehaviour
 	[Header("Bones")]
 	[SerializeField] Transform root;
 	[SerializeField] string headBoneName = "head.x";
+	[SerializeField] string rootBoneName = "root";
 	[SerializeField] Rig baseRig;
 	[SerializeField] ChainIKConstraint chestCorrectionIK;
 	[SerializeField] TwoBoneIKConstraint forcePosition_FootIK_R;
@@ -145,6 +146,7 @@ public class GameCharacterData : MonoBehaviour
 
 	public Transform Root { get { return root; } }
 	public string HeadBoneName { get { return headBoneName; } }
+	public string RootBoneName { get { return rootBoneName; } }
 
 	public Rig BaseRig { get { return baseRig; } }
 	public ChainIKConstraint ChestCorrectionIK { get { return chestCorrectionIK; } }

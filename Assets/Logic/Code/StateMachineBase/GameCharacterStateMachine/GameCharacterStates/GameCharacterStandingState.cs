@@ -28,6 +28,7 @@ public class GameCharacterStandingState : AGameCharacterState
 			case EGameCharacterState.MoveToPosition: return EGameCharacterState.MoveToPosition;
 			case EGameCharacterState.FlyAway: return EGameCharacterState.FlyAway;
 			case EGameCharacterState.Dodge: return EGameCharacterState.Dodge;
+			case EGameCharacterState.Freez: return EGameCharacterState.Freez;
 			default: break;
 		}
 
