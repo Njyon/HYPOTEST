@@ -2194,6 +2194,7 @@ GameObject:
   - component: {fileID: 6482650044428878551}
   - component: {fileID: 332289235551208634}
   - component: {fileID: 8741858089686542426}
+  - component: {fileID: 5065813719290634277}
   m_Layer: 9
   m_Name: Gauner
   m_TagString: Untagged
@@ -2451,6 +2452,7 @@ MonoBehaviour:
   staggerTime: 3
   root: {fileID: 620800382439994739}
   headBoneName: head.x
+  rootBoneName: root
   baseRig: {fileID: 0}
   chestCorrectionIK: {fileID: 0}
   forcePosition_FootIK_R: {fileID: 0}
@@ -2482,6 +2484,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateInterval: 0.5
+--- !u!114 &5065813719290634277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5767629617728161753}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fff0960ef4ea6e04eac66b4a7fd2189d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RigLayers:
+  - m_Rig: {fileID: 0}
+    m_Active: 1
+  m_Effectors: []
 --- !u!1 &5902506567979302760
 GameObject:
   m_ObjectHideFlags: 0
