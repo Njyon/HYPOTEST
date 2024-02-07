@@ -27,7 +27,6 @@ Material:
   m_ValidKeywords:
   - _NORMALMAP
   - _OCCLUSIONMAP
-  - _PARALLAXMAP
   - _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
   - _SPECULAR_SETUP
   m_InvalidKeywords: []
@@ -124,7 +123,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
-        m_Texture: {fileID: 2800000, guid: 27d650eda40d44549905f3cd44f1f9e6, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
@@ -213,13 +212,13 @@ Material:
     - _Metallic3: 0
     - _Mode: 0
     - _NumLayersCount: 1
-    - _OcclusionStrength: 0.326
+    - _OcclusionStrength: 0.277
     - _OutlineDepthOffset: 0
     - _OutlineEnabled: 0
     - _OutlineScale: 1
     - _OutlineWidth: 1
     - _OverrideLightmapDir: 0
-    - _Parallax: 0.0186
+    - _Parallax: 0.0069
     - _QueueOffset: -6
     - _ReceiveShadows: 1
     - _RimEnabled: 0
