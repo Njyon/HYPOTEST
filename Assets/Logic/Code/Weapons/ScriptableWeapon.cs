@@ -30,16 +30,22 @@ public class ScriptableWeapon : ScriptableObject
 	public List<SoundEffect> defaultHitSounds;
 
 	private WeaponBase weaponCopy = null;
-	public WeaponBase Weapon { get { return weaponCopy; } }
-	public void CreateWeapon(GameCharacter gameCharacter)
+	public WeaponBase Weapon { get { return weaponCopy?.This; } }
+	public virtual void CreateWeapon(GameCharacter gameCharacter)
 	{
 		weaponCopy = WeaponBase?.instance?.CreateCopy(gameCharacter, this);
 	}
 
-	public ScriptableWeapon CreateCopy()
+	public virtual ScriptableWeapon CreateCopy()
 	{
 		ScriptableWeapon instance = ScriptableObject.CreateInstance<ScriptableWeapon>();
+		CopyData(ref instance);
 
+		return instance;
+	}
+
+	protected void CopyData(ref ScriptableWeapon instance)
+	{
 		instance.WeaponName = WeaponName;
 		instance.WeaponBase = WeaponBase;
 		instance.AnimationData = AnimationData;
@@ -52,7 +58,20 @@ public class ScriptableWeapon : ScriptableObject
 		instance.WeaponImage = WeaponImage;
 		instance.defaultAttackSounds = defaultAttackSounds;
 		instance.defaultHitSounds = defaultHitSounds;
-
-		return instance;
-	}	
+	}
+	protected void CopyData(ref ScriptableWeaponWrapper instance)
+	{
+		instance.WeaponName = WeaponName;
+		instance.WeaponBase = WeaponBase;
+		instance.AnimationData = AnimationData;
+		instance.WeaponMeshData = WeaponMeshData;
+		instance.WeaponType = WeaponType;
+		instance.MaxChargeAmount = MaxChargeAmount;
+		instance.DefaultChargeAmount = DefaultChargeAmount;
+		instance.TimeAfterEqupingMaxChargedWeapon = TimeAfterEqupingMaxChargedWeapon;
+		instance.UIElement = UIElement;
+		instance.WeaponImage = WeaponImage;
+		instance.defaultAttackSounds = defaultAttackSounds;
+		instance.defaultHitSounds = defaultHitSounds;
+	}
 }
