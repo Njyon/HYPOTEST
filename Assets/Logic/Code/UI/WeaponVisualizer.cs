@@ -17,7 +17,7 @@ public class WeaponVisualizer : MonoBehaviour
 
 	public void InitWeaponVisualizer(WeaponBase weaponBase, PlayerGameCharacter player)
 	{
-		weapon = weaponBase;
+		weapon = weaponBase?.This;
 		gameCharacter = player;
 
 		gameCharacter.CombatComponent.onNextWeapon += OnNextWeapon;

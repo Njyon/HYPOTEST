@@ -78,20 +78,21 @@ public abstract class WeaponBase
 	List<List<ParticleSystem>> defensiveActionParticleList;
 
 	public GameCharacter GameCharacter { get { return gameCharacter; } }
-    public ScriptableWeapon WeaponData { get { return weaponData; } }
-    public GameObject SpawnedWeapon { get { return spawnedWeapon; } }
-    public GameObject SecondSpawnedWeapon { get { return secondSpawnedWeapon; } }
-    public GameObject SpawnedWeaponBones { get { return spawnedWeaponBones; } }
-	public bool IsHitDetecting { get { return ishitDetecting; } }
-	public AttackAnimationData CurrentAction { get { return GetAttackAnimationData(); } }
-	public EExplicitAttackType CurrentAttackType { get { return currentAttackType; } }
-	public EExplicitAttackType LastAttackType { get { return lastAttackType; } }
-	public EAttackAnimType AttackAnimType { get { return attackAnimType; } set { attackAnimType = value; } }
-	public int ComboIndexInSameAttack { get { return comboIndexInSameAttack; } }
-	public List<GameObject> HitObjects { get { return hitObjects; } }	
-	public int AttackIndex { get { return attackIndex; } }
-	public bool ShouldPlayHitSound { get { return shouldPlayHitSound; } set { shouldPlayHitSound = value; } }
-	public ScriptableWeaponAnimationData AnimationData { 
+    public virtual ScriptableWeapon WeaponData { get { return weaponData; } }
+    public virtual GameObject SpawnedWeapon { get { return spawnedWeapon; } }
+    public virtual GameObject SecondSpawnedWeapon { get { return secondSpawnedWeapon; } }
+    public virtual GameObject SpawnedWeaponBones { get { return spawnedWeaponBones; } }
+	public virtual bool IsHitDetecting { get { return ishitDetecting; } }
+	public virtual AttackAnimationData CurrentAction { get { return GetAttackAnimationData(); } }
+	public virtual EExplicitAttackType CurrentAttackType { get { return currentAttackType; } }
+	public virtual EExplicitAttackType LastAttackType { get { return lastAttackType; } }
+	public virtual EAttackAnimType AttackAnimType { get { return attackAnimType; } set { attackAnimType = value; } }
+	public virtual int ComboIndexInSameAttack { get { return comboIndexInSameAttack; } }
+	public virtual List<GameObject> HitObjects { get { return hitObjects; } }	
+	public virtual int AttackIndex { get { return attackIndex; } }
+	public virtual bool ShouldPlayHitSound { get { return shouldPlayHitSound; } set { shouldPlayHitSound = value; } }
+	public virtual WeaponBase This { get { return this; } }
+	public virtual ScriptableWeaponAnimationData AnimationData { 
 		get {
 			if (animationData == null)
 			{
@@ -101,6 +102,7 @@ public abstract class WeaponBase
 			}
 			return animationData; 
 		} 
+		set { animationData = value; }
 	}
 	public float Charge { 
 		get { return charge; } 
@@ -214,6 +216,7 @@ public abstract class WeaponBase
 		if (spawnedWeaponBones != null) GameObject.Destroy(spawnedWeaponBones);
 
 		CurrentAction?.Action?.ActionInterupted();
+		HitDetectionEnd();
 
 		if (AnimationData != null && gameCharacter.IsPlayerCharacter)
 		{
@@ -446,9 +449,6 @@ public abstract class WeaponBase
 			return null;
 		}
 	}
-
-	
-
 	public virtual AttackAnimationData GroundUpAttack(float attackDeltaTime)
 	{
 		if (AnimationData == null) return null;
@@ -603,7 +603,7 @@ public abstract class WeaponBase
 		CurrentAction?.Action?.OnHit(hitObj);
 	}
 
-	public void SetWeaponReadyPoseBasedOnStates()
+	public virtual void SetWeaponReadyPoseBasedOnStates()
 	{
  		switch (GameCharacter.StateMachine.GetCurrentStateType())
 		{
@@ -768,7 +768,7 @@ public abstract class WeaponBase
 		}
 	}
 
-	AttackAnimationData GetAttackAnimationData()
+	public virtual AttackAnimationData GetAttackAnimationData()
 	{
 		switch (CurrentAttackType)
 		{
@@ -890,7 +890,7 @@ public abstract class WeaponBase
 		return false;
 	}
 
-	protected virtual void WeaponColliderExit(Collider other)
+	public virtual void WeaponColliderExit(Collider other)
 	{
 		if (!IsHitDetecting) return;
 
@@ -950,7 +950,7 @@ public abstract class WeaponBase
 		CurrentAction?.Action?.DefensiveActionStateEnd();
 	}
 
-	public void StartParticelEffect(int index)
+	public virtual void StartParticelEffect(int index)
 	{
 		switch (currentAttackType)
 		{
@@ -973,7 +973,7 @@ public abstract class WeaponBase
 			PlayParticleEffect(particleListList[particleIndex][index], weaponParticleList[index]);
 	}
 
-	async void PlayParticleEffect(ParticleSystem particle, AttackParticleData partilceData)
+	void PlayParticleEffect(ParticleSystem particle, AttackParticleData partilceData)
 	{
 		particle.transform.parent = GameCharacter.GameCharacterData.Root;
 		particle.transform.position = Vector3.zero;
@@ -1146,7 +1146,7 @@ public abstract class WeaponBase
 		gameCharacter.AnimController.InAttack = false;
 	}
 
-	public void PlayAttackSound(int index = -1)
+	public virtual void PlayAttackSound(int index = -1)
 	{
 		if (WeaponData.defaultAttackSounds.Count <= 0) return;
 
@@ -1171,7 +1171,7 @@ public abstract class WeaponBase
 		}
 	}
 
-	public void PlayHitSound()
+	public virtual void PlayHitSound()
 	{
 		if (WeaponData.defaultHitSounds.Count <= 0) return;
 

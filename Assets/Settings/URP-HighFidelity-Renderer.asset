@@ -57,6 +57,57 @@ MonoBehaviour:
     perObjectData: 0
     enableDynamicBatching: 0
     enableInstancing: 0
+--- !u!114 &-5959993532518497517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d613f08f173d4dd895bb07b3230baa9, type: 3}
+  m_Name: Fog
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  passMaterial: {fileID: 2100000, guid: 2471871438018aa4c8aaf002a877dc84, type: 2}
+  injectionPoint: 600
+  requirements: 4
+  passIndex: 1
+--- !u!114 &-3528020720613914203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d613f08f173d4dd895bb07b3230baa9, type: 3}
+  m_Name: Blur
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  passMaterial: {fileID: 2100000, guid: 77691db20f227524492a6d0a85a034ab, type: 2}
+  injectionPoint: 600
+  requirements: 4
+  passIndex: 0
+--- !u!114 &-3345609320788567933
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d613f08f173d4dd895bb07b3230baa9, type: 3}
+  m_Name: ShadowFog
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  passMaterial: {fileID: 2100000, guid: 00da4961371a93b47b312fdb56252570, type: 2}
+  injectionPoint: 600
+  requirements: 4
+  passIndex: 1
 --- !u!114 &-1878332245247344467
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116,7 +167,10 @@ MonoBehaviour:
   - {fileID: 4386303126015336764}
   - {fileID: -7027415593259210796}
   - {fileID: 1752311981470951272}
-  m_RendererFeatureMap: adc0de57c6d2eee500fcd41c8d49a0262761fcec0165d3abaeef43543e596b223c6154177447df3cd467be32c09a799e68a73c8776765118
+  - {fileID: -3345609320788567933}
+  - {fileID: -5959993532518497517}
+  - {fileID: -3528020720613914203}
+  m_RendererFeatureMap: adc0de57c6d2eee500fcd41c8d49a0262761fcec0165d3abaeef43543e596b223c6154177447df3cd467be32c09a799e68a73c87767651188358296d0c0292d113039ca675d949ada50997cbd8f309cf
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
@@ -171,7 +225,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d613f08f173d4dd895bb07b3230baa9, type: 3}
   m_Name: FullScreenPassRendererFeature
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   passMaterial: {fileID: 2100000, guid: 59324d74694c2cc4085d84ebaf242e4c, type: 2}
   injectionPoint: 600
   requirements: 4
