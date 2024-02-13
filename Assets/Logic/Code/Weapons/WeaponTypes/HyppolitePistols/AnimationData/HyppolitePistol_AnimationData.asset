@@ -97,7 +97,26 @@ MonoBehaviour:
   AirDownAttacks: []
   AirDirectionAttacks: []
   GapCloserAttacks: []
-  DefensiveAction: []
+  DefensiveAction:
+  - action:
+      instance:
+        rid: 5432272629610840064
+    data:
+      showProperties: 0
+      hitDetectionType: 1
+      mesh: {fileID: 0}
+      offset: {x: 0, y: 0, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 1
+      boxDimensions: {x: 0, y: 0, z: 0}
+      capsulHeight: 0
+    combatBranches:
+      keys: 
+      values: 
+    timedCombatBrenches:
+      keys: 
+      values: 
+    particleList: []
   Ultimate: []
   HandType: 3
   WeaponReadyPose: {fileID: -8791291815918580731, guid: ce7d4e5fbccc3cc4a9459f4d28a7d5cb,
@@ -170,3 +189,14 @@ MonoBehaviour:
             type: 2}
           leftHand: 0
           forceAimDuration: 2
+    - rid: 5432272629610840064
+      type: {class: TeleportDefensiveAction, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          defensiveAction: {fileID: -2770800290259703905, guid: 1a3fdee8013755746adf69b42d5855c1,
+            type: 3}
+          teleportCharacterDistance: 0.5
+          teleportRange: 10
