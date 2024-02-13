@@ -7,19 +7,18 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Fog
-  m_Shader: {fileID: -6465566751694194690, guid: 1ce8784d9d636274ca946e03a05e48db,
-    type: 3}
+  m_Name: Skybox
+  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords:
-  - _USEDIRECTIONALCOLOR
+  m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
+  stringTagMap:
+    RenderType: Opaque
   disabledShaderPasses: []
   m_LockedProperties: 
   m_SavedProperties:
@@ -90,49 +89,36 @@ Material:
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
-    - _ColorOffset: 3.3
-    - _ColorRange: 25
     - _Cull: 2
-    - _Culling: 950
     - _Cutoff: 0.5
-    - _Density: 0.546
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
-    - _Float: 1.45
-    - _Float_1: 3
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
-    - _Offset: -78.2
     - _Parallax: 0.005
     - _QueueOffset: 0
-    - _Range: 400
     - _ReceiveShadows: 1
-    - _SkyBoxCulling: 950
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
-    - _USEDIRECTIONALCOLOR: 1
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _FogColor: {r: 0.25908396, g: 0.25649697, b: 0.41509432, a: 0}
-    - _FogColorEnd: {r: 0.21698111, g: 0.20235975, b: 0.19139372, a: 0}
-    - _FogColorStart: {r: 0.13363296, g: 0.16229084, b: 0.1981132, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
---- !u!114 &8497753293253040836
+--- !u!114 &4300231952298429784
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
