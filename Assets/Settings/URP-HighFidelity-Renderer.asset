@@ -130,6 +130,33 @@ MonoBehaviour:
   injectionPoint: 600
   requirements: 4
   passIndex: 0
+--- !u!114 &-2613386902471412682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bac1b73383ae410d8e277450af64d970, type: 3}
+  m_Name: Analytical Volumetric Lighting
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  _settings:
+    ClusteringShader: {fileID: 7200000, guid: 9c1586f774fa47c7a62565dafa7c1cbf, type: 3}
+    RenderingShader: {fileID: 4800000, guid: 2d7019988494484596b679d293a0dfeb, type: 3}
+    DebugShader: {fileID: 4800000, guid: e2a515e7e7c24926abfaa53800afd988, type: 3}
+    renderingQuality: 0.5
+    enableHDR: 1
+    maxLights: 4096
+    maxMasks: 128
+    enableUpscaling: 1
+    enableDepthCulling: 1
+    cullingClusterSizeX: 16
+    cullingClusterSizeY: 9
+    debugMode: 0
+    debugOpacity: 0.04
 --- !u!114 &-2479927868937919050
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -180,15 +207,16 @@ MonoBehaviour:
       type: 3}
     hdrDebugViewPS: {fileID: 4800000, guid: 573620ae32aec764abd4d728906d2587, type: 3}
   m_RendererFeatures:
+  - {fileID: -5543827131766105473}
   - {fileID: 7485841621331374523}
   - {fileID: -6121240314816665614}
-  - {fileID: -5543827131766105473}
   - {fileID: -2479927868937919050}
   - {fileID: -4205738609693068482}
   - {fileID: -8235848534293230498}
   - {fileID: -5693364856319948407}
   - {fileID: -5700532258643213226}
-  m_RendererFeatureMap: bb714afc4a0de367f2678d8a5dfc0cab7f9ae89a985e10b3b6255d0fbe8695dd3e7319770437a2c55ecc87b96463b48d89495bf2d31afdb05684ea0c1da4e3b0
+  - {fileID: -2613386902471412682}
+  m_RendererFeatureMap: 7f9ae89a985e10b3bb714afc4a0de367f2678d8a5dfc0cabb6255d0fbe8695dd3e7319770437a2c55ecc87b96463b48d89495bf2d31afdb05684ea0c1da4e3b0367488617562bbdb
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
