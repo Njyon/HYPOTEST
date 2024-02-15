@@ -1,26 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-7027415593259210796
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a01ea21b39fcb7445b8d4e4743bbbb63, type: 3}
-  m_Name: Desaturate
-  m_EditorClassIdentifier: 
-  m_Active: 0
-  settings:
-    material: {fileID: -876546973899608171, guid: 0c41d2d003718b74ab1ed2fe7a7205f9,
-      type: 3}
-    materialPassIndex: 0
-    renderEvent: 600
-    layerMask:
-      serializedVersion: 2
-      m_Bits: 512
 --- !u!114 &-6065393214192590553
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -90,7 +69,7 @@ MonoBehaviour:
   passMaterial: {fileID: 2100000, guid: 77691db20f227524492a6d0a85a034ab, type: 2}
   injectionPoint: 600
   requirements: 4
-  passIndex: 0
+  passIndex: 1
 --- !u!114 &-3345609320788567933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -103,7 +82,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d613f08f173d4dd895bb07b3230baa9, type: 3}
   m_Name: ShadowFog
   m_EditorClassIdentifier: 
-  m_Active: 0
+  m_Active: 1
   passMaterial: {fileID: 2100000, guid: 00da4961371a93b47b312fdb56252570, type: 2}
   injectionPoint: 600
   requirements: 4
@@ -122,17 +101,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Active: 1
   m_Settings:
-    AOMethod: 1
+    AOMethod: 0
     Downsample: 0
     AfterOpaque: 1
     Source: 1
     NormalSamples: 2
-    Intensity: 1
+    Intensity: 0.62
     DirectLightingStrength: 1
-    Radius: 0.1
+    Radius: 2.7
     Samples: 0
     BlurQuality: 0
-    Falloff: 90
+    Falloff: 40
     SampleCount: -1
   m_BlueNoise256Textures:
   - {fileID: 2800000, guid: 36f118343fc974119bee3d09e2111500, type: 3}
@@ -163,14 +142,13 @@ MonoBehaviour:
   - {fileID: -1878332245247344467}
   - {fileID: 2783305440137903104}
   - {fileID: -6065393214192590553}
-  - {fileID: 2480174144034172846}
   - {fileID: 4386303126015336764}
-  - {fileID: -7027415593259210796}
-  - {fileID: 1752311981470951272}
   - {fileID: -3345609320788567933}
   - {fileID: -5959993532518497517}
+  - {fileID: 7545281679977290767}
   - {fileID: -3528020720613914203}
-  m_RendererFeatureMap: adc0de57c6d2eee500fcd41c8d49a0262761fcec0165d3abaeef43543e596b223c6154177447df3cd467be32c09a799e68a73c87767651188358296d0c0292d113039ca675d949ada50997cbd8f309cf
+  - {fileID: 260295790992009066}
+  m_RendererFeatureMap: adc0de57c6d2eee500fcd41c8d49a0262761fcec0165d3ab3c6154177447df3c8358296d0c0292d113039ca675d949ad0f1c4f19b639b668a50997cbd8f309cf6aa79b8ea4c19c03
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
@@ -213,7 +191,7 @@ MonoBehaviour:
   m_CopyDepthMode: 0
   m_AccurateGbufferNormals: 0
   m_IntermediateTextureMode: 1
---- !u!114 &1752311981470951272
+--- !u!114 &260295790992009066
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -223,30 +201,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6d613f08f173d4dd895bb07b3230baa9, type: 3}
-  m_Name: FullScreenPassRendererFeature
+  m_Name: Vignette
   m_EditorClassIdentifier: 
-  m_Active: 0
-  passMaterial: {fileID: 2100000, guid: 59324d74694c2cc4085d84ebaf242e4c, type: 2}
+  m_Active: 1
+  passMaterial: {fileID: 2100000, guid: c1d801e3c0d6f184c9144e0ae4a440dc, type: 2}
   injectionPoint: 600
   requirements: 4
   passIndex: 0
---- !u!114 &2480174144034172846
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e0f18ca99896c84e9c75cb97cf014ef, type: 3}
-  m_Name: VolumetricLightScattering
-  m_EditorClassIdentifier: 
-  m_Active: 0
-  settings:
-    resolutionScale: 0.196
-    intensity: 0.009
-    blurWidth: 0.153
 --- !u!114 &2783305440137903104
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -285,3 +246,20 @@ MonoBehaviour:
       normalBlend: 0
   m_CopyDepthPS: {fileID: 4800000, guid: d6dae50ee9e1bfa4db75f19f99355220, type: 3}
   m_DBufferClear: {fileID: 4800000, guid: f056d8bd2a1c7e44e9729144b4c70395, type: 3}
+--- !u!114 &7545281679977290767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d613f08f173d4dd895bb07b3230baa9, type: 3}
+  m_Name: ChromaticAbboration
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  passMaterial: {fileID: 2100000, guid: 9f1fad5dd70169b4aa28c1f1f27ba0d2, type: 2}
+  injectionPoint: 600
+  requirements: 4
+  passIndex: 1
