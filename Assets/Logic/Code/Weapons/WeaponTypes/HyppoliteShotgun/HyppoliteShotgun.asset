@@ -9,17 +9,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9096727b6c1de4d4f9f836dcf1cd0b9d, type: 3}
-  m_Name: HyppoliteWeaponWrapper
+  m_Script: {fileID: 11500000, guid: 195a2d880f624c94da0b98858da2e759, type: 3}
+  m_Name: HyppoliteShotgun
   m_EditorClassIdentifier: 
-  WeaponName: HyppoliteWeaponWrapper
+  WeaponName: HyppoliteShotgun
   WeaponBase:
     instance:
-      rid: 5432272605712220162
+      rid: 5432272745101787138
   AnimationData:
-    keys: []
-    values: []
-  WeaponMeshData: {fileID: 0}
+    keys:
+    - Hyppolite
+    values:
+    - {fileID: 11400000, guid: bb7299ed63019af4d83d9f0b58106439, type: 2}
+  WeaponMeshData: {fileID: 11400000, guid: 08711f4cbf41bc74ba7c440e71318f23, type: 2}
   WeaponType: 0
   MaxChargeAmount: 1000
   DefaultChargeAmount: 700
@@ -27,16 +29,12 @@ MonoBehaviour:
   MaxUltChargeAmount: 100
   UIElement: {fileID: 2407642077447747131, guid: 543551c3f1b4ea34697fd6e5e0b10751,
     type: 3}
-  WeaponImage: {fileID: 2950031539233405113, guid: 8a1f96c93a153e34a98b5f6dd6bbfebd,
-    type: 3}
+  WeaponImage: {fileID: 21300000, guid: b57ce83b38711304c996cf569184f982, type: 3}
   defaultAttackSounds: []
   defaultHitSounds: []
-  weapons:
-  - {fileID: 11400000, guid: e415f174b179c31499670bfe6944da53, type: 2}
-  - {fileID: 11400000, guid: e56ae443bcfb9b84ebd601548121d246, type: 2}
   references:
     version: 2
     RefIds:
-    - rid: 5432272605712220162
-      type: {class: HyppoliteWeaponWrapper, ns: , asm: Assembly-CSharp}
+    - rid: 5432272745101787138
+      type: {class: HyppoliteShotgun, ns: , asm: Assembly-CSharp}
       data: 

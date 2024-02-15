@@ -35,7 +35,7 @@ public abstract class ActionBase
 		if (!isActionInit || this.gameCharacter == null || this.weapon == null)
 		{
 			this.gameCharacter = gameCharacter;
-			this.weapon = weapon.This;
+			this.weapon = weapon;
 			this.gameCharacter.onGameCharacterDied += OnGameCharacterDied;
 			this.gameCharacter.onGameCharacterDestroyed += OnGameCharacterDestroyed;
 			
