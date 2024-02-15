@@ -388,7 +388,26 @@ MonoBehaviour:
     particleList: []
   AirDirectionAttacks: []
   GapCloserAttacks: []
-  DefensiveAction: []
+  DefensiveAction:
+  - action:
+      instance:
+        rid: 5432272786817548292
+    data:
+      showProperties: 0
+      hitDetectionType: 0
+      mesh: {fileID: 0}
+      offset: {x: 0, y: 0, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 0
+      boxDimensions: {x: 0, y: 0, z: 0}
+      capsulHeight: 0
+    combatBranches:
+      keys: 
+      values: 
+    timedCombatBrenches:
+      keys: 
+      values: 
+    particleList: []
   Ultimate: []
   HandType: 1
   WeaponReadyPose: {fileID: 8971557712206723258, guid: bc4a584a46a890042bd1b4346d61a9a8,
@@ -397,8 +416,8 @@ MonoBehaviour:
     type: 3}
   WeaponReadyWeight: 1
   WeaponReadyInterpSpeed: 5
-  HeadSpineLayerMovingWeight: 0.5
-  ArmRMovingWeight: 0.5
+  HeadSpineLayerMovingWeight: 0.258
+  ArmRMovingWeight: 0.697
   ArmLMovingWeight: 0.129
   AimAnimations:
     upAnimation: {fileID: 0}
@@ -573,3 +592,29 @@ MonoBehaviour:
           kickDir: {x: 0, y: 0, z: 0}
           kickStrenght: 1
           freezTimeAftetKick: 1
+    - rid: 5432272786817548292
+      type: {class: ParryDefensiveAction, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 120
+          Rating: 100
+          Discharge: 100
+          defensiveAction: {fileID: -8047657505411134359, guid: 95fd913572b9b614590445e82f34376c,
+            type: 3}
+          defensiveActionHold: {fileID: 2062660668142855251, guid: 53a602215fba3334a8332cc27ba92e5a,
+            type: 3}
+          counterAttack: {fileID: -5754497798234105793, guid: 3b3b2fac84547994e93ffe721d580af1,
+            type: 3}
+          uiELement: {fileID: 7221905412587384954, guid: 0574b3332dde5504497c74df02e157a1,
+            type: 3}
+          parryParticleEffect: {fileID: 9014502877425522584, guid: 20e50266e9880014f9e14ec6717295a3,
+            type: 3}
+          blockParticleEffect: {fileID: 8161050390316501503, guid: f8625e8e32db4b94eb52cfbd9a0027ef,
+            type: 3}
+          parryTime: 0.3
+          addParryTimeOnParry: 0.1
+          parryPoints: 20
+          blockPoints: -10
+          rotSpeed: 10
+          damageMinMultiplier: 0.01
+          damageMaxMultiplier: 3

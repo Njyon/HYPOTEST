@@ -23,10 +23,10 @@ MonoBehaviour:
       showProperties: 1
       hitDetectionType: 2
       mesh: {fileID: 0}
-      offset: {x: 1, y: 0, z: 0}
+      offset: {x: 2.5, y: 0, z: 0}
       scale: {x: 0, y: 0, z: 0}
       radius: 0
-      boxDimensions: {x: 1, y: 1, z: 1}
+      boxDimensions: {x: 4, y: 3, z: 1}
       capsulHeight: 0
     combatBranches:
       keys: 
@@ -46,10 +46,10 @@ MonoBehaviour:
       showProperties: 1
       hitDetectionType: 2
       mesh: {fileID: 0}
-      offset: {x: 1, y: 0, z: 0}
+      offset: {x: 2.5, y: 0, z: 0}
       scale: {x: 0, y: 0, z: 0}
       radius: 0
-      boxDimensions: {x: 1, y: 1, z: 1}
+      boxDimensions: {x: 4, y: 3, z: 1}
       capsulHeight: 0
     combatBranches:
       keys: 
@@ -64,12 +64,13 @@ MonoBehaviour:
   HandType: 1
   WeaponReadyPose: {fileID: -110001362587434101, guid: 95ed3e1355239f54a84c1256b370d031,
     type: 3}
-  WeaponReadyPoseRun: {fileID: 0}
+  WeaponReadyPoseRun: {fileID: 4001460793698416936, guid: f6b6c1d1ea2e1bd49865f004819e7016,
+    type: 3}
   WeaponReadyWeight: 1
   WeaponReadyInterpSpeed: 5
-  HeadSpineLayerMovingWeight: 0.5
-  ArmRMovingWeight: 0.5
-  ArmLMovingWeight: 0.5
+  HeadSpineLayerMovingWeight: 0.087
+  ArmRMovingWeight: 1
+  ArmLMovingWeight: 0.049
   AimAnimations:
     upAnimation: {fileID: 269337718277705351, guid: e540751bcbd9b5541b674e585c94163c,
       type: 3}
@@ -97,9 +98,9 @@ MonoBehaviour:
             type: 3}
           attackTriggerAmount: 0
           freezBetweenAttacks: 0
-          kickDirection: {x: 0, y: 0, z: 0}
-          stunTime: 1
-          kickStrengh: 1
+          kickDirection: {x: 0, y: 0, z: 10}
+          stunTime: 0.6
+          kickStrengh: 20
     - rid: 5432272745101787140
       type: {class: KickAwayAttack, ns: , asm: Assembly-CSharp}
       data:
@@ -111,6 +112,6 @@ MonoBehaviour:
             type: 3}
           attackTriggerAmount: 0
           freezBetweenAttacks: 0
-          kickDirection: {x: 0, y: 0, z: 0}
-          stunTime: 1
-          kickStrengh: 1
+          kickDirection: {x: 0, y: 0, z: 10}
+          stunTime: 0.6
+          kickStrengh: 20
