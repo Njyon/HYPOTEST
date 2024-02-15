@@ -146,7 +146,9 @@ MonoBehaviour:
   - {fileID: -3345609320788567933}
   - {fileID: -5959993532518497517}
   - {fileID: -3528020720613914203}
-  m_RendererFeatureMap: adc0de57c6d2eee500fcd41c8d49a0262761fcec0165d3ab3c6154177447df3c8358296d0c0292d113039ca675d949ada50997cbd8f309cf
+  - {fileID: 7545281679977290767}
+  - {fileID: 260295790992009066}
+  m_RendererFeatureMap: adc0de57c6d2eee500fcd41c8d49a0262761fcec0165d3ab3c6154177447df3c8358296d0c0292d113039ca675d949ada50997cbd8f309cf0f1c4f19b639b6686aa79b8ea4c19c03
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
@@ -189,6 +191,23 @@ MonoBehaviour:
   m_CopyDepthMode: 0
   m_AccurateGbufferNormals: 0
   m_IntermediateTextureMode: 1
+--- !u!114 &260295790992009066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d613f08f173d4dd895bb07b3230baa9, type: 3}
+  m_Name: FullScreenPassRendererFeature
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  passMaterial: {fileID: 2100000, guid: c1d801e3c0d6f184c9144e0ae4a440dc, type: 2}
+  injectionPoint: 600
+  requirements: 4
+  passIndex: 0
 --- !u!114 &2783305440137903104
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -227,3 +246,20 @@ MonoBehaviour:
       normalBlend: 0
   m_CopyDepthPS: {fileID: 4800000, guid: d6dae50ee9e1bfa4db75f19f99355220, type: 3}
   m_DBufferClear: {fileID: 4800000, guid: f056d8bd2a1c7e44e9729144b4c70395, type: 3}
+--- !u!114 &7545281679977290767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d613f08f173d4dd895bb07b3230baa9, type: 3}
+  m_Name: ChromaticAbboration
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  passMaterial: {fileID: 2100000, guid: 9f1fad5dd70169b4aa28c1f1f27ba0d2, type: 2}
+  injectionPoint: 600
+  requirements: 4
+  passIndex: 1
