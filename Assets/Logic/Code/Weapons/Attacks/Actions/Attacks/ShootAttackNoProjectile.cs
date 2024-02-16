@@ -42,12 +42,26 @@ public class ShootAttackNoProjectile : AttackBase
 		GameCharacter target = Ultra.HypoUttilies.FindCharactereNearestToDirection(GameCharacter.MovementComponent.CharacterCenter, GameCharacter.MovementInput.magnitude > 0 ? GameCharacter.MovementInput : GameCharacter.transform.forward, ref GameCharacter.CharacterDetection.DetectedGameCharacters);
 		GameCharacter.CombatComponent.AimCharacter = target;
 
+		if (target != null)
+			GameCharacter.RotateToDir((target.MovementComponent.CharacterCenter - GameCharacter.MovementComponent.CharacterCenter).IgnoreAxis(EAxis.YZ));
+
 		Vector3 weaponTipPos = weaponObjData.weaponTip.transform.position;
 		Vector3 bulletDirection = target != null ? target.MovementComponent.CharacterCenter - weaponObjData.weaponTip.transform.position : GameCharacter.transform.forward * 9999f;
-		RaycastHit hit;
+		
 		Ultra.Utilities.DrawArrow(weaponTipPos, bulletDirection, bulletDirection.magnitude, Color.magenta, 10f, 200, DebugAreas.Combat);
-		if (Physics.Raycast(weaponTipPos, bulletDirection, out hit, 9999f, -5, QueryTriggerInteraction.Ignore))
-		{
+		RaycastHit[] hits = Physics.RaycastAll(weaponTipPos, bulletDirection, 9999f, -5, QueryTriggerInteraction.Ignore);
+		foreach (RaycastHit hit in hits)
+		{ 
+			if (hit.collider.gameObject.layer == GameCharacter.CharacterLayer)
+			{
+				Transform parent = hit.collider.transform.parent;
+				while (parent.parent != null)
+				{
+					parent = parent.parent;
+				}
+
+				if (parent == GameCharacter.transform) continue;
+			}
 			Vector3 hitDir = hit.point - weaponTipPos;
 			Ultra.Utilities.DrawArrow(weaponTipPos, hitDir, hitDir.magnitude, Color.red, 10f, 200, DebugAreas.Combat);
 			IDamage iDamage = hit.collider?.GetComponent<IDamage>();
@@ -55,6 +69,7 @@ public class ShootAttackNoProjectile : AttackBase
 			{
 				iDamage.DoDamage(GameCharacter, attackData.Damage, true, true, false);
 				SpawnDamageHitEffect(hit);
+				break;
 			}
 		}
 		AddForceAimBuff();

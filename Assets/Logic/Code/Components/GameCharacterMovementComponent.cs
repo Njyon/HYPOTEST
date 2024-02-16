@@ -14,6 +14,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	public delegate void OnCharacterGroundedChanged(bool newState);
 	public OnCharacterGroundedChanged onCharacterGroundedChanged;
 	public OnCharacterGroundedChanged onCharacterIgnoreGravityChanged;
+	public OnCharacterGroundedChanged onCharacterIgnoreDeltaTimeChanged;
 	public delegate void OnCharacteroMoveEvent();
 	public OnCharacteroMoveEvent onCharacterGroundReset;
 	public OnCharacteroMoveEvent onCharacterFinishedJumping;
@@ -50,6 +51,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	float variableGravityMultiplierOverTime = 1;
 	Coroutine gravityCoroutine;
 	bool ignoreGravity = false;
+	bool ignoreDeltaTime = false;
 
 	/// <summary>
 	/// Endless Timer
@@ -90,6 +92,15 @@ public class GameCharacterMovementComponent : MonoBehaviour
 			if (onCharacterIgnoreGravityChanged != null) onCharacterIgnoreGravityChanged(ignoreGravity);
 		}
 	}	
+	public bool IgnoreDeltaTime
+	{
+		get { return ignoreDeltaTime; }
+		set 
+		{ 
+			ignoreDeltaTime = value;
+			if (onCharacterIgnoreDeltaTimeChanged != null) onCharacterIgnoreDeltaTimeChanged(ignoreGravity);
+		}
+	}
 	public bool IsInJump
 	{
 		get { return isInJump; }
@@ -503,7 +514,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	}
 	public Vector3 GetMovmentVelocityWithDeltaTime()
 	{
-		return MovementVelocity * Time.deltaTime;
+		return MovementVelocity * (IgnoreDeltaTime ? 1f : Time.deltaTime);
 	}
 
 	private LayerMask ExcludeLayerIsMask(LayerMask mask, int layer)
@@ -630,6 +641,19 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	public void DONTUSEChangeIgnoreGravity(bool state)
 	{
 		ignoreGravity = state;
+	}
+
+	public void IgnoreGravityForTime(float t)
+	{
+		StopCoroutine(IgnoreGravityOverTime(t));
+		StartCoroutine(IgnoreGravityOverTime(t));
+	}
+
+	IEnumerator IgnoreGravityOverTime(float t)
+	{
+		IgnoreGravity = true;
+		yield return new WaitForSecondsRealtime(t);
+		IgnoreGravity = false;
 	}
 
 	IEnumerator InterpGravity(float time)

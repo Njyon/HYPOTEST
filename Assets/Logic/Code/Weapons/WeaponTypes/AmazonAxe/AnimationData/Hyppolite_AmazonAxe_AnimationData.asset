@@ -313,7 +313,7 @@ MonoBehaviour:
       boneName: 
   - action:
       instance:
-        rid: 5432272493495451649
+        rid: 5432272810461888546
     data:
       showProperties: 1
       hitDetectionType: 1
@@ -552,15 +552,6 @@ MonoBehaviour:
           Discharge: 100
           attackAnimation: {fileID: 1181246535124994339, guid: 3dadcd7ffead235478da608d65952545,
             type: 3}
-    - rid: 5432272493495451649
-      type: {class: DefaultAttack, ns: , asm: Assembly-CSharp}
-      data:
-        attackData:
-          Damage: 10
-          Rating: 100
-          Discharge: 100
-          attackAnimation: {fileID: -9138193387971112475, guid: 41b1d08902eb6474b920b320a78686d5,
-            type: 3}
     - rid: 5432272561313939461
       type: {class: SmashDownAttack3Blend, ns: , asm: Assembly-CSharp}
       data:
@@ -618,3 +609,17 @@ MonoBehaviour:
           rotSpeed: 10
           damageMinMultiplier: 0.01
           damageMaxMultiplier: 3
+    - rid: 5432272810461888546
+      type: {class: KickAwayAttack, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          attackAnimation: {fileID: -9138193387971112475, guid: 41b1d08902eb6474b920b320a78686d5,
+            type: 3}
+          attackTriggerAmount: 0
+          freezBetweenAttacks: 0
+          kickDirection: {x: 0, y: 0, z: -30}
+          stunTime: 1
+          kickStrengh: 20
