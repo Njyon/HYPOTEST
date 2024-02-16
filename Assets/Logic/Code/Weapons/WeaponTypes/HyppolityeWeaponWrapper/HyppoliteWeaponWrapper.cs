@@ -7,13 +7,17 @@ public class HyppoliteWeaponWrapper : WeaponBase
 {
 	ScriptableWeaponWrapper scriptableWeaponWrapper;
 	int pistolIndex = 0;
+	int shotgunIndex = 1;
 	WeaponBase currentUsedWeapon;
 	WeaponBase CurrentUsedWeapon
 	{
 		get 
 		{
 			if (currentUsedWeapon == null)
+			{
 				currentUsedWeapon = scriptableWeaponWrapper.weapons[0].Weapon;
+				currentUsedWeapon?.EquipWeapon();
+			}
 			return currentUsedWeapon; 
 		}
 		set
@@ -39,7 +43,7 @@ public class HyppoliteWeaponWrapper : WeaponBase
 	public override List<GameObject> HitObjects => CurrentUsedWeapon?.HitObjects;
 	public override int AttackIndex => CurrentUsedWeapon.AttackIndex;
 	public override bool ShouldPlayHitSound { get => CurrentUsedWeapon.ShouldPlayHitSound; set => CurrentUsedWeapon.ShouldPlayHitSound = value; }
-	public override WeaponBase This => CurrentUsedWeapon?.This;
+	//public override WeaponBase This => CurrentUsedWeapon?.This;
 	public override ScriptableWeaponAnimationData AnimationData
 	{
 		get
@@ -97,7 +101,7 @@ public class HyppoliteWeaponWrapper : WeaponBase
 
 	public override AttackAnimationData GroundDirectionAttack(float attackDeltaTime)
 	{
-		CurrentUsedWeapon = scriptableWeaponWrapper?.weapons[pistolIndex]?.Weapon;
+		CurrentUsedWeapon = scriptableWeaponWrapper?.weapons[shotgunIndex]?.Weapon;
 		return CurrentUsedWeapon?.GroundDirectionAttack(attackDeltaTime);
 	}
 
@@ -121,7 +125,7 @@ public class HyppoliteWeaponWrapper : WeaponBase
 
 	public override AttackAnimationData AirDirectionAttack(float attackDeltaTime)
 	{
-		CurrentUsedWeapon = scriptableWeaponWrapper?.weapons[pistolIndex]?.Weapon;
+		CurrentUsedWeapon = scriptableWeaponWrapper?.weapons[shotgunIndex]?.Weapon;
 		return CurrentUsedWeapon?.AirDirectionAttack(attackDeltaTime);
 	}
 

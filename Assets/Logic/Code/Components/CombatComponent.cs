@@ -131,7 +131,7 @@ public class CombatComponent
 		{
 			if (nextWeapon == value) return;
 
-			WeaponBase oldNextWeapon = nextWeapon?.This;
+			WeaponBase oldNextWeapon = nextWeapon;
 			nextWeapon = value;
 
 			if (onNextWeapon != null) onNextWeapon(nextWeapon, oldNextWeapon, gameCharacter);
@@ -144,7 +144,7 @@ public class CombatComponent
 		{
 			if (currentWeapon == value) return;
 
-			WeaponBase oldWeapon = currentWeapon?.This;
+			WeaponBase oldWeapon = currentWeapon;
 			if (oldWeapon != null) oldWeapon.UnEquipWeapon();
 			currentWeapon = value;
 			if (currentWeapon != null)

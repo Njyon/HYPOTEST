@@ -91,7 +91,7 @@ public abstract class WeaponBase
 	public virtual List<GameObject> HitObjects { get { return hitObjects; } }	
 	public virtual int AttackIndex { get { return attackIndex; } }
 	public virtual bool ShouldPlayHitSound { get { return shouldPlayHitSound; } set { shouldPlayHitSound = value; } }
-	public virtual WeaponBase This { get { return this; } }
+	//public virtual WeaponBase This { get { return this; } }
 	public virtual ScriptableWeaponAnimationData AnimationData { 
 		get {
 			if (animationData == null)
@@ -287,7 +287,7 @@ public abstract class WeaponBase
 					spawnedWeapon.transform.localPosition = Vector3.zero;
 					spawnedWeapon.transform.localRotation = Quaternion.identity;
 					spawnedWeapon.transform.Translate(WeaponData.WeaponMeshData.WeaponOffset, Space.Self);
-					spawnedWeapon.transform.rotation = Quaternion.Euler(spawnedWeapon.transform.rotation.eulerAngles + WeaponData.WeaponMeshData.WeaponRotationEuler);
+					spawnedWeapon.transform.localRotation = Quaternion.Euler(WeaponData.WeaponMeshData.WeaponRotationEuler);
 					spawnedWeapon.transform.localScale = WeaponData.WeaponMeshData.WeaponScale;
 					break;
 				case EWeaponHandType.LeftHand:
@@ -299,7 +299,7 @@ public abstract class WeaponBase
 					spawnedWeapon.transform.localPosition = Vector3.zero;
 					spawnedWeapon.transform.localRotation = Quaternion.identity;
 					spawnedWeapon.transform.Translate(WeaponData.WeaponMeshData.WeaponOffset, Space.Self);
-					spawnedWeapon.transform.rotation = Quaternion.Euler(spawnedWeapon.transform.rotation.eulerAngles + WeaponData.WeaponMeshData.WeaponRotationEuler);
+					spawnedWeapon.transform.localRotation = Quaternion.Euler(WeaponData.WeaponMeshData.WeaponRotationEuler);
 					spawnedWeapon.transform.localScale = WeaponData.WeaponMeshData.WeaponScale;
 					break;
 				case EWeaponHandType.NoHands:

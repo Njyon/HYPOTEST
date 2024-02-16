@@ -30,7 +30,7 @@ public class ScriptableWeapon : ScriptableObject
 	public List<SoundEffect> defaultHitSounds;
 
 	private WeaponBase weaponCopy = null;
-	public WeaponBase Weapon { get { return weaponCopy?.This; } }
+	public WeaponBase Weapon { get { return weaponCopy; } }
 	public virtual void CreateWeapon(GameCharacter gameCharacter)
 	{
 		weaponCopy = WeaponBase?.instance?.CreateCopy(gameCharacter, this);

@@ -1,63 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-7027415593259210796
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a01ea21b39fcb7445b8d4e4743bbbb63, type: 3}
-  m_Name: Desaturate
-  m_EditorClassIdentifier: 
-  m_Active: 0
-  settings:
-    material: {fileID: -876546973899608171, guid: 0c41d2d003718b74ab1ed2fe7a7205f9,
-      type: 3}
-    materialPassIndex: 0
-    renderEvent: 600
-    layerMask:
-      serializedVersion: 2
-      m_Bits: 512
---- !u!114 &-6065393214192590553
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bedd7557d71907644890480c5ed5932b, type: 3}
-  m_Name: ScreenSpaceOutlines
-  m_EditorClassIdentifier: 
-  m_Active: 0
-  renderPassEvent: 300
-  outlinesLayerMask:
-    serializedVersion: 2
-    m_Bits: 64
-  outlinesOccluderLayerMask:
-    serializedVersion: 2
-    m_Bits: 128
-  outlineSettings:
-    outlineColor: {r: 0, g: 0, b: 0, a: 1}
-    outlineScale: 1
-    depthThreshold: 1.5
-    robertsCrossMultiplier: 100
-    normalThreshold: 0.4
-    steepAngleThreshold: 0.2
-    steepAngleMultiplier: 25
-  viewSpaceNormalsTextureSettings:
-    colorFormat: 0
-    depthBufferBits: 16
-    filterMode: 0
-    backgroundColor: {r: 0, g: 0, b: 0, a: 0}
-    perObjectData: 0
-    enableDynamicBatching: 0
-    enableInstancing: 0
---- !u!114 &-5959993532518497517
+--- !u!114 &-8235848534293230498
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -67,14 +10,49 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6d613f08f173d4dd895bb07b3230baa9, type: 3}
-  m_Name: Fog
+  m_Name: ChromaticAbboration
   m_EditorClassIdentifier: 
   m_Active: 1
-  passMaterial: {fileID: 2100000, guid: 2471871438018aa4c8aaf002a877dc84, type: 2}
+  passMaterial: {fileID: 2100000, guid: 9f1fad5dd70169b4aa28c1f1f27ba0d2, type: 2}
   injectionPoint: 600
   requirements: 4
-  passIndex: 1
---- !u!114 &-3528020720613914203
+  passIndex: 0
+--- !u!114 &-6121240314816665614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f62c9c65cf3354c93be831c8bc075510, type: 3}
+  m_Name: ScreenSpaceAmbientOcclusion
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  m_Settings:
+    AOMethod: 0
+    Downsample: 0
+    AfterOpaque: 0
+    Source: 1
+    NormalSamples: 1
+    Intensity: 3
+    DirectLightingStrength: 0.25
+    Radius: 0.035
+    Samples: 1
+    BlurQuality: 0
+    Falloff: 100
+    SampleCount: -1
+  m_BlueNoise256Textures:
+  - {fileID: 2800000, guid: 36f118343fc974119bee3d09e2111500, type: 3}
+  - {fileID: 2800000, guid: 4b7b083e6b6734e8bb2838b0b50a0bc8, type: 3}
+  - {fileID: 2800000, guid: c06cc21c692f94f5fb5206247191eeee, type: 3}
+  - {fileID: 2800000, guid: cb76dd40fa7654f9587f6a344f125c9a, type: 3}
+  - {fileID: 2800000, guid: e32226222ff144b24bf3a5a451de54bc, type: 3}
+  - {fileID: 2800000, guid: 3302065f671a8450b82c9ddf07426f3a, type: 3}
+  - {fileID: 2800000, guid: 56a77a3e8d64f47b6afe9e3c95cb57d5, type: 3}
+  m_Shader: {fileID: 4800000, guid: 0849e84e3d62649e8882e9d6f056a017, type: 3}
+--- !u!114 &-5700532258643213226
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -91,7 +69,51 @@ MonoBehaviour:
   injectionPoint: 600
   requirements: 4
   passIndex: 0
---- !u!114 &-3345609320788567933
+--- !u!114 &-5693364856319948407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d613f08f173d4dd895bb07b3230baa9, type: 3}
+  m_Name: Vignette
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  passMaterial: {fileID: 2100000, guid: c1d801e3c0d6f184c9144e0ae4a440dc, type: 2}
+  injectionPoint: 600
+  requirements: 4
+  passIndex: 1
+--- !u!114 &-5543827131766105473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bac1b73383ae410d8e277450af64d970, type: 3}
+  m_Name: Analytical Volumetric Lighting
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  _settings:
+    ClusteringShader: {fileID: 7200000, guid: 9c1586f774fa47c7a62565dafa7c1cbf, type: 3}
+    RenderingShader: {fileID: 4800000, guid: 2d7019988494484596b679d293a0dfeb, type: 3}
+    DebugShader: {fileID: 4800000, guid: e2a515e7e7c24926abfaa53800afd988, type: 3}
+    renderingQuality: 0.5
+    enableHDR: 1
+    maxLights: 4096
+    maxMasks: 128
+    enableUpscaling: 1
+    enableDepthCulling: 1
+    cullingClusterSizeX: 32
+    cullingClusterSizeY: 18
+    debugMode: 0
+    debugOpacity: 0.04
+--- !u!114 &-4205738609693068482
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -103,12 +125,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d613f08f173d4dd895bb07b3230baa9, type: 3}
   m_Name: ShadowFog
   m_EditorClassIdentifier: 
-  m_Active: 0
+  m_Active: 1
   passMaterial: {fileID: 2100000, guid: 00da4961371a93b47b312fdb56252570, type: 2}
   injectionPoint: 600
   requirements: 4
-  passIndex: 1
---- !u!114 &-1878332245247344467
+  passIndex: 0
+--- !u!114 &-2613386902471412682
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -117,32 +139,57 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f62c9c65cf3354c93be831c8bc075510, type: 3}
-  m_Name: SSAO
+  m_Script: {fileID: 11500000, guid: bac1b73383ae410d8e277450af64d970, type: 3}
+  m_Name: Analytical Volumetric Lighting
   m_EditorClassIdentifier: 
   m_Active: 1
-  m_Settings:
-    AOMethod: 1
-    Downsample: 0
-    AfterOpaque: 1
-    Source: 1
-    NormalSamples: 2
-    Intensity: 1
-    DirectLightingStrength: 1
-    Radius: 0.1
-    Samples: 0
-    BlurQuality: 0
-    Falloff: 90
-    SampleCount: -1
-  m_BlueNoise256Textures:
-  - {fileID: 2800000, guid: 36f118343fc974119bee3d09e2111500, type: 3}
-  - {fileID: 2800000, guid: 4b7b083e6b6734e8bb2838b0b50a0bc8, type: 3}
-  - {fileID: 2800000, guid: c06cc21c692f94f5fb5206247191eeee, type: 3}
-  - {fileID: 2800000, guid: cb76dd40fa7654f9587f6a344f125c9a, type: 3}
-  - {fileID: 2800000, guid: e32226222ff144b24bf3a5a451de54bc, type: 3}
-  - {fileID: 2800000, guid: 3302065f671a8450b82c9ddf07426f3a, type: 3}
-  - {fileID: 2800000, guid: 56a77a3e8d64f47b6afe9e3c95cb57d5, type: 3}
-  m_Shader: {fileID: 4800000, guid: 0849e84e3d62649e8882e9d6f056a017, type: 3}
+  _settings:
+    ClusteringShader: {fileID: 7200000, guid: 9c1586f774fa47c7a62565dafa7c1cbf, type: 3}
+    RenderingShader: {fileID: 4800000, guid: 2d7019988494484596b679d293a0dfeb, type: 3}
+    DebugShader: {fileID: 4800000, guid: e2a515e7e7c24926abfaa53800afd988, type: 3}
+    renderingQuality: 0.5
+    enableHDR: 1
+    maxLights: 4096
+    maxMasks: 128
+    enableUpscaling: 1
+    enableDepthCulling: 1
+    cullingClusterSizeX: 16
+    cullingClusterSizeY: 9
+    debugMode: 0
+    debugOpacity: 0.125
+--- !u!114 &-2479927868937919050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d613f08f173d4dd895bb07b3230baa9, type: 3}
+  m_Name: Fog
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  passMaterial: {fileID: 2100000, guid: 2471871438018aa4c8aaf002a877dc84, type: 2}
+  injectionPoint: 600
+  requirements: 4
+  passIndex: 0
+--- !u!114 &-2443599859173211175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f12a82a7d9119e43babef2168cdd490, type: 3}
+  m_Name: AnalyticVolumetricFogFeature
+  m_EditorClassIdentifier: 
+  m_Active: 0
+  settings:
+    renderPassEvent: 550
+    shader: {fileID: 4800000, guid: c39a5cbbdd4c93e4aa0a4e62c2782554, type: 3}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -160,17 +207,16 @@ MonoBehaviour:
       type: 3}
     hdrDebugViewPS: {fileID: 4800000, guid: 573620ae32aec764abd4d728906d2587, type: 3}
   m_RendererFeatures:
-  - {fileID: -1878332245247344467}
-  - {fileID: 2783305440137903104}
-  - {fileID: -6065393214192590553}
-  - {fileID: 2480174144034172846}
-  - {fileID: 4386303126015336764}
-  - {fileID: -7027415593259210796}
-  - {fileID: 1752311981470951272}
-  - {fileID: -3345609320788567933}
-  - {fileID: -5959993532518497517}
-  - {fileID: -3528020720613914203}
-  m_RendererFeatureMap: adc0de57c6d2eee500fcd41c8d49a0262761fcec0165d3abaeef43543e596b223c6154177447df3cd467be32c09a799e68a73c87767651188358296d0c0292d113039ca675d949ada50997cbd8f309cf
+  - {fileID: -5543827131766105473}
+  - {fileID: 7485841621331374523}
+  - {fileID: -6121240314816665614}
+  - {fileID: -2479927868937919050}
+  - {fileID: -4205738609693068482}
+  - {fileID: -8235848534293230498}
+  - {fileID: -5693364856319948407}
+  - {fileID: -5700532258643213226}
+  - {fileID: -2613386902471412682}
+  m_RendererFeatureMap: 7f9ae89a985e10b3bb714afc4a0de367f2678d8a5dfc0cabb6255d0fbe8695dd3e7319770437a2c55ecc87b96463b48d89495bf2d31afdb05684ea0c1da4e3b0367488617562bbdb
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
@@ -196,10 +242,10 @@ MonoBehaviour:
   m_AssetVersion: 2
   m_OpaqueLayerMask:
     serializedVersion: 2
-    m_Bits: 2147483647
+    m_Bits: 4294967295
   m_TransparentLayerMask:
     serializedVersion: 2
-    m_Bits: 2147483647
+    m_Bits: 4294967295
   m_DefaultStencilState:
     overrideStencilState: 0
     stencilReference: 0
@@ -212,8 +258,8 @@ MonoBehaviour:
   m_DepthPrimingMode: 1
   m_CopyDepthMode: 0
   m_AccurateGbufferNormals: 0
-  m_IntermediateTextureMode: 1
---- !u!114 &1752311981470951272
+  m_IntermediateTextureMode: 0
+--- !u!114 &2959430639952287609
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -222,47 +268,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d613f08f173d4dd895bb07b3230baa9, type: 3}
-  m_Name: FullScreenPassRendererFeature
+  m_Script: {fileID: 11500000, guid: bac1b73383ae410d8e277450af64d970, type: 3}
+  m_Name: Analytical Volumetric Lighting
   m_EditorClassIdentifier: 
-  m_Active: 0
-  passMaterial: {fileID: 2100000, guid: 59324d74694c2cc4085d84ebaf242e4c, type: 2}
-  injectionPoint: 600
-  requirements: 4
-  passIndex: 0
---- !u!114 &2480174144034172846
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e0f18ca99896c84e9c75cb97cf014ef, type: 3}
-  m_Name: VolumetricLightScattering
-  m_EditorClassIdentifier: 
-  m_Active: 0
-  settings:
-    resolutionScale: 0.196
-    intensity: 0.009
-    blurWidth: 0.153
---- !u!114 &2783305440137903104
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1cca7768aaaea4b0081f14e7f9d4b5ad, type: 3}
-  m_Name: FlatKitOutline
-  m_EditorClassIdentifier: 
-  m_Active: 0
-  settings: {fileID: 11400000, guid: ff3dfd77429d64938a26bd54c27dacd8, type: 2}
-  _effectMaterial: {fileID: 0}
---- !u!114 &4386303126015336764
+  m_Active: 1
+  _settings:
+    ClusteringShader: {fileID: 7200000, guid: 9c1586f774fa47c7a62565dafa7c1cbf, type: 3}
+    RenderingShader: {fileID: 4800000, guid: 2d7019988494484596b679d293a0dfeb, type: 3}
+    DebugShader: {fileID: 4800000, guid: e2a515e7e7c24926abfaa53800afd988, type: 3}
+    renderingQuality: 0.5
+    enableHDR: 1
+    maxLights: 4096
+    maxMasks: 128
+    enableUpscaling: 1
+    enableDepthCulling: 1
+    cullingClusterSizeX: 64
+    cullingClusterSizeY: 32
+    debugMode: 0
+    debugOpacity: 1
+--- !u!114 &7485841621331374523
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
