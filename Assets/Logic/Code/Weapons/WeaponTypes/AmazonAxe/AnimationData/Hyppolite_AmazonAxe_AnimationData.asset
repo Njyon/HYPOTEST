@@ -386,7 +386,26 @@ MonoBehaviour:
       keys: 
       values: 
     particleList: []
-  AirDirectionAttacks: []
+  AirDirectionAttacks:
+  - action:
+      instance:
+        rid: 5432272900321443840
+    data:
+      showProperties: 1
+      hitDetectionType: 1
+      mesh: {fileID: 0}
+      offset: {x: 0, y: 0.5, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 2.5
+      boxDimensions: {x: 0, y: 0, z: 0}
+      capsulHeight: 0
+    combatBranches:
+      keys: 
+      values: 
+    timedCombatBrenches:
+      keys: 
+      values: 
+    particleList: []
   GapCloserAttacks: []
   DefensiveAction:
   - action:
@@ -621,5 +640,19 @@ MonoBehaviour:
           attackTriggerAmount: 0
           freezBetweenAttacks: 0
           kickDirection: {x: 0, y: 0, z: -30}
+          stunTime: 1
+          kickStrengh: 20
+    - rid: 5432272900321443840
+      type: {class: KickAwayAttack, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          attackAnimation: {fileID: 8443212957946751521, guid: 43878f2185809154d892f69df3c20921,
+            type: 3}
+          attackTriggerAmount: 2
+          freezBetweenAttacks: 1
+          kickDirection: {x: 0, y: 0, z: -90}
           stunTime: 1
           kickStrengh: 20

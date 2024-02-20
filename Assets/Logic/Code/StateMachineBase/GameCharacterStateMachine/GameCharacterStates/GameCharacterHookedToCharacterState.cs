@@ -67,8 +67,8 @@ public class GameCharacterHookedToCharacterState : AGameCharacterState
 		} else
 		{
 			// Follow Enemy
-			if (GameCharacter.CombatComponent.HookedToCharacter != null)
-				GameCharacter.MovementComponent.MovementVelocity = GameCharacter.CombatComponent.HookedToCharacter.MovementComponent.MovementVelocity;
+			//if (GameCharacter.CombatComponent.HookedToCharacter != null)
+			//	GameCharacter.MovementComponent.MovementVelocity = GameCharacter.CombatComponent.HookedToCharacter.MovementComponent.MovementVelocity;
 			/// PROPABLY CHANGE THIS
 			/// Add GameCharacter to hookedOne and move all Hooked Characters in the Move of the Parent GameCharacter because this is a frame behind 
 		}
