@@ -24,4 +24,7 @@ public class DefaultGameModeData : ScriptableObject
     public float shaderEffectTime = 0.2f;
     public Color hitShaderColor = Color.white;
     public float hitShaderIntensity = 1f;
+
+    [Header("Hit Data")]
+    public float ignoreGravityAfterHit = 0.5f;
 }

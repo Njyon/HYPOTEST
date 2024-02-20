@@ -22,6 +22,7 @@ public enum EAxis
 {
 	X,
 	XY,
+	XZ,
 	XYZ,
 	Y,
 	YZ,
@@ -673,6 +674,10 @@ namespace Ultra {
 				case EAxis.XY: 
 					dir.x = 0;
 					dir.y = 0;
+					break;
+				case EAxis.XZ:
+					dir.x = 0;
+					dir.z = 0;
 					break;
 				case EAxis.XYZ:
 					dir.x = 0;

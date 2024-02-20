@@ -435,9 +435,9 @@ public class GameCharacter : MonoBehaviour, IDamage
 			BuffComponent.AddBuff(new OnHitEffectBuff(this, data.hitWiggleTime, data.hitWiggleHalfLenghtRange, data.hitWiggleFrequency));
 			BuffComponent.AddBuff(new OnHitShaderEffect(this, data.shaderEffectTime));
 
-			if (shouldFreezGame) GameTimeManager.Instance.AddDefaultFreezFrame();
-			
+			MovementComponent.IgnoreGravityForTime(data.ignoreGravityAfterHit);
 
+			if (shouldFreezGame) GameTimeManager.Instance.AddDefaultFreezFrame();
 		}
 	}
 

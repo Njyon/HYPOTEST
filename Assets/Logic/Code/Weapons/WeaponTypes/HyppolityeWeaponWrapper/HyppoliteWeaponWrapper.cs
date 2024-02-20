@@ -16,7 +16,6 @@ public class HyppoliteWeaponWrapper : WeaponBase
 			if (currentUsedWeapon == null)
 			{
 				currentUsedWeapon = scriptableWeaponWrapper.weapons[0].Weapon;
-				currentUsedWeapon?.EquipWeapon();
 			}
 			return currentUsedWeapon; 
 		}
@@ -68,7 +67,7 @@ public class HyppoliteWeaponWrapper : WeaponBase
 
 	public override void EquipWeapon()
 	{
-		CurrentUsedWeapon = scriptableWeaponWrapper?.weapons[pistolIndex]?.Weapon;
+		CurrentUsedWeapon.EquipWeapon();
 	}
 
 	public override void UnEquipWeapon()
