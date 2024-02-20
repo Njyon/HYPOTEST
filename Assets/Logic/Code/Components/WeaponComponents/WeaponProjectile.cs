@@ -7,21 +7,23 @@ public class WeaponProjectile : MonoBehaviour
 	public delegate void OnProjectileHit(WeaponProjectile projectile, Collider other);
 	public delegate void OnProjectileLifeTimeEnd(WeaponProjectile projectile);
 	
-
 	bool isInit = false;
 	Vector3 dir;
 	float speed;
+	protected float damage;
+	float currentGravityEffect;
 	ColliderHitScript colliderScript;
 	Collider projectileCollider;
-	GameCharacter gameCharacterOwner;
+	protected GameCharacter gameCharacterOwner;
 	Rigidbody projectileRigidBody;
 	Ultra.Timer lifeTimeTimer;
 	OnProjectileHit onHit;
 	OnProjectileLifeTimeEnd onLifeTimeEnd;
 	TrailRenderer tr;
 
+	public float gravity = 0.0f;
 
-	public void Init(GameCharacter owner, Vector3 direction, float speed, OnProjectileHit onHit, OnProjectileLifeTimeEnd onProjectileLifeTimeEnd, float lifeTime = 5f)
+	public void Init(GameCharacter owner, Vector3 direction, float speed, float damage, OnProjectileHit onHit, OnProjectileLifeTimeEnd onProjectileLifeTimeEnd, float lifeTime = 5f)
 	{
 		gameCharacterOwner = owner;
 		dir = direction;
@@ -32,13 +34,15 @@ public class WeaponProjectile : MonoBehaviour
 		lifeTimeTimer.Start(lifeTime);
 		this.onHit = onHit;
 		onLifeTimeEnd = onProjectileLifeTimeEnd;
+		this.damage = damage;
+		currentGravityEffect = 0;
 
 		Init_Intern();
 
 		isInit = true;
 	}
 
-	void Init_Intern()
+	protected virtual void Init_Intern()
 	{
 		if (colliderScript == null)
 		{
@@ -58,7 +62,10 @@ public class WeaponProjectile : MonoBehaviour
 		if (!isInit) return;
 		if (lifeTimeTimer != null) lifeTimeTimer.Update(Time.deltaTime);
 
+		currentGravityEffect += gravity * Time.deltaTime;
+
 		transform.position = transform.position + dir.normalized * (speed * Time.deltaTime);
+		if (Mathf.Abs(currentGravityEffect) > 0) transform.position = transform.position + Vector3.down * currentGravityEffect;
     }
 
 	void RemoveSubscriptions()
@@ -82,14 +89,15 @@ public class WeaponProjectile : MonoBehaviour
 	void OnOverlapEnter(Collider other)
 	{
 		if (!isInit) return;
-		if (onHit != null)
-		{
-			if (onHit != null) onHit(this, other);
-		}
+		OnHit(other);
+		if (onHit != null) onHit(this, other);
 	}
 
-	void OnTimerFinished()
+	protected void OnTimerFinished()
 	{
+		lifeTimeTimer.Stop();
 		if (onLifeTimeEnd != null) onLifeTimeEnd(this);
 	}
+
+	public virtual void OnHit(Collider other) { }
 }

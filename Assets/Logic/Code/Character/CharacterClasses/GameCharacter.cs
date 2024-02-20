@@ -370,6 +370,11 @@ public class GameCharacter : MonoBehaviour, IDamage
 		CombatComponent?.CurrentWeapon?.CurrentAction?.Action?.SwitchAnimationEvent();
 	}
 
+	public void TriggerAttackAnimEvent(AnimationEvent evt)
+	{
+		CombatComponent?.CurrentWeapon?.CurrentAction?.Action?.TriggerAnimationEvent();
+	}
+
 	#endregion
 
 	public void DoDamage(GameCharacter damageInitiator, float damage, bool shouldStagger = true, bool removeCharge = true, bool shouldFreezGame = true)

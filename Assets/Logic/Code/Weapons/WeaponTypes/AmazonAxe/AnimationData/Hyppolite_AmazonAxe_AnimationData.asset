@@ -405,7 +405,31 @@ MonoBehaviour:
     timedCombatBrenches:
       keys: 
       values: 
-    particleList: []
+    particleList:
+    - ParticleSystem: {fileID: 6963243165690189745, guid: 137f1587465d3834d982c19270629c25,
+        type: 3}
+      Offset: {x: 0, y: 0, z: 0}
+      attachToCharacter: 1
+      removeAfterTime: 1
+      removeTime: 0.1
+      attachToSpecialBone: 0
+      boneName: 
+    - ParticleSystem: {fileID: 6963243165690189745, guid: 137f1587465d3834d982c19270629c25,
+        type: 3}
+      Offset: {x: 0, y: 0, z: 0}
+      attachToCharacter: 1
+      removeAfterTime: 1
+      removeTime: 0.1
+      attachToSpecialBone: 0
+      boneName: 
+    - ParticleSystem: {fileID: 2430961663634449134, guid: bbcd881bfc9569b4aa220d764ac0683e,
+        type: 3}
+      Offset: {x: 0, y: 0, z: 0}
+      attachToCharacter: 1
+      removeAfterTime: 1
+      removeTime: 0.1
+      attachToSpecialBone: 0
+      boneName: 
   GapCloserAttacks: []
   DefensiveAction:
   - action:
