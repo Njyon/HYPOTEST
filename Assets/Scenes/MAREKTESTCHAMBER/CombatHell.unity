@@ -988,6 +988,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   particleSystem:
   - {fileID: 9147738487331008236}
+  animator: {fileID: 589694269}
+  clip: {fileID: 8443212957946751521, guid: 43878f2185809154d892f69df3c20921, type: 3}
 --- !u!1 &663329985
 GameObject:
   m_ObjectHideFlags: 0
@@ -2132,6 +2134,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Main Camera
       objectReference: {fileID: 0}
+    - target: {fileID: 28264763160451914, guid: 33aa7be1770016c4b96bc22845e068dd,
+        type: 3}
+      propertyPath: m_BackGroundColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 28264763160451914, guid: 33aa7be1770016c4b96bc22845e068dd,
+        type: 3}
+      propertyPath: m_BackGroundColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 28264763160451914, guid: 33aa7be1770016c4b96bc22845e068dd,
+        type: 3}
+      propertyPath: m_BackGroundColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 28264763160451914, guid: 33aa7be1770016c4b96bc22845e068dd,
+        type: 3}
+      propertyPath: m_BackGroundColor.r
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 28264763160451915, guid: 33aa7be1770016c4b96bc22845e068dd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2920,7 +2942,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 43ca050a868c0f5499cc099978edd1aa,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
