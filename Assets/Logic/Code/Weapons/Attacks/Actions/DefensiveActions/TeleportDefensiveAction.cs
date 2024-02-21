@@ -137,8 +137,12 @@ public class TeleportDefensiveAction : ActionBase
 	public override void DefensiveActionStateEnd()
 	{
 		base.DefensiveActionStateEnd();
-		Weapon.SpawnedWeapon?.SetActive(true);
-		Weapon.SecondSpawnedWeapon?.SetActive(true);
+
+		// Dont go further if Object gets destroyed this frame
+		if (GameCharacter.gameObject.activeSelf == false) return;
+
+		Weapon?.SpawnedWeapon?.SetActive(true);
+		Weapon?.SecondSpawnedWeapon?.SetActive(true);
 		GameCharacter.GameCharacterData.MeshRenderer.enabled = true;
 		GameCharacter.MovementComponent.SetLayerToDefault();
 		defensiveMovePostion = Vector3.zero;

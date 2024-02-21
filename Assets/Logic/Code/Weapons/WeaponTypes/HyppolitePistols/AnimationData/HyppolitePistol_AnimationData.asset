@@ -94,7 +94,26 @@ MonoBehaviour:
       values: 
     particleList: []
   AirUpAttacks: []
-  AirDownAttacks: []
+  AirDownAttacks:
+  - action:
+      instance:
+        rid: 5432272922251362325
+    data:
+      showProperties: 0
+      hitDetectionType: 0
+      mesh: {fileID: 0}
+      offset: {x: 0, y: 0, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 0
+      boxDimensions: {x: 0, y: 0, z: 0}
+      capsulHeight: 0
+    combatBranches:
+      keys: 
+      values: 
+    timedCombatBrenches:
+      keys: 
+      values: 
+    particleList: []
   AirDirectionAttacks: []
   GapCloserAttacks: []
   DefensiveAction:
@@ -198,5 +217,19 @@ MonoBehaviour:
           Discharge: 100
           defensiveAction: {fileID: -2770800290259703905, guid: 1a3fdee8013755746adf69b42d5855c1,
             type: 3}
-          teleportCharacterDistance: 0.5
+          teleportCharacterDistance: 1
           teleportRange: 10
+          teleportAimTrsehholdHalfAngle: 45
+    - rid: 5432272922251362325
+      type: {class: ShootTwoProjectilesHorizontal, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          shootAnimation: {fileID: 996732031451491290, guid: 30c0a5cf7278b864b96e70c5e9681a0a,
+            type: 3}
+          projectile: {fileID: 8418212940458878043, guid: 73b8adb31e661e74980c4a4009986383,
+            type: 3}
+          projectileSpeed: 15
+          projtilceLifeTime: 0.5

@@ -10,6 +10,7 @@ public enum EBuff
     NoGravity,
     OnHitEffect,
     OnHitShaderEffect,
+	HoldInAirAfterStartFalling,
 }
 
 public class BuffComponent

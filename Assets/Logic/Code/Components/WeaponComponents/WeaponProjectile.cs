@@ -93,11 +93,11 @@ public class WeaponProjectile : MonoBehaviour
 		if (onHit != null) onHit(this, other);
 	}
 
-	protected void OnTimerFinished()
+	protected virtual void OnTimerFinished()
 	{
 		lifeTimeTimer.Stop();
 		if (onLifeTimeEnd != null) onLifeTimeEnd(this);
 	}
 
-	public virtual void OnHit(Collider other) { }
+	public virtual bool OnHit(Collider other) { return false; }
 }
