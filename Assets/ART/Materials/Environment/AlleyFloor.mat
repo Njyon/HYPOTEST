@@ -21,27 +21,28 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: AlleyFloor
-  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: ffb85afc2a3b90f4e82f675c988d16e6,
+    type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - _NORMALMAP
-  - _OCCLUSIONMAP
-  - _PARALLAXMAP
-  - _SPECULAR_SETUP
+  - _USEPARALAXXOCC
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: 1994
-  stringTagMap:
-    RenderType: Opaque
+  stringTagMap: {}
   disabledShaderPasses:
   - SRPDEFAULTUNLIT
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _Albedo:
+        m_Texture: {fileID: 2800000, guid: 5eed97fdec9825e448b083be8c36750c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BaseMap:
         m_Texture: {fileID: 2800000, guid: 4192e3e1484c9e24db035ee865316de4, type: 3}
         m_Scale: {x: 3, y: 3}
@@ -102,6 +103,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Normal:
+        m_Texture: {fileID: 2800000, guid: b4654445a28f2894995dfc26a824cd62, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Normal0:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -116,6 +121,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _Normal3:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ORMH:
+        m_Texture: {fileID: 2800000, guid: f15bbafebf8a15845aaa6eeaf7e2c168, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -166,6 +175,7 @@ Material:
     m_Floats:
     - _AlphaClip: 0
     - _AlphaToMask: 0
+    - _AmbientOcclusionStrength: 0
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BlendOp: 0
@@ -192,6 +202,7 @@ Material:
     - _FlatSpecularSize: 0.1
     - _Flatness: 0.458
     - _FlatnessExtra: 1
+    - _FlattenNormal: 0
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
@@ -212,6 +223,8 @@ Material:
     - _Metallic3: 0
     - _Mode: 0
     - _NumLayersCount: 1
+    - _OccAmplitude: 1
+    - _OccSteps: 20
     - _OcclusionStrength: 1
     - _OutlineDepthOffset: 0
     - _OutlineEnabled: 0
@@ -219,6 +232,7 @@ Material:
     - _OutlineWidth: 1
     - _OverrideLightmapDir: 0
     - _Parallax: 0.005
+    - _QueueControl: 0
     - _QueueOffset: -6
     - _ReceiveShadows: 1
     - _RimEnabled: 0
@@ -240,6 +254,9 @@ Material:
     - _Surface: 0
     - _TextureBlendingMode: 0
     - _TextureImpact: 0.48
+    - _TileTexture_U: 1
+    - _TileTexture_V: 1
+    - _USEPARALAXXOCC: 1
     - _UVSec: 0
     - _UnityShadowMode: 1
     - _UnityShadowOcclusion: 1
@@ -260,7 +277,9 @@ Material:
     - _FlatRimColor: {r: 1, g: 1, b: 1, a: 1}
     - _FlatSpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _LightmapDirection: {r: 0, g: 1, b: 0, a: 0}
+    - _Offset: {r: 0, g: 0, b: 0, a: 0}
     - _OutlineColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 1}
+    - _Tiling: {r: 8, g: 5, b: 0, a: 0}
     - _UnityShadowColor: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
   m_BuildTextureStacks: []
