@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: HyppoliteShotgunAnimationData
   m_EditorClassIdentifier: 
   GroundAttacks: []
-  GroundUpAttacks:
+  GroundUpAttacks: []
+  GroundDownAttacks:
   - action:
       instance:
-        rid: 5432272900705484802
+        rid: 5432272946576228357
     data:
       showProperties: 0
       hitDetectionType: 0
@@ -33,7 +34,6 @@ MonoBehaviour:
       keys: 
       values: 
     particleList: []
-  GroundDownAttacks: []
   GroundDirectionAttacks:
   - action:
       instance:
@@ -134,7 +134,7 @@ MonoBehaviour:
           kickDirection: {x: 0, y: 0, z: 10}
           stunTime: 0.6
           kickStrengh: 20
-    - rid: 5432272900705484802
+    - rid: 5432272946576228357
       type: {class: ShootAttackProjectile, ns: , asm: Assembly-CSharp}
       data:
         attackData:

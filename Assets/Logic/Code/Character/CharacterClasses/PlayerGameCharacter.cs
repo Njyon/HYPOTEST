@@ -96,6 +96,7 @@ public class PlayerGameCharacter : GameCharacter
 
 	void OnAggroChanged()
 	{
+		if (!gameObject.activeSelf) return;
 		if (CharacterHasAggro)
 		{
 			MusicManager.Instance.Play();

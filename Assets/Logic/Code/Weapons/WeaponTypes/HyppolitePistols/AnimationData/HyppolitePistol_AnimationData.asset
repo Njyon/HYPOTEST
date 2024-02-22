@@ -51,7 +51,26 @@ MonoBehaviour:
       keys: 
       values: 
     particleList: []
-  GroundUpAttacks: []
+  GroundUpAttacks:
+  - action:
+      instance:
+        rid: 5432272946576228356
+    data:
+      showProperties: 1
+      hitDetectionType: 1
+      mesh: {fileID: 0}
+      offset: {x: 0.5, y: 0, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 2
+      boxDimensions: {x: 0, y: 0, z: 0}
+      capsulHeight: 0
+    combatBranches:
+      keys: 
+      values: 
+    timedCombatBrenches:
+      keys: 
+      values: 
+    particleList: []
   GroundDownAttacks: []
   GroundDirectionAttacks: []
   AirAttacks:
@@ -93,11 +112,10 @@ MonoBehaviour:
       keys: 
       values: 
     particleList: []
-  AirUpAttacks: []
-  AirDownAttacks:
+  AirUpAttacks:
   - action:
       instance:
-        rid: 5432272922251362325
+        rid: 5432272946576228352
     data:
       showProperties: 0
       hitDetectionType: 0
@@ -105,6 +123,26 @@ MonoBehaviour:
       offset: {x: 0, y: 0, z: 0}
       scale: {x: 0, y: 0, z: 0}
       radius: 0
+      boxDimensions: {x: 0, y: 0, z: 0}
+      capsulHeight: 0
+    combatBranches:
+      keys: 
+      values: 
+    timedCombatBrenches:
+      keys: 
+      values: 
+    particleList: []
+  AirDownAttacks:
+  - action:
+      instance:
+        rid: 5432272946576228353
+    data:
+      showProperties: 1
+      hitDetectionType: 1
+      mesh: {fileID: 0}
+      offset: {x: 0, y: 0, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 2
       boxDimensions: {x: 0, y: 0, z: 0}
       capsulHeight: 0
     combatBranches:
@@ -220,7 +258,7 @@ MonoBehaviour:
           teleportCharacterDistance: 1
           teleportRange: 10
           teleportAimTrsehholdHalfAngle: 45
-    - rid: 5432272922251362325
+    - rid: 5432272946576228352
       type: {class: ShootTwoProjectilesHorizontal, ns: , asm: Assembly-CSharp}
       data:
         attackData:
@@ -233,3 +271,27 @@ MonoBehaviour:
             type: 3}
           projectileSpeed: 15
           projtilceLifeTime: 0.5
+    - rid: 5432272946576228353
+      type: {class: SmashDownAttack, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          downAttack: {fileID: -5099064435716217375, guid: cc7d0404102ea0940bc6adc9c49a38a9,
+            type: 3}
+          downAttackHold: {fileID: -2375314754791491219, guid: c2dd8bc0cc0a5c54aa446382fd0914a9,
+            type: 3}
+          downAttackTrigger: {fileID: -2216179250741510954, guid: 535a540495cab0841840b0d6e8ea0dba,
+            type: 3}
+          speed: 50
+    - rid: 5432272946576228356
+      type: {class: HookAttack, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          attackAnimation: {fileID: 6978934870572224658, guid: 90fae2c5d69637643873df512a678b67,
+            type: 3}
+          maxVerticalMovement: 5
