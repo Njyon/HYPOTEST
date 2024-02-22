@@ -1071,6 +1071,7 @@ public abstract class WeaponBase
 		foreach (GameCharacter character in GameCharacter.CombatComponent.HookedCharacters)
 		{
 			character.CombatComponent.HookedToCharacter = null;
+			character.MovementComponent.OverrideMovementByHookedCharacter = false;
 		}
 		GameCharacter.CombatComponent.HookedCharacters.Clear();
 	}

@@ -245,7 +245,7 @@ public class PlayerController : ControllerBase
 	{
 		if (bForcedFrameRate)
 		{
-			Application.targetFrameRate = -999;
+			Application.targetFrameRate = 150;
 			bForcedFrameRate = false;
 		}
 		else

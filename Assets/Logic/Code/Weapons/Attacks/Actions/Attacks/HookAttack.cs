@@ -30,6 +30,7 @@ public class HookAttack : AttackBase
 		{
 			enemyCharacter.CombatComponent.HookedToCharacter = GameCharacter;
 			enemyCharacter.AnimController.ResetAnimStatesHARD();
+			enemyCharacter.MovementComponent.OverrideMovementByHookedCharacter = true;
 			Weapon.HookCharacterToCharacter(enemyCharacter);
 			if (enemyCharacter.StateMachine != null)
 			{
@@ -37,6 +38,11 @@ public class HookAttack : AttackBase
 				enemyCharacter.StateMachine.RequestStateChange(EGameCharacterState.HookedToCharacter);
 			}
 		}
+	}
+
+	public override void EndAttackStateLogic()
+	{
+		Weapon.UnHookAllHookedCharacerts();
 	}
 
 	public override void ActionInterupted()

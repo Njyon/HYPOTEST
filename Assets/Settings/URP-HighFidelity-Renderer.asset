@@ -13,10 +13,13 @@ MonoBehaviour:
   m_Name: ChromaticAbboration
   m_EditorClassIdentifier: 
   m_Active: 1
-  passMaterial: {fileID: 2100000, guid: 9f1fad5dd70169b4aa28c1f1f27ba0d2, type: 2}
   injectionPoint: 600
-  requirements: 4
+  fetchColorBuffer: 1
+  requirements: 0
+  passMaterial: {fileID: 2100000, guid: 9f1fad5dd70169b4aa28c1f1f27ba0d2, type: 2}
   passIndex: 0
+  bindDepthStencilAttachment: 0
+  m_Version: 1
 --- !u!114 &-6121240314816665614
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -65,10 +68,13 @@ MonoBehaviour:
   m_Name: Blur
   m_EditorClassIdentifier: 
   m_Active: 1
-  passMaterial: {fileID: 2100000, guid: 77691db20f227524492a6d0a85a034ab, type: 2}
   injectionPoint: 600
-  requirements: 4
+  fetchColorBuffer: 1
+  requirements: 0
+  passMaterial: {fileID: 2100000, guid: 77691db20f227524492a6d0a85a034ab, type: 2}
   passIndex: 0
+  bindDepthStencilAttachment: 0
+  m_Version: 1
 --- !u!114 &-5693364856319948407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -82,10 +88,13 @@ MonoBehaviour:
   m_Name: Vignette
   m_EditorClassIdentifier: 
   m_Active: 1
-  passMaterial: {fileID: 2100000, guid: c1d801e3c0d6f184c9144e0ae4a440dc, type: 2}
   injectionPoint: 600
-  requirements: 4
+  fetchColorBuffer: 1
+  requirements: 0
+  passMaterial: {fileID: 2100000, guid: c1d801e3c0d6f184c9144e0ae4a440dc, type: 2}
   passIndex: 1
+  bindDepthStencilAttachment: 0
+  m_Version: 1
 --- !u!114 &-5543827131766105473
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -126,10 +135,13 @@ MonoBehaviour:
   m_Name: ShadowFog
   m_EditorClassIdentifier: 
   m_Active: 1
-  passMaterial: {fileID: 2100000, guid: 00da4961371a93b47b312fdb56252570, type: 2}
   injectionPoint: 600
-  requirements: 4
+  fetchColorBuffer: 1
+  requirements: 0
+  passMaterial: {fileID: 2100000, guid: 00da4961371a93b47b312fdb56252570, type: 2}
   passIndex: 0
+  bindDepthStencilAttachment: 0
+  m_Version: 1
 --- !u!114 &-2613386902471412682
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -170,10 +182,13 @@ MonoBehaviour:
   m_Name: Fog
   m_EditorClassIdentifier: 
   m_Active: 1
-  passMaterial: {fileID: 2100000, guid: 2471871438018aa4c8aaf002a877dc84, type: 2}
   injectionPoint: 600
-  requirements: 4
+  fetchColorBuffer: 1
+  requirements: 0
+  passMaterial: {fileID: 2100000, guid: 2471871438018aa4c8aaf002a877dc84, type: 2}
   passIndex: 0
+  bindDepthStencilAttachment: 0
+  m_Version: 1
 --- !u!114 &-2443599859173211175
 MonoBehaviour:
   m_ObjectHideFlags: 0

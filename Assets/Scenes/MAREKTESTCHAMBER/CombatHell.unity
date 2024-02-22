@@ -987,7 +987,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particleSystem:
-  - {fileID: 9147738487331008236}
+  - {fileID: 1390469990438286695}
+  - {fileID: 1390469990438286695}
+  - {fileID: 8825085642949479944}
+  animator: {fileID: 589694269}
+  clip: {fileID: 8443212957946751521, guid: 43878f2185809154d892f69df3c20921, type: 3}
 --- !u!1 &663329985
 GameObject:
   m_ObjectHideFlags: 0
@@ -2132,6 +2136,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Main Camera
       objectReference: {fileID: 0}
+    - target: {fileID: 28264763160451914, guid: 33aa7be1770016c4b96bc22845e068dd,
+        type: 3}
+      propertyPath: m_BackGroundColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 28264763160451914, guid: 33aa7be1770016c4b96bc22845e068dd,
+        type: 3}
+      propertyPath: m_BackGroundColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 28264763160451914, guid: 33aa7be1770016c4b96bc22845e068dd,
+        type: 3}
+      propertyPath: m_BackGroundColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 28264763160451914, guid: 33aa7be1770016c4b96bc22845e068dd,
+        type: 3}
+      propertyPath: m_BackGroundColor.r
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 28264763160451915, guid: 33aa7be1770016c4b96bc22845e068dd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2870,7 +2894,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 43ca050a868c0f5499cc099978edd1aa,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.61135054
+      value: 1.26
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 43ca050a868c0f5499cc099978edd1aa,
         type: 3}
@@ -2928,7 +2952,11 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4436805663696350335, guid: 43ca050a868c0f5499cc099978edd1aa,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 8995423454422136662}
+      addedObject: {fileID: 1696303721201657367}
+    - targetCorrespondingSourceObject: {fileID: 4436805663696350335, guid: 43ca050a868c0f5499cc099978edd1aa,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3703849257585345167}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 43ca050a868c0f5499cc099978edd1aa,
         type: 3}
@@ -3124,7 +3152,19 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1408932872}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &8003892344838664060
+--- !u!198 &1390469990438286695 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 6963243165690189745, guid: 137f1587465d3834d982c19270629c25,
+    type: 3}
+  m_PrefabInstance: {fileID: 2260646779454811619}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1696303721201657367 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1116313756547248779, guid: 137f1587465d3834d982c19270629c25,
+    type: 3}
+  m_PrefabInstance: {fileID: 2260646779454811619}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &2260646779454811619
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -3132,42 +3172,75 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1084609620}
     m_Modifications:
-    - target: {fileID: 4303367831496913574, guid: 8a0f6b4cd6d6a02459f17000d6a58a72,
-        type: 3}
-      propertyPath: m_Name
-      value: Axe_InAir_LightAttack02Alternative
-      objectReference: {fileID: 0}
-    - target: {fileID: 7285371981032946855, guid: 8a0f6b4cd6d6a02459f17000d6a58a72,
+    - target: {fileID: 1116313756547248779, guid: 137f1587465d3834d982c19270629c25,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 146.794
+      value: 1.19
       objectReference: {fileID: 0}
-    - target: {fileID: 7285371981032946855, guid: 8a0f6b4cd6d6a02459f17000d6a58a72,
+    - target: {fileID: 1116313756547248779, guid: 137f1587465d3834d982c19270629c25,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 617.37
+      value: -3.903
       objectReference: {fileID: 0}
-    - target: {fileID: 7285371981032946855, guid: 8a0f6b4cd6d6a02459f17000d6a58a72,
+    - target: {fileID: 1116313756547248779, guid: 137f1587465d3834d982c19270629c25,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 104.879
+      value: -86.116
+      objectReference: {fileID: 0}
+    - target: {fileID: 5353587609248763678, guid: 137f1587465d3834d982c19270629c25,
+        type: 3}
+      propertyPath: m_Name
+      value: Axe_InAir_HeavyAttack01_Index1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 8a0f6b4cd6d6a02459f17000d6a58a72, type: 3}
---- !u!4 &8995423454422136662 stripped
+  m_SourcePrefab: {fileID: 100100000, guid: 137f1587465d3834d982c19270629c25, type: 3}
+--- !u!4 &3703849257585345167 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 7285371981032946855, guid: 8a0f6b4cd6d6a02459f17000d6a58a72,
+  m_CorrespondingSourceObject: {fileID: 3798441440033341905, guid: bbcd881bfc9569b4aa220d764ac0683e,
     type: 3}
-  m_PrefabInstance: {fileID: 8003892344838664060}
+  m_PrefabInstance: {fileID: 7673821325997017547}
   m_PrefabAsset: {fileID: 0}
---- !u!198 &9147738487331008236 stripped
+--- !u!1001 &7673821325997017547
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1084609620}
+    m_Modifications:
+    - target: {fileID: 3798441440033341905, guid: bbcd881bfc9569b4aa220d764ac0683e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 95.80701
+      objectReference: {fileID: 0}
+    - target: {fileID: 3798441440033341905, guid: bbcd881bfc9569b4aa220d764ac0683e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 430.601
+      objectReference: {fileID: 0}
+    - target: {fileID: 3798441440033341905, guid: bbcd881bfc9569b4aa220d764ac0683e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -15.09198
+      objectReference: {fileID: 0}
+    - target: {fileID: 7778560702927335649, guid: bbcd881bfc9569b4aa220d764ac0683e,
+        type: 3}
+      propertyPath: m_Name
+      value: Axe_InAir_HeavyAttack01_Index3
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: bbcd881bfc9569b4aa220d764ac0683e, type: 3}
+--- !u!198 &8825085642949479944 stripped
 ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 7231255475500972261, guid: 8a0f6b4cd6d6a02459f17000d6a58a72,
+  m_CorrespondingSourceObject: {fileID: 2430961663634449134, guid: bbcd881bfc9569b4aa220d764ac0683e,
     type: 3}
-  m_PrefabInstance: {fileID: 8003892344838664060}
+  m_PrefabInstance: {fileID: 7673821325997017547}
   m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

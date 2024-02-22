@@ -52,6 +52,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	Coroutine gravityCoroutine;
 	bool ignoreGravity = false;
 	bool ignoreDeltaTime = false;
+	bool overrideMovementByHookedCharacter = false;
 
 	/// <summary>
 	/// Endless Timer
@@ -84,6 +85,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	public Vector3 MovementOverride { get { return movementOverride; } set { movementOverride = value; } }
 	public float VariableGravityMultiplierOverTime { get { return variableGravityMultiplierOverTime; } set { variableGravityMultiplierOverTime = value; } }
 	public int CharacterLayer { get { return characterLayer; } }
+	public bool OverrideMovementByHookedCharacter { get { return overrideMovementByHookedCharacter; } set { overrideMovementByHookedCharacter = value; } }
 	public bool IgnoreGravity { 
 		get { return ignoreGravity; }
 		set 
@@ -208,6 +210,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 
 	void RequestMove(Vector3 moveRequestVector)
 	{
+		if (OverrideMovementByHookedCharacter) return;
 		if (Mathf.Abs(gameCharacter.transform.position.z) > 0)
 		{
 			Vector3 noZVector = new Vector3(transform.position.x, transform.position.y, 0);
@@ -234,6 +237,16 @@ public class GameCharacterMovementComponent : MonoBehaviour
 
 		CollisionFlags collisionFlag = unityMovementController.Move(moveRequestVector);
 		if (onMoveCollisionFlag != null && collisionFlag != CollisionFlags.None) onMoveCollisionFlag(collisionFlag);
+
+		// Move Hooked Characters
+		foreach (GameCharacter gc in gameCharacter.CombatComponent.HookedCharacters)
+		{
+			if (gc.MovementComponent.OverrideMovementByHookedCharacter)
+			{
+				collisionFlag = gc.MovementComponent.UnityMovementController.Move(moveRequestVector);
+				if (gc.MovementComponent.onMoveCollisionFlag != null && collisionFlag != CollisionFlags.None) gc.MovementComponent.onMoveCollisionFlag(collisionFlag);
+			}
+		}
 
 		MovementVelocity = new Vector3(MovementVelocity.x, MovementVelocity.y, 0);
 

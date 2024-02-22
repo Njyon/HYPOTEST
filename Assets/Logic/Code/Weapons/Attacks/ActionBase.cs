@@ -51,6 +51,7 @@ public abstract class ActionBase
 	public abstract ActionBase CreateCopy();
 
 	public virtual void StartActionInHold() { }
+	public virtual void TriggerAnimationEvent() { }
 	public virtual void OnHit(GameObject hitObj) { }
 	public virtual void StartAttackStateLogic() { }
 	public virtual void PreAttackStateLogic(float deltaTime) { }

@@ -23,8 +23,8 @@ namespace AkiDevCat.AVL.Examples
 
         private void Update()
         {
-            QualitySettings.vSyncCount = 0;
-            Application.targetFrameRate = Application.isMobilePlatform ? Screen.currentResolution.refreshRate : -1;
+            //QualitySettings.vSyncCount = 0;
+            //Application.targetFrameRate = Application.isMobilePlatform ? Screen.currentResolution.refreshRate : -1;
             
             if (Input.GetKeyDown(KeyCode.Space))
             {

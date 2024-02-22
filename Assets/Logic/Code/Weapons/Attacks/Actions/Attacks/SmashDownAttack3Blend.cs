@@ -96,6 +96,7 @@ public class SmashDownAttack3Blend : ActionBase
 		{
 			enemyCharacter.CombatComponent.HookedToCharacter = GameCharacter;
 			Weapon.HookCharacterToCharacter(enemyCharacter);
+			enemyCharacter.MovementComponent.OverrideMovementByHookedCharacter = true;
 			enemyCharacter.StateMachine.RequestStateChange(EGameCharacterState.HookedToCharacter);
 		}
 	}

@@ -52,11 +52,6 @@ namespace TMPro.Examples
 
         void Awake()
         {
-            if (QualitySettings.vSyncCount > 0)
-                Application.targetFrameRate = 60;
-            else
-                Application.targetFrameRate = -1;
-
             if (Application.platform == RuntimePlatform.IPhonePlayer || Application.platform == RuntimePlatform.Android)
                 Input.simulateMouseWithTouches = false;
 
