@@ -300,6 +300,7 @@ public class GameCharacter : MonoBehaviour, IDamage
 	{
 		if (!isInitialized) return;
 		KillZOffset();
+		buffComponent.LateUpdate(Time.deltaTime);
 		if (animController != null) animController.LateUpdate();
 	}
 

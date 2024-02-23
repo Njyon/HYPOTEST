@@ -60,15 +60,15 @@ MonoBehaviour:
   AirDirectionAttacks:
   - action:
       instance:
-        rid: 5432272745101787140
+        rid: 5432272967765327874
     data:
       showProperties: 1
       hitDetectionType: 2
       mesh: {fileID: 0}
-      offset: {x: 2.5, y: 0, z: 0}
+      offset: {x: 1.5, y: 0, z: 0}
       scale: {x: 0, y: 0, z: 0}
       radius: 0
-      boxDimensions: {x: 4, y: 3, z: 1}
+      boxDimensions: {x: 5, y: 3, z: 3}
       capsulHeight: 0
     combatBranches:
       keys: 
@@ -98,29 +98,16 @@ MonoBehaviour:
     downAnimation: {fileID: 1359069366890874302, guid: 2737afb67e0ae0548a9929568839f61e,
       type: 3}
   AimData:
-    AimWeaponReadyPoseRun: {fileID: 0}
+    AimWeaponReadyPoseRun: {fileID: 4001460793698416936, guid: f6b6c1d1ea2e1bd49865f004819e7016,
+      type: 3}
     WeaponReadyInterpSpeed: 5
-    HeadSpineLayerMovingWeight: 0.5
-    ArmRMovingWeight: 0.5
-    ArmLMovingWeight: 0.5
+    HeadSpineLayerMovingWeight: 0.885
+    ArmRMovingWeight: 1
+    ArmLMovingWeight: 1
   references:
     version: 2
     RefIds:
     - rid: 5432272745101787139
-      type: {class: KickAwayAttack, ns: , asm: Assembly-CSharp}
-      data:
-        attackData:
-          Damage: 10
-          Rating: 100
-          Discharge: 100
-          attackAnimation: {fileID: 3772948711023310249, guid: c0a8be2ca9b0684439cb1e2a91100a82,
-            type: 3}
-          attackTriggerAmount: 0
-          freezBetweenAttacks: 0
-          kickDirection: {x: 0, y: 0, z: 10}
-          stunTime: 0.6
-          kickStrengh: 20
-    - rid: 5432272745101787140
       type: {class: KickAwayAttack, ns: , asm: Assembly-CSharp}
       data:
         attackData:
@@ -146,3 +133,15 @@ MonoBehaviour:
           projectile: {fileID: 3722389633342296348, guid: d684f1c494de6974f891d400e4b49fb7,
             type: 3}
           projectileSpeed: 20
+    - rid: 5432272967765327874
+      type: {class: Blend3DAimKickAwayAttack, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          shootAddativeAnimation: {fileID: 7400000, guid: 8e4a5e30624254b4981b2e1af195f083,
+            type: 2}
+          forceAimDuration: 5
+          stunTime: 1
+          kickAwayStrenght: 15

@@ -372,6 +372,7 @@ public abstract class WeaponBase
 			case EHitDetectionType.Box:
 				{
 					gameCharacter.CombatComponent.HitDetectionGameObject.transform.position = gameCharacter.MovementComponent.CharacterCenter;
+					//gameCharacter.CombatComponent.HitDetectionGameObject.transform.rotation = Quaternion.identity;
 					gameCharacter.CombatComponent.HitDetectionGameObject.transform.Translate(CurrentAction.data.offset);
 					Collider[] colliders = Physics.OverlapBox(gameCharacter.CombatComponent.HitDetectionGameObject.transform.position, CurrentAction.data.boxDimensions / 2, Quaternion.identity, GameCharacter.CharacterLayer, QueryTriggerInteraction.Ignore);
 					foreach (Collider collider in colliders)
@@ -379,19 +380,20 @@ public abstract class WeaponBase
 						WeaponColliderEnter(collider);
 					}
 					//Ultra.Utilities.DrawBox(hitDetectionGameObject.transform.position, Quaternion.identity, lastAttack.data.boxDimensions, Color.red, 200);
-					Ultra.Utilities.DrawBox(gameCharacter.CombatComponent.HitDetectionGameObject.transform.position, Quaternion.identity, CurrentAction.data.boxDimensions, Color.red);
+					Ultra.Utilities.DrawBox(gameCharacter.CombatComponent.HitDetectionGameObject.transform.position, gameCharacter.CombatComponent.HitDetectionGameObject.transform.rotation, CurrentAction.data.boxDimensions, Color.red);
 				}
 				break;
 			case EHitDetectionType.Capsul:
 				{
 					gameCharacter.CombatComponent.HitDetectionGameObject.transform.position = gameCharacter.MovementComponent.CharacterCenter;
+					//gameCharacter.CombatComponent.HitDetectionGameObject.transform.rotation = Quaternion.identity;
 					gameCharacter.CombatComponent.HitDetectionGameObject.transform.Translate(CurrentAction.data.offset);
 					Collider[] colliders = Ultra.Utilities.OverlapCapsule(gameCharacter.CombatComponent.HitDetectionGameObject.transform.position, CurrentAction.data.capsulHeight, CurrentAction.data.radius, GameCharacter.CharacterLayer, QueryTriggerInteraction.Ignore);
 					foreach (Collider collider in colliders)
 					{
 						WeaponColliderEnter(collider);
 					}
-					Ultra.Utilities.DrawCapsule(gameCharacter.CombatComponent.HitDetectionGameObject.transform.position, Quaternion.identity, CurrentAction.data.capsulHeight, CurrentAction.data.radius, Color.red);
+					Ultra.Utilities.DrawCapsule(gameCharacter.CombatComponent.HitDetectionGameObject.transform.position, gameCharacter.CombatComponent.HitDetectionGameObject.transform.rotation, CurrentAction.data.capsulHeight, CurrentAction.data.radius, Color.red);
 					//Ultra.Utilities.DrawWireCapsule(hitDetectionGameObject.transform.position, Quaternion.identity, lastAttack.data.radius, lastAttack.data.capsulHeight, Color.red, 200);
 					//Gizmos.DrawCube(hitDetectionGameObject.transform.position, Vector3.one);
 				}
@@ -399,6 +401,7 @@ public abstract class WeaponBase
 			default:
 				{
 					gameCharacter.CombatComponent.HitDetectionGameObject.transform.position = gameCharacter.MovementComponent.CharacterCenter;
+					//gameCharacter.CombatComponent.HitDetectionGameObject.transform.rotation = Quaternion.identity;
 					gameCharacter.CombatComponent.HitDetectionGameObject.transform.Translate(CurrentAction.data.offset);
 					Collider[] colliders = Physics.OverlapSphere(gameCharacter.CombatComponent.HitDetectionGameObject.transform.position, CurrentAction.data.radius, GameCharacter.CharacterLayer, QueryTriggerInteraction.Ignore);
 					foreach (Collider collider in colliders)
@@ -1185,6 +1188,49 @@ public abstract class WeaponBase
 		var soundClip = WeaponData.defaultHitSounds[randIndex];
 		SoundManager.Instance.PlaySound(soundClip);
 		lastHitSoundIndex = randIndex;
+	}
+
+	public void SpawnWeaponFlash(WeaponObjData weaponObjData)
+	{
+		ParticleSystemPool pool = GetRangeWeaponFlashParticlePool();
+		if (pool == null) return;
+		ParticleSystem ps = pool.GetValue();
+		ps.transform.parent = weaponObjData.transform;
+		ps.transform.position = weaponObjData.weaponTip.transform.position;
+		ps.transform.rotation = weaponObjData.transform.rotation;
+	}
+
+	public void SpawnDamageHitEffect(RaycastHit hit)
+	{
+		GameCharacter gc = hit.collider.GetComponent<GameCharacter>();
+		ParticleSystemPool pool = GetRangeWeaponHitParticlePool();
+		if (pool == null) return;
+		ParticleSystem ps = pool.GetValue();
+		ps.transform.parent = hit.collider.transform;
+		if (gc != null) ps.transform.position = gc.MovementComponent.CharacterCenter;
+		else ps.transform.position = hit.point;
+	}
+	public void SpawnDamageHitEffect(GameObject hitObj)
+	{
+		GameCharacter gc = hitObj.GetComponent<GameCharacter>();
+		SpawnDamageHitEffect(gc);
+	}
+	public void SpawnDamageHitEffect(GameCharacter gc)
+	{
+		if (gc == null) return;
+		ParticleSystemPool pool = GetRangeWeaponHitParticlePool();
+		if (pool == null) return;
+		ParticleSystem ps = pool.GetValue();
+		ps.transform.parent = gc.transform;
+		if (gc != null) ps.transform.position = gc.MovementComponent.CharacterCenter;
+	}
+
+	public void AddForceAimBuff(float duration)
+	{
+ 		if (GameCharacter.BuffComponent.IsBuffActive(EBuff.ForceAim))
+			GameCharacter.BuffComponent.ResetDurationOffActiveBuff(EBuff.ForceAim);
+		else
+			GameCharacter.BuffComponent.AddBuff(new ForceAimBuff(GameCharacter, duration));
 	}
 
 	public virtual ParticleSystemPool GetRangeWeaponFlashParticlePool()

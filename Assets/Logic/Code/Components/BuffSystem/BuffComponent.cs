@@ -17,6 +17,7 @@ public class BuffComponent
 {
     GameCharacter gameCharacter;
     List<ABuff> buffList = new List<ABuff>();
+    List<ABuff> removeBuffList = new List<ABuff>();
 
     public BuffComponent(GameCharacter owener)
     {
@@ -26,8 +27,11 @@ public class BuffComponent
 
     public bool IsBuffActive(EBuff buffType)
     {
-		ABuff foundBuff = buffList.Find((e) => { return e.GetBuffType() == buffType; });
-        return foundBuff != null;
+		ABuff foundRemoveBuff = removeBuffList.Find((e) => { return e.GetBuffType() == buffType; });
+        if (foundRemoveBuff != null) return false;
+		
+        ABuff foundBuff = buffList.Find((e) => { return e.GetBuffType() == buffType; });
+		return foundBuff != null;
 	}
 
     public void AddTimeToActiveBuff(EBuff buffType, float addDuration)
@@ -60,7 +64,16 @@ public class BuffComponent
             buff.Update(deltaTime);
             //Ultra.Utilities.Instance.DebugLogOnScreen("Buff: " + buff.GetType().Name + " is Active", 0f, StringColor.Aqua);
         }
-    }
+	}
+
+    public void LateUpdate(float deltaTime)
+    {
+		foreach (ABuff removeBuff in removeBuffList)
+		{
+			buffList.Remove(removeBuff);
+		}
+		removeBuffList.Clear();
+	}
 
     public void RemoveBuff(EBuff buffType)
     {
@@ -68,13 +81,14 @@ public class BuffComponent
         OnBuffFinished(buff);
     }
 
-	async void OnBuffFinished(ABuff buff)
+	void OnBuffFinished(ABuff buff)
     {
         if (buff == null) return;
 
         buff.onBuffFinished -= OnBuffFinished;
-        buff.BuffEnds();
-        await new WaitForEndOfFrame();
-        buffList.Remove(buff);
+        buff.INTERN_BuffEnds();
+		ABuff foundRemoveBuff = removeBuffList.Find((e) => { return e.ID == buff.ID; });
+        if (foundRemoveBuff == null)
+		    removeBuffList.Add(buff);
     }
 }
