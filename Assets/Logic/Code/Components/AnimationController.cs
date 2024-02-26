@@ -1075,7 +1075,7 @@ public class AnimationController
 	}
 	public void SetArmRLayerWeight(float weight)
 	{
-		armRLayerInterpTarget = weight;
+ 		armRLayerInterpTarget = weight;
 		ArmRLayerWeight = weight;
 	}
 	public void InterpArmLLayerWeight(float target, float speed = 5f)

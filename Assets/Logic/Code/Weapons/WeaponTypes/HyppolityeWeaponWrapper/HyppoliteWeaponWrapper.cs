@@ -88,13 +88,13 @@ public class HyppoliteWeaponWrapper : WeaponBase
 
 	public override AttackAnimationData GroundUpAttack(float attackDeltaTime)
 	{
-		CurrentUsedWeapon = scriptableWeaponWrapper?.weapons[shotgunIndex]?.Weapon;
+		CurrentUsedWeapon = scriptableWeaponWrapper?.weapons[pistolIndex]?.Weapon;
 		return CurrentUsedWeapon?.GroundUpAttack(attackDeltaTime);
 	}
 
 	public override AttackAnimationData GroundDownAttack(float attackDeltaTime)
 	{
-		CurrentUsedWeapon = scriptableWeaponWrapper?.weapons[pistolIndex]?.Weapon;
+		CurrentUsedWeapon = scriptableWeaponWrapper?.weapons[shotgunIndex]?.Weapon;
 		return CurrentUsedWeapon?.GroundDownAttack(attackDeltaTime);
 	}
 

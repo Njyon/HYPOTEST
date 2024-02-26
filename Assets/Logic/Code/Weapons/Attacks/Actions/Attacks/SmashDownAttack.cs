@@ -72,10 +72,12 @@ public class SmashDownAttack : AttackBase
 
 		Weapon.SetTriggerAttack(attackData.downAttackTrigger);
 
+		Weapon.UnHookAllHookedCharacerts();
 		foreach (GameObject obj in Weapon.HitObjects)
 		{
 			OnGroundAttackHit(obj);
 		}
+		Weapon.HitDetectionEnd();
 	}
 
 	void OnGroundAttackHit(GameObject hitObject)

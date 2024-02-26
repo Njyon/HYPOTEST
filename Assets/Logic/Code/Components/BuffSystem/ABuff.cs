@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public abstract class ABuff
@@ -13,11 +14,16 @@ public abstract class ABuff
 	public Ultra.Timer DurationTimer { get { return durationTimer; } }
 	public GameCharacter GameCharacter { get { return gameCharacter; } }	
 
+	public GUID ID { get; private set; }
+	public bool IsActive { get; private set; }
+
 	public ABuff(GameCharacter gameCharacter ,float duration) 
 	{ 
 		this.gameCharacter = gameCharacter;
 		this.durationTimer = new Ultra.Timer(duration, false);
 		durationTimer.onTimerFinished += OnBuffTimerFinished;
+		ID = GUID.Generate();
+		IsActive = true;
 	}
 
 	public virtual void Update(float deltaTime)
@@ -37,6 +43,12 @@ public abstract class ABuff
 	/// Buff Clean up! Remove All subscriptions etc here!
 	/// </summary>
 	public abstract void BuffEnds();
+
+	public void INTERN_BuffEnds()
+	{
+		BuffEnds();
+		IsActive = false;
+	}
 
 	void OnBuffTimerFinished()
 	{

@@ -20,7 +20,8 @@ public enum EPluginCharacterState
 	BlockAim,
 	HoldAttack,
 	LookAtAimTargetDirection,
-	IgnoreGravityRuleState
+	IgnoreGravityRuleState,
+	AimIKCorrection,
 }
 
 public class GameCharacterPluginStateMachine : PluginStateMachineBase<EPluginCharacterState>
@@ -51,6 +52,7 @@ public class GameCharacterPluginStateMachine : PluginStateMachineBase<EPluginCha
 			case EPluginCharacterState.HoldAttack: newPluginState = new GameCharacterHoldAttackPluginState(this.gameCharacter, this); break;
 			case EPluginCharacterState.LookAtAimTargetDirection: newPluginState = new GameCharacterLookAtAimTargetDirectionPluginState(this.gameCharacter, this); break;
 			case EPluginCharacterState.IgnoreGravityRuleState: newPluginState = new GameCharacterNoGravityPluginState(this.gameCharacter, this); break;
+			case EPluginCharacterState.AimIKCorrection: newPluginState = new GameCharacterAimIKCorrectionPluginState(this.gameCharacter, this); break;
 			default:
 				Ultra.Utilities.Instance.DebugErrorString("GameCharacterPluginStateMaschine", "CreatePluginState", "PluginState has no Implementation!");
 				break;

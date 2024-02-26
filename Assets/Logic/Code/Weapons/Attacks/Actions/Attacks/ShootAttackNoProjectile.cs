@@ -37,7 +37,7 @@ public class ShootAttackNoProjectile : AttackBase
 		GameCharacter.PluginStateMachine.AddPluginState(EPluginCharacterState.Shoot);
 		GameCharacter.AnimController.ApplyBlendTree(GameCharacter.CombatComponent.CurrentWeapon.WeaponData.AnimationData[GameCharacter.CharacterData.Name].AimAnimations);
 		Weapon.PlayAttackSound(0);
-		SpawnWeaponFlash();
+		Weapon.SpawnWeaponFlash(weaponObjData);
 
 		GameCharacter target = Ultra.HypoUttilies.FindCharactereNearestToDirection(GameCharacter.MovementComponent.CharacterCenter, GameCharacter.MovementInput.magnitude > 0 ? GameCharacter.MovementInput : GameCharacter.transform.forward, ref GameCharacter.CharacterDetection.DetectedGameCharacters);
 		GameCharacter.CombatComponent.AimCharacter = target;
@@ -68,20 +68,13 @@ public class ShootAttackNoProjectile : AttackBase
 			if (iDamage != null)
 			{
 				iDamage.DoDamage(GameCharacter, attackData.Damage, true, true, false);
-				SpawnDamageHitEffect(hit);
+				Weapon.SpawnDamageHitEffect(hit);
 				break;
 			}
 		}
-		AddForceAimBuff();
+		Weapon.AddForceAimBuff(attackData.forceAimDuration);
 	}
 
-	void AddForceAimBuff()
-	{
-		if (GameCharacter.BuffComponent.IsBuffActive(EBuff.ForceAim))
-			GameCharacter.BuffComponent.ResetDurationOffActiveBuff(EBuff.ForceAim);
-		else
-			GameCharacter.BuffComponent.AddBuff(new ForceAimBuff(GameCharacter, attackData.forceAimDuration));
-	}
 
 	public override void ActionInterupted()
 	{
@@ -96,24 +89,6 @@ public class ShootAttackNoProjectile : AttackBase
 		GameCharacter.CombatComponent.AttackTimer.onTimerFinished -= OnTimerFinished;
 		GameCharacter.AnimController.InUpperBodyAddativeState = false;
 		GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.Shoot);
-	}
-
-	void SpawnWeaponFlash()
-	{
-		ParticleSystem ps = shootFlashParticlePool.GetValue();
-		ps.transform.parent = weaponObjData.transform;
-		ps.transform.position = weaponObjData.weaponTip.transform.position;
-		ps.transform.rotation = weaponObjData.transform.rotation;
-	}
-
-	void SpawnDamageHitEffect(RaycastHit hit)
-	{
-		GameCharacter gc = hit.collider.GetComponent<GameCharacter>();
-		ParticleSystem ps = hitParticlePool.GetValue();
-		ps.transform.parent = hit.collider.transform;
-		if (gc != null) ps.transform.position = gc.MovementComponent.CharacterCenter;
-		else ps.transform.position = hit.point;
-
 	}
 
 	public override ActionBase CreateCopy()
