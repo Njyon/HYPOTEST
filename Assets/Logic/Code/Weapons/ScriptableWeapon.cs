@@ -1,4 +1,5 @@
 using Megumin.GameFramework.AI.BehaviorTree;
+using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -29,6 +30,9 @@ public class ScriptableWeapon : ScriptableObject
 	public List<SoundEffect> defaultAttackSounds;
 	public List<SoundEffect> defaultHitSounds;
 
+	[ConditionalField("WeaponType", false, EWeaponType.Ranged)] public ParticleSystem defaultAttackVFX;
+	[ConditionalField("WeaponType", false, EWeaponType.Ranged)] public ParticleSystem defaultHitVFX;
+
 	private WeaponBase weaponCopy = null;
 	public WeaponBase Weapon { get { return weaponCopy; } }
 	public virtual void CreateWeapon(GameCharacter gameCharacter)
@@ -58,6 +62,8 @@ public class ScriptableWeapon : ScriptableObject
 		instance.WeaponImage = WeaponImage;
 		instance.defaultAttackSounds = defaultAttackSounds;
 		instance.defaultHitSounds = defaultHitSounds;
+		instance.defaultAttackVFX = defaultAttackVFX;
+		instance.defaultHitVFX = defaultHitVFX;
 	}
 	protected void CopyData(ref ScriptableWeaponWrapper instance)
 	{
@@ -73,5 +79,7 @@ public class ScriptableWeapon : ScriptableObject
 		instance.WeaponImage = WeaponImage;
 		instance.defaultAttackSounds = defaultAttackSounds;
 		instance.defaultHitSounds = defaultHitSounds;
+		instance.defaultAttackVFX = defaultAttackVFX;
+		instance.defaultHitVFX = defaultHitVFX;
 	}
 }

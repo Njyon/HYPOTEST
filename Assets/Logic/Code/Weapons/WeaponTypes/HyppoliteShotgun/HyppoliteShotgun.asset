@@ -22,7 +22,7 @@ MonoBehaviour:
     values:
     - {fileID: 11400000, guid: bb7299ed63019af4d83d9f0b58106439, type: 2}
   WeaponMeshData: {fileID: 11400000, guid: 08711f4cbf41bc74ba7c440e71318f23, type: 2}
-  WeaponType: 0
+  WeaponType: 1
   MaxChargeAmount: 1000
   DefaultChargeAmount: 700
   TimeAfterEqupingMaxChargedWeapon: 3
@@ -32,6 +32,10 @@ MonoBehaviour:
   WeaponImage: {fileID: 21300000, guid: b57ce83b38711304c996cf569184f982, type: 3}
   defaultAttackSounds: []
   defaultHitSounds: []
+  defaultAttackVFX: {fileID: 3122979937995806288, guid: c438f5851a1ba9741bba5ab242fb1713,
+    type: 3}
+  defaultHitVFX: {fileID: 1543649926450444687, guid: 0f5a3ec2d08887c4586cc50e8a4f40ae,
+    type: 3}
   references:
     version: 2
     RefIds:

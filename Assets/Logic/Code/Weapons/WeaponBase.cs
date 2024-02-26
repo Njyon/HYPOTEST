@@ -1085,22 +1085,22 @@ public abstract class WeaponBase
 			GameCharacter.CombatComponent.HookedCharacters.Add(enemyCharacter);
 	}
 
-	public void KickAway(GameCharacter enemyCharacter, float kickAwayTime, Vector3 kickAwayDir, float kickAwayStrengh)
+	public void KickAway(GameCharacter enemyCharacter, float kickAwayTime, Vector3 kickAwayDir, float kickAwayStrengh, bool vectorIsDirectional = false)
 	{
 		if (enemyCharacter.CombatComponent.CanRequestFlyAway())
 		{
 			enemyCharacter.CombatComponent.RequestFlyAway(kickAwayTime);
+			Vector3 direction;
 			if (Mathf.Sign(GameCharacter.transform.forward.x) < 0)
 			{
-				Vector3 direction = Quaternion.Euler(kickAwayDir) * GameCharacter.transform.forward;
+				direction = Quaternion.Euler(kickAwayDir) * GameCharacter.transform.forward;
 				direction.y = direction.y * -1;
-				enemyCharacter.MovementComponent.MovementVelocity = direction * kickAwayStrengh;
 			}
 			else
 			{
-				Vector3 direction = Quaternion.Euler(kickAwayDir) * GameCharacter.transform.forward;
-				enemyCharacter.MovementComponent.MovementVelocity = direction * kickAwayStrengh;
+				direction = Quaternion.Euler(kickAwayDir) * GameCharacter.transform.forward;
 			}
+			enemyCharacter.MovementComponent.MovementVelocity = (vectorIsDirectional ? kickAwayDir : direction) * kickAwayStrengh;
 			
 			Ultra.Utilities.DrawArrow(enemyCharacter.MovementComponent.CharacterCenter, enemyCharacter.MovementComponent.MovementVelocity.normalized, 5f, Color.magenta, 10f, 100, DebugAreas.Combat);
 		}
@@ -1190,12 +1190,16 @@ public abstract class WeaponBase
 		lastHitSoundIndex = randIndex;
 	}
 
-	public void SpawnWeaponFlash(WeaponObjData weaponObjData)
+	public void SpawnWeaponFlash(WeaponObjData weaponObjData, bool spawnAttached = true)
 	{
 		ParticleSystemPool pool = GetRangeWeaponFlashParticlePool();
 		if (pool == null) return;
 		ParticleSystem ps = pool.GetValue();
-		ps.transform.parent = weaponObjData.transform;
+		if (spawnAttached)
+			ps.transform.parent = weaponObjData.transform;
+		else
+			ps.transform.parent = null;
+
 		ps.transform.position = weaponObjData.weaponTip.transform.position;
 		ps.transform.rotation = weaponObjData.transform.rotation;
 	}
@@ -1241,6 +1245,11 @@ public abstract class WeaponBase
 	public virtual ParticleSystemPool GetRangeWeaponHitParticlePool()
 	{
 		return null;
+	}
+
+	public virtual bool SpawnRangedAttackShootPartilceAttached()
+	{
+		return true;
 	}
 
 	public abstract WeaponBase CreateCopy(GameCharacter gameCharacter, ScriptableWeapon weapon);

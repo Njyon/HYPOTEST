@@ -91,6 +91,7 @@ public class PlayerGameCharacter : GameCharacter
 
 	void StyleRankingChanged(int newRankIndex, int oldRankIndex)
 	{
+		if (!gameObject.activeSelf) return;
 		MusicManager.Instance.SetVolumeTarget(combatRatingComponent.StyleRanks[newRankIndex].musicVolumeTarget);
 	}
 
