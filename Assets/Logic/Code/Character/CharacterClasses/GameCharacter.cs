@@ -234,10 +234,16 @@ public class GameCharacter : MonoBehaviour, IDamage
 		dodgeParticleSystemPool = new ParticleSystemPool(gameCharacterData.DodgeParticleEffect, CreateHolderChild("DodgeEffect Holder"), 2);
 	}
 
-	public GameObject CreateHolderChild(string name)
+	/// <summary>
+	/// Create Holder Object for Pools or other GameObject Collection
+	/// </summary>
+	/// <param name="name"> Name of the Holder </param>
+	/// <param name="parent"> Parent of the Holder, if NULL default GameCharacter DataWolrdHolder is used </param>
+	/// <returns></returns>
+	public GameObject CreateHolderChild(string name, GameObject parent = null)
 	{
 		var succsessfullDodgeParticlePoolHolder = new GameObject(">> " + this.name + " " + name);
-		succsessfullDodgeParticlePoolHolder.transform.parent = dataWorldHolder.transform;
+		succsessfullDodgeParticlePoolHolder.transform.parent = parent != null ? parent.transform : dataWorldHolder.transform;
 		return succsessfullDodgeParticlePoolHolder;
 	}
 

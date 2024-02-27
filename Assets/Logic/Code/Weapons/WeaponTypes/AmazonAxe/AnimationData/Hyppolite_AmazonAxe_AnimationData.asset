@@ -451,7 +451,26 @@ MonoBehaviour:
       keys: 
       values: 
     particleList: []
-  Ultimate: []
+  Ultimate:
+  - action:
+      instance:
+        rid: 5432273058513551362
+    data:
+      showProperties: 0
+      hitDetectionType: 1
+      mesh: {fileID: 0}
+      offset: {x: 0, y: 0, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 0
+      boxDimensions: {x: 0, y: 0, z: 0}
+      capsulHeight: 0
+    combatBranches:
+      keys: 
+      values: 
+    timedCombatBrenches:
+      keys: 
+      values: 
+    particleList: []
   HandType: 1
   WeaponReadyPose: {fileID: 8971557712206723258, guid: bc4a584a46a890042bd1b4346d61a9a8,
     type: 3}
@@ -680,3 +699,17 @@ MonoBehaviour:
           kickDirection: {x: 0, y: 0, z: -90}
           stunTime: 1
           kickStrengh: 20
+    - rid: 5432273058513551362
+      type: {class: HyppoliteAxeUltimate, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          attackAnimation: {fileID: 7681215308225181191, guid: 11ed6075257f2ce4383ac52bc261f4d4,
+            type: 3}
+          damageDelay: 0.5
+          kickUpStrenght: 20
+          stunLenght: 1
+          livingBombKickUpStrenght: 20
+          livingBombStunLenght: 1

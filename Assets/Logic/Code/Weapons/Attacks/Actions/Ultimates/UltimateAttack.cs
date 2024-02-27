@@ -6,7 +6,6 @@ using UnityEngine;
 [Serializable]
 public class UlitmateAttackData : AttackData
 {
-	[SerializeField]
 	public AnimationClip attackAnimation;
 }
 

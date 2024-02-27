@@ -11,6 +11,7 @@ public enum EBuff
     OnHitEffect,
     OnHitShaderEffect,
 	HoldInAirAfterStartFalling,
+    LivingBomb,
 }
 
 public class BuffComponent

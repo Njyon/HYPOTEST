@@ -15,7 +15,6 @@ public class HyppoliteShotgun : WeaponBase
 	{
 		base.InitWeapon();
 
-		CreateWeaponVFXPools();
 	}
 
 	public override void EquipWeapon()
@@ -35,13 +34,10 @@ public class HyppoliteShotgun : WeaponBase
 		GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.AimIKCorrection);
 	}
 
-	async void CreateWeaponVFXPools()
+	protected override void CreateWeaponVFXPools()
 	{
-		await new WaitForEndOfFrame();
-		await new WaitForEndOfFrame();
-
-		shootParticlePool = new ParticleSystemPool(WeaponData.defaultAttackVFX, GameCharacter.CreateHolderChild("ShotgunFlashParticlePool"));
-		hitParticlePool = new ParticleSystemPool(WeaponData.defaultHitVFX, GameCharacter.CreateHolderChild("ShotgunHitParticlePool"));
+		shootParticlePool = new ParticleSystemPool(WeaponData.DefaultAttackVFX, GameCharacter.CreateHolderChild("ShotgunFlashParticlePool"));
+		hitParticlePool = new ParticleSystemPool(WeaponData.DefaultHitVFX, GameCharacter.CreateHolderChild("ShotgunHitParticlePool"));
 	}
 
 	public override ParticleSystemPool GetRangeWeaponFlashParticlePool()

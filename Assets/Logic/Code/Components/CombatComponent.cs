@@ -494,11 +494,33 @@ public class CombatComponent
 	public void RequestFlyAway(float flyAwayTime)
 	{
 		if (FlyAwayTimer.IsRunning)
-			FlyAwayTimer.AddTime(flyAwayTime);
+			FlyAwayTimer.Start(flyAwayTime);
 		else 
 			FlyAwayTime = flyAwayTime;
 		gameCharacter.StateMachine.RemoveLazyState(EGameCharacterState.Freez);
 		gameCharacter.StateMachine.ForceStateChange(EGameCharacterState.FlyAway, true);
+	}
+
+	public void KickAway(GameCharacter enemyCharacter, float kickAwayTime, Vector3 kickAwayDir, float kickAwayStrengh, bool vectorIsDirectional = false, bool shouldFreez = true)
+	{
+		if (enemyCharacter.CombatComponent.CanRequestFlyAway())
+		{
+			enemyCharacter.CombatComponent.RequestFlyAway(kickAwayTime);
+			Vector3 direction;
+			if (Mathf.Sign(gameCharacter.transform.forward.x) < 0)
+			{
+				direction = Quaternion.Euler(kickAwayDir) * gameCharacter.transform.forward;
+				direction.y = direction.y * -1;
+			}
+			else
+			{
+				direction = Quaternion.Euler(kickAwayDir) * gameCharacter.transform.forward;
+			}
+			enemyCharacter.MovementComponent.MovementVelocity = (vectorIsDirectional ? kickAwayDir : direction) * kickAwayStrengh;
+
+			Ultra.Utilities.DrawArrow(enemyCharacter.MovementComponent.CharacterCenter, enemyCharacter.MovementComponent.MovementVelocity.normalized, 5f, Color.magenta, 10f, 100, DebugAreas.Combat);
+		}
+		if (shouldFreez) GameTimeManager.Instance.AddHeavyFreezFrame();
 	}
 
 	public void SuccsessfullDodge(GameCharacter damageInitiator, float damage)

@@ -27,11 +27,12 @@ public class ScriptableWeapon : ScriptableObject
 	public float MaxUltChargeAmount = 100f;
 	public GameObject UIElement;
 	public Sprite WeaponImage;
-	public List<SoundEffect> defaultAttackSounds;
-	public List<SoundEffect> defaultHitSounds;
+	public List<SoundEffect> DefaultAttackSounds;
+	public List<SoundEffect> DefaultHitSounds;
 
-	[ConditionalField("WeaponType", false, EWeaponType.Ranged)] public ParticleSystem defaultAttackVFX;
-	[ConditionalField("WeaponType", false, EWeaponType.Ranged)] public ParticleSystem defaultHitVFX;
+	[ConditionalField("WeaponType", false, EWeaponType.Ranged)] public ParticleSystem DefaultAttackVFX;
+	[ConditionalField("WeaponType", false, EWeaponType.Ranged)] public ParticleSystem DefaultHitVFX;
+	public List<ParticleSystem> UltimateParticleSystems;
 
 	private WeaponBase weaponCopy = null;
 	public WeaponBase Weapon { get { return weaponCopy; } }
@@ -60,10 +61,11 @@ public class ScriptableWeapon : ScriptableObject
 		instance.TimeAfterEqupingMaxChargedWeapon = TimeAfterEqupingMaxChargedWeapon;
 		instance.UIElement = UIElement;
 		instance.WeaponImage = WeaponImage;
-		instance.defaultAttackSounds = defaultAttackSounds;
-		instance.defaultHitSounds = defaultHitSounds;
-		instance.defaultAttackVFX = defaultAttackVFX;
-		instance.defaultHitVFX = defaultHitVFX;
+		instance.DefaultAttackSounds = DefaultAttackSounds;
+		instance.DefaultHitSounds = DefaultHitSounds;
+		instance.DefaultAttackVFX = DefaultAttackVFX;
+		instance.DefaultHitVFX = DefaultHitVFX;
+		instance.UltimateParticleSystems = UltimateParticleSystems;
 	}
 	protected void CopyData(ref ScriptableWeaponWrapper instance)
 	{
@@ -77,9 +79,10 @@ public class ScriptableWeapon : ScriptableObject
 		instance.TimeAfterEqupingMaxChargedWeapon = TimeAfterEqupingMaxChargedWeapon;
 		instance.UIElement = UIElement;
 		instance.WeaponImage = WeaponImage;
-		instance.defaultAttackSounds = defaultAttackSounds;
-		instance.defaultHitSounds = defaultHitSounds;
-		instance.defaultAttackVFX = defaultAttackVFX;
-		instance.defaultHitVFX = defaultHitVFX;
+		instance.DefaultAttackSounds = DefaultAttackSounds;
+		instance.DefaultHitSounds = DefaultHitSounds;
+		instance.DefaultAttackVFX = DefaultAttackVFX;
+		instance.DefaultHitVFX = DefaultHitVFX;
+		instance.UltimateParticleSystems = UltimateParticleSystems;
 	}
 }

@@ -164,7 +164,7 @@ public class SmashDownAttack3Blend : ActionBase
 
 		GameCharacter enemyCharacter = hitObject.GetComponent<GameCharacter>();
 		if (enemyCharacter == null) return;
-		Weapon.KickAway(enemyCharacter, landingData.stunTime, landingData.kickDir, landingData.kickStrenght);
+		GameCharacter.CombatComponent.KickAway(enemyCharacter, landingData.stunTime, landingData.kickDir, landingData.kickStrenght);
 		GameCharacter.CombatComponent.FreezAfterPush(enemyCharacter, landingData.stunTime, landingData.freezTimeAftetKick);
 	}
 

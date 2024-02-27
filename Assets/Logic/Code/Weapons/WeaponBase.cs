@@ -147,6 +147,7 @@ public abstract class WeaponBase
 		hitObjects = new List<GameObject>();
 		maxChargeAfterEquipTimer = new Ultra.Timer();
 		//if (weaponData.AnimationData.ContainsKey(gameCharacter.CharacterData.Name)) animationData = weaponData.AnimationData[gameCharacter.CharacterData.Name].Copy();
+		Dleayed_Internal_Init();
 	}
 
 	~WeaponBase() { }
@@ -1085,28 +1086,6 @@ public abstract class WeaponBase
 			GameCharacter.CombatComponent.HookedCharacters.Add(enemyCharacter);
 	}
 
-	public void KickAway(GameCharacter enemyCharacter, float kickAwayTime, Vector3 kickAwayDir, float kickAwayStrengh, bool vectorIsDirectional = false)
-	{
-		if (enemyCharacter.CombatComponent.CanRequestFlyAway())
-		{
-			enemyCharacter.CombatComponent.RequestFlyAway(kickAwayTime);
-			Vector3 direction;
-			if (Mathf.Sign(GameCharacter.transform.forward.x) < 0)
-			{
-				direction = Quaternion.Euler(kickAwayDir) * GameCharacter.transform.forward;
-				direction.y = direction.y * -1;
-			}
-			else
-			{
-				direction = Quaternion.Euler(kickAwayDir) * GameCharacter.transform.forward;
-			}
-			enemyCharacter.MovementComponent.MovementVelocity = (vectorIsDirectional ? kickAwayDir : direction) * kickAwayStrengh;
-			
-			Ultra.Utilities.DrawArrow(enemyCharacter.MovementComponent.CharacterCenter, enemyCharacter.MovementComponent.MovementVelocity.normalized, 5f, Color.magenta, 10f, 100, DebugAreas.Combat);
-		}
-		GameTimeManager.Instance.AddHeavyFreezFrame();
-	}
-
 	void OnMaxChargeAfterEquipTimerFinished()
 	{
 		Charge = chargeAfterTime;
@@ -1152,24 +1131,24 @@ public abstract class WeaponBase
 
 	public virtual void PlayAttackSound(int index = -1)
 	{
-		if (WeaponData.defaultAttackSounds.Count <= 0) return;
+		if (WeaponData.DefaultAttackSounds.Count <= 0) return;
 
 		index--;
 		if (index < 0)
 		{
-			int randIndex = UnityEngine.Random.Range(0, WeaponData.defaultAttackSounds.Count);
+			int randIndex = UnityEngine.Random.Range(0, WeaponData.DefaultAttackSounds.Count);
 			if (randIndex == lastAttackSoundIndex)
 			{
 				randIndex++;
-				randIndex %= WeaponData.defaultAttackSounds.Count;
+				randIndex %= WeaponData.DefaultAttackSounds.Count;
 			}
-			var soundClip = WeaponData.defaultAttackSounds[randIndex];
+			var soundClip = WeaponData.DefaultAttackSounds[randIndex];
 			SoundManager.Instance.PlaySound(soundClip);
 			lastAttackSoundIndex = randIndex;
 		}
 		else
 		{
-			var soundClip = WeaponData.defaultAttackSounds[index];
+			var soundClip = WeaponData.DefaultAttackSounds[index];
 			SoundManager.Instance.PlaySound(soundClip);
 			lastAttackSoundIndex = index;
 		}
@@ -1177,15 +1156,15 @@ public abstract class WeaponBase
 
 	public virtual void PlayHitSound()
 	{
-		if (WeaponData.defaultHitSounds.Count <= 0) return;
+		if (WeaponData.DefaultHitSounds.Count <= 0) return;
 
-		int randIndex = UnityEngine.Random.Range(0, WeaponData.defaultHitSounds.Count);
+		int randIndex = UnityEngine.Random.Range(0, WeaponData.DefaultHitSounds.Count);
 		if (randIndex == lastHitSoundIndex)
 		{
 			randIndex++;
-			randIndex %= WeaponData.defaultHitSounds.Count;
+			randIndex %= WeaponData.DefaultHitSounds.Count;
 		}
-		var soundClip = WeaponData.defaultHitSounds[randIndex];
+		var soundClip = WeaponData.DefaultHitSounds[randIndex];
 		SoundManager.Instance.PlaySound(soundClip);
 		lastHitSoundIndex = randIndex;
 	}
@@ -1193,7 +1172,7 @@ public abstract class WeaponBase
 	public void SpawnWeaponFlash(WeaponObjData weaponObjData, bool spawnAttached = true)
 	{
 		ParticleSystemPool pool = GetRangeWeaponFlashParticlePool();
-		if (pool == null) return;
+		if (pool == null || pool.ParticleInstance == null) return;
 		ParticleSystem ps = pool.GetValue();
 		if (spawnAttached)
 			ps.transform.parent = weaponObjData.transform;
@@ -1208,7 +1187,7 @@ public abstract class WeaponBase
 	{
 		GameCharacter gc = hit.collider.GetComponent<GameCharacter>();
 		ParticleSystemPool pool = GetRangeWeaponHitParticlePool();
-		if (pool == null) return;
+		if (pool == null || pool.ParticleInstance == null) return;
 		ParticleSystem ps = pool.GetValue();
 		ps.transform.parent = hit.collider.transform;
 		if (gc != null) ps.transform.position = gc.MovementComponent.CharacterCenter;
@@ -1223,7 +1202,7 @@ public abstract class WeaponBase
 	{
 		if (gc == null) return;
 		ParticleSystemPool pool = GetRangeWeaponHitParticlePool();
-		if (pool == null) return;
+		if (pool == null || pool.ParticleInstance == null) return;
 		ParticleSystem ps = pool.GetValue();
 		ps.transform.parent = gc.transform;
 		if (gc != null) ps.transform.position = gc.MovementComponent.CharacterCenter;
@@ -1245,6 +1224,24 @@ public abstract class WeaponBase
 	public virtual ParticleSystemPool GetRangeWeaponHitParticlePool()
 	{
 		return null;
+	}
+
+	public virtual ParticleSystemPool GetWeaponVFXPool(int index)
+	{
+		return null;
+	}
+
+	async void Dleayed_Internal_Init()
+	{
+		await new WaitForEndOfFrame();
+		await new WaitForEndOfFrame();
+
+		CreateWeaponVFXPools();
+	}
+
+	protected virtual void CreateWeaponVFXPools()
+	{
+
 	}
 
 	public virtual bool SpawnRangedAttackShootPartilceAttached()
