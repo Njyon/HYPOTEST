@@ -75,26 +75,6 @@ MonoBehaviour:
   passIndex: 0
   bindDepthStencilAttachment: 0
   m_Version: 1
---- !u!114 &-5693364856319948407
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d613f08f173d4dd895bb07b3230baa9, type: 3}
-  m_Name: Vignette
-  m_EditorClassIdentifier: 
-  m_Active: 1
-  injectionPoint: 600
-  fetchColorBuffer: 1
-  requirements: 0
-  passMaterial: {fileID: 2100000, guid: c1d801e3c0d6f184c9144e0ae4a440dc, type: 2}
-  passIndex: 1
-  bindDepthStencilAttachment: 0
-  m_Version: 1
 --- !u!114 &-5543827131766105473
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -227,11 +207,11 @@ MonoBehaviour:
   - {fileID: -6121240314816665614}
   - {fileID: -2479927868937919050}
   - {fileID: -4205738609693068482}
+  - {fileID: 6172336010906264659}
   - {fileID: -8235848534293230498}
-  - {fileID: -5693364856319948407}
   - {fileID: -5700532258643213226}
   - {fileID: -2613386902471412682}
-  m_RendererFeatureMap: 7f9ae89a985e10b3bb714afc4a0de367f2678d8a5dfc0cabb6255d0fbe8695dd3e7319770437a2c55ecc87b96463b48d89495bf2d31afdb05684ea0c1da4e3b0367488617562bbdb
+  m_RendererFeatureMap: 7f9ae89a985e10b3bb714afc4a0de367f2678d8a5dfc0cabb6255d0fbe8695dd3e7319770437a2c553646b44e68aa8555ecc87b96463b48d5684ea0c1da4e3b0367488617562bbdb
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
@@ -301,6 +281,26 @@ MonoBehaviour:
     cullingClusterSizeY: 32
     debugMode: 0
     debugOpacity: 1
+--- !u!114 &6172336010906264659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d613f08f173d4dd895bb07b3230baa9, type: 3}
+  m_Name: Vignette
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  injectionPoint: 600
+  fetchColorBuffer: 1
+  requirements: 0
+  passMaterial: {fileID: 2100000, guid: c1d801e3c0d6f184c9144e0ae4a440dc, type: 2}
+  passIndex: 0
+  bindDepthStencilAttachment: 0
+  m_Version: 1
 --- !u!114 &7485841621331374523
 MonoBehaviour:
   m_ObjectHideFlags: 0
