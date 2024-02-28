@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: c0a8be2ca9b0684439cb1e2a91100a82
+guid: 11ed6075257f2ce4383ac52bc261f4d4
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -33,11 +33,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Hyppolite_Shotgun_HeavyAttack01
-      takeName: Hyppolite_Shotgun_HeavyAttack01
-      internalID: 3772948711023310249
+      name: Hyppolite_Axe_Ultimate01
+      takeName: Hyppolite_Axe_Ultimate01
+      internalID: 7681215308225181191
       firstFrame: 0
-      lastFrame: 77
+      lastFrame: 50
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -57,29 +57,15 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.27359244
-        functionName: HitDetectionEventStart
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.32815734
-        functionName: HitDetectionEventEnd
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.56216186
-        functionName: AttackRecoveryEvent
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.2795699
+      - time: 0.327957
         functionName: TriggerAttackAnimEvent
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.577957
+        functionName: AttackRecoveryEvent
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0

@@ -82,7 +82,7 @@ public class Blend3DAimKickAwayAttack : AttackBase
 		{
 			DoDamage(hitObj, attackData.Damage);
 			// Kickaway needs to happen after damage
-			Weapon.KickAway(gc, attackData.stunTime, (gc.MovementComponent.CharacterCenter - GameCharacter.MovementComponent.CharacterCenter).normalized, attackData.kickAwayStrenght);
+			GameCharacter.CombatComponent.KickAway(gc, attackData.stunTime, (gc.MovementComponent.CharacterCenter - GameCharacter.MovementComponent.CharacterCenter).normalized, attackData.kickAwayStrenght, true);
 			Weapon.SpawnDamageHitEffect(gc);
 		}else
 		{

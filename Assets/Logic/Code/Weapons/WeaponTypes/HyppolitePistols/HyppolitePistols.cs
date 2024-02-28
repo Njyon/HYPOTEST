@@ -12,15 +12,17 @@ public class HyppolitePistols : WeaponBase
 	public HyppolitePistols(GameCharacter gameCharacter, ScriptableWeapon weaponData) : base(gameCharacter, weaponData)
 	{ }
 
+	public override void InitWeapon()
+	{
+		base.InitWeapon();
+
+	}
+
 	public override void EquipWeapon()
 	{
 		base.EquipWeapon();
 
-		shootParticlePool = new ParticleSystemPool(GameAssets.Instance.hyppolitePistolShootEffect, GameCharacter.CreateHolderChild("PistolFlashParticlePool"));
-		hitParticlePool = new ParticleSystemPool(GameAssets.Instance.hyppolitePistolHitEffect, GameCharacter.CreateHolderChild("PistolHitParticlePool"));
-
 		GameCharacter.PluginStateMachine.AddPluginState(EPluginCharacterState.AimIKCorrection);
-
 	}
 
 	public override void UnEquipWeapon()
@@ -31,6 +33,12 @@ public class HyppolitePistols : WeaponBase
 		GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.Aim);
 		GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.Shoot);
 		GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.AimIKCorrection);
+	}
+
+	protected override void CreateWeaponVFXPools()
+	{
+		shootParticlePool = new ParticleSystemPool(WeaponData.DefaultAttackVFX, GameCharacter.CreateHolderChild("PistolFlashParticlePool"));
+		hitParticlePool = new ParticleSystemPool(WeaponData.DefaultHitVFX, GameCharacter.CreateHolderChild("PistolHitParticlePool"));
 	}
 
 	public override ParticleSystemPool GetRangeWeaponFlashParticlePool()

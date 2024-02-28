@@ -4,9 +4,18 @@ using UnityEngine;
 
 public class HyppoliteShotgun : WeaponBase
 {
-    public HyppoliteShotgun() { }
+	ParticleSystemPool shootParticlePool;
+	ParticleSystemPool hitParticlePool;
+
+	public HyppoliteShotgun() { }
 	public HyppoliteShotgun(GameCharacter gameCharacter, ScriptableWeapon weaponData) : base (gameCharacter, weaponData)
 	{ }
+
+	public override void InitWeapon()
+	{
+		base.InitWeapon();
+
+	}
 
 	public override void EquipWeapon()
 	{
@@ -23,6 +32,27 @@ public class HyppoliteShotgun : WeaponBase
 		GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.Aim);
 		GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.Shoot);
 		GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.AimIKCorrection);
+	}
+
+	protected override void CreateWeaponVFXPools()
+	{
+		shootParticlePool = new ParticleSystemPool(WeaponData.DefaultAttackVFX, GameCharacter.CreateHolderChild("ShotgunFlashParticlePool"));
+		hitParticlePool = new ParticleSystemPool(WeaponData.DefaultHitVFX, GameCharacter.CreateHolderChild("ShotgunHitParticlePool"));
+	}
+
+	public override ParticleSystemPool GetRangeWeaponFlashParticlePool()
+	{
+		return shootParticlePool;
+	}
+
+	public override ParticleSystemPool GetRangeWeaponHitParticlePool()
+	{
+		return hitParticlePool;
+	}
+
+	public override bool SpawnRangedAttackShootPartilceAttached()
+	{
+		return false;
 	}
 
 	public override WeaponBase CreateCopy(GameCharacter gameCharacter, ScriptableWeapon weapon)

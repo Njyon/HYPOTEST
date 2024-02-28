@@ -20,7 +20,7 @@ public abstract class ABuff
 	public ABuff(GameCharacter gameCharacter ,float duration) 
 	{ 
 		this.gameCharacter = gameCharacter;
-		this.durationTimer = new Ultra.Timer(duration, false);
+		this.durationTimer = new Ultra.Timer(duration, duration < 0 ? true : false);
 		durationTimer.onTimerFinished += OnBuffTimerFinished;
 		ID = GUID.Generate();
 		IsActive = true;

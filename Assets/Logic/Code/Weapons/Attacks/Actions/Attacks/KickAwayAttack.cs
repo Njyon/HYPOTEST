@@ -16,6 +16,21 @@ public class KickAwayAttackData : DefaultAttackData
 public class KickAwayAttack : AttackBase
 {
 	public KickAwayAttackData attackData;
+	// Needed for shotgun heavy Attack
+	WeaponObjData weaponObjData;
+
+	public override void Init(GameCharacter gameCharacter, WeaponBase weapon, InitAction action = null)
+	{
+		base.Init(gameCharacter, weapon, action);
+
+		switch (Weapon.WeaponData.WeaponType)
+		{
+			case EWeaponType.Ranged:
+				weaponObjData = GameCharacter.CombatComponent.CurrentWeapon.SpawnedWeapon.GetComponent<WeaponObjData>();
+				break;
+			default: break;
+		}
+	}
 
 	public override void StartAction()
 	{
@@ -31,11 +46,23 @@ public class KickAwayAttack : AttackBase
 		if (enemyCharacter == null) return;
 		if (Weapon.ComboIndexInSameAttack == attackData.attackTriggerAmount)
 		{
-			Weapon.KickAway(enemyCharacter, attackData.stunTime, attackData.kickDirection, attackData.kickStrengh);
+			GameCharacter.CombatComponent.KickAway(enemyCharacter, attackData.stunTime, attackData.kickDirection, attackData.kickStrengh);
 		} else if (attackData.freezBetweenAttacks)
 		{
 			enemyCharacter.CombatComponent.RequestFreez();
 		}
+		switch(Weapon.WeaponData.WeaponType)
+		{
+			case EWeaponType.Ranged:
+				Weapon.SpawnDamageHitEffect(enemyCharacter);
+				break;
+			default: break;
+		}
+	}
+
+	public override void TriggerAnimationEvent()
+	{
+		Weapon.SpawnWeaponFlash(weaponObjData, Weapon.SpawnRangedAttackShootPartilceAttached());
 	}
 
 	public override float GetActionRanting()
