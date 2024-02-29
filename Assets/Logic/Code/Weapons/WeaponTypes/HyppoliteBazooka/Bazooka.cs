@@ -11,11 +11,18 @@ public class Bazooka : WeaponBase
 	public override void EquipWeapon()
     {
         base.EquipWeapon();
-    }
+
+		GameCharacter.PluginStateMachine.AddPluginState(EPluginCharacterState.AimIKCorrection);
+	}
 
     public override void UnEquipWeapon()
     {
         base.UnEquipWeapon();
+
+		GameCharacter.BuffComponent.RemoveBuff(EBuff.ForceAim);
+		GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.Aim);
+		GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.Shoot);
+		GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.AimIKCorrection);
 	}
 
 	public override WeaponBase CreateCopy(GameCharacter gameCharacter, ScriptableWeapon weapon)

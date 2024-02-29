@@ -12,6 +12,7 @@ public enum EBuff
     OnHitShaderEffect,
 	HoldInAirAfterStartFalling,
     LivingBomb,
+    BazookaUlt,
 }
 
 public class BuffComponent
