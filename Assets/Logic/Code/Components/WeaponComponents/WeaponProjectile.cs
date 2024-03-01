@@ -8,14 +8,14 @@ public class WeaponProjectile : MonoBehaviour
 	public delegate void OnProjectileLifeTimeEnd(WeaponProjectile projectile);
 	
 	bool isInit = false;
-	Vector3 dir;
-	float speed;
+	protected Vector3 dir;
+	protected float speed;
 	protected float damage;
 	float currentGravityEffect;
 	ColliderHitScript colliderScript;
 	Collider projectileCollider;
 	protected GameCharacter gameCharacterOwner;
-	Rigidbody projectileRigidBody;
+	protected Rigidbody rigidBody;
 	Ultra.Timer lifeTimeTimer;
 	OnProjectileHit onHit;
 	OnProjectileLifeTimeEnd onLifeTimeEnd;
@@ -47,7 +47,7 @@ public class WeaponProjectile : MonoBehaviour
 		if (colliderScript == null)
 		{
 			colliderScript = gameObject.GetComponent<ColliderHitScript>();
-			if (colliderScript != null ) 
+			if (colliderScript == null ) 
 				colliderScript = gameObject.AddComponent<ColliderHitScript>();
 		}
 		projectileCollider = gameObject.GetComponent<Collider>();
@@ -62,11 +62,16 @@ public class WeaponProjectile : MonoBehaviour
 		if (!isInit) return;
 		if (lifeTimeTimer != null) lifeTimeTimer.Update(Time.deltaTime);
 
+		Move();
+    }
+
+	protected virtual void Move()
+	{
 		currentGravityEffect += gravity * Time.deltaTime;
 
 		transform.position = transform.position + dir.normalized * (speed * Time.deltaTime);
 		if (Mathf.Abs(currentGravityEffect) > 0) transform.position = transform.position + Vector3.down * currentGravityEffect;
-    }
+	}
 
 	void RemoveSubscriptions()
 	{

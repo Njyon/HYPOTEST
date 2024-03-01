@@ -22,8 +22,27 @@ MonoBehaviour:
   AirDirectionAttacks: []
   GapCloserAttacks: []
   DefensiveAction: []
-  Ultimate: []
-  HandType: 1
+  Ultimate:
+  - action:
+      instance:
+        rid: 8692835719513636866
+    data:
+      showProperties: 0
+      hitDetectionType: 1
+      mesh: {fileID: 0}
+      offset: {x: 0, y: 0, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 0
+      boxDimensions: {x: 0, y: 0, z: 0}
+      capsulHeight: 0
+    combatBranches:
+      keys: 
+      values: 
+    timedCombatBrenches:
+      keys: 
+      values: 
+    particleList: []
+  HandType: 2
   WeaponReadyPose: {fileID: -870510109829345641, guid: 46b859fd654d35f4c926cda599d8129d,
     type: 3}
   WeaponReadyPoseRun: {fileID: -1088920057699883335, guid: 2914c026f99452c4ba28595e80bceb4c,
@@ -44,9 +63,24 @@ MonoBehaviour:
     AimWeaponReadyPoseRun: {fileID: -7472911241333995212, guid: df758f09cf6345e43a4b5e5876913a6f,
       type: 3}
     WeaponReadyInterpSpeed: 5
-    HeadSpineLayerMovingWeight: 0.5
-    ArmRMovingWeight: 0.5
-    ArmLMovingWeight: 0.5
+    HeadSpineLayerMovingWeight: 1
+    ArmRMovingWeight: 1
+    ArmLMovingWeight: 1
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 8692835719513636866
+      type: {class: BazookaUltimate, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          addativeShootAnimation: {fileID: 7400000, guid: 02495e531110f8041afd1ca69f5ce438,
+            type: 2}
+          minimumMissileAmount: 5
+          ultiDuration: 2
+          forceAimDuration: 2
+          projectileSpeed: 5
+          projectileBase: {fileID: 7751551862451285913, guid: 66f68dbc49ef9164b87a3fb56dd33c85,
+            type: 3}
