@@ -235,29 +235,6 @@
 {
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.Vector3MaterialSlot",
-    "m_ObjectId": "02b0df83cbcf43439834bd4fb5f45d4d",
-    "m_Id": 3,
-    "m_DisplayName": "DirectionalLightColor",
-    "m_SlotType": 0,
-    "m_Hidden": false,
-    "m_ShaderOutputName": "DirectionalLightColor",
-    "m_StageCapability": 3,
-    "m_Value": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "m_Labels": []
-}
-
-{
-    "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.Vector3MaterialSlot",
     "m_ObjectId": "02da6f9a22384f0fab543e7839802728",
     "m_Id": 0,
     "m_DisplayName": "WorldPos",
@@ -467,21 +444,6 @@
 
 {
     "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
-    "m_ObjectId": "5f789e168bd74c429d225bb4f8ed5945",
-    "m_Id": 1,
-    "m_DisplayName": "CellShading",
-    "m_SlotType": 0,
-    "m_Hidden": false,
-    "m_ShaderOutputName": "CellShading",
-    "m_StageCapability": 3,
-    "m_Value": 0.0,
-    "m_DefaultValue": 0.0,
-    "m_Labels": []
-}
-
-{
-    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.SubGraphOutputNode",
     "m_ObjectId": "685493275ee44120bc8a463a970ff83a",
     "m_Group": {
@@ -503,10 +465,10 @@
             "m_Id": "df06b9ae02b94d7c84430bb5a899b85d"
         },
         {
-            "m_Id": "5f789e168bd74c429d225bb4f8ed5945"
+            "m_Id": "a08778fa46d649fba0ffd0168416897e"
         },
         {
-            "m_Id": "02b0df83cbcf43439834bd4fb5f45d4d"
+            "m_Id": "ee2dfd0eed764757bd1778b8e988f1f6"
         }
     ],
     "synonyms": [],
@@ -645,6 +607,21 @@
     "m_CustomColors": {
         "m_SerializableColors": []
     }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "a08778fa46d649fba0ffd0168416897e",
+    "m_Id": 1,
+    "m_DisplayName": "ToonDirectional",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "ToonDirectional",
+    "m_StageCapability": 3,
+    "m_Value": 0.0,
+    "m_DefaultValue": 0.0,
+    "m_Labels": []
 }
 
 {
@@ -1134,6 +1111,29 @@
     "m_FunctionName": "MainLight",
     "m_FunctionSource": "5976168641eeb5542b52a1e3f8cd23fa",
     "m_FunctionBody": "Enter function body here..."
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector3MaterialSlot",
+    "m_ObjectId": "ee2dfd0eed764757bd1778b8e988f1f6",
+    "m_Id": 3,
+    "m_DisplayName": "LightDirectionalColor",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "LightDirectionalColor",
+    "m_StageCapability": 3,
+    "m_Value": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "m_DefaultValue": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "m_Labels": []
 }
 
 {
