@@ -8,6 +8,7 @@ public class HyppoliteWeaponWrapper : WeaponBase
 	ScriptableWeaponWrapper scriptableWeaponWrapper;
 	int pistolIndex = 0;
 	int shotgunIndex = 1;
+	int bazooka = 2;
 	WeaponBase currentUsedWeapon;
 	WeaponBase CurrentUsedWeapon
 	{
@@ -54,6 +55,28 @@ public class HyppoliteWeaponWrapper : WeaponBase
 				if (CurrentUsedWeapon.WeaponData.AnimationData.ContainsKey(GameCharacter.CharacterData.Name)) CurrentUsedWeapon.AnimationData = data;
 			}
 			return CurrentUsedWeapon.AnimationData;
+		}
+	}
+	public override float UltCharge 
+	{ 
+		get => base.UltCharge; 
+		set
+		{
+			// If Ult is ready dont take it away from player, feels shity
+			if (UltCharge >= WeaponData.MaxUltChargeAmount && value < WeaponData.MaxUltChargeAmount) return;
+
+			value = Mathf.Clamp(value, 0, WeaponData.MaxUltChargeAmount);
+			if (UltCharge != value)
+			{
+				float oldUltCharge = UltCharge;
+				foreach (ScriptableWeapon sWeapon in scriptableWeaponWrapper.weapons)
+				{
+					sWeapon.Weapon.UltCharge = value;
+				}
+				ultCharge = value;
+
+				if (onUltChargeValueChanged != null) onUltChargeValueChanged(UltCharge, oldUltCharge);
+			}
 		}
 	}
 
@@ -136,7 +159,7 @@ public class HyppoliteWeaponWrapper : WeaponBase
 
 	public override AttackAnimationData Ultimate(float attackDeltaTime)
 	{
-		CurrentUsedWeapon = scriptableWeaponWrapper?.weapons[pistolIndex]?.Weapon;
+		CurrentUsedWeapon = scriptableWeaponWrapper?.weapons[bazooka]?.Weapon;
 		return CurrentUsedWeapon?.Ultimate(attackDeltaTime);
 	}
 

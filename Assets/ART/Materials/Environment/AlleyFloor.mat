@@ -43,6 +43,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: 5eed97fdec9825e448b083be8c36750c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _AlbedoBlend:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BaseMap:
         m_Texture: {fileID: 2800000, guid: 4192e3e1484c9e24db035ee865316de4, type: 3}
         m_Scale: {x: 3, y: 3}
@@ -123,8 +127,16 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _NormalBlend:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _ORMH:
         m_Texture: {fileID: 2800000, guid: f15bbafebf8a15845aaa6eeaf7e2c168, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ORMHBlend:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -223,7 +235,7 @@ Material:
     - _Metallic3: 0
     - _Mode: 0
     - _NumLayersCount: 1
-    - _OccAmplitude: 1
+    - _OccAmplitude: 2
     - _OccSteps: 4
     - _OcclusionStrength: 1
     - _OutlineDepthOffset: 0
@@ -256,6 +268,7 @@ Material:
     - _TextureImpact: 0.48
     - _TileTexture_U: 1
     - _TileTexture_V: 1
+    - _USEBLENDING: 0
     - _USEPARALAXXOCC: 1
     - _UVSec: 0
     - _UnityShadowMode: 1

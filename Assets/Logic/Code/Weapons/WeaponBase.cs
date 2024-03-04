@@ -58,7 +58,7 @@ public abstract class WeaponBase
 	int comboIndexInSameAttack;
 	float charge = 0;
 	float chargeAfterTime = 0;
-	float ultCharge = 0;
+	protected float ultCharge = 0;
 	Ultra.Timer maxChargeAfterEquipTimer;
 	AttackAnimationData lastData;
 	ScriptableWeaponAnimationData animationData;
@@ -118,7 +118,7 @@ public abstract class WeaponBase
 			chargeAfterTime = value;
 		} 
 	}
-	public float UltCharge
+	public virtual float UltCharge
 	{
 		get { return ultCharge; }
 		set
