@@ -26,8 +26,8 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
+  - _ALIGNTOWORLDSPACE
   - _USEATLASTEXTUREPICKER
-  - _USEBLENDING
   - _USEPARALAXXOCC
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -187,7 +187,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _ALIGNTOWORLDSPACE: 0
+    - _ALIGNTOWORLDSPACE: 1
     - _AlphaClip: 0
     - _AlphaToMask: 0
     - _AmbientOcclusionStrength: 0
@@ -221,7 +221,7 @@ Material:
     - _Flatness: 0.458
     - _FlatnessExtra: 1
     - _FlattenNormal: 0
-    - _FramePick: 0
+    - _FramePick: 4.8
     - _FramePickBlend: 1
     - _GlossMapScale: 0
     - _Glossiness: 0
@@ -243,8 +243,8 @@ Material:
     - _Metallic3: 0
     - _Mode: 0
     - _NumLayersCount: 1
-    - _OccAmplitude: 2
-    - _OccSteps: 4
+    - _OccAmplitude: 3
+    - _OccSteps: 3
     - _OcclusionStrength: 1
     - _OutlineDepthOffset: 0
     - _OutlineEnabled: 0
@@ -257,7 +257,7 @@ Material:
     - _ReceiveShadows: 1
     - _RimEnabled: 0
     - _Row: 1
-    - _RowBlend: 1
+    - _RowBlend: 1.96
     - _SampleGI: 0
     - _SelfShadingSize: 0.439
     - _SelfShadingSizeExtra: 0.6
@@ -279,7 +279,7 @@ Material:
     - _TileTexture_U: 1
     - _TileTexture_V: 1
     - _USEATLASTEXTUREPICKER: 1
-    - _USEBLENDING: 1
+    - _USEBLENDING: 0
     - _USEPARALAXXOCC: 1
     - _UVSec: 0
     - _UnityShadowMode: 1
@@ -304,6 +304,6 @@ Material:
     - _Offset: {r: 0, g: 0, b: 0, a: 0}
     - _OutlineColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 1}
-    - _Tiling: {r: 1, g: 1, b: 0, a: 0}
+    - _Tiling: {r: 6, g: 7, b: 0, a: 0}
     - _UnityShadowColor: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
   m_BuildTextureStacks: []
