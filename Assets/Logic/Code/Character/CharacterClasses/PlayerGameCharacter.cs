@@ -2,6 +2,7 @@ using EasyButtons;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Profiling;
 
@@ -119,6 +120,41 @@ public class PlayerGameCharacter : GameCharacter
 	{
 		base.SuccessfullParry(damageInitiator, damage);
 		combatRatingComponent.AddRatingByAvoidingDamage(damage);
+	}
+
+	public override void RespawnCharacter()
+	{
+		transform.position = RespawnObj.transform.position;
+		Health.Reset();
+
+		foreach (Rigidbody rBody in RigDataComponent.RegdollRigidBodys)
+		{
+			rBody.useGravity = false;
+			rBody.isKinematic = true;
+		}
+		foreach (Collider collider in RigDataComponent.Colliders)
+		{
+			collider.enabled = false;
+		}
+
+		IsGameCharacterDead = false;
+		Animator.enabled = true;
+		MovementComponent.CapsuleCollider.enabled = true;
+		MovementComponent.UnityMovementController.enabled = true;
+
+		AnimController.ResetAnimStatesHARD();
+		AnimController.ResetAnimIK_HARD();
+
+		foreach (IPluginState<EPluginCharacterState> state in PluginStateMachine.DictionaryOfPluginStates.Values.ToArray())
+		{
+			PluginStateMachine.RemovePluginState(state.GetStateType());
+		}
+
+		ApplyDefaultPluginStates();
+
+		StateMachine.RequestStateChange(EGameCharacterState.Standing, true);
+
+		if (onGameCharacterRespawnes != null) onGameCharacterRespawnes(this);
 	}
 
 	[Button("Die")]

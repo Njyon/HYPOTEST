@@ -12,6 +12,7 @@ public class GameCharacter : MonoBehaviour, IDamage
 	public delegate void OnGameCharacterEvent();
 	public GameCharacterEventWithGameCharacter onGameCharacterDied;
 	public GameCharacterEventWithGameCharacter onGameCharacterDestroyed;
+	public GameCharacterEventWithGameCharacter onGameCharacterRespawnes;
 	public OnGameCharacterEvent onGameCharacterAggroChanged;
 	public GameCharacterEventWithGameCharacter onGameCharacterGotArroged;
 	public GameCharacterEventWithGameCharacter onGameCharacterStoppedBeingArroged;
@@ -53,6 +54,7 @@ public class GameCharacter : MonoBehaviour, IDamage
 	List<SkinnedMeshRenderer> skinnedMeshRenderers = new List<SkinnedMeshRenderer>();
 	int materialHitColorIndex;
 	int materialHitIntensityIndex;
+	GameObject respawnObj;
 
 	bool isInitialized = false;
 	public bool IsInitialized { get { return isInitialized; } }
@@ -88,6 +90,7 @@ public class GameCharacter : MonoBehaviour, IDamage
 	public BuffComponent BuffComponent { get { return buffComponent; } }
 	public bool CharacterHasAggro => aggroedCharacters.Count > 0;
 	public List<SkinnedMeshRenderer> SkinnedMeshRenderers { get { return skinnedMeshRenderers; } }
+	public GameObject RespawnObj { get { return respawnObj; } }
 
 	public int MaterialHitColorIndex { 
 		get 
@@ -126,7 +129,7 @@ public class GameCharacter : MonoBehaviour, IDamage
 	public bool IsGameCharacterDead
 	{
 		get { return isGameCharacterDead; }
-		private set { isGameCharacterDead = value; }
+		protected set { isGameCharacterDead = value; }
 	}
 	public float CharacterRadiusTarget
 	{
@@ -188,9 +191,7 @@ public class GameCharacter : MonoBehaviour, IDamage
 		combatComponent = new CombatComponent(this);
 		buffComponent = new BuffComponent(this);
 
-		AnimController.SetChestCorrectionWeight(0);
-		AnimController.SetFPFootIKLWeight(0);
-		AnimController.SetFPFootIKRWeight(0);
+		AnimController.ResetAnimIK_HARD();
 
 		GameObject characterDetectionObject = GameObject.Instantiate(GameAssets.Instance.characterDetection, transform);
 		characterDetection = characterDetectionObject.GetComponent<GameCharacterDetection>();
@@ -213,8 +214,7 @@ public class GameCharacter : MonoBehaviour, IDamage
 
 		SetupPartilcePools();
 
-		PluginStateMachine.AddPluginState(EPluginCharacterState.LookInVelocityDirection);
-		PluginStateMachine.AddPluginState(EPluginCharacterState.IgnoreGravityRuleState);
+		ApplyDefaultPluginStates();
 
 		for (int i = 0; i < transform.childCount; i++)
 		{
@@ -225,10 +225,22 @@ public class GameCharacter : MonoBehaviour, IDamage
 				skinnedMeshRenderers.Add(skinnedMeshRenderer);
 		}
 
+		if (IsPlayerCharacter)
+		{
+			SetNewRespawnPoint(new GameObject("PlayerSpawn"));
+			respawnObj.transform.position = transform.position;
+		}
+
 		isInitialized = true;
 	}
 
-	private void SetupPartilcePools()
+	protected void ApplyDefaultPluginStates()
+	{
+		PluginStateMachine.AddPluginState(EPluginCharacterState.LookInVelocityDirection);
+		PluginStateMachine.AddPluginState(EPluginCharacterState.IgnoreGravityRuleState);
+	}
+
+	void SetupPartilcePools()
 	{
 		succsessfullDodgeParticlePool = new ParticleSystemPool(gameCharacterData.SuccsessfullDodgeParticleEffect, CreateHolderChild("SuccsessfullDodgeEffect Holder"), 2);
 		dodgeParticleSystemPool = new ParticleSystemPool(gameCharacterData.DodgeParticleEffect, CreateHolderChild("DodgeEffect Holder"), 2);
@@ -258,6 +270,11 @@ public class GameCharacter : MonoBehaviour, IDamage
 		{
 			characterDetection.onOverlapEnter -= OnCharacterDetectionOverlapEnter;
 		}
+
+		Destroy(StateMachine);
+		Destroy(PluginStateMachine);
+		stateMachine = null;
+		pluginStateMachine = null;
 
 		if (onGameCharacterDestroyed != null) onGameCharacterDestroyed(this);
 	}
@@ -569,7 +586,8 @@ public class GameCharacter : MonoBehaviour, IDamage
 		// Request a dead state so unsubsribing from specific state delegates is easier by just calling CurrentState.End(NewState Dead)
 		StateMachine.RequestStateChange(EGameCharacterState.Dead, true);
 
-		GameObject.Destroy(gameObject, 3f);
+		if (!IsPlayerCharacter)
+			GameObject.Destroy(gameObject, 3f);
 
 		foreach (Rigidbody rBody in rigDataComponent.RegdollRigidBodys)
 		{
@@ -581,7 +599,8 @@ public class GameCharacter : MonoBehaviour, IDamage
 			collider.enabled = true;
 		}
 
-		GameObject.Destroy(dataWorldHolder);
+		if (!IsPlayerCharacter)
+			GameObject.Destroy(dataWorldHolder);
 
 		if (onGameCharacterDied != null) onGameCharacterDied(this);
 	}
@@ -672,5 +691,15 @@ public class GameCharacter : MonoBehaviour, IDamage
 	public HyppoliteTeam GetTeam()
 	{
 		return Team;
+	}
+
+	public void SetNewRespawnPoint(GameObject respawnPointObj)
+	{
+		respawnObj = respawnPointObj;
+	}
+
+	public virtual void RespawnCharacter()
+	{
+	
 	}
 }

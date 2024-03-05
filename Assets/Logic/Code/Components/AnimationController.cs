@@ -1212,6 +1212,13 @@ public class AnimationController
 		gameCharacter.AnimController.FlyAway = false;
 	}
 
+	public void ResetAnimIK_HARD()
+	{
+		SetChestCorrectionWeight(0);
+		SetFPFootIKLWeight(0);
+		SetFPFootIKRWeight(0);
+	}
+
 	public void ForceStandingState()
 	{
 		gameCharacter.Animator.CrossFade(StandingStateHash, 0f);

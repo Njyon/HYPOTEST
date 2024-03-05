@@ -5,6 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoaderManager : Singelton<SceneLoaderManager>
 {
+	int currentLevel;
+	public int CurrentLevel {  get { return currentLevel; } }
+
 	public void LoadStoryLevel00()
 	{
 		CreateStoryGameMode();
@@ -27,8 +30,14 @@ public class SceneLoaderManager : Singelton<SceneLoaderManager>
 		LoadScene("GYM 02");
 	}
 
+	public void LoadCurrentLevel()
+	{
+		LoadLevel(CurrentLevel);
+	}
+
 	public void LoadLevel(int index)
 	{
+		currentLevel = index;
 		switch (index)
 		{
 			case -1:

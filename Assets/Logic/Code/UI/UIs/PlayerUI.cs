@@ -73,6 +73,7 @@ public class PlayerUI : UIBase
 		gameCharacter.CombatRatingComponent.onCurrentValueChange += OnStyleValueChanged;
 		gameCharacter.CombatComponent.onComboCountChanged += OnComboCountChanged;
 		gameCharacter.onGameCharacterAggroChanged += OnAggroChanged;
+		gameCharacter.onGameCharacterDied += OnGameCharacterDied;
 		InitHealthbar();
 
 		for (int i = 0; i < gameCharacter.CombatComponent.Weapons.Length; i++)
@@ -107,7 +108,8 @@ public class PlayerUI : UIBase
 			gameCharacter.CombatComponent.onComboCountChanged -= OnComboCountChanged;
 			gameCharacter.onGameCharacterAggroChanged -= OnAggroChanged;
 			gameCharacter.CombatComponent.onWeaponChanged -= OnWeaponChanged;
-			 if (gameCharacter.CombatComponent.CurrentWeapon != null) gameCharacter.CombatComponent.CurrentWeapon.onUltChargeValueChanged -= OnUltChargeValueChanged;
+			gameCharacter.onGameCharacterDied -= OnGameCharacterDied;
+			if (gameCharacter.CombatComponent.CurrentWeapon != null) gameCharacter.CombatComponent.CurrentWeapon.onUltChargeValueChanged -= OnUltChargeValueChanged;
 		}
 		weaponUIs.Clear();
 	}
@@ -291,5 +293,28 @@ public class PlayerUI : UIBase
 		{
 			hideUltUI.PlayFeedbacks();	
 		}
+	}
+
+	void OnGameCharacterDied(GameCharacter gameCharacter)
+	{
+		showDeathPanel.PlayFeedbacks();
+	}
+
+	public void ReviveButtonPressed()
+	{
+		hideDeathPanel.PlayFeedbacks();
+		GameCharacter gc = Ultra.HypoUttilies.GetPlayerGameCharacter();
+		gc.RespawnCharacter();
+	}
+
+	public void RestartLevelPressed()
+	{
+		hideDeathPanel.PlayFeedbacks();
+		SceneLoaderManager.Instance.LoadCurrentLevel();
+	}
+
+	public void ReturnToMainMenuPressed()
+	{
+		UIManager.Instance.LoadMainMenu();
 	}
 }
