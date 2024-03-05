@@ -13,6 +13,7 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
+  - _USEBLENDING
   - _USEPARALAXXOCC
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -30,7 +31,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _AlbedoBlend:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: dba263f2b97ad504ebedc0fdce5bc7c7, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
@@ -74,7 +75,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalBlend:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 20d03532a4c51c34d96df6e0857f60cd, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OGH:
@@ -86,7 +87,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ORMHBlend:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: f710f10aa7f4c0a41b0acedd5dcd7565, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -128,8 +129,8 @@ Material:
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
-    - _Column: 2
-    - _ColumnBlend: 2
+    - _Column: 1
+    - _ColumnBlend: 1
     - _Cull: 2
     - _Cutoff: 0.5
     - _DEBUG: 0
@@ -138,7 +139,7 @@ Material:
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
-    - _FlattenNormal: 0.427
+    - _FlattenNormal: 1
     - _Float: 0
     - _FramePick: 1
     - _FramePickBlend: 1
@@ -153,8 +154,8 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Row: 2
-    - _RowBlend: 2
+    - _Row: 1
+    - _RowBlend: 1
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -162,7 +163,7 @@ Material:
     - _SrcBlendAlpha: 1
     - _Surface: 0
     - _USEATLASTEXTUREPICKER: 0
-    - _USEBLENDING: 0
+    - _USEBLENDING: 1
     - _USEPARALAXXOCC: 1
     - _WorkflowMode: 1
     - _ZWrite: 1
