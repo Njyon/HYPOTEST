@@ -26,6 +26,8 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
+  - _ALIGNTOWORLDSPACE
+  - _USEATLASTEXTUREPICKER
   - _USEPARALAXXOCC
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -40,11 +42,11 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _Albedo:
-        m_Texture: {fileID: 2800000, guid: 5eed97fdec9825e448b083be8c36750c, type: 3}
+        m_Texture: {fileID: 2800000, guid: 1f5bd0cd3a5544448810d4300f342574, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _AlbedoBlend:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 1f5bd0cd3a5544448810d4300f342574, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
@@ -108,7 +110,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Normal:
-        m_Texture: {fileID: 2800000, guid: b4654445a28f2894995dfc26a824cd62, type: 3}
+        m_Texture: {fileID: 2800000, guid: 7ab88250924865e43a2ea82a45a8e9a4, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Normal0:
@@ -128,15 +130,15 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalBlend:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 7ab88250924865e43a2ea82a45a8e9a4, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ORMH:
-        m_Texture: {fileID: 2800000, guid: f15bbafebf8a15845aaa6eeaf7e2c168, type: 3}
+        m_Texture: {fileID: 2800000, guid: 9b0af557d4a17e54c8a4261a88774f5e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ORMHBlend:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 9b0af557d4a17e54c8a4261a88774f5e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -185,9 +187,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _ALIGNTOWORLDSPACE: 1
     - _AlphaClip: 0
     - _AlphaToMask: 0
-    - _AmbientOcclusionStrength: 0
+    - _AmbientOcclusionStrength: 0.03
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BlendOp: 0
@@ -198,8 +201,11 @@ Material:
     - _CelPrimaryMode: 0
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
+    - _Column: 2
+    - _ColumnBlend: 2
     - _Cull: 2
     - _Cutoff: 0.5
+    - _DEBUG: 0
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
@@ -215,6 +221,8 @@ Material:
     - _Flatness: 0.458
     - _FlatnessExtra: 1
     - _FlattenNormal: 0
+    - _FramePick: 5.13
+    - _FramePickBlend: 1
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
@@ -235,8 +243,8 @@ Material:
     - _Metallic3: 0
     - _Mode: 0
     - _NumLayersCount: 1
-    - _OccAmplitude: 2
-    - _OccSteps: 4
+    - _OccAmplitude: 0.51
+    - _OccSteps: 3
     - _OcclusionStrength: 1
     - _OutlineDepthOffset: 0
     - _OutlineEnabled: 0
@@ -248,6 +256,8 @@ Material:
     - _QueueOffset: -6
     - _ReceiveShadows: 1
     - _RimEnabled: 0
+    - _Row: 1
+    - _RowBlend: 1.96
     - _SampleGI: 0
     - _SelfShadingSize: 0.439
     - _SelfShadingSizeExtra: 0.6
@@ -268,6 +278,7 @@ Material:
     - _TextureImpact: 0.48
     - _TileTexture_U: 1
     - _TileTexture_V: 1
+    - _USEATLASTEXTUREPICKER: 1
     - _USEBLENDING: 0
     - _USEPARALAXXOCC: 1
     - _UVSec: 0
@@ -293,6 +304,6 @@ Material:
     - _Offset: {r: 0, g: 0, b: 0, a: 0}
     - _OutlineColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 1}
-    - _Tiling: {r: 8, g: 5, b: 0, a: 0}
+    - _Tiling: {r: 6, g: 7, b: 0, a: 0}
     - _UnityShadowColor: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
   m_BuildTextureStacks: []
