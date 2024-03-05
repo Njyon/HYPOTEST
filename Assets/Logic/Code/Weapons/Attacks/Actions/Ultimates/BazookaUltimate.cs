@@ -11,6 +11,7 @@ public class BazookaUltimateData : AttackData
 	public float ultiDuration = 2f;
 	public float forceAimDuration = 2f;
 	public float projectileSpeed = 5;
+	public float projectileLifeTime = 10f;
 	public WeaponProjectile projectileBase;
 
 }
@@ -40,7 +41,7 @@ public class BazookaUltimate : AttackBase
 		Weapon.AddForceAimBuff(attackData.forceAimDuration);
 
 		int missileAmount = Mathf.Max(GameCharacter.CharacterDetection.DetectedGameCharacters.Count, attackData.minimumMissileAmount);
-		BazookaBuffData bazookaBuffData = new BazookaBuffData(projectilePool, weaponObjData, attackData.addativeShootAnimation, Weapon, target, missileAmount, attackData.projectileSpeed, attackData.Damage);
+		BazookaBuffData bazookaBuffData = new BazookaBuffData(projectilePool, weaponObjData, attackData.addativeShootAnimation, Weapon, target, missileAmount, attackData.projectileSpeed, attackData.Damage, attackData.projectileLifeTime);
 		GameCharacter.BuffComponent.AddBuff(new BazookaUltBuff(GameCharacter, attackData.ultiDuration, bazookaBuffData));
 	}
 

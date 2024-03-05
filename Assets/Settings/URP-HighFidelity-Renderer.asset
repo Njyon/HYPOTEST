@@ -20,6 +20,26 @@ MonoBehaviour:
   passIndex: 0
   bindDepthStencilAttachment: 0
   m_Version: 1
+--- !u!114 &-6965926917585833662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52e2e32e102e44abeb72209e7ce030c3, type: 3}
+  m_Name: KawaseBlur
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  settings:
+    renderPassEvent: 450
+    blurMaterial: {fileID: 2100000, guid: a00afda211f274f6ca6cce958e4e13a5, type: 2}
+    blurPasses: 5
+    downsample: 2
+    copyToFramebuffer: 0
+    targetName: _blurTexture
 --- !u!114 &-6121240314816665614
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -122,6 +142,26 @@ MonoBehaviour:
   passIndex: 0
   bindDepthStencilAttachment: 0
   m_Version: 1
+--- !u!114 &-3315526858642628600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 980a78cc4df543b29a2663be288cd2f5, type: 3}
+  m_Name: UniversalBlurFeature
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  passMaterial: {fileID: 2100000, guid: 9850a4d8fa91d463f97c9078274547d0, type: 2}
+  passIndex: 0
+  injectionPoint: 600
+  intensity: 1
+  downsample: 2
+  scale: 0.5
+  iterations: 6
 --- !u!114 &-2613386902471412682
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -211,7 +251,8 @@ MonoBehaviour:
   - {fileID: -8235848534293230498}
   - {fileID: -5700532258643213226}
   - {fileID: -2613386902471412682}
-  m_RendererFeatureMap: 7f9ae89a985e10b3bb714afc4a0de367f2678d8a5dfc0cabb6255d0fbe8695dd3e7319770437a2c553646b44e68aa8555ecc87b96463b48d5684ea0c1da4e3b0367488617562bbdb
+  - {fileID: -3315526858642628600}
+  m_RendererFeatureMap: 7f9ae89a985e10b3bb714afc4a0de367f2678d8a5dfc0cabb6255d0fbe8695dd3e7319770437a2c553646b44e68aa8555ecc87b96463b48d5684ea0c1da4e3b0367488617562bbdb08e05673e3e1fcd1
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}

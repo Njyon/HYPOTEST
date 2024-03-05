@@ -46,12 +46,19 @@ public class PlayerUI : UIBase
 	[SerializeField] MMF_Player showUltUI;
 	[SerializeField] MMF_Player hideUltUI;
 
+	[Header("DeathPanel")]
+	[SerializeField] GameObject deathPanel;
+	[SerializeField] MMF_Player showDeathPanel;
+	[SerializeField] MMF_Player hideDeathPanel;
+
 	PlayerGameCharacter gameCharacter;
 
 	void Awake()
 	{
 		ultUIElement.SetAlpha(0f);
 		ultUIElementBackground.SetAlpha(0f);
+		// DeathPanel might be deactivated at start because it blocks all other UI elements
+		deathPanel.SetActive(true);
 
 		LoadedUI();
 		styleRankingGroup.alpha = 0f;

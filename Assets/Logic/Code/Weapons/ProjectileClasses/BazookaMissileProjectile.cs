@@ -35,13 +35,18 @@ public class BazookaMissileProjectile : WeaponProjectile
 	public override bool OnHit(Collider other)
 	{
 		if (other.gameObject == gameCharacterOwner.gameObject) return false;
+		var projectile = other.GetComponent<WeaponProjectile>();
+		if (projectile != null) return false;
 
 		if (other.transform.parent != null)
 		{
 			Transform parent = other.transform.parent;
-			while (parent.parent != null)
+			if (parent != null)
 			{
-				parent = parent.parent;
+				while (parent.parent != null)
+				{
+					parent = parent.parent;
+				}
 			}
 			if (parent.gameObject == gameCharacterOwner.gameObject) return false;
 		}
