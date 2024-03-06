@@ -3064,10 +3064,10 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "50aa454b17164453a6758e6a5fdead0c",
     "m_Id": 2,
-    "m_DisplayName": "Alpha",
+    "m_DisplayName": "AlphaColor",
     "m_SlotType": 1,
     "m_Hidden": false,
-    "m_ShaderOutputName": "Alpha",
+    "m_ShaderOutputName": "AlphaColor",
     "m_StageCapability": 3,
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
@@ -3559,6 +3559,9 @@
         },
         {
             "m_Id": "50aa454b17164453a6758e6a5fdead0c"
+        },
+        {
+            "m_Id": "9f3bf9d8dd5044688ee9e1f134a1bc45"
         }
     ],
     "synonyms": [],
@@ -5092,6 +5095,21 @@
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
+    "m_StageCapability": 3,
+    "m_Value": 0.0,
+    "m_DefaultValue": 0.0,
+    "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "9f3bf9d8dd5044688ee9e1f134a1bc45",
+    "m_Id": 3,
+    "m_DisplayName": "Alpha",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Alpha",
     "m_StageCapability": 3,
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
