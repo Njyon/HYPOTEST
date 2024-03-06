@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class GameCharacterDetection : CharacterDetection<GameCharacter>
 {
-	protected override void OnTriggerEnterCall(GameCharacter player)
+	protected override void OnTriggerEnterCall(GameCharacter gameCharacter)
 	{
-		base.OnTriggerEnterCall(player);
-		player.onGameCharacterDied += OnPlayerDied;
+		base.OnTriggerEnterCall(gameCharacter);
+		gameCharacter.onGameCharacterDied += OnPlayerDied;
 	}
 
-	protected override void OnTriggerExitCall(GameCharacter player)
+	protected override void OnTriggerExitCall(GameCharacter gameCharacter)
 	{
-		base.OnTriggerExitCall(player);
-		player.onGameCharacterDied -= OnPlayerDied;
+		base.OnTriggerExitCall(gameCharacter);
+		gameCharacter.onGameCharacterDied -= OnPlayerDied;
 	}
 
 	void OnPlayerDied(GameCharacter target)

@@ -30,12 +30,14 @@ public class ArenaSpawner : MonoBehaviour
 	public delegate void ArenaSpawnerEvent();
 	public ArenaSpawnerEvent onFinishedSpawning;
 	public ArenaSpawnerEvent onLastEnemyKilled;
-
+	public ArenaSpawnerEvent onPlayerDiedAndRespawned;
+	
 	[SerializeField] List<SpawnData> spawnDataBasedOnDifficulty;
 	[SerializeField] List<GameObject> randomSpawnLocations;
 	[SerializeField] SerializableCharacterDictionary<string, GameObject> characterSpecificSpawnPoints;
 	public UnityEvent onStartSpawningEvent;
 	public UnityEvent onLastEnemyKilledEvent;
+	public UnityEvent onPlayerDiedAndRespawnedEvent;
 	List<GameCharacter> spawnedGameCharacters = new List<GameCharacter>();
 
 	int spawnIndex = 0;
@@ -80,10 +82,13 @@ public class ArenaSpawner : MonoBehaviour
 		if (!enabled) return;
 
 		if (!startedSpawning)
-		{
+		{ 
 			startedSpawning = true;
 			SpawnCharacters();
 			onStartSpawningEvent.Invoke();
+
+			PlayerGameCharacter playerGC = Ultra.HypoUttilies.GetPlayerGameCharacter();
+			playerGC.onGameCharacterRespawnes += OnPlayerRespawnes;
 		}
 	}
 
@@ -203,6 +208,9 @@ public class ArenaSpawner : MonoBehaviour
 
 	void LastEnemyDied()
 	{
+		PlayerGameCharacter playerGC = Ultra.HypoUttilies.GetPlayerGameCharacter();
+		playerGC.onGameCharacterRespawnes -= OnPlayerRespawnes;
+
 		if (onLastEnemyKilled != null) onLastEnemyKilled();
 		onLastEnemyKilledEvent.Invoke();
 	}
@@ -210,5 +218,19 @@ public class ArenaSpawner : MonoBehaviour
 	private void OnDrawGizmos()
 	{
 		Gizmos.DrawIcon(transform.position, "SpanwerImage", true);
+	}
+
+	void OnPlayerRespawnes(GameCharacter gameCharacter)
+	{
+		startedSpawning = false;
+
+		foreach (GameCharacter gc in spawnedGameCharacters)
+		{
+			Destroy(gc);
+		}
+		spawnedGameCharacters.Clear();
+
+		if (onPlayerDiedAndRespawned != null) onPlayerDiedAndRespawned();
+		onPlayerDiedAndRespawnedEvent.Invoke();
 	}
 }

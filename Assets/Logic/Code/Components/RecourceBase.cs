@@ -91,6 +91,26 @@ public class RecourceBase
 		if (valueChangePerSecondTimer != null) valueChangePerSecondTimer.onTimerFinished -= OnValueChangePerSecondTimerFinished;
 	}
 
+	public virtual void Reset()
+	{
+		if (minValueTimer.IsRunning)
+		{
+			minValueTimer.Stop();
+			minValue = minValueAfterTimer;
+		}
+		if (maxValueTimer.IsRunning)
+		{
+			maxValueTimer.Stop();
+			maxValue = maxValueAfterTimer;
+		}
+		if (valueChangePerSecondTimer.IsRunning)
+		{
+			valueChangePerSecondTimer.Stop();
+			valueChangePerSecond = valueChangePerSecondAfterTimer;
+		}
+		currentValue = maxValue;
+	}
+
 	public virtual void Update(float deltaTime)
 	{
 		AddCurrentValue(ValueChangePerSecond * deltaTime);

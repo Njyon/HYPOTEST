@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Ultra;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -21,6 +22,8 @@ namespace Ultra
 				return gameModeBase;
 			} 
 		}
+
+		static PlayerGameCharacter playerCharacter;
 
 		public static List<ScriptableCharacter> GetAllCharacters()
 		{
@@ -287,7 +290,11 @@ namespace Ultra
 
 		public static PlayerGameCharacter GetPlayerGameCharacter()
 		{
-			return FindObjectOfType<PlayerGameCharacter>();
+			if (playerCharacter == null)
+			{
+				playerCharacter = FindObjectOfType<PlayerGameCharacter>();
+			}
+			return playerCharacter;
 		}
 
 		public ControllerBase GetController(string controllerName, GameObject pawn)

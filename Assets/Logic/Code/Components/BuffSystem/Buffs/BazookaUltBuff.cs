@@ -13,8 +13,9 @@ public class BazookaBuffData
 	public int missileAmountToShoot;
 	public float projectileSpeed;
 	public float projectileDamage;
+	public float projectileLifeTime;
 
-	public BazookaBuffData(ProjectilePool projectilePool, WeaponObjData bazookaData, AnimationClip addativeShootAnimation, WeaponBase weapon, GameCharacter mainTarget, int missileAmountToShoot, float projectileSpeed, float projectileDamage)
+	public BazookaBuffData(ProjectilePool projectilePool, WeaponObjData bazookaData, AnimationClip addativeShootAnimation, WeaponBase weapon, GameCharacter mainTarget, int missileAmountToShoot, float projectileSpeed, float projectileDamage, float projectileLifeTime)
 	{
 		this.projectilePool = projectilePool;
 		this.bazookaData = bazookaData;
@@ -24,6 +25,7 @@ public class BazookaBuffData
 		this.projectileSpeed = projectileSpeed;
 		this.projectileDamage = projectileDamage;
 		this.mainTarget = mainTarget;
+		this.projectileLifeTime = projectileLifeTime;
 	}
 }
 
@@ -62,7 +64,7 @@ public class BazookaUltBuff : ABuff
 		if (projectile == null) projectile = bazookaData.projectilePool.GetValue();
 		projectile.transform.position = bazookaData.bazookaData.weaponTip.transform.position;
 		projectile.transform.rotation = Quaternion.LookRotation(-(bazookaData.mainTarget.MovementComponent.CharacterCenter - projectile.transform.position).normalized);
-		projectile.Init(GameCharacter, bazookaData.bazookaData.transform.forward, bazookaData.projectileSpeed, bazookaData.projectileDamage, null, OnProjectileLifeTimeEnd);
+		projectile.Init(GameCharacter, bazookaData.bazookaData.transform.forward, bazookaData.projectileSpeed, bazookaData.projectileDamage, null, OnProjectileLifeTimeEnd, bazookaData.projectileLifeTime);
 		BazookaMissileProjectile bazookaMissle = (BazookaMissileProjectile)projectile;
 		GameCharacter target = GameCharacter.CharacterDetection.DetectedGameCharacters[missileIndex % GameCharacter.CharacterDetection.DetectedGameCharacters.Count];
 		bazookaMissle.SetTarget(target);

@@ -46,12 +46,18 @@ public class PlayerController : ControllerBase
 		if (movementComponent != null) movementComponent.SetupGameCharacter(gameCharacter);
 
 		gameCharacter.onGameCharacterDied += OnGameCharacterDied;
+		gameCharacter.onGameCharacterRespawnes += OnGameCharacterRespawnes;
 	}
 
 	protected override void OnGameCharacterDied(GameCharacter gameCharacter)
 	{
 		playerInputs.Default.Disable();
 		this.gameCharacter?.EventComponent?.AddEvent(null);
+	}
+
+	void OnGameCharacterRespawnes(GameCharacter gameCharacter)
+	{
+		playerInputs.Default.Enable();
 	}
 
 	async void SetupCamera(GameObject pawn)
@@ -237,6 +243,12 @@ public class PlayerController : ControllerBase
 
 	private void OnDestroy()
 	{
+        if (gameCharacter != null)
+		{
+			gameCharacter.onGameCharacterDied -= OnGameCharacterDied;
+			gameCharacter.onGameCharacterRespawnes -= OnGameCharacterRespawnes;
+		}
+
 		if (playerInputs != null) playerInputs.Disable();
 		playerInputs = null;
 	}
@@ -310,5 +322,10 @@ public class PlayerController : ControllerBase
 			}
 		}
 		return null;
+	}
+
+	protected override void OnGameCharacterDestroyed(GameCharacter gameCharacter)
+	{
+
 	}
 }
