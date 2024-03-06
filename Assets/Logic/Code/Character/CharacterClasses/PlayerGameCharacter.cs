@@ -1,4 +1,5 @@
 using EasyButtons;
+using MyBox;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -154,10 +155,12 @@ public class PlayerGameCharacter : GameCharacter
 
 		StateMachine.RequestStateChange(EGameCharacterState.Standing, true);
 
+		CombatComponent.CurrentWeapon.EquipWeapon();	
+
 		if (onGameCharacterRespawnes != null) onGameCharacterRespawnes(this);
 	}
 
-	[Button("Die")]
+	[ButtonMethod()]
 	protected override void DieButton()
 	{
 		base.DieButton();

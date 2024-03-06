@@ -25,5 +25,4 @@ public abstract class ControllerBase : MonoBehaviour
 		characterData = null;
 	}
 	protected abstract void OnGameCharacterDied(GameCharacter gameCharacter);
-	protected abstract void OnGameCharacterDestroyed(GameCharacter gameCharacter);
 }

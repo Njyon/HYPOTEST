@@ -89,12 +89,15 @@ public class GameCharacterDodgeState : AGameCharacterState
 
 	public override void EndState(EGameCharacterState newState)
 	{
-		GameCharacter.MovementComponent.MovementVelocity = Vector3.zero;
-		GameCharacter.AnimController.InDodge = false;
-		GameCharacter.AnimController.InterpSecondaryMotionLayerWeight(1, 10f);
-		GameCharacter.MovementComponent.onMoveCollisionFlag -= OnMoveCollisionFlag;
+		if (GameCharacter != null)
+		{
+			GameCharacter.MovementComponent.MovementVelocity = Vector3.zero;
+			GameCharacter.AnimController.InDodge = false;
+			GameCharacter.AnimController.InterpSecondaryMotionLayerWeight(1, 10f);
+			GameCharacter.MovementComponent.onMoveCollisionFlag -= OnMoveCollisionFlag;
 
-		if (GameCharacter.MovementComponent.MovementVelocity.y < 0) GameCharacter.MovementComponent.MovementVelocity = new Vector3(GameCharacter.MovementComponent.MovementVelocity.x, 0, GameCharacter.MovementComponent.MovementVelocity.z);
+			if (GameCharacter.MovementComponent.MovementVelocity.y < 0) GameCharacter.MovementComponent.MovementVelocity = new Vector3(GameCharacter.MovementComponent.MovementVelocity.x, 0, GameCharacter.MovementComponent.MovementVelocity.z);
+		}
 
 		if (iFrameTimer.IsRunning)
 		{

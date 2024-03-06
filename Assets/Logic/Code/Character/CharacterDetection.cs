@@ -31,7 +31,7 @@ public class CharacterDetection<T> : MonoBehaviour where T : GameCharacter
 		T template = other.gameObject.GetComponent<T>();
 		if (template != null && !DetectedGameCharacters.Contains(template))
 		{
-			DetectedGameCharacters.Add(template);
+		
 			OnTriggerEnterCall(template);
 			if (onOverlapEnter != null) onOverlapEnter(template);
 		}
@@ -47,7 +47,7 @@ public class CharacterDetection<T> : MonoBehaviour where T : GameCharacter
 		T template = other.gameObject.GetComponent<T>();
 		if (template != null)
 		{
-			DetectedGameCharacters.Remove(template);
+			
 			OnTriggerExitCall(template);
 			if (onOverlapExit != null) onOverlapExit(template);
 		}
@@ -55,11 +55,21 @@ public class CharacterDetection<T> : MonoBehaviour where T : GameCharacter
 
 	protected virtual void OnTriggerEnterCall(T collider)
 	{
-
+		DetectedGameCharacters.Add(collider);
+		collider.onGameCharacterDied += OnPlayerDiedDestroyed;
+		collider.onGameCharacterDestroyed += OnPlayerDiedDestroyed;
 	}
 
 	protected virtual void OnTriggerExitCall(T collider)
 	{
+		DetectedGameCharacters.Remove(collider);
+		collider.onGameCharacterDied -= OnPlayerDiedDestroyed;
+		collider.onGameCharacterDestroyed -= OnPlayerDiedDestroyed;
+	}
 
+	void OnPlayerDiedDestroyed(GameCharacter target) 
+	{
+		if (target == null) return;
+		OnTriggerExitCall((T)target);
 	}
 }

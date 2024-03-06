@@ -87,8 +87,11 @@ public class GameCharacterHookedToCharacterState : AGameCharacterState
 
 	public override void EndState(EGameCharacterState newState)
 	{
-		GameCharacter.MovementComponent.UseGravity = true;
-		GameCharacter.MovementComponent.InterpGravityUp();
+		if (GameCharacter != null)
+		{
+			GameCharacter.MovementComponent.UseGravity = true;
+			GameCharacter.MovementComponent.InterpGravityUp();
+		}
 		if (GameCharacter != null) GameCharacter.MovementComponent.onMoveCollisionFlag -= OnMoveCollisionFlag;
 		if (hookedCharacter != null) hookedCharacter.MovementComponent.onMoveCollisionFlag -= OnEnemyMoveCollisionFlag;
 

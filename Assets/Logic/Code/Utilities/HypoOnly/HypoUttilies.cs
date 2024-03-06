@@ -54,6 +54,7 @@ namespace Ultra
 
 			foreach (GameCharacter character in list)
 			{
+				if (character == null) continue;
 				float angle = Ultra.Utilities.GetAngleBetweenVectors(direction.normalized, (character.MovementComponent.CharacterCenter - fromPosition).normalized);
 				if (angle < smallestAngle)
 				{
@@ -73,6 +74,7 @@ namespace Ultra
 
 			foreach (GameCharacter character in list)
 			{
+				if (character == null) continue;
 				float angle = Ultra.Utilities.GetAngleBetweenVectors(direction.normalized, (character.MovementComponent.CharacterCenter - fromPosition).normalized);
 				if (angle <= smallestAngle)
 				{
@@ -92,6 +94,7 @@ namespace Ultra
 
 			foreach (GameCharacter character in list)
 			{
+				if (character == null) continue;
 				if (Vector3.Dot(character.MovementComponent.CharacterCenter - fromPosition, forward) >= 0)
 				{
 					float angle = Ultra.Utilities.GetAngleBetweenVectors(direction.normalized, (character.MovementComponent.CharacterCenter - fromPosition).normalized);
@@ -114,6 +117,7 @@ namespace Ultra
 
 			foreach (GameCharacter character in list)
 			{
+				if (character == null) continue;
 				float distance = Vector3.Distance(fromPosition, character.MovementComponent.CharacterCenter);
 				if (distance <= range)
 				{
@@ -137,6 +141,7 @@ namespace Ultra
 
 			foreach (GameCharacter character in list)
 			{
+				if (character == null) continue;
 				float distance = Vector3.Distance(fromPosition, character.MovementComponent.CharacterCenter);
 				if (distance <= range)
 				{
@@ -164,6 +169,7 @@ namespace Ultra
 
 			foreach (GameCharacter character in list)
 			{
+				if (character == null) continue;
 				float distance = Vector3.Distance(fromPosition, character.MovementComponent.CharacterCenter);
 				if (distance <= range)
 				{
@@ -194,6 +200,7 @@ namespace Ultra
 
 			foreach (GameCharacter character in list)
 			{
+				if (character == null) continue;
 				if (Ultra.Utilities.IsPointInBoundingBox(character.MovementComponent.CharacterCenter, fromPosition, range))
 				{
 					float angle = Ultra.Utilities.GetAngleBetweenVectors(direction.normalized, (character.MovementComponent.CharacterCenter - fromPosition).normalized);
@@ -218,6 +225,7 @@ namespace Ultra
 
 			foreach (GameCharacter character in list)
 			{
+				if (character == null) continue;
 				float distance = Vector3.Distance(fromPosition, character.MovementComponent.CharacterCenter);
 				if (distance <= range)
 				{
@@ -313,14 +321,12 @@ namespace Ultra
 		public ControllerBase SpawnController(GameObject characterToControll, ScriptableCharacter characterData)
 		{
 			ControllerBase controller = GetController(characterData.ControllerName, characterToControll);
-			Component comp = characterToControll.AddComponent(controller.GetType());
-			ControllerBase controllerBase = (ControllerBase)comp;
-			if (controllerBase == null)
+			if (controller == null)
 			{
 				Debug.LogError("Controller could not be created correctly. GameObject => " + controller.name);
-				return controllerBase;
+				return controller;
 			}
-			controllerBase.BeginPosses(characterToControll, characterData);
+			controller.BeginPosses(characterToControll, characterData);
 
 			//ControllerBase controllerBase = null;
 			//ControllerBase[] controllers = Ultra.Utilities.GetAll<ControllerBase>().ToArray();
@@ -342,7 +348,7 @@ namespace Ultra
 			//		break;
 			//	}
 			//}
-			return controllerBase;
+			return controller;
 		}
 	}
 }

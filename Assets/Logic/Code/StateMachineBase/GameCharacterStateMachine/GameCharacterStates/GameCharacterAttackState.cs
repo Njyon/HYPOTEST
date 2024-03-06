@@ -75,7 +75,7 @@ public class GameCharacterAttackState : AGameCharacterState
 						break;
 					default:
 						Vector3 bounds = new Vector3(4f, 1.5f, 1f);
-						GameCharacter target = Ultra.HypoUttilies.FindCharactereInDirectionInRange(GameCharacter.MovementComponent.CharacterCenter, GameCharacter.transform.forward, bounds, ref GameCharacter.CharacterDetection.DetectedGameCharacters);
+						GameCharacter target = Ultra.HypoUttilies.FindCharactereInDirectionInRange(GameCharacter.MovementComponent.CharacterCenter,GameCharacter.transform.forward, bounds, ref GameCharacter.CharacterDetection.DetectedGameCharacters);
 						Ultra.Utilities.DrawBox(GameCharacter.MovementComponent.CharacterCenter, Quaternion.identity, bounds, Color.blue, 10f, 200, DebugAreas.Combat);
 						SetNewRotationDir(target);
 						break;
@@ -165,25 +165,29 @@ public class GameCharacterAttackState : AGameCharacterState
 
 	public override void EndState(EGameCharacterState newState)
 	{
-		switch (newState)
+		if (GameCharacter != null)
 		{
-			case EGameCharacterState.HookedToCharacter: 
-			case EGameCharacterState.PullCharacterOnHorizontalLevel: 
-			case EGameCharacterState.Freez: 
-			case EGameCharacterState.FlyAway: 
-			case EGameCharacterState.Dodge:
-				GameCharacter.CombatComponent.AttackTimer.Stop();
-				//GameCharacter.MovementComponent.UseGravity = true;
-				break;
-			default:
-				break;
-		}
+			switch (newState)
+			{
+				case EGameCharacterState.HookedToCharacter: 
+				case EGameCharacterState.PullCharacterOnHorizontalLevel: 
+				case EGameCharacterState.Freez: 
+				case EGameCharacterState.FlyAway: 
+				case EGameCharacterState.Dodge:
+					GameCharacter.CombatComponent.AttackTimer.Stop();
+					//GameCharacter.MovementComponent.UseGravity = true;
+					break;
+				default:
+					break;
+			}
 
-		//GameCharacter.MovementComponent.UseGravity = true;
-		GameCharacter.MovementComponent.InterpGravityUp();
-		GameCharacter.transform.rotation = newDir;
-		GameCharacter.LastDir = new Vector3(GameCharacter.transform.forward.x, 0, 0); 
-		GameCharacter.CombatComponent.CurrentWeapon.EndAttackStateLogic();
+		
+			//GameCharacter.MovementComponent.UseGravity = true;
+			GameCharacter.MovementComponent.InterpGravityUp();
+			GameCharacter.transform.rotation = newDir;
+			GameCharacter.LastDir = new Vector3(GameCharacter.transform.forward.x, 0, 0);
+			GameCharacter.CombatComponent.CurrentWeapon.EndAttackStateLogic();
+		}
 	}
 
 	void OnBackupTimerFinished()

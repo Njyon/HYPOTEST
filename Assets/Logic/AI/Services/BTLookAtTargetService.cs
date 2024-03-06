@@ -71,7 +71,10 @@ public class BTLookAtTargetService : BTServiceNodeBase
 	{
 		base.OnExit(result, options);
 
-		GameCharacter.AnimController.MoveBackwards = false;
-		GameCharacter?.PluginStateMachine?.AddPluginState(EPluginCharacterState.LookInVelocityDirection);
+		if (GameCharacter != null)
+		{
+			GameCharacter.AnimController.MoveBackwards = false;
+			GameCharacter.PluginStateMachine?.AddPluginState(EPluginCharacterState.LookInVelocityDirection);
+		}
 	}
 }

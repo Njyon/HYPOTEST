@@ -64,13 +64,16 @@ public class GameCharacterMoveToPositionState : AGameCharacterState
 
 	public override void EndState(EGameCharacterState newState)
 	{
-		GameCharacter.AnimController.InFreez = false;
-		GameCharacter.MovementComponent.UseGravity = true;
-		GameCharacter.MovementComponent.InterpGravityUp();
-		GameCharacter.MovementComponent.MovementVelocity = Vector3.zero;
-		if (GameCharacter.CombatComponent.HookedToCharacter != null) GameCharacter.CombatComponent.HookedToCharacter.CharacterMoveToPositionStateAbort(GameCharacter);
-		GameCharacter.MovementComponent.onMoveCollisionFlag -= OnMoveCollisionFlag;
-		GameCharacter.MovementComponent.SetLayerToDefault();
+		if (GameCharacter != null)
+		{
+			GameCharacter.AnimController.InFreez = false;
+			GameCharacter.MovementComponent.UseGravity = true;
+			GameCharacter.MovementComponent.InterpGravityUp();
+			GameCharacter.MovementComponent.MovementVelocity = Vector3.zero;
+			if (GameCharacter.CombatComponent.HookedToCharacter != null) GameCharacter.CombatComponent.HookedToCharacter.CharacterMoveToPositionStateAbort(GameCharacter);
+			GameCharacter.MovementComponent.onMoveCollisionFlag -= OnMoveCollisionFlag;
+			GameCharacter.MovementComponent.SetLayerToDefault();
+		}
 	}
 
 	void OnMoveCollisionFlag(CollisionFlags collisionFlag)

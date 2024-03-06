@@ -1,4 +1,5 @@
 using EasyButtons;
+using MyBox;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -270,11 +271,6 @@ public class GameCharacter : MonoBehaviour, IDamage
 		{
 			characterDetection.onOverlapEnter -= OnCharacterDetectionOverlapEnter;
 		}
-
-		Destroy(StateMachine);
-		Destroy(PluginStateMachine);
-		stateMachine = null;
-		pluginStateMachine = null;
 
 		if (onGameCharacterDestroyed != null) onGameCharacterDestroyed(this);
 	}
@@ -605,7 +601,7 @@ public class GameCharacter : MonoBehaviour, IDamage
 		if (onGameCharacterDied != null) onGameCharacterDied(this);
 	}
 
-	[Button("Die")]
+	[ButtonMethod()]
 	protected virtual void DieButton()
 	{
 		health.AddCurrentValue(-health.CurrentValue);

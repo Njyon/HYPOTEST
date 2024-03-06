@@ -102,12 +102,15 @@ public class GameCharacterDefensiveActionState : AGameCharacterState
 
 	public override void EndState(EGameCharacterState newState)
 	{
-		//GameCharacter.MovementComponent.UseGravity = true;
-		GameCharacter.MovementComponent.InterpGravityUp();
-		GameCharacter.AnimController.BlockRotation = false;
-		GameCharacter.AnimController.InDefensiveAction = false;
-		GameCharacter.LastDir = new Vector3(GameCharacter.transform.forward.x, 0, 0);
-		GameCharacter.AnimController.InterpSecondaryMotionLayerWeight(1);
-		GameCharacter.CombatComponent.CurrentWeapon?.DefensiveActionStateEnd();
+		if (GameCharacter != null)
+		{
+			//GameCharacter.MovementComponent.UseGravity = true;
+			GameCharacter.MovementComponent.InterpGravityUp();
+			GameCharacter.AnimController.BlockRotation = false;
+			GameCharacter.AnimController.InDefensiveAction = false;
+			GameCharacter.LastDir = new Vector3(GameCharacter.transform.forward.x, 0, 0);
+			GameCharacter.AnimController.InterpSecondaryMotionLayerWeight(1);
+			GameCharacter.CombatComponent.CurrentWeapon?.DefensiveActionStateEnd();
+		}
 	}
 }

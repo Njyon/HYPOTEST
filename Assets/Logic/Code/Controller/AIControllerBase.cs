@@ -48,7 +48,6 @@ public class AIControllerBase : ControllerBase
 		//if (btRunner != null) btRunner.EnableTree();
 
 		gameCharacter.onGameCharacterDied += OnGameCharacterDied;
-		gameCharacter.onGameCharacterDestroyed += OnGameCharacterDestroyed;
 		gameCharacter.Team = HyppoliteTeam.TeamEnemy;
 
 		await new WaitUntil(() => UIManager.Instance.Canvas != null);
@@ -57,9 +56,10 @@ public class AIControllerBase : ControllerBase
 
 	protected void OnDestroy()
 	{
+		OnGameCharacterDied(gameCharacter);
+
 		if (btRunner != null) btRunner.onBehaviourTreeInit -= OnBehaviourTreeInit;
 		if (gameCharacter != null) gameCharacter.onGameCharacterDied -= OnGameCharacterDied;
-		if (gameCharacter != null) gameCharacter.onGameCharacterDestroyed -= OnGameCharacterDestroyed;
 
 	}
 
@@ -77,13 +77,6 @@ public class AIControllerBase : ControllerBase
 			UIManager.Instance.ReturnEnemyInfo(enemyInfo);
 			enemyInfo = null;
 		}
-	}
-
-	protected override void OnGameCharacterDestroyed(GameCharacter gameCharacter)
-	{
-		OnGameCharacterDied(gameCharacter);
-
-		Destroy(this);
 	}
 
 	protected virtual void InitBehaviourTreeValues()

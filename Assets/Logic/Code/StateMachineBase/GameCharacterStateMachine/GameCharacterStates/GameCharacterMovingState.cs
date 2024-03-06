@@ -108,8 +108,11 @@ public class GameCharacterMovingState : AGameCharacterState
 
 	public override void EndState(EGameCharacterState newState)
 	{
-		GameCharacter.AnimController.InterpSecondaryMotionLayerWeight(1, 10f);
+		if (GameCharacter != null)
+		{
+			GameCharacter.AnimController.InterpSecondaryMotionLayerWeight(1, 10f);
 
-		GameCharacter.CombatComponent.CurrentWeapon.SetWeaponReadyPose();
+			GameCharacter.CombatComponent.CurrentWeapon.SetWeaponReadyPose();
+		}
 	}
 }

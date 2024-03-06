@@ -79,16 +79,19 @@ public class GameCharacterInAirState : AGameCharacterState
 
 	public override void EndState(EGameCharacterState newState)
 	{
-		GameCharacter.MovementComponent.onMoveCollisionFlag -= OnMoveCollisionFlag;
-		switch (newState)
+		if (GameCharacter != null)
 		{
-			case EGameCharacterState.Attack: break;
-			case EGameCharacterState.Freez: break;
-			case EGameCharacterState.HookedToCharacter: break;
-			default:
-				Vector3 test = new Vector3(GameCharacter.MovementComponent.MovementVelocity.x, Physics.gravity.y / 2, GameCharacter.MovementComponent.MovementVelocity.z);
-				GameCharacter.MovementComponent.MovementVelocity = test; 
-				break;	
+			GameCharacter.MovementComponent.onMoveCollisionFlag -= OnMoveCollisionFlag;
+			switch (newState)
+			{
+				case EGameCharacterState.Attack: break;
+				case EGameCharacterState.Freez: break;
+				case EGameCharacterState.HookedToCharacter: break;
+				default:
+					Vector3 test = new Vector3(GameCharacter.MovementComponent.MovementVelocity.x, Physics.gravity.y / 2, GameCharacter.MovementComponent.MovementVelocity.z);
+					GameCharacter.MovementComponent.MovementVelocity = test;
+					break;
+			}
 		}
 		// Needed?
 		//GameCharacter.MovementComponent.IsInJump = false;

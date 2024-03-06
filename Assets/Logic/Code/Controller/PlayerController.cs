@@ -19,6 +19,12 @@ public class PlayerController : ControllerBase
 	//DebugStuff
 	bool bForcedFrameRate = false;
 
+	private void Awake()
+	{
+		int lol = 1;
+		int z = lol;
+	}
+
 	public override void BeginPosses(GameObject pawn, ScriptableCharacter characterData)
 	{
 		base.BeginPosses(pawn, characterData);
@@ -26,7 +32,6 @@ public class PlayerController : ControllerBase
 		SetupDefaultPlayerInputs();
 		SetupGameCharacter(pawn);
 		SetupCamera(pawn);
-
 	}
 
 	private void SetupGameCharacter(GameObject pawn)
@@ -322,10 +327,5 @@ public class PlayerController : ControllerBase
 			}
 		}
 		return null;
-	}
-
-	protected override void OnGameCharacterDestroyed(GameCharacter gameCharacter)
-	{
-
 	}
 }

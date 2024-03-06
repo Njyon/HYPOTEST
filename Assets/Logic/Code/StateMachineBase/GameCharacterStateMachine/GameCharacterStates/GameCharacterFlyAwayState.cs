@@ -67,14 +67,17 @@ public class GameCharacterFlyAwayState : AGameCharacterState
 
 	public override void EndState(EGameCharacterState newState)
 	{
-		GameCharacter.CombatComponent.FlyAwayTimer.onTimerFinished -= OnTimerFinished;
-		GameCharacter.MovementComponent.onMoveCollisionFlag -= OnMoveCollisionFlag;
+		if (GameCharacter != null)
+		{
+			GameCharacter.CombatComponent.FlyAwayTimer.onTimerFinished -= OnTimerFinished;
+			GameCharacter.MovementComponent.onMoveCollisionFlag -= OnMoveCollisionFlag;
 
-		// Rotate Chracter to normal position
-		Vector3 normalDir = new Vector3(GameCharacter.transform.forward.x, 0f, 0f);
-		GameCharacter.transform.rotation = Quaternion.LookRotation(normalDir.normalized, Vector3.up);
+			// Rotate Chracter to normal position
+			Vector3 normalDir = new Vector3(GameCharacter.transform.forward.x, 0f, 0f);
+			GameCharacter.transform.rotation = Quaternion.LookRotation(normalDir.normalized, Vector3.up);
 
-		GameCharacter.AnimController.FlyAway = false;
+			GameCharacter.AnimController.FlyAway = false;
+		}
 	}
 
 	private void RotateCharacter()

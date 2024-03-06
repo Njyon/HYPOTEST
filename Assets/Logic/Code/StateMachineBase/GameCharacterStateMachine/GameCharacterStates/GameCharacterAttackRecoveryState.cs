@@ -91,24 +91,27 @@ public class GameCharacterAttackRecoveryState : AGameCharacterState
 
 	public override void EndState(EGameCharacterState newState)
 	{
-		switch (newState)
+		if (GameCharacter != null)
 		{
-			case EGameCharacterState.Attack:
-				// Force Remove Hit Detection so new Hit can be processed from NextAttack
-				GameCharacter.CombatComponent.CurrentWeapon.HitDetectionEnd();
-				break;
-			default:
-				if (!GameCharacter.MovementComponent.IsGrounded)
-					GameCharacter.BuffComponent.AddBuff(new NoGravityBuff(this.GameCharacter, Ultra.HypoUttilies.GameMode.GetDefaultGameModeData().AfterCombatNoGravityTime));
-				break;
-		}
+			switch (newState)
+			{
+				case EGameCharacterState.Attack:
+					// Force Remove Hit Detection so new Hit can be processed from NextAttack
+					GameCharacter.CombatComponent.CurrentWeapon.HitDetectionEnd();
+					break;
+				default:
+					if (!GameCharacter.MovementComponent.IsGrounded)
+						GameCharacter.BuffComponent.AddBuff(new NoGravityBuff(this.GameCharacter, Ultra.HypoUttilies.GameMode.GetDefaultGameModeData().AfterCombatNoGravityTime));
+					break;
+			}
 
-		GameCharacter.AnimController.InAttack = false;
-		GameCharacter.AnimController.HoldAttack = false;
-		GameCharacter.AnimController.TriggerAttack = false;
-		GameCharacter.AnimController.InDefensiveAction = false;
-		GameCharacter.AnimController.InterpSecondaryMotionLayerWeight(1, 10);
-		GameCharacter.CombatComponent.CurrentWeapon.AttackRecoveryEnd();
-		GameCharacter.AnimController.BlockRotation = false;
+			GameCharacter.AnimController.InAttack = false;
+			GameCharacter.AnimController.HoldAttack = false;
+			GameCharacter.AnimController.TriggerAttack = false;
+			GameCharacter.AnimController.InDefensiveAction = false;
+			GameCharacter.AnimController.InterpSecondaryMotionLayerWeight(1, 10);
+			GameCharacter.CombatComponent.CurrentWeapon.AttackRecoveryEnd();
+			GameCharacter.AnimController.BlockRotation = false;
+		}
 	}
 }

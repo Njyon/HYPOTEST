@@ -23,6 +23,15 @@ public class SpawnData
 {
 	public int maxSpawnEnemies = 5;
 	public List<CharacterSpawnData> charactersToSpawn;
+
+	public void Reset()
+	{
+		foreach (var data in charactersToSpawn)
+		{
+			data.CurrentlySpawned = 0;
+			data.CurrentlyAlive = 0;
+		}
+	}
 }
 
 public class ArenaSpawner : MonoBehaviour
@@ -226,9 +235,11 @@ public class ArenaSpawner : MonoBehaviour
 
 		foreach (GameCharacter gc in spawnedGameCharacters)
 		{
-			Destroy(gc);
+			Destroy(gc.gameObject);
 		}
 		spawnedGameCharacters.Clear();
+
+		dataToSpawn.Reset();
 
 		if (onPlayerDiedAndRespawned != null) onPlayerDiedAndRespawned();
 		onPlayerDiedAndRespawnedEvent.Invoke();

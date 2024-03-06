@@ -67,10 +67,13 @@ public class GameCharacterPullCharacterOnHorizontalLevelState : AGameCharacterSt
 
 	public override void EndState(EGameCharacterState newState)
 	{
-		GameCharacter.MovementComponent.onMoveCollisionFlag -= OnMoveCollisionFlag;
-		GameCharacter.MovementComponent.UseGravity = true;
-		GameCharacter.MovementComponent.InterpGravityUp();
-		GameCharacter.MovementComponent.SetLayerToDefault();
+		if (GameCharacter != null)
+		{
+			GameCharacter.MovementComponent.onMoveCollisionFlag -= OnMoveCollisionFlag;
+			GameCharacter.MovementComponent.UseGravity = true;
+			GameCharacter.MovementComponent.InterpGravityUp();
+			GameCharacter.MovementComponent.SetLayerToDefault();
+		}
 	}
 
 	bool ShouldLeaveState()
