@@ -27,4 +27,7 @@ public class DefaultGameModeData : ScriptableObject
 
     [Header("Hit Data")]
     public float ignoreGravityAfterHit = 0.5f;
+
+    [Header("Enemy Desolve")]
+    public float desolveLenght = 1f;
 }

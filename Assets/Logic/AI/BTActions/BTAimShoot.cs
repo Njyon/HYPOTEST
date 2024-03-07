@@ -92,7 +92,7 @@ public class BTAimShoot : BTHyppoliteActionNodeBase
 			}
 		}
 
-		lr.SetPosition(1, Vector3.Lerp(lr.GetPosition(0), finalHit.point, aimTimer.GetProgess()));
+		lr.SetPosition(1, Vector3.Lerp(lr.GetPosition(0), finalHit.point, aimTimer.GetProgress()));
 
 		if (aimTimer.IsFinished)
 			return Status.Succeeded;

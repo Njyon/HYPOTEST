@@ -8,7 +8,7 @@ public class NoGravityBuff : ABuff
 	{
 		Vector3 vel = GameCharacter.MovementComponent.MovementVelocity;
 		GameCharacter.MovementComponent.UseGravity = false;
-		GameCharacter.MovementComponent.MovementVelocity = new Vector3(vel.x, 0, vel.z);
+		GameCharacter.MovementComponent.MovementVelocity = new Vector3(vel.x, vel.y > 0 ? vel.y : 0, vel.z);
 	}
 
 	public override void BuffEnds()

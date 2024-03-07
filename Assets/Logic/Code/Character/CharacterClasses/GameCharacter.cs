@@ -62,7 +62,6 @@ public class GameCharacter : MonoBehaviour, IDamage
 
 	public GameCharacterStateMachine StateMachine { get { return stateMachine; } }
 	public Vector2 MovementInput { get { return movementInput; } }
-	public GameCharacterData GameCharacterData { get { return gameCharacterData; } }
 	public int CurrentJumpAmount { get { return currentJumpAmount; } set { currentJumpAmount = value; } }
 	public Animator Animator { get { return animator; } }
 	public ScriptableCharacter CharacterData { get { return characterData; } set { characterData = value; } }
@@ -93,6 +92,19 @@ public class GameCharacter : MonoBehaviour, IDamage
 	public List<SkinnedMeshRenderer> SkinnedMeshRenderers { get { return skinnedMeshRenderers; } }
 	public GameObject RespawnObj { get { return respawnObj; } }
 
+	public GameCharacterData GameCharacterData 
+	{ 
+		get 
+		{
+			if (gameCharacterData == null)
+				gameCharacterData = gameObject.GetComponent<GameCharacterData>();
+
+			if (gameCharacterData == null)
+				Ultra.Utilities.Instance.DebugErrorString("GameCharacter", "GameCharacterData", "GameCharacterData is not attached to GameCharacter!");
+
+			return gameCharacterData; 
+		} 
+	}
 	public int MaterialHitColorIndex { 
 		get 
 		{ 
@@ -183,8 +195,6 @@ public class GameCharacter : MonoBehaviour, IDamage
 		movementComponent = gameObject.GetComponent<GameCharacterMovementComponent>();
 		if (movementComponent == null) Debug.LogError("GameObject: " + name + " Does not have an GameCharacterMovementComponent Attached!");
 		eventComponent = new EventComponent();
-		gameCharacterData = gameObject.GetComponent<GameCharacterData>();
-		if (!gameCharacterData) gameObject.AddComponent<GameCharacterData>();
 		stateMachine = gameObject.AddComponent<GameCharacterStateMachine>();
 		pluginStateMachine = gameObject.AddComponent<GameCharacterPluginStateMachine>();
 		pluginStateMachine.Init(this);
@@ -198,15 +208,15 @@ public class GameCharacter : MonoBehaviour, IDamage
 		characterDetection = characterDetectionObject.GetComponent<GameCharacterDetection>();
 		characterDetection.onOverlapEnter += OnCharacterDetectionOverlapEnter;
 		SphereCollider sphereCollider = characterDetection.Collider as SphereCollider;
-		if (sphereCollider != null) sphereCollider.radius = gameCharacterData.CharacterDetectionRange;
+		if (sphereCollider != null) sphereCollider.radius = GameCharacterData.CharacterDetectionRange;
 
 		if (animController != null) animController.Start();
 		if (combatComponent != null) combatComponent.StartComponent();
 
-		health = new RecourceBase(gameCharacterData.Health, gameCharacterData.Health);
+		health = new RecourceBase(GameCharacterData.Health, GameCharacterData.Health);
 		health.onCurrentValueChange += OnHealthValueChanged;
 
-		staggerComponent = new StaggerComponent(this, gameCharacterData.StaggerTime, gameCharacterData.MaxStaggerValue, gameCharacterData.MaxStaggerValue);
+		staggerComponent = new StaggerComponent(this, GameCharacterData.StaggerTime, GameCharacterData.MaxStaggerValue, GameCharacterData.MaxStaggerValue);
 
 		if (dataWorldHolder == null)
 		{
@@ -243,8 +253,8 @@ public class GameCharacter : MonoBehaviour, IDamage
 
 	void SetupPartilcePools()
 	{
-		succsessfullDodgeParticlePool = new ParticleSystemPool(gameCharacterData.SuccsessfullDodgeParticleEffect, CreateHolderChild("SuccsessfullDodgeEffect Holder"), 2);
-		dodgeParticleSystemPool = new ParticleSystemPool(gameCharacterData.DodgeParticleEffect, CreateHolderChild("DodgeEffect Holder"), 2);
+		succsessfullDodgeParticlePool = new ParticleSystemPool(GameCharacterData.SuccsessfullDodgeParticleEffect, CreateHolderChild("SuccsessfullDodgeEffect Holder"), 2);
+		dodgeParticleSystemPool = new ParticleSystemPool(GameCharacterData.DodgeParticleEffect, CreateHolderChild("DodgeEffect Holder"), 2);
 	}
 
 	/// <summary>
@@ -572,7 +582,7 @@ public class GameCharacter : MonoBehaviour, IDamage
 		transform.rotation = Quaternion.LookRotation(dir.normalized, Vector3.up);
 	}
 
-	void GameCharacterDied()
+	protected virtual void GameCharacterDied()
 	{
 		Ultra.Utilities.Instance.DebugLogOnScreen(name + " Is Dead", 2f, StringColor.White, 200, DebugAreas.Combat);
 		IsGameCharacterDead = true;

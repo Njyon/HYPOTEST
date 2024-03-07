@@ -10,10 +10,34 @@ public class EnemyGameCharacter : GameCharacter
 	public BehaviorTreeRunner BTRunner { get { return btRunner; } set { btRunner = value; } }
 
 	public ParticleSystemPool attackFeedbackPool;
+	Ultra.Timer desolveTimer;
+	int desolveID;
 
 	protected override void Awake()
 	{
 		base.Awake();
+
+		desolveID = Shader.PropertyToID("_DissolveBlend");
+
+		SetDesolveBlendValue(0);
+		desolveTimer = new Ultra.Timer(Ultra.HypoUttilies.GameMode.GetDefaultGameModeData().desolveLenght, false);
+	}
+
+	private void SetDesolveBlendValue(float value)
+	{
+		if (GameCharacterData.MeshRenderer == null)
+		{
+			Ultra.Utilities.Instance.DebugErrorString("EnemyGameCharacter", "SetDesolveBlendValue", "MeshRenderer is not set in GameCharacterData!");
+			return;
+		}
+
+		foreach (Material mat in GameCharacterData.MeshRenderer.materials)
+		{
+			if (mat != null)
+			{
+				mat.SetFloat(desolveID, value);
+			}
+		}
 	}
 
 	public override void CustomAwake()
@@ -34,6 +58,19 @@ public class EnemyGameCharacter : GameCharacter
 	{
 		if (!IsInitialized) return;
 		base.Update();
+
+		if (desolveTimer.IsRunning)
+		{
+			desolveTimer.Update(Time.deltaTime);
+			if (IsGameCharacterDead)
+			{
+				SetDesolveBlendValue(desolveTimer.GetProgressRevered());
+			}
+			else
+			{
+				SetDesolveBlendValue(desolveTimer.GetProgress());
+			}
+		}
 	}
 
 	new protected void OnDestroy()
@@ -84,5 +121,12 @@ public class EnemyGameCharacter : GameCharacter
 			if (ps == null)
 				Ultra.Utilities.Instance.DebugErrorString("EnemyGameCharacter", "ShowAttackFeedback", "Particle System is null!");
 		ps.Play();
+	}
+
+	protected override async void GameCharacterDied()
+	{
+		base.GameCharacterDied();
+		await new WaitForSeconds(1f);
+		desolveTimer.Start();
 	}
 }
