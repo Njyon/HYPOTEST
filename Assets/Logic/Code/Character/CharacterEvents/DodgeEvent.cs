@@ -9,7 +9,7 @@ public class DodgeEvent : CharacterEvent
 
 	public override bool CanBeExecuted()
 	{
-		if (gameCharacter.MovementComponent.IsInJump) return false;
+		//if (gameCharacter.MovementComponent.IsInJump) return false;
 		//if (gameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.Attack) return false;
 		//if (gameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.DefensiveAction) return false;
 		if (gameCharacter.CombatComponent.CurrentWeapon != null && gameCharacter.CombatComponent.CurrentWeapon.IsHitDetecting) return false;

@@ -64,9 +64,9 @@ public class ForceFieldComponent : MonoBehaviour
 			if (!isFadingIn)
 			{
 				if (useFadeInAsOutReverse)
-					return Ultra.Utilities.Remap(fadeTimer.GetProgess(), 0f, 1f, 1f, 0f);
+					return Ultra.Utilities.Remap(fadeTimer.GetProgress(), 0f, 1f, 1f, 0f);
 			}
-			return fadeTimer.GetProgess();
+			return fadeTimer.GetProgress();
 		}
 	}
 

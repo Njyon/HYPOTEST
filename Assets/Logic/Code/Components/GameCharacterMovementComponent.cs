@@ -124,19 +124,25 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	private bool IsGroundedIntern { get { return isGrounded; } 
 		set 
 		{
-			if (value != isGrounded)
+			if (isGrounded != value)
 			{
 				isGrounded = value;
 
 				if (!isGrounded)
 					InAirTimer.Start();
-				else 
+				else
+				{
+					GroundReset();
 					InAirTimer.Stop();
+				}
+
 
 				if (onCharacterGroundedChanged != null) onCharacterGroundedChanged(isGrounded);
 			}
-			if (isGrounded)
-				GroundReset();
+			//if (isGrounded)
+			//	GroundReset();
+
+
 		}
 	}
 	static float minDistance = 0.001f;
@@ -420,7 +426,16 @@ public class GameCharacterMovementComponent : MonoBehaviour
 
 	private bool ShouldNOTClampGravity()
 	{
-		return gameCharacter.MovementComponent.IsInJump || gameCharacter.StateMachine.GetCurrentStateType() == EGameCharacterState.FlyAway;
+		switch (gameCharacter.StateMachine.GetCurrentStateType())
+		{
+			case EGameCharacterState.FlyAway:
+			case EGameCharacterState.Dodge:
+				return true;
+			default:
+				break;
+		}
+
+		return gameCharacter.MovementComponent.IsInJump;
 	}
 
 	private bool InCombatState()

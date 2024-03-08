@@ -118,13 +118,23 @@ namespace Ultra
 		}
 
 		/// <summary>
-		/// Get Progress between 0 (start) and 1 (end)
+		/// Get Progress between 0 (Start) and 1 (End)
 		/// </summary>
 		/// <returns></returns>
-		public float GetProgess()
+		public float GetProgress()
 		{
 			if (Time < 0) return 0.5f; // this Funktion does not work on Timers with no end
 			return Mathf.Lerp(0, Time, CurrentTime);
+		}
+
+		/// <summary>
+		/// Get Reversed Progress between 0 (End) and 1 (Start)
+		/// </summary>
+		/// <returns></returns>
+		public float GetProgressRevered()
+		{
+			if (Time < 0) return 0.5f; // this Funktion does not work on Timers with no end
+			return Mathf.Lerp(Time, 0, CurrentTime);
 		}
 	}
 }

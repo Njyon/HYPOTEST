@@ -11,7 +11,10 @@ public class JumpEvent : CharacterEvent
 	{
 		switch (gameCharacter.StateMachine.GetCurrentStateType())
 		{
-			/*case EGameCharacterState.Attack:*/ case EGameCharacterState.Freez: case EGameCharacterState.Dodge:  return false;
+			//case EGameCharacterState.Attack:
+			case EGameCharacterState.Freez: 
+			//case EGameCharacterState.Dodge:  
+				return false;
 			default: break;
 		}
 		//if (gameCharacter.CombatComponent.CurrentWeapon != null && gameCharacter.CombatComponent.CurrentWeapon.IsHitDetecting) return false;
@@ -33,11 +36,13 @@ public class JumpEvent : CharacterEvent
 			Ultra.Utilities.Instance.DebugLogOnScreen("Succesfull EnemyStep", 2f, StringColor.White, 200, DebugAreas.Movement);
 		}
 
+		if (gameCharacter.StateMachine.GetCurrentStateType() != EGameCharacterState.InAir) gameCharacter.StateMachine.ForceStateChange(EGameCharacterState.InAir, true);
+		gameCharacter.BuffComponent.RemoveBuff(EBuff.NoGravity);
+
 		var jumpVelocity = Mathf.Sqrt(-2 * -gameCharacter.GameCharacterData.MovmentGravity * gameCharacter.GameCharacterData.JumpForce);
 		gameCharacter.MovementComponent.MovementVelocity = new Vector3(gameCharacter.MovementComponent.MovementVelocity.x, jumpVelocity, gameCharacter.MovementComponent.MovementVelocity.z);
 		gameCharacter.CurrentJumpAmount++;
 		gameCharacter.MovementComponent.IsInJump = true;
-		if (gameCharacter.StateMachine.GetCurrentStateType() != EGameCharacterState.InAir) gameCharacter.StateMachine.ForceStateChange(EGameCharacterState.InAir, true);
 		gameCharacter.AnimController.Jump();
 		if (gameCharacter.IsPlayerCharacter) Ultra.Utilities.Instance.DebugLogOnScreen("JumpVel: " + jumpVelocity, 2f, 200, DebugAreas.Movement);
 
