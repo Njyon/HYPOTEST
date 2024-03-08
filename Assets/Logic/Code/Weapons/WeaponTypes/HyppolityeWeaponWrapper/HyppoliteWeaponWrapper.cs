@@ -63,7 +63,7 @@ public class HyppoliteWeaponWrapper : WeaponBase
 		set
 		{
 			// If Ult is ready dont take it away from player, feels shity
-			if (UltCharge >= WeaponData.MaxUltChargeAmount && value < WeaponData.MaxUltChargeAmount) return;
+			if ((value > UltCharge && UltCharge >= WeaponData.MaxUltChargeAmount)/* && value < WeaponData.MaxUltChargeAmount*/) return;
 
 			value = Mathf.Clamp(value, 0, WeaponData.MaxUltChargeAmount);
 			if (UltCharge != value)
@@ -160,7 +160,9 @@ public class HyppoliteWeaponWrapper : WeaponBase
 	public override AttackAnimationData Ultimate(float attackDeltaTime)
 	{
 		CurrentUsedWeapon = scriptableWeaponWrapper?.weapons[bazooka]?.Weapon;
-		return CurrentUsedWeapon?.Ultimate(attackDeltaTime);
+		var attackAnim = CurrentUsedWeapon?.Ultimate(attackDeltaTime);
+		if (attackAnim != null) UltCharge = 0;
+		return attackAnim;
 	}
 
 	public override AttackAnimationData DefensiveAction()

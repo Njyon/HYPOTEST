@@ -112,7 +112,7 @@ public class GameCharacterMovingState : AGameCharacterState
 		{
 			GameCharacter.AnimController.InterpSecondaryMotionLayerWeight(1, 10f);
 
-			GameCharacter.CombatComponent.CurrentWeapon.SetWeaponReadyPose();
+			GameCharacter.CombatComponent.CurrentWeapon?.SetWeaponReadyPose();
 		}
 	}
 }

@@ -61,7 +61,7 @@ public class PlayerUI : UIBase
 		deathPanel.SetActive(true);
 
 		LoadedUI();
-		styleRankingGroup.alpha = 0f;
+		//styleRankingGroup.alpha = 0f;
 	}
 
 	public void Init(PlayerGameCharacter playerCharacter)

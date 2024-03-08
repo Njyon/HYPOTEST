@@ -14,8 +14,9 @@ public class BazookaBuffData
 	public float projectileSpeed;
 	public float projectileDamage;
 	public float projectileLifeTime;
+	public int cameraShakeIndex;
 
-	public BazookaBuffData(ProjectilePool projectilePool, WeaponObjData bazookaData, AnimationClip addativeShootAnimation, WeaponBase weapon, GameCharacter mainTarget, int missileAmountToShoot, float projectileSpeed, float projectileDamage, float projectileLifeTime)
+	public BazookaBuffData(ProjectilePool projectilePool, WeaponObjData bazookaData, AnimationClip addativeShootAnimation, WeaponBase weapon, GameCharacter mainTarget, int missileAmountToShoot, float projectileSpeed, float projectileDamage, float projectileLifeTime, int cameraShakeIndex)
 	{
 		this.projectilePool = projectilePool;
 		this.bazookaData = bazookaData;
@@ -26,7 +27,8 @@ public class BazookaBuffData
 		this.projectileDamage = projectileDamage;
 		this.mainTarget = mainTarget;
 		this.projectileLifeTime = projectileLifeTime;
-	}
+		this.cameraShakeIndex = cameraShakeIndex;
+}
 }
 
 public class BazookaUltBuff : ABuff
@@ -59,6 +61,7 @@ public class BazookaUltBuff : ABuff
 		bazookaData.weapon.PlayAttackSound(0);
 		bazookaData.weapon.SpawnWeaponFlash(bazookaData.bazookaData);
 
+		CameraController.Instance.ShakeCamerea(bazookaData.cameraShakeIndex);
 
 		WeaponProjectile projectile = bazookaData.projectilePool.GetValue();
 		if (projectile == null) projectile = bazookaData.projectilePool.GetValue();

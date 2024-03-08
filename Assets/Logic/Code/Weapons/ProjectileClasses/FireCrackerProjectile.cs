@@ -11,6 +11,7 @@ public class FireCrackerProjectile : WeaponProjectile
 
 	public override bool OnHit(Collider other)
 	{
+		if (other.isTrigger) return false;
 		if (other.gameObject == gameCharacterOwner.gameObject) return false;
 
 		GameCharacter gc = other.GetComponent<GameCharacter>();

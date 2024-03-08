@@ -13,6 +13,7 @@ public class GrenadeProjectile : WeaponProjectile
 
 	public override bool OnHit(Collider other)
 	{
+		if (other.isTrigger) return false;
 		if (other.gameObject == gameCharacterOwner.gameObject) return false;
 
 		Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius, gameCharacterOwner.CharacterLayer, QueryTriggerInteraction.Ignore);
