@@ -135,7 +135,7 @@ public class CombatRatingComponent : RecourceBase
 				{
 					if (sWeapon == null || sWeapon.Weapon == null) continue;
 					sWeapon.Weapon.Charge -= 200;
-					sWeapon.Weapon.UltCharge -= 5;
+					//sWeapon.Weapon.UltCharge -= 5;
 				}
 			}
 			UpdateStyleRank();

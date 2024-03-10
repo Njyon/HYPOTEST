@@ -1,8 +1,9 @@
+using MyBox;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEngine;
-using static Ultra.Timer;
 
 [Serializable]
 public class ShootAttackNoProjectileData : AttackData
@@ -10,6 +11,9 @@ public class ShootAttackNoProjectileData : AttackData
 	public AnimationClip shootAddativeAnimation;
 	public bool leftHand;
 	public float forceAimDuration = 5f;
+	public bool cameraShake = true;
+	[ConditionalField("cameraShake")] 
+	public int shakeIndex = 0;
 }
 
 public class ShootAttackNoProjectile : AttackBase
@@ -73,6 +77,9 @@ public class ShootAttackNoProjectile : AttackBase
 			}
 		}
 		Weapon.AddForceAimBuff(attackData.forceAimDuration);
+
+		if (attackData.cameraShake)
+			CameraController.Instance?.ShakeCamerea(attackData.shakeIndex);
 	}
 
 

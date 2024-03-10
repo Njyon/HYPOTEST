@@ -34,6 +34,7 @@ public class BazookaMissileProjectile : WeaponProjectile
 
 	public override bool OnHit(Collider other)
 	{
+		if (other.isTrigger) return false;
 		if (other.gameObject == gameCharacterOwner.gameObject) return false;
 		var projectile = other.GetComponent<WeaponProjectile>();
 		if (projectile != null) return false;

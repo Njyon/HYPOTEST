@@ -124,7 +124,7 @@ public abstract class WeaponBase
 		set
 		{
 			// If Ult is ready dont take it away from player, feels shity
-			if (ultCharge >= weaponData.MaxUltChargeAmount && value < weaponData.MaxUltChargeAmount) return;
+			if ((value > ultCharge && ultCharge >= weaponData.MaxUltChargeAmount) /*&& value < weaponData.MaxUltChargeAmount*/) return;
 
 			value = Mathf.Clamp(value, 0, weaponData.MaxUltChargeAmount); 
 			if (ultCharge != value)
@@ -545,6 +545,7 @@ public abstract class WeaponBase
 		if (AnimationData.Ultimate.Count > 0 && UltCharge >= weaponData.MaxUltChargeAmount)
 		{
 			TryStartingAction(EExplicitAttackType.Ultimate, attackDeltaTime);
+			if (CurrentAction != null) UltCharge = 0;
 			return CurrentAction;
 		}
 		return null;
