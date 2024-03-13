@@ -12,7 +12,7 @@ public class BTAttack : BTHyppoliteActionNodeBase
 	public EAttackType AttackType;
 	public bool showFeedback = true;
 	public bool canAttackInAir = false;
-	public bool updateDirection = true;
+	public bool updateMovementInput = true;
 
 	bool attackDone = false;
 	bool attackStartet = false;
@@ -30,7 +30,7 @@ public class BTAttack : BTHyppoliteActionNodeBase
 			return;
 		}
 
-		if (updateDirection)
+		if (updateMovementInput)
 		{
 			Vector3 dir = (TargetGameCharacter.MovementComponent.CharacterCenter - GameCharacter.MovementComponent.CharacterCenter).normalized;
 			GameCharacter.HorizontalMovementInput(dir.x);
@@ -58,7 +58,7 @@ public class BTAttack : BTHyppoliteActionNodeBase
 		if (cantAttack && !attackStartet) return Status.Failed;
 		if (GameCharacter == null || GameCharacter.IsGameCharacterDead) return Status.Failed;
 
-		if (updateDirection)
+		if (updateMovementInput)
 		{
 			Vector3 dir = (TargetGameCharacter.MovementComponent.CharacterCenter - GameCharacter.MovementComponent.CharacterCenter).normalized;
 			GameCharacter.HorizontalMovementInput(dir.x);

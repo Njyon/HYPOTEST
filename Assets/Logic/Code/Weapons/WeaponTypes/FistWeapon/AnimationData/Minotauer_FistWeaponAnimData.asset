@@ -1,0 +1,86 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8104bde8e4c1a2e42b58f845296f6b18, type: 3}
+  m_Name: Minotauer_FistWeaponAnimData
+  m_EditorClassIdentifier: 
+  GroundAttacks: []
+  GroundUpAttacks: []
+  GroundDownAttacks: []
+  GroundDirectionAttacks:
+  - action:
+      instance:
+        rid: 8692835991138599031
+    data:
+      showProperties: 0
+      hitDetectionType: 0
+      mesh: {fileID: 0}
+      offset: {x: 0, y: 0, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 0
+      boxDimensions: {x: 0, y: 0, z: 0}
+      capsulHeight: 0
+    combatBranches:
+      keys: 
+      values: 
+    timedCombatBrenches:
+      keys: 
+      values: 
+    particleList: []
+  AirAttacks: []
+  AirUpAttacks: []
+  AirDownAttacks: []
+  AirDirectionAttacks: []
+  GapCloserAttacks: []
+  DefensiveAction: []
+  Ultimate: []
+  HandType: 0
+  WeaponReadyPose: {fileID: 5029557327537272588, guid: 6defa0410c02cd043ac7df4108102a2e,
+    type: 3}
+  WeaponReadyPoseRun: {fileID: -4716345975764940028, guid: e33744a89bacfb144b73e7b928b3c11c,
+    type: 3}
+  WeaponReadyWeight: 1
+  WeaponReadyInterpSpeed: 5
+  HeadSpineLayerMovingWeight: 0
+  ArmRMovingWeight: 0
+  ArmLMovingWeight: 0
+  AimAnimations:
+    upAnimation: {fileID: 0}
+    midAnimation: {fileID: 0}
+    downAnimation: {fileID: 0}
+  AimData:
+    AimWeaponReadyPoseRun: {fileID: 0}
+    WeaponReadyInterpSpeed: 5
+    HeadSpineLayerMovingWeight: 0.5
+    ArmRMovingWeight: 0.5
+    ArmLMovingWeight: 0.5
+  references:
+    version: 2
+    RefIds:
+    - rid: 8692835991138599031
+      type: {class: ChargeAttack, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          startChargeAnim: {fileID: 3575788927183258854, guid: 41b60b9012a5e5f4aae779162d00dc6d,
+            type: 3}
+          holdChargeAnim: {fileID: 4787536071391759475, guid: 3ae1b84495eed1f4fabb965f842447c4,
+            type: 3}
+          hitTargetAnim: {fileID: 7188285935451959400, guid: 3d71d6d9baf104b4bbf284678c2a8ad5,
+            type: 3}
+          hitWallAnim: {fileID: -4850862449325388343, guid: b9a4559245cfe884182e740fc481c77a,
+            type: 3}
+          chargeSpeed: 5
+          kickAwayStrenght: 20
+          kickAwayStunTime: 1
+          maxChargeTime: 1
