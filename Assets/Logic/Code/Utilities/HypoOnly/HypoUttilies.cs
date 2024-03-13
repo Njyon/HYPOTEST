@@ -65,6 +65,26 @@ namespace Ultra
 
 			return mostPointingObject;
 		}
+		public static GameCharacter FindCharactereNearestToDirection(Vector3 fromPosition, Vector3 direction, HyppoliteTeam team, ref List<GameCharacter> list)
+		{
+			if (list == null || list.Count <= 0) return null;
+
+			GameCharacter mostPointingObject = null;
+			float smallestAngle = 360f;
+
+			foreach (GameCharacter character in list)
+			{
+				if (character == null || character.CheckForSameTeam(team)) continue;
+				float angle = Ultra.Utilities.GetAngleBetweenVectors(direction.normalized, (character.MovementComponent.CharacterCenter - fromPosition).normalized);
+				if (angle < smallestAngle)
+				{
+					mostPointingObject = character;
+					smallestAngle = angle;
+				}
+			}
+
+			return mostPointingObject;
+		}
 		public static GameCharacter FindCHaracterNearestToDirectionWithMinAngel(Vector3 fromPosition, Vector3 direction, float minAngelAngle, ref List<GameCharacter> list)
 		{
 			if (list == null || list.Count <= 0) return null;
