@@ -102,9 +102,8 @@ public abstract class PluginStateMachineBase<T> : MonoBehaviour
 	/// Check if the State is pluged in and if its active or not
 	/// </summary>
 	/// <param name="stateType"> The state type of the state that should be checkt </param>
-	/// <param name="CheckOnlyIfActive"> if False, return true even when state is not active but pluged in </param>
 	/// <returns> Return if the state is pluged in and active if "CheckOnlyIfActive" is true </returns>
-	public bool IsPluginStatePlugedIn(T stateType, bool CheckOnlyIfActive = true)
+	public bool IsPluginStatePlugedIn(T stateType)
 	{
 		bool stateIsPluged = DictionaryOfPluginStates.ContainsKey(stateType);
 		if (!stateIsPluged) return false;
@@ -113,10 +112,7 @@ public abstract class PluginStateMachineBase<T> : MonoBehaviour
 		if (!foundState) return false;
 		bool isActive = pluginState.IsActive();
 
-		if (CheckOnlyIfActive)
-			return isActive;
-		else
-			return true;
+		return isActive;
 	}
 
 	/// <summary>

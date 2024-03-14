@@ -31,6 +31,7 @@ public class ChargeAttack : AttackBase
 	public ChargeAttackData attackData;
 	EChargeAttackType chargeAttackType = EChargeAttackType.unknown;
 	GameCharacter target;
+	Vector3 chargeDir;
 	Ultra.Timer chargeTimer;
 
 	public override void StartAction()
@@ -46,7 +47,7 @@ public class ChargeAttack : AttackBase
 		{
 			GameCharacter.RotateToDir((target.MovementComponent.CharacterCenter - GameCharacter.MovementComponent.CharacterCenter).IgnoreAxis(EAxis.YZ).normalized);
 		}
-
+		chargeDir = target != null ? (target.MovementComponent.CharacterCenter - GameCharacter.MovementComponent.CharacterCenter).IgnoreAxis(EAxis.YZ).normalized : GameCharacter.transform.forward;
 	}
 
 	public override void PostAttackStateLogic(float deltaTime)
@@ -56,8 +57,8 @@ public class ChargeAttack : AttackBase
 			case EChargeAttackType.chargeHold:
 				chargeTimer.Update(Time.deltaTime);
 
-				Vector3 dirToTarget = target != null ? (target.MovementComponent.CharacterCenter - GameCharacter.MovementComponent.CharacterCenter).IgnoreAxis(EAxis.YZ).normalized : GameCharacter.transform.forward;
-				GameCharacter.MovementComponent.MovementVelocity = dirToTarget * attackData.chargeSpeed;
+				
+				GameCharacter.MovementComponent.MovementVelocity = chargeDir * attackData.chargeSpeed;
 
 				break;
 			default:break;
@@ -66,16 +67,31 @@ public class ChargeAttack : AttackBase
 
 	public override void OnHit(GameObject hitObj)
 	{
+		GameCharacter gc = hitObj.GetComponent<GameCharacter>();
+		if (gc != null)
+		{
+			if (gc.PluginStateMachine.IsPluginStatePlugedIn(EPluginCharacterState.Parry))
+			{
+				GameCharacter.DoDamage(gc, attackData.Damage, false, false, true);
+				ChargeAtWall();
+				return;
+			}
+			else if (gc.PluginStateMachine.IsPluginStatePlugedIn(EPluginCharacterState.Block))
+			{
+				ChargeAtWall();
+				return;
+			}
+		}
+
 		GameCharacter.AnimController.Attack(attackData.hitTargetAnim);
 		GameCharacter.AnimController.InAttack = true;
 		GameCharacter.AnimController.HoldAttack = false;
+		chargeAttackType = EChargeAttackType.chargeHitTarget;
 
 		DoDamage(hitObj, attackData.Damage);
 
-		GameCharacter gc = hitObj.GetComponent<GameCharacter>();
 		if (gc == null) return;
 
-		
 		GameCharacter.CombatComponent.KickAway(gc, attackData.kickAwayStunTime, Vector3.up, attackData.kickAwayStrenght, true);
 	}
 
@@ -116,15 +132,20 @@ public class ChargeAttack : AttackBase
 	{
 		if ((collisionFlag & CollisionFlags.CollidedSides) != 0)
 		{
-			GameCharacter.MovementComponent.onMoveCollisionFlag -= OnMoveCollisionFlag;
-			chargeTimer.onTimerFinished -= OnChargeTimerFinished;
-			GameCharacter.CombatComponent.CurrentWeapon.HitDetectionEnd();
-			GameCharacter.AnimController.Attack(attackData.hitWallAnim);
-			GameCharacter.AnimController.InAttack = true;
-			GameCharacter.AnimController.HoldAttack = false;
-			GameCharacter.MovementComponent.MovementVelocity = Vector3.zero;
-			chargeAttackType = EChargeAttackType.chargeHitWall;
+			ChargeAtWall();
 		}
+	}
+
+	void ChargeAtWall()
+	{
+		GameCharacter.MovementComponent.onMoveCollisionFlag -= OnMoveCollisionFlag;
+		chargeTimer.onTimerFinished -= OnChargeTimerFinished;
+		GameCharacter.CombatComponent.CurrentWeapon.HitDetectionEnd();
+		GameCharacter.AnimController.Attack(attackData.hitWallAnim);
+		GameCharacter.AnimController.InAttack = true;
+		GameCharacter.AnimController.HoldAttack = false;
+		GameCharacter.MovementComponent.MovementVelocity = Vector3.zero;
+		chargeAttackType = EChargeAttackType.chargeHitWall;
 	}
 
 	public override ActionBase CreateCopy()

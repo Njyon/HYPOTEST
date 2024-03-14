@@ -34,7 +34,7 @@ public class BTLookAtTargetService : BTServiceNodeBase
 					Vector3 targetDir = (Ultra.Utilities.IgnoreAxis(TargetGameCharacter.MovementComponent.CharacterCenter, EAxis.YZ) - Ultra.Utilities.IgnoreAxis(GameCharacter.MovementComponent.CharacterCenter, EAxis.YZ)).normalized;
 
 					if (GameCharacter.MovementInput.magnitude > 0)
-						GameCharacter.AnimController.MoveBackwards = targetDir.normalized.ToVector2() != GameCharacter.MovementInput.normalized;
+						GameCharacter.AnimController.MoveBackwards = Vector2.Dot(targetDir.normalized.ToVector2(), GameCharacter.MovementInput.normalized) < 0;
 					else
 						GameCharacter.AnimController.MoveBackwards = false;
 
