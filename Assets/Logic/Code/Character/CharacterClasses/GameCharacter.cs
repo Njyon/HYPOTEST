@@ -18,6 +18,19 @@ public class GameCharacter : MonoBehaviour, IDamage
 	public GameCharacterEventWithGameCharacter onGameCharacterGotArroged;
 	public GameCharacterEventWithGameCharacter onGameCharacterStoppedBeingArroged;
 
+	[Header("Animation Debug")]
+	public ToggableDebugFloat legLayerDebugFloat = new ToggableDebugFloat();
+	public ToggableDebugFloat headLayerDebugFloat = new ToggableDebugFloat();
+	public ToggableDebugFloat spineLayerDebugFloat = new ToggableDebugFloat();
+	public ToggableDebugFloat armRLayerDebugFloat = new ToggableDebugFloat();
+	public ToggableDebugFloat armLLayerDebugFloat = new ToggableDebugFloat();
+	public ToggableDebugFloat secondaryLayerDebugFloat = new ToggableDebugFloat();
+	public ToggableDebugFloat upperBodyLayerDebugFloat = new ToggableDebugFloat();
+	public ToggableDebugFloat addativeLayerDebugFloat = new ToggableDebugFloat();
+	public ToggableDebugFloat chestCorrectionDebugFloat = new ToggableDebugFloat();
+	public ToggableDebugFloat footIKRCorrectionDebugFloat = new ToggableDebugFloat();
+	public ToggableDebugFloat footIKLCorrectionDebugFloat = new ToggableDebugFloat();
+
 	GameCharacterStateMachine stateMachine;
 	GameCharacterPluginStateMachine pluginStateMachine;
 	GameCharacterData gameCharacterData;

@@ -20,13 +20,13 @@ MonoBehaviour:
       instance:
         rid: 8692835991138599031
     data:
-      showProperties: 0
-      hitDetectionType: 0
+      showProperties: 1
+      hitDetectionType: 2
       mesh: {fileID: 0}
-      offset: {x: 0, y: 0, z: 0}
+      offset: {x: 2, y: 0, z: 0}
       scale: {x: 0, y: 0, z: 0}
       radius: 0
-      boxDimensions: {x: 0, y: 0, z: 0}
+      boxDimensions: {x: 2, y: 3, z: 2}
       capsulHeight: 0
     combatBranches:
       keys: 
@@ -80,7 +80,7 @@ MonoBehaviour:
             type: 3}
           hitWallAnim: {fileID: -4850862449325388343, guid: b9a4559245cfe884182e740fc481c77a,
             type: 3}
-          chargeSpeed: 5
+          chargeSpeed: 15
           kickAwayStrenght: 20
           kickAwayStunTime: 1
-          maxChargeTime: 1
+          maxChargeTime: 0.5

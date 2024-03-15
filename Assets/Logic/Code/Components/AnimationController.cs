@@ -1,3 +1,4 @@
+using MyBox;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,6 +18,16 @@ public enum EGameCharacterAnimatiorLayers
 	UpperBodyAddativeLayer,
 	SecondaryMotionLayer,
 	HitLayer,
+}
+
+[Serializable]
+public class ToggableDebugFloat
+{
+	public ToggableDebugFloat() { }
+
+	public bool useDebugValue = false;
+	[ConditionalField("useDebugValue")] [Range(0f, 1f)]
+	public float debugFloat = 0.0f;	
 }
 
 public class AnimationController
@@ -747,8 +758,16 @@ public class AnimationController
 		inUpperBodyAddativeAIndex = Animator.StringToHash("InUpperBodyAddativeA");
 		moveBackwardsIndex = Animator.StringToHash("MoveBackwards");
 
-		overrideController = new AnimatorOverrideController(gameCharacter.Animator.runtimeAnimatorController);
+		if (gameCharacter.Animator.runtimeAnimatorController is AnimatorOverrideController)
+		{
+			overrideController = (AnimatorOverrideController)gameCharacter.Animator.runtimeAnimatorController;
+		}
+		else
+		{
+			overrideController = new AnimatorOverrideController(gameCharacter.Animator.runtimeAnimatorController);
+		}
 
+		
 		minMalkSpeed = gameCharacter.GameCharacterData.MaxMovementSpeed * gameCharacter.GameCharacterData.WalkFactor;
 
 		addativeLayerInterpTarget = AddativeLayerWeight;
@@ -786,17 +805,17 @@ public class AnimationController
 			RotationLayer(deltaTime);
 		}
 
-		SpineLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(spineLayerIndex), spineLayerInterpTarget, deltaTime * spineLayerInterpSpeed);
-		LegLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(legLayerIndex), legLayerInterpTarget, deltaTime * legLayerInterpSpeed);
-		HeadLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(headLayerIndex), headLayerInterpTarget, deltaTime * headLayerInterpSpeed);
-		ArmRLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(armRLayerIndex), armRLayerInterpTarget, deltaTime * armRLayerInterpSpeed);
-		ArmLLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(armLLayerIndex), armLLayerInterpTarget, deltaTime * armLLayerInterpSpeed);
-		SecondaryMotionLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(secondaryMotionLayerIndex), secondaryMotionLayerInterpTarget, deltaTime * secondaryMotionLayerInterpSpeed);
-		UpperBodyLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(upperBodyLayerIndex), upperBodyLayerInterpTarget, deltaTime * upperBodyLayerInterpSpeed);
-		AddativeLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(addativeLayerIndex), addativeLayerInterpTarget, deltaTime * addativeLayerInterpSpeed);
-		ChestCorrectionIK = Mathf.Lerp(ChestCorrectionIK, ChestCorrectionIKTarget, deltaTime * chestCorrectionTargetInterpSpeed);
-		ForcePositionFootIKR = Mathf.Lerp(ForcePositionFootIKR, ForcePositionFootIKRTarget, deltaTime * forcePositionFootIKRTargetInterpSpeed);
-		ForcePositionFootIKL = Mathf.Lerp(ForcePositionFootIKL, ForcePositionFootIKLTarget, deltaTime * forcePositionFootIKLTargetInterpSpeed);
+		SpineLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(spineLayerIndex), gameCharacter.spineLayerDebugFloat.useDebugValue ? gameCharacter.spineLayerDebugFloat.debugFloat : spineLayerInterpTarget, deltaTime * spineLayerInterpSpeed);
+		LegLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(legLayerIndex), gameCharacter.legLayerDebugFloat.useDebugValue ? gameCharacter.legLayerDebugFloat.debugFloat : legLayerInterpTarget, deltaTime * legLayerInterpSpeed);
+		HeadLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(headLayerIndex), gameCharacter.headLayerDebugFloat.useDebugValue ? gameCharacter.headLayerDebugFloat.debugFloat :  headLayerInterpTarget, deltaTime * headLayerInterpSpeed);
+		ArmRLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(armRLayerIndex), gameCharacter.armRLayerDebugFloat.useDebugValue ? gameCharacter.armRLayerDebugFloat.debugFloat : armRLayerInterpTarget, deltaTime * armRLayerInterpSpeed);
+		ArmLLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(armLLayerIndex), gameCharacter.armLLayerDebugFloat.useDebugValue ? gameCharacter.armLLayerDebugFloat.debugFloat : armLLayerInterpTarget, deltaTime * armLLayerInterpSpeed);
+		SecondaryMotionLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(secondaryMotionLayerIndex), gameCharacter.secondaryLayerDebugFloat.useDebugValue ? gameCharacter.secondaryLayerDebugFloat.debugFloat : secondaryMotionLayerInterpTarget, deltaTime * secondaryMotionLayerInterpSpeed);
+		UpperBodyLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(upperBodyLayerIndex), gameCharacter.upperBodyLayerDebugFloat.useDebugValue ? gameCharacter.upperBodyLayerDebugFloat.debugFloat : upperBodyLayerInterpTarget, deltaTime * upperBodyLayerInterpSpeed);
+		AddativeLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(addativeLayerIndex), gameCharacter.addativeLayerDebugFloat.useDebugValue ? gameCharacter.addativeLayerDebugFloat.debugFloat : addativeLayerInterpTarget, deltaTime * addativeLayerInterpSpeed);
+		ChestCorrectionIK = Mathf.Lerp(ChestCorrectionIK, gameCharacter.chestCorrectionDebugFloat.useDebugValue ? gameCharacter.chestCorrectionDebugFloat.debugFloat : ChestCorrectionIKTarget, deltaTime * chestCorrectionTargetInterpSpeed);
+		ForcePositionFootIKR = Mathf.Lerp(ForcePositionFootIKR, gameCharacter.footIKRCorrectionDebugFloat.useDebugValue ? gameCharacter.footIKRCorrectionDebugFloat.debugFloat : ForcePositionFootIKRTarget, deltaTime * forcePositionFootIKRTargetInterpSpeed);
+		ForcePositionFootIKL = Mathf.Lerp(ForcePositionFootIKL, gameCharacter.footIKLCorrectionDebugFloat.useDebugValue ? gameCharacter.footIKLCorrectionDebugFloat.debugFloat : ForcePositionFootIKLTarget, deltaTime * forcePositionFootIKLTargetInterpSpeed);
 	}
 
 	private void RotationLayer(float deltaTime)
