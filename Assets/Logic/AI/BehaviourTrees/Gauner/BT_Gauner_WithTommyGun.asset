@@ -440,6 +440,9 @@ MonoBehaviour:
     - Name: treshhold
       Type: System.Single
       Value: 5
+    - Name: conditions
+      Type: $ref
+      Value: 7e1607aa-9985-4201-aa17-0a5df2512ef1.conditions
     - Name: GUID
       Type: System.String
       Value: 7e1607aa-9985-4201-aa17-0a5df2512ef1
@@ -467,6 +470,9 @@ MonoBehaviour:
   - Name: dc158c71-d026-4918-bab5-8b792e1f8e93
     Type: BTTargetDistanceCondition
     Member:
+    - Name: conditions
+      Type: $ref
+      Value: dc158c71-d026-4918-bab5-8b792e1f8e93.conditions
     - Name: GUID
       Type: System.String
       Value: dc158c71-d026-4918-bab5-8b792e1f8e93
@@ -862,6 +868,37 @@ MonoBehaviour:
     - Name: Comment
       Type: System.String
       Value: 
+  - Name: 7e1607aa-9985-4201-aa17-0a5df2512ef1.conditions
+    Type: System.Collections.Generic.List`1[[ClassInstance`1[[ConditionOperation,
+      Assembly-CSharp]], Assembly-CSharp]]
+    Member:
+    - Name: 0
+      Type: $ref
+      Value: 7e1607aa-9985-4201-aa17-0a5df2512ef1.conditions.0
+    - Name: 1
+      Type: $ref
+      Value: 7e1607aa-9985-4201-aa17-0a5df2512ef1.conditions.1
+  - Name: 7e1607aa-9985-4201-aa17-0a5df2512ef1.conditions.0
+    Type: ClassInstance`1[[ConditionOperation, Assembly-CSharp]]
+    Member:
+    - Name: instance
+      Type: $ref
+      Value: 7e1607aa-9985-4201-aa17-0a5df2512ef1.conditions.0.instance
+  - Name: 7e1607aa-9985-4201-aa17-0a5df2512ef1.conditions.0.instance
+    Type: ConditionGreaterOperation
+    Member: []
+  - Name: 7e1607aa-9985-4201-aa17-0a5df2512ef1.conditions.1
+    Type: ClassInstance`1[[ConditionOperation, Assembly-CSharp]]
+    Member:
+    - Name: instance
+      Type: $ref
+      Value: 7e1607aa-9985-4201-aa17-0a5df2512ef1.conditions.1.instance
+  - Name: 7e1607aa-9985-4201-aa17-0a5df2512ef1.conditions.1.instance
+    Type: ConditionLesserOperation
+    Member:
+    - Name: checkDistance
+      Type: System.Single
+      Value: 15
   - Name: 9549a6b7-fcc5-4176-a13e-95cdeb3e8f29.Children
     Type: System.Collections.Generic.List`1[[Megumin.GameFramework.AI.BehaviorTree.BTNode,
       Megumin.GameFramework.AI]]
@@ -1151,6 +1188,22 @@ MonoBehaviour:
     - Name: Comment
       Type: System.String
       Value: 
+  - Name: dc158c71-d026-4918-bab5-8b792e1f8e93.conditions
+    Type: System.Collections.Generic.List`1[[ClassInstance`1[[ConditionOperation,
+      Assembly-CSharp]], Assembly-CSharp]]
+    Member:
+    - Name: 0
+      Type: $ref
+      Value: dc158c71-d026-4918-bab5-8b792e1f8e93.conditions.0
+  - Name: dc158c71-d026-4918-bab5-8b792e1f8e93.conditions.0
+    Type: ClassInstance`1[[ConditionOperation, Assembly-CSharp]]
+    Member:
+    - Name: instance
+      Type: $ref
+      Value: dc158c71-d026-4918-bab5-8b792e1f8e93.conditions.0.instance
+  - Name: dc158c71-d026-4918-bab5-8b792e1f8e93.conditions.0.instance
+    Type: ConditionEqualOperation
+    Member: []
   - Name: de4280a7-bf9a-473f-b414-32ce9d4b644b.Decorators
     Type: System.Collections.Generic.List`1[[Megumin.GameFramework.AI.BehaviorTree.IDecorator,
       Megumin.GameFramework.AI]]

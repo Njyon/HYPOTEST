@@ -121,9 +121,6 @@ MonoBehaviour:
   - Name: 54712407-04a0-40bb-8744-985264d9d296
     Type: BTAttack
     Member:
-    - Name: updateDirection
-      Type: System.Boolean
-      Value: False
     - Name: Meta
       Type: $ref
       Value: 54712407-04a0-40bb-8744-985264d9d296.Meta
@@ -419,6 +416,9 @@ MonoBehaviour:
     - Name: treshhold
       Type: System.Single
       Value: 3
+    - Name: conditions
+      Type: $ref
+      Value: 9bef117f-777c-4078-8bf3-c6556f97e59e.conditions
     - Name: GUID
       Type: System.String
       Value: 9bef117f-777c-4078-8bf3-c6556f97e59e
@@ -888,6 +888,25 @@ MonoBehaviour:
     - Name: Comment
       Type: System.String
       Value: 
+  - Name: 9bef117f-777c-4078-8bf3-c6556f97e59e.conditions
+    Type: System.Collections.Generic.List`1[[ClassInstance`1[[ConditionOperation,
+      Assembly-CSharp]], Assembly-CSharp]]
+    Member:
+    - Name: 0
+      Type: $ref
+      Value: 9bef117f-777c-4078-8bf3-c6556f97e59e.conditions.0
+  - Name: 9bef117f-777c-4078-8bf3-c6556f97e59e.conditions.0
+    Type: ClassInstance`1[[ConditionOperation, Assembly-CSharp]]
+    Member:
+    - Name: instance
+      Type: $ref
+      Value: 9bef117f-777c-4078-8bf3-c6556f97e59e.conditions.0.instance
+  - Name: 9bef117f-777c-4078-8bf3-c6556f97e59e.conditions.0.instance
+    Type: ConditionEqualOperation
+    Member:
+    - Name: treshhold
+      Type: System.Single
+      Value: 3
   - Name: a8d1b553-877f-4512-8f5d-5cd7bba7b147.Children
     Type: System.Collections.Generic.List`1[[Megumin.GameFramework.AI.BehaviorTree.BTNode,
       Megumin.GameFramework.AI]]
