@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterDetection<T> : MonoBehaviour where T : GameCharacter
+public class TargetDetection<T> : MonoBehaviour
 {
 	public delegate void OnOverlapEnter(T other);
 	public OnOverlapEnter onOverlapEnter;
@@ -12,14 +12,14 @@ public class CharacterDetection<T> : MonoBehaviour where T : GameCharacter
 	[SerializeField] Collider collider;
 	public Collider Collider { get { return collider; } }
 
-	public List<T> DetectedGameCharacters = new List<T>();
+	public List<T> DetectedTarget = new List<T>();
 
 	public void Awake()
 	{
 		if (collider == null) collider.GetComponent<Collider>();
 		if (collider == null)
 		{
-			Debug.LogError(Ultra.Utilities.Instance.DebugErrorString("CharacterDetection", "Awake", "Collider on CharacterDectection was null!"));
+			Debug.LogError(Ultra.Utilities.Instance.DebugErrorString("TargetDetection", "Awake", "Collider on CharacterDectection was null!"));
 			return;
 		}
 	}
@@ -29,7 +29,7 @@ public class CharacterDetection<T> : MonoBehaviour where T : GameCharacter
 		if (other.transform == this.transform.parent) return;
 
 		T template = other.gameObject.GetComponent<T>();
-		if (template != null && !DetectedGameCharacters.Contains(template))
+		if (template != null && !DetectedTarget.Contains(template))
 		{
 		
 			OnTriggerEnterCall(template);
@@ -55,21 +55,13 @@ public class CharacterDetection<T> : MonoBehaviour where T : GameCharacter
 
 	protected virtual void OnTriggerEnterCall(T collider)
 	{
-		DetectedGameCharacters.Add(collider);
-		collider.onGameCharacterDied += OnPlayerDiedDestroyed;
-		collider.onGameCharacterDestroyed += OnPlayerDiedDestroyed;
+		DetectedTarget.Add(collider);
 	}
 
 	protected virtual void OnTriggerExitCall(T collider)
 	{
-		DetectedGameCharacters.Remove(collider);
-		collider.onGameCharacterDied -= OnPlayerDiedDestroyed;
-		collider.onGameCharacterDestroyed -= OnPlayerDiedDestroyed;
+		DetectedTarget.Remove(collider);
 	}
 
-	void OnPlayerDiedDestroyed(GameCharacter target) 
-	{
-		if (target == null) return;
-		OnTriggerExitCall((T)target);
-	}
+
 }

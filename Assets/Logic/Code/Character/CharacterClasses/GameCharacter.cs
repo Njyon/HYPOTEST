@@ -219,7 +219,7 @@ public class GameCharacter : MonoBehaviour, IDamage
 
 		GameObject characterDetectionObject = GameObject.Instantiate(GameAssets.Instance.characterDetection, transform);
 		characterDetection = characterDetectionObject.GetComponent<GameCharacterDetection>();
-		characterDetection.onOverlapEnter += OnCharacterDetectionOverlapEnter;
+		characterDetection.onOverlapEnter += OnTargetDetectionOverlapEnter;
 		SphereCollider sphereCollider = characterDetection.Collider as SphereCollider;
 		if (sphereCollider != null) sphereCollider.radius = GameCharacterData.CharacterDetectionRange;
 
@@ -292,7 +292,7 @@ public class GameCharacter : MonoBehaviour, IDamage
 
 		if (characterDetection != null)
 		{
-			characterDetection.onOverlapEnter -= OnCharacterDetectionOverlapEnter;
+			characterDetection.onOverlapEnter -= OnTargetDetectionOverlapEnter;
 		}
 
 		if (onGameCharacterDestroyed != null) onGameCharacterDestroyed(this);
@@ -630,7 +630,7 @@ public class GameCharacter : MonoBehaviour, IDamage
 		health.AddCurrentValue(-health.CurrentValue);
 	}
 
-	protected virtual void OnCharacterDetectionOverlapEnter(GameCharacter other)
+	protected virtual void OnTargetDetectionOverlapEnter(IDamage other)
 	{
 
 	}
@@ -720,5 +720,20 @@ public class GameCharacter : MonoBehaviour, IDamage
 	public virtual void RespawnCharacter()
 	{
 	
+	}
+
+	public bool IsGameCharacter()
+	{
+		return true;
+	}
+
+	public GameCharacter GetGameCharacter()
+	{
+		return this;
+	}
+
+	public Vector3 GetPosition()
+	{
+		return MovementComponent.CharacterCenter;
 	}
 }

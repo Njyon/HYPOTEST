@@ -42,13 +42,13 @@ public class HyppoliteAxeUltimate : AttackBase
 
 	public override void TriggerAnimationEvent()
 	{
-		var gcArray = GameCharacter.CharacterDetection.DetectedGameCharacters.ToArray();
+		var gcArray = GameCharacter.CharacterDetection.TargetGameCharacters.ToArray();
 		Array.Sort(gcArray, CompareDistanceToReference);
 
 
-		for (int i = 0; i < GameCharacter.CharacterDetection.DetectedGameCharacters.Count; i++)
+		for (int i = 0; i < GameCharacter.CharacterDetection.TargetGameCharacters.Count; i++)
 		{
-			GameCharacter gc = GameCharacter.CharacterDetection.DetectedGameCharacters[i];
+			GameCharacter gc = GameCharacter.CharacterDetection.TargetGameCharacters[i];
 			if (gc.CheckForSameTeam(GameCharacter.GetTeam()) || gc.IsGameCharacterDead) continue;
 			SpawnSpearUnderGameCharacterAfterTimeBasedOnDistance(gc);
 		}

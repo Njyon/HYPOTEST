@@ -43,7 +43,7 @@ public class ShootAttackNoProjectile : AttackBase
 		Weapon.PlayAttackSound(0);
 		Weapon.SpawnWeaponFlash(weaponObjData);
 
-		GameCharacter target = Ultra.HypoUttilies.FindCharactereNearestToDirection(GameCharacter.MovementComponent.CharacterCenter, GameCharacter.MovementInput.magnitude > 0 ? GameCharacter.MovementInput : GameCharacter.transform.forward, ref GameCharacter.CharacterDetection.DetectedGameCharacters);
+		GameCharacter target = Ultra.HypoUttilies.FindCharactereNearestToDirection(GameCharacter.MovementComponent.CharacterCenter, GameCharacter.MovementInput.magnitude > 0 ? GameCharacter.MovementInput : GameCharacter.transform.forward, ref GameCharacter.CharacterDetection.TargetGameCharacters);
 		GameCharacter.CombatComponent.AimCharacter = target;
 
 		if (target != null)

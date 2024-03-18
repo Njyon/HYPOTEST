@@ -39,7 +39,7 @@ public class ChargeAttack : AttackBase
 		StartAttack(attackData.startChargeAnim);
 		GameCharacter.CombatComponent.AttackTimer.onTimerFinished += OnStartChargeTimerFinished;
 		chargeAttackType = EChargeAttackType.chargeStart;
-		target = Ultra.HypoUttilies.FindCharactereNearestToDirection(GameCharacter.MovementComponent.CharacterCenter, GameCharacter.MovementInput.magnitude > 0 ? GameCharacter.MovementInput : GameCharacter.transform.forward, GameCharacter.Team, ref GameCharacter.CharacterDetection.DetectedGameCharacters);
+		target = Ultra.HypoUttilies.FindCharactereNearestToDirection(GameCharacter.MovementComponent.CharacterCenter, GameCharacter.MovementInput.magnitude > 0 ? GameCharacter.MovementInput : GameCharacter.transform.forward, GameCharacter.Team, ref GameCharacter.CharacterDetection.TargetGameCharacters);
 
 		chargeTimer = new Ultra.Timer(attackData.maxChargeTime);
 

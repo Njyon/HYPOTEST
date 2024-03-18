@@ -29,7 +29,7 @@ public class SpearDefensiveAction : ActionBase
 			Ultra.Utilities.Instance.DebugErrorString("SpearDefensiveAction", "StartAction", "AnimationData was null!");
 		}
 
-		GameCharacter targetEnemy = Ultra.HypoUttilies.FindCharactereNearestToDirection(GameCharacter.MovementComponent.CharacterCenter, (GameCharacter.MovementInput.magnitude <= 0) ? GameCharacter.transform.forward : GameCharacter.MovementInput, ref GameCharacter.CharacterDetection.DetectedGameCharacters);
+		GameCharacter targetEnemy = Ultra.HypoUttilies.FindCharactereNearestToDirection(GameCharacter.MovementComponent.CharacterCenter, (GameCharacter.MovementInput.magnitude <= 0) ? GameCharacter.transform.forward : GameCharacter.MovementInput, ref GameCharacter.CharacterDetection.TargetGameCharacters);
 		if (targetEnemy == null) return;
 
 		GameCharacter.CombatComponent.DefensiveTimer.Start(attackData.spearDefensiveAction.midAnimation.length);

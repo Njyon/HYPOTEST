@@ -80,15 +80,19 @@ public class EnemyGameCharacter : GameCharacter
 		base.OnDestroy();
 	}
 
-	protected override void OnCharacterDetectionOverlapEnter(GameCharacter other)
+	protected override void OnTargetDetectionOverlapEnter(IDamage other)
 	{
-		if (other != null && other.IsPlayerCharacter && btRunner != null && btRunner.BehaviourTree != null)
+		if (other.IsGameCharacter())
 		{
-			btRunner.BehaviourTree.Variable.TryGetParam<GameCharacter>("Target", out var gameCharacterRef);
-			if (gameCharacterRef != null && gameCharacterRef.Value == null)
+			GameCharacter gc = other.GetGameCharacter();
+			if (other != null && gc.IsPlayerCharacter && btRunner != null && btRunner.BehaviourTree != null)
 			{
-				btRunner.BehaviourTree.Variable.TrySetValue<GameCharacter>("Target", other);
-				other.AddCharacterToAggroedCharacters(this);
+				btRunner.BehaviourTree.Variable.TryGetParam<GameCharacter>("Target", out var gameCharacterRef);
+				if (gameCharacterRef != null && gameCharacterRef.Value == null)
+				{
+					btRunner.BehaviourTree.Variable.TrySetValue<GameCharacter>("Target", gc);
+					gc.AddCharacterToAggroedCharacters(this);
+				}
 			}
 		}
 	}
@@ -96,9 +100,9 @@ public class EnemyGameCharacter : GameCharacter
 	void OnBehaviourTreeInit(BehaviorTreeRunner btr)
 	{
 		if (IsGameCharacterDead) return;
-		foreach (GameCharacter gc in CharacterDetection.DetectedGameCharacters)
+		foreach (GameCharacter gc in CharacterDetection.DetectedTarget)
 		{
-			OnCharacterDetectionOverlapEnter(gc);
+			OnTargetDetectionOverlapEnter(gc);
 		}
 	}
 

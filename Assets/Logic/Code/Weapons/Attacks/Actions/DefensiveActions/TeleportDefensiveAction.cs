@@ -87,7 +87,7 @@ public class TeleportDefensiveAction : ActionBase
 
 	public override void DefensiveActionStart()
 	{
-		targetTeleportCharacter = Ultra.HypoUttilies.FindCharactereNearestToDirectionTresholdWithRange(GameCharacter.MovementComponent.CharacterCenter, defensiveMovePostion.normalized.magnitude > 0 ? defensiveMovePostion.normalized : GameCharacter.transform.forward, attackData.teleportAimTrsehholdHalfAngle, Ultra.Utilities.IgnoreAxis(defensiveMovePostion, EAxis.YZ).normalized.magnitude > 0 ? Ultra.Utilities.IgnoreAxis(defensiveMovePostion, EAxis.YZ).normalized : GameCharacter.transform.forward, attackData.teleportRange, ref GameCharacter.CharacterDetection.DetectedGameCharacters);
+		targetTeleportCharacter = Ultra.HypoUttilies.FindCharactereNearestToDirectionTresholdWithRange(GameCharacter.MovementComponent.CharacterCenter, defensiveMovePostion.normalized.magnitude > 0 ? defensiveMovePostion.normalized : GameCharacter.transform.forward, attackData.teleportAimTrsehholdHalfAngle, Ultra.Utilities.IgnoreAxis(defensiveMovePostion, EAxis.YZ).normalized.magnitude > 0 ? Ultra.Utilities.IgnoreAxis(defensiveMovePostion, EAxis.YZ).normalized : GameCharacter.transform.forward, attackData.teleportRange, ref GameCharacter.CharacterDetection.TargetGameCharacters);
 		Vector3 targetPosition = Vector3.zero;
 		if (targetTeleportCharacter != null)
 		{

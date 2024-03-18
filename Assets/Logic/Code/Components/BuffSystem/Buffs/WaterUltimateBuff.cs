@@ -27,7 +27,7 @@ public class WaterUltimateBuff : ABuff
 
 	void OnAttack(ref ShelfList<AttackAnimationData> lastAttacks)
 	{
-		waterParticlesToShoot += GameCharacter.CharacterDetection.DetectedGameCharacters.Count;
+		waterParticlesToShoot += GameCharacter.CharacterDetection.TargetGameCharacters.Count;
 		if (burstTimer.IsFinished || burstTimer.IsPaused) burstTimer.Start();
 	}
 
@@ -56,7 +56,7 @@ public class WaterUltimateBuff : ABuff
 			drop.TrailRenderer.enabled = false;
 
 			drop.transform.position = GameCharacter.MovementComponent.CharacterCenter + new Vector3(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(0, 2), UnityEngine.Random.Range(-1, 1));
-			drop.Init(GameCharacter, GameCharacter.CharacterDetection.DetectedGameCharacters[i % GameCharacter.CharacterDetection.DetectedGameCharacters.Count], waterDropPool, waterDropSpeed);
+			drop.Init(GameCharacter, GameCharacter.CharacterDetection.TargetGameCharacters[i % GameCharacter.CharacterDetection.TargetGameCharacters.Count], waterDropPool, waterDropSpeed);
 			
 			drop.TrailRenderer.enabled = true;
 		}
