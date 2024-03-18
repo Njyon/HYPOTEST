@@ -69,7 +69,7 @@ public class BazookaUltBuff : ABuff
 		projectile.transform.rotation = Quaternion.LookRotation(-(bazookaData.mainTarget.MovementComponent.CharacterCenter - projectile.transform.position).normalized);
 		projectile.Init(GameCharacter, bazookaData.bazookaData.transform.forward, bazookaData.projectileSpeed, bazookaData.projectileDamage, null, OnProjectileLifeTimeEnd, bazookaData.projectileLifeTime);
 		BazookaMissileProjectile bazookaMissle = (BazookaMissileProjectile)projectile;
-		GameCharacter target = GameCharacter.CharacterDetection.DetectedGameCharacters[missileIndex % GameCharacter.CharacterDetection.DetectedGameCharacters.Count];
+		GameCharacter target = GameCharacter.CharacterDetection.TargetGameCharacters[missileIndex % GameCharacter.CharacterDetection.TargetGameCharacters.Count];
 		bazookaMissle.SetTarget(target);
 		missileIndex++;
 	}

@@ -23,7 +23,7 @@ public class TeleportToEnemyUlt : AttackBase
 
 	public override void StartAction()
 	{
-		int enemyAmount = GameCharacter.CharacterDetection.DetectedGameCharacters.Count;
+		int enemyAmount = GameCharacter.CharacterDetection.TargetGameCharacters.Count;
 		if (enemyAmount == 0) return;
 
 		int teleportAmount = Mathf.Max(attackData.minTeleportAmount, enemyAmount);
@@ -45,10 +45,10 @@ public class TeleportToEnemyUlt : AttackBase
 		teleportRightSide = false;
 		for (int i = 0; i < teleportAmount; i++)
 		{
-			if (GameCharacter.CharacterDetection.DetectedGameCharacters.Count == 0) return; 
+			if (GameCharacter.CharacterDetection.TargetGameCharacters.Count == 0) return; 
 
-			int characterIndex = i % GameCharacter.CharacterDetection.DetectedGameCharacters.Count;
-			target = GameCharacter.CharacterDetection.DetectedGameCharacters[characterIndex];
+			int characterIndex = i % GameCharacter.CharacterDetection.TargetGameCharacters.Count;
+			target = GameCharacter.CharacterDetection.TargetGameCharacters[characterIndex];
 			Vector3 telportPos = target.MovementComponent.CharacterCenter + (teleportRightSide ? Vector3.right : Vector3.left) * (target.GameCharacterData.MinCharacterDistance + GameCharacter.GameCharacterData.MinCharacterDistance);
 			Vector3 moveDir = telportPos - GameCharacter.MovementComponent.CharacterCenter;
 
@@ -95,7 +95,7 @@ public class TeleportToEnemyUlt : AttackBase
 
 	void FreezAllEnemiesAndSubscribe()
 	{
-		foreach (GameCharacter gc in GameCharacter.CharacterDetection.DetectedGameCharacters)
+		foreach (GameCharacter gc in GameCharacter.CharacterDetection.TargetGameCharacters)
 		{
 			gc.Animator.speed = 0;
 			gc.onGameCharacterDied += GameCharacterDied;
@@ -104,7 +104,7 @@ public class TeleportToEnemyUlt : AttackBase
 
 	void UnfreezEnemiesAndUnsubscribe()
 	{
-		foreach (GameCharacter gc in GameCharacter.CharacterDetection.DetectedGameCharacters)
+		foreach (GameCharacter gc in GameCharacter.CharacterDetection.TargetGameCharacters)
 		{
 			EndEffectOnEnemy(gc);
 		}

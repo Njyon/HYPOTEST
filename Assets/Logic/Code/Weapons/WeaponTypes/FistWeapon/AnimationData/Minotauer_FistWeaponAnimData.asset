@@ -12,7 +12,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8104bde8e4c1a2e42b58f845296f6b18, type: 3}
   m_Name: Minotauer_FistWeaponAnimData
   m_EditorClassIdentifier: 
-  GroundAttacks: []
+  GroundAttacks:
+  - action:
+      instance:
+        rid: 8692836036707876864
+    data:
+      showProperties: 1
+      hitDetectionType: 1
+      mesh: {fileID: 0}
+      offset: {x: 2, y: 0, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 2
+      boxDimensions: {x: 0, y: 0, z: 0}
+      capsulHeight: 0
+    combatBranches:
+      keys: 
+      values: 
+    timedCombatBrenches:
+      keys: 
+      values: 
+    particleList: []
+  - action:
+      instance:
+        rid: 8692836036707876865
+    data:
+      showProperties: 1
+      hitDetectionType: 1
+      mesh: {fileID: 0}
+      offset: {x: 2, y: 0, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 2
+      boxDimensions: {x: 0, y: 0, z: 0}
+      capsulHeight: 0
+    combatBranches:
+      keys: 
+      values: 
+    timedCombatBrenches:
+      keys: 
+      values: 
+    particleList: []
   GroundUpAttacks: []
   GroundDownAttacks: []
   GroundDirectionAttacks:
@@ -84,3 +122,26 @@ MonoBehaviour:
           kickAwayStrenght: 20
           kickAwayStunTime: 1
           maxChargeTime: 0.5
+    - rid: 8692836036707876864
+      type: {class: DefaultAttack, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          attackAnimation: {fileID: 1264139544991814254, guid: 90acb866ba2252d4e955b485d82a0956,
+            type: 3}
+    - rid: 8692836036707876865
+      type: {class: KickAwayAttack, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          attackAnimation: {fileID: -1646292180824601381, guid: 780be52c9bea44047ad5321da21e26a6,
+            type: 3}
+          attackTriggerAmount: 0
+          freezBetweenAttacks: 0
+          kickDirection: {x: 0, y: 0, z: 90}
+          stunTime: 1
+          kickStrengh: 20

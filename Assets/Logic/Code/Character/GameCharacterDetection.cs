@@ -2,15 +2,41 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameCharacterDetection : CharacterDetection<GameCharacter>
+public class GameCharacterDetection : TargetDetection<IDamage>
 {
-	protected override void OnTriggerEnterCall(GameCharacter gameCharacter)
+	public List<GameCharacter> TargetGameCharacters = new List<GameCharacter>();
+
+	protected override void OnTriggerEnterCall(IDamage target)
 	{
-		base.OnTriggerEnterCall(gameCharacter);
+		base.OnTriggerEnterCall(target);
+		if (target.IsGameCharacter())
+		{
+			GameCharacter gc = target.GetGameCharacter();
+
+			gc.onGameCharacterDied += OnPlayerDiedDestroyed;
+			gc.onGameCharacterDestroyed += OnPlayerDiedDestroyed;
+
+			TargetGameCharacters.Add(gc);
+		}
 	}
 
-	protected override void OnTriggerExitCall(GameCharacter gameCharacter)
+	protected override void OnTriggerExitCall(IDamage target)
 	{
-		base.OnTriggerExitCall(gameCharacter);
+		base.OnTriggerExitCall(target);
+		if (target.IsGameCharacter())
+		{
+			GameCharacter gc = target.GetGameCharacter();
+
+			gc.onGameCharacterDied -= OnPlayerDiedDestroyed;
+			gc.onGameCharacterDestroyed -= OnPlayerDiedDestroyed;
+
+			TargetGameCharacters.Remove(gc);
+		}
+	}
+
+	void OnPlayerDiedDestroyed(GameCharacter target)
+	{
+		if (target == null) return;
+		OnTriggerExitCall(target);
 	}
 }

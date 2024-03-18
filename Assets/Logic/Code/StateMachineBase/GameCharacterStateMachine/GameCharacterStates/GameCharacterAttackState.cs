@@ -70,12 +70,12 @@ public class GameCharacterAttackState : AGameCharacterState
 				switch(GameCharacter.CombatComponent.CurrentWeapon.WeaponData.WeaponType)
 				{
 					case EWeaponType.Ranged:
-						GameCharacter rangeTarget = Ultra.HypoUttilies.FindCharactereNearestToDirection(GameCharacter.MovementComponent.CharacterCenter, GameCharacter.MovementInput.magnitude > 0 ? GameCharacter.MovementInput : GameCharacter.transform.forward, ref GameCharacter.CharacterDetection.DetectedGameCharacters);
+						GameCharacter rangeTarget = Ultra.HypoUttilies.FindCharactereNearestToDirection(GameCharacter.MovementComponent.CharacterCenter, GameCharacter.MovementInput.magnitude > 0 ? GameCharacter.MovementInput : GameCharacter.transform.forward, ref GameCharacter.CharacterDetection.TargetGameCharacters);
 						SetNewRotationDir(rangeTarget);
 						break;
 					default:
 						Vector3 bounds = new Vector3(4f, 1.5f, 1f);
-						GameCharacter target = Ultra.HypoUttilies.FindCharactereInDirectionInRange(GameCharacter.MovementComponent.CharacterCenter,GameCharacter.transform.forward, bounds, ref GameCharacter.CharacterDetection.DetectedGameCharacters);
+						GameCharacter target = Ultra.HypoUttilies.FindCharactereInDirectionInRange(GameCharacter.MovementComponent.CharacterCenter,GameCharacter.transform.forward, bounds, ref GameCharacter.CharacterDetection.TargetGameCharacters);
 						Ultra.Utilities.DrawBox(GameCharacter.MovementComponent.CharacterCenter, Quaternion.identity, bounds, Color.blue, 10f, 200, DebugAreas.Combat);
 						SetNewRotationDir(target);
 						break;

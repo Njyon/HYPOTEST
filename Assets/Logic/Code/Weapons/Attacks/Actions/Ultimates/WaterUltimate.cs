@@ -80,12 +80,18 @@ public class WaterUltimate : AttackBase
 		return wave;
 	}
 
-	void OnOverlapEnter(GameCharacter other)
+	void OnOverlapEnter(IDamage other)
 	{
-		if (other == GameCharacter || other.Team == GameCharacter.Team) return;
+		if (other.IsGameCharacter())
+			if (other.GetGameCharacter() == GameCharacter || other.GetGameCharacter().Team == GameCharacter.Team) return;
 
 		other.DoDamage(GameCharacter, attackData.Damage, false);
-		other.CombatComponent.RequestMoveTo(GameCharacter, other.MovementComponent.CharacterCenter + Vector3.up * attackData.waveKnockupRange);
+
+		if (other.IsGameCharacter())
+		{
+			GameCharacter gc = other.GetGameCharacter();
+			gc.CombatComponent.RequestMoveTo(GameCharacter, gc.MovementComponent.CharacterCenter + Vector3.up * attackData.waveKnockupRange);
+		}
 	}
 
 	public override void ActionInterupted()
