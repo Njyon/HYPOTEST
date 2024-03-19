@@ -11,6 +11,7 @@ public class ForceFieldComponent : MonoBehaviour
 {
 	[SerializeField] Collider col;
 	[SerializeField] MeshRenderer meshRenderer;
+	[SerializeField] bool startActive = false;
 
 	[Header("ForceField Animation")]
 	[SerializeField] float fadeInDuration = 1f;
@@ -23,6 +24,7 @@ public class ForceFieldComponent : MonoBehaviour
 
 	Ultra.Timer fadeTimer;
 	bool isFadingIn = false;
+	bool forceFieldIsOn = false;
 
 	float FadeDuration
 	{
@@ -85,6 +87,13 @@ public class ForceFieldComponent : MonoBehaviour
 		HARDReset();
 
 		fadeTimer = new Ultra.Timer(true);
+
+		if (startActive)
+		{
+			SetMaterialValues(1);
+			col.enabled = true;
+			forceFieldIsOn = true;
+		}
 	}
 
 	public void HARDReset()
@@ -114,18 +123,27 @@ public class ForceFieldComponent : MonoBehaviour
 	[ButtonMethod()]
 	public void StartForceField()
 	{
-		isFadingIn = true;
-		fadeTimer.onTimerFinished -= OnTimerFinished;
-		fadeTimer.Start(FadeDuration);
-		col.enabled = true;
+		if (!forceFieldIsOn)
+		{
+			isFadingIn = true;
+			fadeTimer.onTimerFinished -= OnTimerFinished;
+			fadeTimer.Start(FadeDuration);
+			col.enabled = true;
+			forceFieldIsOn = true;
+		}
+
 	}
 
 	[ButtonMethod()]
 	public void EndForceField()
 	{
-		isFadingIn = false;
-		fadeTimer.Start(FadeDuration);
-		fadeTimer.onTimerFinished += OnTimerFinished;
+		if (forceFieldIsOn)
+		{
+			isFadingIn = false;
+			fadeTimer.Start(FadeDuration);
+			fadeTimer.onTimerFinished += OnTimerFinished;
+			forceFieldIsOn = false;
+		}
 	}
 
 	void OnTimerFinished()

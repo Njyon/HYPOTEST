@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ArenaSpawnerHelper : MonoBehaviour
+public class CheckPoint : MonoBehaviour
 {
 	[SerializeField] GameObject newPlayerSpawn;
 

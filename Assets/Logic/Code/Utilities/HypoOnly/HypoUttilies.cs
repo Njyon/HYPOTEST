@@ -65,6 +65,63 @@ namespace Ultra
 
 			return mostPointingObject;
 		}
+		public static IDamage FindTargetNearestToDirection(Vector3 fromPosition, Vector3 direction, ref List<IDamage> list)
+		{
+			if (list == null || list.Count <= 0) return null;
+
+			IDamage mostPointingObject = null;
+			float smallestAngle = 360f;
+
+			foreach (IDamage target in list)
+			{
+				if (target == null) continue;
+				float angle = Ultra.Utilities.GetAngleBetweenVectors(direction.normalized, (target.GetPosition() - fromPosition).normalized);
+				if (angle < smallestAngle)
+				{
+					mostPointingObject = target;
+					smallestAngle = angle;
+				}
+			}
+
+			return mostPointingObject;
+		}
+		public static IDamage FindTargetNearestToDirectionIgnoreNonGameCharacterAfter90Grad(Vector3 fromPosition, Vector3 direction, ref List<IDamage> list)
+		{
+			if (list == null || list.Count <= 0) return null;
+
+			IDamage mostPointingObject = null;
+			float smallestAngle = 360f;
+			float targetDistance = float.MaxValue;
+
+			foreach (IDamage target in list)
+			{
+				if (target == null) continue;
+				float angle = Ultra.Utilities.GetAngleBetweenVectors(direction.normalized, (target.GetPosition() - fromPosition).normalized);
+				if (!target.IsGameCharacter())
+				{
+					if (angle > 90) continue;
+					if (mostPointingObject != null && !mostPointingObject.IsGameCharacter())
+					{
+						float distance = Vector3.Distance(target.GetPosition(), fromPosition); 
+						if (distance < targetDistance)
+						{
+							mostPointingObject = target;
+							smallestAngle = angle;
+							targetDistance = distance;
+						}
+						continue;
+					}
+				}
+				if (angle < smallestAngle)
+				{
+					mostPointingObject = target;
+					smallestAngle = angle;
+					targetDistance = Vector3.Distance(target.GetPosition(), fromPosition);
+				}
+			}
+
+			return mostPointingObject;
+		}
 		public static GameCharacter FindCharactereNearestToDirection(Vector3 fromPosition, Vector3 direction, HyppoliteTeam team, ref List<GameCharacter> list)
 		{
 			if (list == null || list.Count <= 0) return null;

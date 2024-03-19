@@ -46,7 +46,7 @@ public class SpearDefensiveAction : ActionBase
 		throwSpear.transform.rotation = Quaternion.LookRotation(spearDir.normalized, Vector3.up);
 		throwSpear.transform.eulerAngles = new Vector3(throwSpear.transform.eulerAngles.x, throwSpear.transform.eulerAngles.y, 90f);
 
-		GameCharacter.CombatComponent.AimCharacter = targetEnemy;
+		GameCharacter.CombatComponent.AimTarget = targetEnemy;
 		Weapon.HookCharacterToCharacter(targetEnemy);
 		GameCharacter.MovementComponent.MovementVelocity = Vector3.zero;
 
@@ -71,7 +71,7 @@ public class SpearDefensiveAction : ActionBase
 
 		if (hitgameCharacter.CombatComponent.CanRequestMoveTo())
 		{
-			GameCharacter.CombatComponent.AimCharacter = hitgameCharacter;
+			GameCharacter.CombatComponent.AimTarget = hitgameCharacter;
 			Weapon.HookCharacterToCharacter(hitgameCharacter);
 			GameCharacter.CombatComponent.HookedCharacters.Add(hitgameCharacter);
 			hitgameCharacter.CombatComponent.HookedToCharacter = GameCharacter;

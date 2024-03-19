@@ -46,6 +46,7 @@ public class ChargeAttack : AttackBase
 		if (target != null)
 		{
 			GameCharacter.RotateToDir((target.MovementComponent.CharacterCenter - GameCharacter.MovementComponent.CharacterCenter).IgnoreAxis(EAxis.YZ).normalized);
+			GameCharacter.RotationTarget = GameCharacter.transform.rotation;
 		}
 		chargeDir = target != null ? (target.MovementComponent.CharacterCenter - GameCharacter.MovementComponent.CharacterCenter).IgnoreAxis(EAxis.YZ).normalized : GameCharacter.transform.forward;
 	}

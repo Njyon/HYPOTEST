@@ -98,7 +98,7 @@ public class GameCharacterAttackState : AGameCharacterState
 		}
 		else
 		{
-			Vector3 currentDir = new Vector3(GameCharacter.transform.forward.x, 0, 0);
+			Vector3 currentDir = GameCharacter.transform.forward;
 			newDir = Quaternion.LookRotation(currentDir.normalized, Vector3.up);
 		}
 	}
@@ -133,7 +133,7 @@ public class GameCharacterAttackState : AGameCharacterState
 		delayedAnimationStateCheckTimer.Update(deltaTime);
 
 		GameCharacter.CombatComponent.CurrentWeapon.PreAttackStateLogic(deltaTime);
-		RotateCharacter(newDir);
+		if (GameCharacter.IsPlayerCharacter) RotateCharacter(newDir);
 
 		if (GameCharacter.MovementComponent.IsGrounded) {
 			OnGroundMovement();

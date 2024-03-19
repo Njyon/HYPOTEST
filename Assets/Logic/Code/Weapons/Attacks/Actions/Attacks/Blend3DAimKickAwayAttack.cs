@@ -40,7 +40,7 @@ public class Blend3DAimKickAwayAttack : AttackBase
 		Weapon.SpawnWeaponFlash(weaponObjData);
 
 		GameCharacter target = Ultra.HypoUttilies.FindCharactereNearestToDirection(GameCharacter.MovementComponent.CharacterCenter, GameCharacter.MovementInput.magnitude > 0 ? GameCharacter.MovementInput : GameCharacter.transform.forward, ref GameCharacter.CharacterDetection.TargetGameCharacters);
-		GameCharacter.CombatComponent.AimCharacter = target;
+		GameCharacter.CombatComponent.AimTarget = target;
 
 		if (target != null)
 			GameCharacter.RotateToDir((target.MovementComponent.CharacterCenter - GameCharacter.MovementComponent.CharacterCenter).IgnoreAxis(EAxis.YZ));

@@ -61,7 +61,7 @@ public class CombatComponent
 	Ultra.Timer flyAwayTimer;
 	GameCharacter hookedToCharacter;
 	List<GameCharacter> hookedCharacters;
-	GameCharacter aimToCharacter;
+	IDamage aimToTarget;
 	Vector3 moveToPosition;
 	GameObject hitDetectionGameObject;
 	MeshCollider hitDetectionMeshCollider;
@@ -86,7 +86,7 @@ public class CombatComponent
 	public Ultra.Timer FlyAwayTimer { get { return flyAwayTimer; } }
 	public GameCharacter HookedToCharacter { get { return hookedToCharacter; } set { hookedToCharacter = value; } }
 	public List<GameCharacter> HookedCharacters { get { return hookedCharacters; } set { hookedCharacters = value; } }
-	public GameCharacter AimCharacter { get { return aimToCharacter; } set { aimToCharacter = value; } }
+	public IDamage AimTarget { get { return aimToTarget; } set { aimToTarget = value; } }
 	public Vector3 MoveToPosition { get { return moveToPosition; } set { moveToPosition = value; } }
 	public GameObject HitDetectionGameObject { get { return hitDetectionGameObject; } }
 	public MeshCollider HitDetectionMeshCollider { get { return hitDetectionMeshCollider; } }

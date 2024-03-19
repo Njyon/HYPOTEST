@@ -100,7 +100,7 @@ public class EnemyGameCharacter : GameCharacter
 	void OnBehaviourTreeInit(BehaviorTreeRunner btr)
 	{
 		if (IsGameCharacterDead) return;
-		foreach (GameCharacter gc in CharacterDetection.DetectedTarget)
+		foreach (GameCharacter gc in CharacterDetection.DetectedTargets)
 		{
 			OnTargetDetectionOverlapEnter(gc);
 		}

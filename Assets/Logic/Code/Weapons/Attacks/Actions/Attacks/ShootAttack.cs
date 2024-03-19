@@ -44,7 +44,7 @@ public class ShootAttack : AttackBase
 		{
 			var projectile = projectilePool.GetValue();
 			projectile.transform.position = weaponObjData.weaponTip.transform.position;
-			Vector3 projectileDir = GameCharacter.CombatComponent.AimPositionCheck.Value ? GameCharacter.CombatComponent.AimPositionCheck.Position - weaponObjData.weaponTip.transform.position : GameCharacter.CombatComponent.AimCharacter != null ? GameCharacter.CombatComponent.AimCharacter.MovementComponent.CharacterCenter - GameCharacter.MovementComponent.CharacterCenter : GameCharacter.transform.forward;
+			Vector3 projectileDir = GameCharacter.CombatComponent.AimPositionCheck.Value ? GameCharacter.CombatComponent.AimPositionCheck.Position - weaponObjData.weaponTip.transform.position : GameCharacter.CombatComponent.AimTarget != null ? GameCharacter.CombatComponent.AimTarget.GetPosition() - GameCharacter.MovementComponent.CharacterCenter : GameCharacter.transform.forward;
 			projectile.Init(GameCharacter, projectileDir, attackData.projectileSpeed, attackData.Damage, OnProjectileHit, OnProjectileLifeTimeEnd);
 		}
 	}

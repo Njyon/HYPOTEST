@@ -6,20 +6,20 @@ using UnityEngine.Events;
 
 public class DamagableObject : MonoBehaviour, IDamage
 {
-	public delegate void ObjectEvent();
-	public ObjectEvent onGotDamaged;
-	public ObjectEvent onToggleEvent;
-
-	public bool toggable = false;
-	[ConditionalField("toggable", inverse:true)]
+	public bool toggable = true;
+	[ConditionalField("toggable")]
 	public bool switchable = false;
-	[ConditionalField(new[] { nameof(toggable), nameof(switchable) }, new[] { true, true })]
+	[ConditionalField(new[] { nameof(toggable), nameof(switchable) }, new[] { false, true })]
 	public float toggleTime = 1f;
 
 	public UnityEvent onGotDamagedEvent;
+	[ConditionalField("switchable")]
+	public UnityEvent onSwitchOffEvent;
+	[ConditionalField(new[] { nameof(toggable), nameof(switchable) }, new[] { false, true })]
 	public UnityEvent onAfterToggleTime;
 
 	Ultra.Timer toggleTimer;
+	bool isSwitchedOn = false;
 
 	void Awake()
 	{
@@ -35,13 +35,23 @@ public class DamagableObject : MonoBehaviour, IDamage
 
 	public void DoDamage(GameCharacter damageInitiator, float damage, bool shouldStagger = true, bool removeCharge = true, bool shouldFreezGame = true)
 	{
-		if (onGotDamagedEvent != null) onGotDamagedEvent.Invoke();
-		if (onGotDamaged != null) onGotDamaged();
-
 		if (toggable && !switchable)
 		{
 			toggleTimer.Start();
 		}
+		else if (toggable && switchable) 
+		{
+			isSwitchedOn = !isSwitchedOn;
+
+			if (isSwitchedOn)
+				if (onGotDamagedEvent != null) onGotDamagedEvent.Invoke();
+			else 
+				if (onSwitchOffEvent != null) onSwitchOffEvent.Invoke();
+
+			return;
+		}
+
+		if (onGotDamagedEvent != null) onGotDamagedEvent.Invoke();
 	}
 
 	public GameCharacter GetGameCharacter()
@@ -61,8 +71,10 @@ public class DamagableObject : MonoBehaviour, IDamage
 
 	void OnToggleTimerFinished()
 	{
-		if (onAfterToggleTime != null) onAfterToggleTime.Invoke();
-		if (onToggleEvent != null) onToggleEvent();
+		if (toggable && !switchable)
+		{
+			if (onAfterToggleTime != null) onAfterToggleTime.Invoke();
+		}
 	}
 
 	public Vector3 GetPosition()

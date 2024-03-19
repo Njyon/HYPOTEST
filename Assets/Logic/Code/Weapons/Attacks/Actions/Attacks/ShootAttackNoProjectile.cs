@@ -43,14 +43,16 @@ public class ShootAttackNoProjectile : AttackBase
 		Weapon.PlayAttackSound(0);
 		Weapon.SpawnWeaponFlash(weaponObjData);
 
-		GameCharacter target = Ultra.HypoUttilies.FindCharactereNearestToDirection(GameCharacter.MovementComponent.CharacterCenter, GameCharacter.MovementInput.magnitude > 0 ? GameCharacter.MovementInput : GameCharacter.transform.forward, ref GameCharacter.CharacterDetection.TargetGameCharacters);
-		GameCharacter.CombatComponent.AimCharacter = target;
+		IDamage target = Ultra.HypoUttilies.FindTargetNearestToDirectionIgnoreNonGameCharacterAfter90Grad(GameCharacter.MovementComponent.CharacterCenter, GameCharacter.MovementInput.magnitude > 0 ? GameCharacter.MovementInput : GameCharacter.transform.forward, ref GameCharacter.CharacterDetection.DetectedTargets);
+		GameCharacter.CombatComponent.AimTarget = target;
 
 		if (target != null)
-			GameCharacter.RotateToDir((target.MovementComponent.CharacterCenter - GameCharacter.MovementComponent.CharacterCenter).IgnoreAxis(EAxis.YZ));
+			GameCharacter.RotateToDir((target.GetPosition() - GameCharacter.MovementComponent.CharacterCenter).IgnoreAxis(EAxis.YZ));
+		else
+			GameCharacter.RotateToDir(GameCharacter.transform.forward);
 
 		Vector3 weaponTipPos = weaponObjData.weaponTip.transform.position;
-		Vector3 bulletDirection = target != null ? target.MovementComponent.CharacterCenter - weaponObjData.weaponTip.transform.position : GameCharacter.transform.forward * 9999f;
+		Vector3 bulletDirection = target != null ? target.GetPosition() - weaponObjData.weaponTip.transform.position : GameCharacter.transform.forward * 9999f;
 		
 		Ultra.Utilities.DrawArrow(weaponTipPos, bulletDirection, bulletDirection.magnitude, Color.magenta, 10f, 200, DebugAreas.Combat);
 		RaycastHit[] hits = Physics.RaycastAll(weaponTipPos, bulletDirection, 9999f, -5, QueryTriggerInteraction.Ignore);

@@ -89,12 +89,12 @@ public class BazookaMissileProjectile : WeaponProjectile
 	{
 		rigidBody.velocity = transform.forward * _speed;
 
+		if (target == null || target.MovementComponent == null) return;
+
 		var leadTimePercentage = Mathf.InverseLerp(_minDistancePredict, _maxDistancePredict, Vector3.Distance(transform.position, target.MovementComponent.CharacterCenter));
 
 		PredictMovement(leadTimePercentage);
-
 		AddDeviation(leadTimePercentage);
-
 		RotateRocket();
 	}
 

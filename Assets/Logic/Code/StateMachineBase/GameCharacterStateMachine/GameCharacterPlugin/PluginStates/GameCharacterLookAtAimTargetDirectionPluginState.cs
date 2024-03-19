@@ -37,12 +37,12 @@ public class GameCharacterLookAtAimTargetDirectionPluginState : AGameCharacterPl
 
 	public override bool WantsToBeActive()
 	{
-		return GameCharacter.CombatComponent.AimCharacter != null || GameCharacter.CombatComponent.AimPositionCheck != null;
+		return GameCharacter.CombatComponent.AimTarget != null || GameCharacter.CombatComponent.AimPositionCheck != null;
 	}
 
 	public override void ExecuteState(float deltaTime)
 	{
-		if (GameCharacter.CombatComponent.AimCharacter != null || GameCharacter.CombatComponent.AimPositionCheck != null)
+		if (GameCharacter.CombatComponent.AimTarget != null || GameCharacter.CombatComponent.AimPositionCheck != null)
 		{
 			switch (GameCharacter.StateMachine.GetCurrentStateType())
 			{
@@ -54,7 +54,7 @@ public class GameCharacterLookAtAimTargetDirectionPluginState : AGameCharacterPl
 				case EGameCharacterState.Freez:
 					break;
 				default:
-					Vector3 targetPos = GameCharacter.CombatComponent.AimCharacter != null ? (Ultra.Utilities.IgnoreAxis(GameCharacter.CombatComponent.AimCharacter.MovementComponent.CharacterCenter, EAxis.YZ)) : (Ultra.Utilities.IgnoreAxis(GameCharacter.CombatComponent.AimPositionCheck.Position, EAxis.YZ));
+					Vector3 targetPos = GameCharacter.CombatComponent.AimTarget != null ? (Ultra.Utilities.IgnoreAxis(GameCharacter.CombatComponent.AimTarget.GetPosition(), EAxis.YZ)) : (Ultra.Utilities.IgnoreAxis(GameCharacter.CombatComponent.AimPositionCheck.Position, EAxis.YZ));
 					Vector3 targetDir = (targetPos - Ultra.Utilities.IgnoreAxis(GameCharacter.MovementComponent.CharacterCenter, EAxis.YZ)).normalized;
 
 					if (GameCharacter.MovementInput.magnitude > 0)

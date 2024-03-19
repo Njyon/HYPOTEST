@@ -14,7 +14,7 @@ public class BTAimAtTargetService : BTServiceNodeBase
 
 		if (TargetGameCharacter != null)
 		{
-			GameCharacter.CombatComponent.AimCharacter = TargetGameCharacter;
+			GameCharacter.CombatComponent.AimTarget = TargetGameCharacter;
 			GameCharacter.AnimController.ApplyBlendTree(GameCharacter.CombatComponent.CurrentWeapon.AnimationData.AimAnimations);
 			GameCharacter.PluginStateMachine.AddPluginState(EPluginCharacterState.Aim);
 		}else
@@ -42,7 +42,7 @@ public class BTAimAtTargetService : BTServiceNodeBase
 
 		if (GameCharacter != null)
 		{
-			GameCharacter.CombatComponent.AimCharacter = null;
+			GameCharacter.CombatComponent.AimTarget = null;
 			GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.Aim);
 		}
 	}

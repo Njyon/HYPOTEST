@@ -69,9 +69,9 @@ public class GameCharacterAimPluginState : AGameCharacterPluginState
 		{
 			AimAtPosition(GameCharacter.CombatComponent.AimPositionCheck.Position);
 		}
-		else if (GameCharacter.CombatComponent.AimCharacter != null)
+		else if (GameCharacter.CombatComponent.AimTarget != null)
 		{
-			AimAtPosition(GameCharacter.CombatComponent.AimCharacter.MovementComponent.CharacterCenter);
+			AimAtPosition(GameCharacter.CombatComponent.AimTarget.GetPosition());
 		}else
 		{
 			AimAtPosition(GameCharacter.MovementComponent.CharacterCenter + GameCharacter.transform.forward * 9999f);

@@ -12,7 +12,7 @@ public class TargetDetection<T> : MonoBehaviour
 	[SerializeField] Collider collider;
 	public Collider Collider { get { return collider; } }
 
-	public List<T> DetectedTarget = new List<T>();
+	public List<T> DetectedTargets = new List<T>();
 
 	public void Awake()
 	{
@@ -29,7 +29,7 @@ public class TargetDetection<T> : MonoBehaviour
 		if (other.transform == this.transform.parent) return;
 
 		T template = other.gameObject.GetComponent<T>();
-		if (template != null && !DetectedTarget.Contains(template))
+		if (template != null && !DetectedTargets.Contains(template))
 		{
 		
 			OnTriggerEnterCall(template);
@@ -55,12 +55,12 @@ public class TargetDetection<T> : MonoBehaviour
 
 	protected virtual void OnTriggerEnterCall(T collider)
 	{
-		DetectedTarget.Add(collider);
+		DetectedTargets.Add(collider);
 	}
 
 	protected virtual void OnTriggerExitCall(T collider)
 	{
-		DetectedTarget.Remove(collider);
+		DetectedTargets.Remove(collider);
 	}
 
 

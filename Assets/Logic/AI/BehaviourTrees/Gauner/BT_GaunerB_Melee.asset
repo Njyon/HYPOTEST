@@ -17,7 +17,37 @@ MonoBehaviour:
   <StartNodeGUID>k__BackingField: ce05589c-e36e-4e5a-9d7d-82db03a7fbdd
   UseSerializeReferenceGeneric: 0
   UnityObjectRef: []
-  variables: []
+  variables:
+  - Name: Self
+    Type: RefVar_GameCharacter
+    Member:
+    - Name: refName
+      Type: System.String
+      Value: Self
+  - Name: Target
+    Type: RefVar_GameCharacter
+    Member:
+    - Name: refName
+      Type: System.String
+      Value: Target
+  - Name: CanMeleeAttack
+    Type: Megumin.Binding.RefVar_Bool
+    Member:
+    - Name: refName
+      Type: System.String
+      Value: CanMeleeAttack
+    - Name: value
+      Type: System.Boolean
+      Value: True
+  - Name: MovementTarget
+    Type: Megumin.Binding.RefVar_Vector3
+    Member:
+    - Name: refName
+      Type: System.String
+      Value: MovementTarget
+    - Name: value
+      Type: UnityEngine.Vector3
+      Value: '{"x":5.746970176696777,"y":0.0,"z":0.0}'
   nodes:
   - Name: 0a74f2da-16d5-4b5a-9ab3-573bc74a00b0
     Type: Megumin.GameFramework.AI.BehaviorTree.Parallel
@@ -103,6 +133,9 @@ MonoBehaviour:
   - Name: 3a73c798-e30d-4383-956e-4eaa55a4bf0c
     Type: BTFollowPlayerActionNode
     Member:
+    - Name: minDistanceToTarget
+      Type: System.Single
+      Value: 2
     - Name: Meta
       Type: $ref
       Value: 3a73c798-e30d-4383-956e-4eaa55a4bf0c.Meta
@@ -325,6 +358,9 @@ MonoBehaviour:
     - Name: Children
       Type: $ref
       Value: 9d02360a-2014-4119-aacb-e6e48d320975.Children
+    - Name: FinishMode
+      Type: Megumin.GameFramework.AI.BehaviorTree.FinishMode
+      Value: Megumin.GameFramework.AI.BehaviorTree.FinishMode:AnyCompleted
     - Name: GUID
       Type: System.String
       Value: 9d02360a-2014-4119-aacb-e6e48d320975
@@ -488,9 +524,6 @@ MonoBehaviour:
   - Name: 9bef117f-777c-4078-8bf3-c6556f97e59e
     Type: BTTargetDistanceCondition
     Member:
-    - Name: treshhold
-      Type: System.Single
-      Value: 3
     - Name: conditions
       Type: $ref
       Value: 9bef117f-777c-4078-8bf3-c6556f97e59e.conditions
@@ -1072,10 +1105,10 @@ MonoBehaviour:
     Member:
     - Name: x
       Type: System.Single
-      Value: -886.8091
+      Value: -885.6231
     - Name: y
       Type: System.Single
-      Value: 908.0002
+      Value: 907.9999
     - Name: Name
       Type: System.String
       Value: 
@@ -1367,10 +1400,10 @@ MonoBehaviour:
     Member:
     - Name: x
       Type: System.Single
-      Value: -923.809
+      Value: -924
     - Name: y
       Type: System.Single
-      Value: 600.0002
+      Value: 599
     - Name: Name
       Type: System.String
       Value: 

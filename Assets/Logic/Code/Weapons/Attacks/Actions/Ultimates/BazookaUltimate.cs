@@ -37,7 +37,7 @@ public class BazookaUltimate : AttackBase
 		GameCharacter target = Ultra.HypoUttilies.FindCharactereNearestToDirection(GameCharacter.MovementComponent.CharacterCenter, GameCharacter.MovementInput.magnitude > 0 ? GameCharacter.MovementInput : GameCharacter.transform.forward, ref GameCharacter.CharacterDetection.TargetGameCharacters);
 		
 		if (target != null) 
-			GameCharacter.CombatComponent.AimCharacter = target;
+			GameCharacter.CombatComponent.AimTarget = target;
 
 		Weapon.AddForceAimBuff(attackData.forceAimDuration);
 
