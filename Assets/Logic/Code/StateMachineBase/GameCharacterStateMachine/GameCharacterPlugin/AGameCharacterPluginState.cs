@@ -29,6 +29,11 @@ public abstract class AGameCharacterPluginState : IPluginState<EPluginCharacterS
 		return isActive;
 	}
 
+	public virtual void FixedExecuteState(float fixedTime)
+	{
+
+	}
+
 	public abstract void AddState();
 	public abstract void ExecuteState(float deltaTime);
 	public abstract EPluginCharacterState GetStateType();

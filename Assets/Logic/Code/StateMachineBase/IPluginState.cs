@@ -26,6 +26,12 @@ public interface IPluginState<T>
 	public void ExecuteState(float deltaTime);
 
 	/// <summary>
+	/// FixedUpdate Funktion for PluginStates
+	/// </summary>
+	/// <param name="fixedTime"></param>
+	public void FixedExecuteState(float fixedTime);
+
+	/// <summary>
 	/// Called when state is supposed to be deactive
 	/// </summary>
 	public void Deactive();

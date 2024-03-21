@@ -47,6 +47,15 @@ public abstract class PluginStateMachineBase<T> : MonoBehaviour
 		}
 	}
 
+	private void FixedUpdate()
+	{
+		foreach (var item in DictionaryOfPluginStates)
+		{
+			if (item.Value.IsActive())
+				item.Value.FixedExecuteState(Time.fixedDeltaTime);
+		}
+	}
+
 	/// <summary>
 	/// Add PluginState to Statemachine if state is not yet added
 	/// </summary>

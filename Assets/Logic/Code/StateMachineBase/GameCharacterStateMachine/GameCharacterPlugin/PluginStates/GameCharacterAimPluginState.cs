@@ -78,6 +78,12 @@ public class GameCharacterAimPluginState : AGameCharacterPluginState
 		}
 	}
 
+	public override void FixedExecuteState(float fixedTime)
+	{
+		IDamage target = Ultra.HypoUttilies.FindTargetNearestToDirectionIgnoreNonGameCharacterAfter90Grad(GameCharacter.MovementComponent.CharacterCenter, GameCharacter.MovementInput.magnitude > 0 ? GameCharacter.MovementInput : GameCharacter.transform.forward, ref GameCharacter.CharacterDetection.DetectedTargets);
+		GameCharacter.CombatComponent.AimTarget = target;
+	}
+
 	private void AimAtPosition(Vector3 position)
 	{
 		float angle = Vector3.Angle(Vector3.down, (position - GameCharacter.MovementComponent.CharacterCenter).normalized);
