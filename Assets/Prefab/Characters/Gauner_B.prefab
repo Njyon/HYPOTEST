@@ -2380,7 +2380,7 @@ Animator:
   m_GameObject: {fileID: 5767629617728161753}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: eb7086892d1251d43bfe90cf50b6f0f6, type: 3}
-  m_Controller: {fileID: 9100000, guid: fa9ceaef61da13947b215fb49ca030ff, type: 2}
+  m_Controller: {fileID: 22100000, guid: c507946af75714643b9c8b3f2211eab1, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -2601,6 +2601,11 @@ MonoBehaviour:
   staggerTime: 3
   root: {fileID: 7966435821146197968}
   headBoneName: head.x
+  rootBoneName: root
+  baseRig: {fileID: 0}
+  chestCorrectionIK: {fileID: 0}
+  forcePosition_FootIK_R: {fileID: 0}
+  forcePosition_FootIK_L: {fileID: 0}
   characterDetectionRange: 30
   combatAttackListLenght: 10
   iFramesTime: 0.2
