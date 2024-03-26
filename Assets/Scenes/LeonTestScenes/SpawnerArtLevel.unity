@@ -1409,6 +1409,7 @@ GameObject:
   - component: {fileID: 793707096}
   - component: {fileID: 793707098}
   - component: {fileID: 793707097}
+  - component: {fileID: 793707100}
   m_Layer: 0
   m_Name: no pos camera
   m_TagString: Untagged
@@ -1534,6 +1535,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1930944934}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &793707100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 793707095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IsGlobal: 1
+  priority: 1
+  blendDistance: 0
+  weight: 0.571
+  sharedProfile: {fileID: 11400000, guid: c52d29759ad3771449308e76df194fe3, type: 2}
 --- !u!4 &864093417 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7830980430760707554, guid: 7890e845ff9c0f144bac41bad5622a70,
@@ -2946,6 +2964,11 @@ PrefabInstance:
       propertyPath: m_BackGroundColor.r
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 28264763160451914, guid: 33aa7be1770016c4b96bc22845e068dd,
+        type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 28264763160451915, guid: 33aa7be1770016c4b96bc22845e068dd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2995,6 +3018,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 28264763160451917, guid: 33aa7be1770016c4b96bc22845e068dd,
+        type: 3}
+      propertyPath: m_StopNaN
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 28264763160451917, guid: 33aa7be1770016c4b96bc22845e068dd,
+        type: 3}
+      propertyPath: m_Dithering
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 28264763160451917, guid: 33aa7be1770016c4b96bc22845e068dd,
         type: 3}
