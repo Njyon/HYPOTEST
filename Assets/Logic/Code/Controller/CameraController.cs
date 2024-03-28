@@ -19,6 +19,7 @@ public class CameraController : Singelton<CameraController>
     public Vector2 clampY = new Vector2(-5, 5);
     public Vector2 clampX = new Vector2(-5, 5);
 	[SerializeField] float defaultZoomSpeed = 1f;
+    [SerializeField] float rotationSpeed = 2f;
 
     [Header("MultiTargetValues")]
 	[SerializeField] Vector3 multiOffset;
@@ -43,6 +44,8 @@ public class CameraController : Singelton<CameraController>
     Vector3 cameraEffectOffset;
     CameraEffectComponent cameraEffectComponent;
     float defaultZoom;
+    Quaternion defaultRotationTarget;
+    Quaternion rotationTarget;
 
     public List<GameCharacter> Targets { get { return targets; } }
     public CameraStateMachine StateMachine { get { return stateMachine; } }
@@ -72,6 +75,9 @@ public class CameraController : Singelton<CameraController>
     public Vector3 CameraEffectOffset { get { return cameraEffectOffset; } set { cameraEffectOffset = value; } }
 	public CameraEffectComponent CameraEffectComponent { get { return cameraEffectComponent; } }
     public float DefaultZoom { get { return defaultZoom; } }
+    public Quaternion RotationTarget { get { return rotationTarget; } set { rotationTarget = value; } }
+    public Quaternion DefaultRotationTarget { get { return defaultRotationTarget; } }
+    public float RotationSpeed { get { return rotationSpeed; } }
 
 	[HideInInspector] public Vector3 velocityVelx = Vector3.zero;
 	[HideInInspector] public Vector3 velocityVely = Vector3.zero;
@@ -90,6 +96,9 @@ public class CameraController : Singelton<CameraController>
         defaultZoom = cam.fieldOfView;
         FinalFoV = defaultZoom;
         CameraEffectComponent.Init();
+
+        defaultRotationTarget = transform.rotation;
+		rotationTarget = transform.rotation;
     }
 
     public void OnPosses(GameObject newTarget)
@@ -108,7 +117,7 @@ public class CameraController : Singelton<CameraController>
 
 	void Update()
 	{
-		
+        transform.rotation = Quaternion.Lerp(transform.rotation, RotationTarget, Time.deltaTime * RotationSpeed);
 	}
 
 	void LateUpdate()

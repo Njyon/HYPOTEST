@@ -17,6 +17,7 @@ public class BTAimAtTargetService : BTServiceNodeBase
 			GameCharacter.CombatComponent.AimTarget = TargetGameCharacter;
 			GameCharacter.AnimController.ApplyBlendTree(GameCharacter.CombatComponent.CurrentWeapon.AnimationData.AimAnimations);
 			GameCharacter.PluginStateMachine.AddPluginState(EPluginCharacterState.Aim);
+			GameCharacter.PluginStateMachine.AddPluginState(EPluginCharacterState.LookAtAimTargetDirection);
 		}else
 		{
 			Ultra.Utilities.Instance.DebugErrorString("BTAimAtTargetService", "OnEnter", "TargetGameCharacter was not set, Servies is on wrong Position, without check or something went wrong!");
@@ -44,6 +45,7 @@ public class BTAimAtTargetService : BTServiceNodeBase
 		{
 			GameCharacter.CombatComponent.AimTarget = null;
 			GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.Aim);
+			GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.LookAtAimTargetDirection);
 		}
 	}
 }

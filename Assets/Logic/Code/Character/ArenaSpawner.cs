@@ -34,6 +34,12 @@ public class SpawnData
 	}
 }
 
+[Serializable]
+public class SpecificSpawnPoints 
+{
+	public List<GameObject> spawnPoints;
+}
+
 public class ArenaSpawner : MonoBehaviour
 {
 	public delegate void ArenaSpawnerEvent();
@@ -43,7 +49,7 @@ public class ArenaSpawner : MonoBehaviour
 	
 	[SerializeField] List<SpawnData> spawnDataBasedOnDifficulty;
 	[SerializeField] List<GameObject> randomSpawnLocations;
-	[SerializeField] SerializableCharacterDictionary<string, GameObject> characterSpecificSpawnPoints;
+	[SerializeField] BetterSerializableCharacterDictionary<string, SpecificSpawnPoints> characterSpecificSpawnPoints = new BetterSerializableCharacterDictionary<string, SpecificSpawnPoints>();
 	public UnityEvent onStartSpawningEvent;
 	public UnityEvent onLastEnemyKilledEvent;
 	public UnityEvent onPlayerDiedAndRespawnedEvent;
@@ -168,8 +174,9 @@ public class ArenaSpawner : MonoBehaviour
 		if (characterSpecificSpawnPoints.ContainsKey(data.character.name))
 		{
 			var SpecificSpawnPointData = characterSpecificSpawnPoints[data.character.name];
-			spawnLocation = SpecificSpawnPointData.transform.position;
-			spawnRotation = SpecificSpawnPointData.transform.rotation;
+			int index = UnityEngine.Random.Range(0, SpecificSpawnPointData.spawnPoints.Count);
+			spawnLocation = SpecificSpawnPointData.spawnPoints[index].transform.position;
+			spawnRotation = SpecificSpawnPointData.spawnPoints[index].transform.rotation;
 		}
 		else if (randomSpawnLocations.Count > 0)
 		{

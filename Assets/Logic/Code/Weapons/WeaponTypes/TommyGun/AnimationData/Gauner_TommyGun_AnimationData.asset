@@ -62,7 +62,9 @@ MonoBehaviour:
   DefensiveAction: []
   Ultimate: []
   HandType: 1
-  WeaponReadyPose: {fileID: 1118612455620729957, guid: f5d6297a653e5bc429981465433ae2ba,
+  WeaponReadyPose: {fileID: 1118612455620729957, guid: 93c41fcbb861be6489b1c881f5d23932,
+    type: 3}
+  WeaponReadyPoseRun: {fileID: -1554792065862750173, guid: f5d6297a653e5bc429981465433ae2ba,
     type: 3}
   WeaponReadyWeight: 1
   WeaponReadyInterpSpeed: 5
@@ -76,6 +78,13 @@ MonoBehaviour:
       type: 3}
     downAnimation: {fileID: 5383007910281957194, guid: 8a36f13222c63404a804025a8a6f94d0,
       type: 3}
+  AimData:
+    AimWeaponReadyPoseRun: {fileID: -5843927820153325013, guid: f7f08c7d2f4199f4ab6710c4203f0beb,
+      type: 3}
+    WeaponReadyInterpSpeed: 5
+    HeadSpineLayerMovingWeight: 0.5
+    ArmRMovingWeight: 0.5
+    ArmLMovingWeight: 0.5
   references:
     version: 2
     RefIds:

@@ -8,3 +8,9 @@ public class SerializableCharacterDictionary<TKey, TValue> : SerializableDiction
 {
 
 }
+
+[Serializable]
+public class BetterSerializableCharacterDictionary<TKey, TValue> : BetterSerializableDictionary<TKey, TValue>, ISerializationCallbackReceiver
+{
+
+}
