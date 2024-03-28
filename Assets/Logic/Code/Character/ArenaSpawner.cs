@@ -5,62 +5,6 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.ProBuilder.MeshOperations;
 
-// Ein generisches Dictionary-Inspektorskript
-[Serializable]
-public class BetterSerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>
-{
-	[SerializeField]
-	private List<TKey> keys = new List<TKey>();
-
-	[SerializeField]
-	private List<TValue> values = new List<TValue>();
-
-	// save the dictionary to lists
-	public void OnBeforeSerialize()
-	{
-		keys.Clear();
-		values.Clear();
-		foreach (KeyValuePair<TKey, TValue> pair in this)
-		{
-			keys.Add(pair.Key);
-			values.Add(pair.Value);
-		}
-	}
-
-	public void Add(TKey key, TValue value, bool allowDuplicateKeys)
-	{
-		if (allowDuplicateKeys || !ContainsKey(key))
-		{
-			base[key] = value;
-		}
-		else
-		{
-			Debug.LogWarningFormat("Unable to add item with duplicate key '{0}' to SerializableDictionary", key.ToString());
-		}
-	}
-
-	// load dictionary from lists
-	public void OnAfterDeserialize()
-	{
-		this.Clear();
-
-		if (keys.Count != values.Count)
-			throw new System.Exception(string.Format("there are {0} keys and {1} values after deserialization. Make sure that both key and value types are serializable."));
-
-		for (int i = 0; i < keys.Count; i++)
-			this.Add(keys[i], values[i]);
-	}
-}
-
-[Serializable]
-public class TestClassForDic
-{
-	public GameObject test1;
-	public GameObject test2;
-	public List<GameObject> testList;
-
-}
-
 [Serializable]
 public class CharacterSpawnData
 {
@@ -90,6 +34,12 @@ public class SpawnData
 	}
 }
 
+[Serializable]
+public class SpecificSpawnPoints 
+{
+	public List<GameObject> spawnPoints;
+}
+
 public class ArenaSpawner : MonoBehaviour
 {
 	public delegate void ArenaSpawnerEvent();
@@ -99,12 +49,7 @@ public class ArenaSpawner : MonoBehaviour
 	
 	[SerializeField] List<SpawnData> spawnDataBasedOnDifficulty;
 	[SerializeField] List<GameObject> randomSpawnLocations;
-	[SerializeField] SerializableCharacterDictionary<string, GameObject> characterSpecificSpawnPoints;
-	[SerializeField] BetterSerializableDictionary<string, TestClassForDic> test = new BetterSerializableDictionary<string, TestClassForDic>();
-	[SerializeField] BetterSerializableDictionary<string, GameObject> test1 = new BetterSerializableDictionary<string, GameObject>();
-	[SerializeField] BetterSerializableCharacterDictionary<string, TestClassForDic> charater = new BetterSerializableCharacterDictionary<string, TestClassForDic>();
-	[SerializeField] BetterSerializableCharacterDictionary<string, GameObject> charater1 = new BetterSerializableCharacterDictionary<string, GameObject>();
-	[SerializeField] int lol;
+	[SerializeField] BetterSerializableCharacterDictionary<string, SpecificSpawnPoints> characterSpecificSpawnPoints = new BetterSerializableCharacterDictionary<string, SpecificSpawnPoints>();
 	public UnityEvent onStartSpawningEvent;
 	public UnityEvent onLastEnemyKilledEvent;
 	public UnityEvent onPlayerDiedAndRespawnedEvent;
@@ -229,8 +174,9 @@ public class ArenaSpawner : MonoBehaviour
 		if (characterSpecificSpawnPoints.ContainsKey(data.character.name))
 		{
 			var SpecificSpawnPointData = characterSpecificSpawnPoints[data.character.name];
-			spawnLocation = SpecificSpawnPointData.transform.position;
-			spawnRotation = SpecificSpawnPointData.transform.rotation;
+			int index = UnityEngine.Random.Range(0, SpecificSpawnPointData.spawnPoints.Count);
+			spawnLocation = SpecificSpawnPointData.spawnPoints[index].transform.position;
+			spawnRotation = SpecificSpawnPointData.spawnPoints[index].transform.rotation;
 		}
 		else if (randomSpawnLocations.Count > 0)
 		{

@@ -457,6 +457,74 @@ Transform:
   - {fileID: 1634726276}
   m_Father: {fileID: 537641616}
   m_LocalEulerAnglesHint: {x: 0, y: -176.861, z: 0}
+--- !u!1001 &138540123
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1299041462}
+    m_Modifications:
+    - target: {fileID: 3098167057090269729, guid: cc6a30807f781f8478110f16324eb503,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3098167057090269729, guid: cc6a30807f781f8478110f16324eb503,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3098167057090269729, guid: cc6a30807f781f8478110f16324eb503,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3098167057090269729, guid: cc6a30807f781f8478110f16324eb503,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3098167057090269729, guid: cc6a30807f781f8478110f16324eb503,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3098167057090269729, guid: cc6a30807f781f8478110f16324eb503,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3098167057090269729, guid: cc6a30807f781f8478110f16324eb503,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3098167057090269729, guid: cc6a30807f781f8478110f16324eb503,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3098167057090269729, guid: cc6a30807f781f8478110f16324eb503,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3098167057090269729, guid: cc6a30807f781f8478110f16324eb503,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6206737643766406311, guid: cc6a30807f781f8478110f16324eb503,
+        type: 3}
+      propertyPath: m_Name
+      value: GaunerWithTommyGun
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: cc6a30807f781f8478110f16324eb503, type: 3}
 --- !u!1 &140348458
 GameObject:
   m_ObjectHideFlags: 0
@@ -684,37 +752,6 @@ MonoBehaviour:
   characterSpecificSpawnPoints:
     keys: []
     values: []
-  test:
-    keys:
-    - 
-    - 
-    - 
-    values:
-    - test1: {fileID: 0}
-      test2: {fileID: 0}
-      testList:
-      - {fileID: 0}
-      - {fileID: 0}
-    - test1: {fileID: 0}
-      test2: {fileID: 0}
-      testList: []
-    - test1: {fileID: 0}
-      test2: {fileID: 0}
-      testList: []
-  test1:
-    keys:
-    - 
-    - 
-    values:
-    - {fileID: 0}
-    - {fileID: 0}
-  charater:
-    keys: []
-    values: []
-  charater1:
-    keys: []
-    values: []
-  lol: 0
   onStartSpawningEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -847,6 +884,12 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -180, z: -35.724}
+--- !u!4 &557247910 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3098167057090269729, guid: cc6a30807f781f8478110f16324eb503,
+    type: 3}
+  m_PrefabInstance: {fileID: 138540123}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &589694268 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 43ca050a868c0f5499cc099978edd1aa,
@@ -892,12 +935,6 @@ MonoBehaviour:
   - {fileID: 8825085642949479944}
   animator: {fileID: 589694269}
   clip: {fileID: 8443212957946751521, guid: 43878f2185809154d892f69df3c20921, type: 3}
---- !u!4 &594916193 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3098167057090269729, guid: cc6a30807f781f8478110f16324eb503,
-    type: 3}
-  m_PrefabInstance: {fileID: 1552812738}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &663329985
 GameObject:
   m_ObjectHideFlags: 0
@@ -2069,7 +2106,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 594916193}
+  - {fileID: 557247910}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -183.217, z: 0}
 --- !u!1 &1326796678
@@ -2552,74 +2589,6 @@ Transform:
   - {fileID: 2033837684}
   m_Father: {fileID: 537641616}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &1552812738
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1299041462}
-    m_Modifications:
-    - target: {fileID: 3098167057090269729, guid: cc6a30807f781f8478110f16324eb503,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3098167057090269729, guid: cc6a30807f781f8478110f16324eb503,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3098167057090269729, guid: cc6a30807f781f8478110f16324eb503,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3098167057090269729, guid: cc6a30807f781f8478110f16324eb503,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3098167057090269729, guid: cc6a30807f781f8478110f16324eb503,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3098167057090269729, guid: cc6a30807f781f8478110f16324eb503,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3098167057090269729, guid: cc6a30807f781f8478110f16324eb503,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3098167057090269729, guid: cc6a30807f781f8478110f16324eb503,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3098167057090269729, guid: cc6a30807f781f8478110f16324eb503,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3098167057090269729, guid: cc6a30807f781f8478110f16324eb503,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6206737643766406311, guid: cc6a30807f781f8478110f16324eb503,
-        type: 3}
-      propertyPath: m_Name
-      value: GaunerWithTommyGun
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: cc6a30807f781f8478110f16324eb503, type: 3}
 --- !u!1 &1598801234
 GameObject:
   m_ObjectHideFlags: 0
@@ -3100,19 +3069,6 @@ MonoBehaviour:
   characterSpecificSpawnPoints:
     keys: []
     values: []
-  test:
-    keys: []
-    values: []
-  test1:
-    keys: []
-    values: []
-  charater:
-    keys: []
-    values: []
-  charater1:
-    keys: []
-    values: []
-  lol: 0
   onStartSpawningEvent:
     m_PersistentCalls:
       m_Calls: []
