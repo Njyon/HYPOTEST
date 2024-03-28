@@ -434,12 +434,6 @@ MonoBehaviour:
   - Name: 7e1607aa-9985-4201-aa17-0a5df2512ef1
     Type: BTTargetDistanceCondition
     Member:
-    - Name: minDistance
-      Type: System.Single
-      Value: 10
-    - Name: treshhold
-      Type: System.Single
-      Value: 5
     - Name: conditions
       Type: $ref
       Value: 7e1607aa-9985-4201-aa17-0a5df2512ef1.conditions
@@ -886,7 +880,10 @@ MonoBehaviour:
       Value: 7e1607aa-9985-4201-aa17-0a5df2512ef1.conditions.0.instance
   - Name: 7e1607aa-9985-4201-aa17-0a5df2512ef1.conditions.0.instance
     Type: ConditionGreaterOperation
-    Member: []
+    Member:
+    - Name: checkDistance
+      Type: System.Single
+      Value: 3
   - Name: 7e1607aa-9985-4201-aa17-0a5df2512ef1.conditions.1
     Type: ClassInstance`1[[ConditionOperation, Assembly-CSharp]]
     Member:
@@ -1203,7 +1200,10 @@ MonoBehaviour:
       Value: dc158c71-d026-4918-bab5-8b792e1f8e93.conditions.0.instance
   - Name: dc158c71-d026-4918-bab5-8b792e1f8e93.conditions.0.instance
     Type: ConditionEqualOperation
-    Member: []
+    Member:
+    - Name: checkWithHight
+      Type: System.Boolean
+      Value: True
   - Name: de4280a7-bf9a-473f-b414-32ce9d4b644b.Decorators
     Type: System.Collections.Generic.List`1[[Megumin.GameFramework.AI.BehaviorTree.IDecorator,
       Megumin.GameFramework.AI]]
