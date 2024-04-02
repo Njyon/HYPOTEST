@@ -8,5 +8,7 @@ public class ResetCameraModification : ACameraModification
 	{
 		// Reset All Operations
 		CameraController.RotationTarget = CameraController.DefaultRotationTarget;
+		CameraController.AddativeOffsetTarget = Vector3.zero;
+		CameraController.AddativeFOVTarget = 0;
 	}
 }

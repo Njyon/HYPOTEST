@@ -61,7 +61,7 @@ public class DefaultCameraState : ACameraState
 		float yMax = target.y + CameraController.ClampX.y;
 		float y = Mathf.Clamp(targetPosition.y, yMin, yMax);
 
-		CameraController.CameraTargetPosition = new Vector3(x, y, CameraController.CameraTargetPosition.z);
+		CameraController.CameraTargetPosition = new Vector3(x, y, newTargetLocation.z);
 
 		Vector3 xPos = Vector3.SmoothDamp(CameraController.FinalCameraPosition, Vector3.ProjectOnPlane(CameraController.CameraTargetPosition, Vector3.up), ref CameraController.velocityVelx, 1 / CameraController.MoveSpeedx, Mathf.Infinity, deltaTime);
 		Vector3 yPos = Vector3.SmoothDamp(CameraController.FinalCameraPosition, Vector3.ProjectOnPlane(CameraController.CameraTargetPosition, Vector3.right), ref CameraController.velocityVely, 1 / CameraController.MoveSpeedy, Mathf.Infinity, deltaTime);
