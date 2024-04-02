@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -14,7 +15,7 @@ public abstract class ABuff
 	public Ultra.Timer DurationTimer { get { return durationTimer; } }
 	public GameCharacter GameCharacter { get { return gameCharacter; } }	
 
-	public GUID ID { get; private set; }
+	public Guid ID { get; private set; }
 	public bool IsActive { get; private set; }
 
 	public ABuff(GameCharacter gameCharacter ,float duration) 
@@ -22,7 +23,7 @@ public abstract class ABuff
 		this.gameCharacter = gameCharacter;
 		this.durationTimer = new Ultra.Timer(duration, duration < 0 ? true : false);
 		durationTimer.onTimerFinished += OnBuffTimerFinished;
-		ID = GUID.Generate();
+		ID = Guid.NewGuid();
 		IsActive = true;
 	}
 

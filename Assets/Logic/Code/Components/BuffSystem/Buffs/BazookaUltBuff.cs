@@ -63,14 +63,18 @@ public class BazookaUltBuff : ABuff
 
 		CameraController.Instance.ShakeCamerea(bazookaData.cameraShakeIndex);
 
-		WeaponProjectile projectile = bazookaData.projectilePool.GetValue();
-		if (projectile == null) projectile = bazookaData.projectilePool.GetValue();
-		projectile.transform.position = bazookaData.bazookaData.weaponTip.transform.position;
-		projectile.transform.rotation = Quaternion.LookRotation(-(bazookaData.mainTarget.MovementComponent.CharacterCenter - projectile.transform.position).normalized);
-		projectile.Init(GameCharacter, bazookaData.bazookaData.transform.forward, bazookaData.projectileSpeed, bazookaData.projectileDamage, null, OnProjectileLifeTimeEnd, bazookaData.projectileLifeTime);
-		BazookaMissileProjectile bazookaMissle = (BazookaMissileProjectile)projectile;
-		GameCharacter target = GameCharacter.CharacterDetection.TargetGameCharacters[missileIndex % GameCharacter.CharacterDetection.TargetGameCharacters.Count];
-		bazookaMissle.SetTarget(target);
+		if (GameCharacter.CharacterDetection.TargetGameCharacters.Count > 0)
+		{
+			WeaponProjectile projectile = bazookaData.projectilePool.GetValue();
+			if (projectile == null) projectile = bazookaData.projectilePool.GetValue();
+			projectile.transform.position = bazookaData.bazookaData.weaponTip.transform.position;
+			projectile.transform.rotation = Quaternion.LookRotation(-(bazookaData.mainTarget.MovementComponent.CharacterCenter - projectile.transform.position).normalized);
+			projectile.Init(GameCharacter, bazookaData.bazookaData.transform.forward, bazookaData.projectileSpeed, bazookaData.projectileDamage, null, OnProjectileLifeTimeEnd, bazookaData.projectileLifeTime);
+			BazookaMissileProjectile bazookaMissle = (BazookaMissileProjectile)projectile;
+			GameCharacter target = GameCharacter.CharacterDetection.TargetGameCharacters[missileIndex % GameCharacter.CharacterDetection.TargetGameCharacters.Count];
+			bazookaMissle.SetTarget(target);
+		}
+	
 		missileIndex++;
 	}
 

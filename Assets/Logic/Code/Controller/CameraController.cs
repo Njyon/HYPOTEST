@@ -20,6 +20,8 @@ public class CameraController : Singelton<CameraController>
     public Vector2 clampX = new Vector2(-5, 5);
 	[SerializeField] float defaultZoomSpeed = 1f;
     [SerializeField] float rotationSpeed = 2f;
+    [SerializeField] float offsetLerpSpeed = 2f;
+    [SerializeField] float fovLerpSpeed = 2f;
 
     [Header("MultiTargetValues")]
 	[SerializeField] Vector3 multiOffset;
@@ -46,14 +48,18 @@ public class CameraController : Singelton<CameraController>
     float defaultZoom;
     Quaternion defaultRotationTarget;
     Quaternion rotationTarget;
+    Vector3 addativeOffset;
+    Vector3 addativeOffsetTarget;
+    float addativeFOV;
+    float addativeFOVTarget;
 
     public List<GameCharacter> Targets { get { return targets; } }
     public CameraStateMachine StateMachine { get { return stateMachine; } }
     public Camera Camera { get { return cam; } }   
-    public Vector3 Offset { get { return offset; } }
+    public Vector3 Offset { get { return offset + AddativeOffset; } }
     public Vector3 MultiOffset { get { return multiOffset; } }
     public Vector3 Velocity { get { return velocity; } set { velocity = value; } }
-    public float FinalFoV { get { return zoomTarget; } set { zoomTarget = value; } }
+    public float FinalFoV { get { return zoomTarget + AddativeFOV; } set { zoomTarget = value; } }
     public float MinDistance { get { return minDistance; } }    
     public float ZoomLimiter { get { return zoomLimiter; } }
     public float MaxFoV { get { return maxFoV; } }
@@ -78,6 +84,12 @@ public class CameraController : Singelton<CameraController>
     public Quaternion RotationTarget { get { return rotationTarget; } set { rotationTarget = value; } }
     public Quaternion DefaultRotationTarget { get { return defaultRotationTarget; } }
     public float RotationSpeed { get { return rotationSpeed; } }
+    public float OffsetLerpSpeed { get { return offsetLerpSpeed; } }
+    public float FOVLerpSpeed { get { return fovLerpSpeed; } }
+	public Vector3 AddativeOffset { get { return addativeOffset; } }
+	public float AddativeFOV { get { return addativeFOV; }  }
+	public Vector3 AddativeOffsetTarget { get { return addativeOffsetTarget; } set { addativeOffsetTarget = value; } }
+	public float AddativeFOVTarget { get { return addativeFOVTarget; } set { addativeFOVTarget = value; } }
 
 	[HideInInspector] public Vector3 velocityVelx = Vector3.zero;
 	[HideInInspector] public Vector3 velocityVely = Vector3.zero;
@@ -118,6 +130,8 @@ public class CameraController : Singelton<CameraController>
 	void Update()
 	{
         transform.rotation = Quaternion.Lerp(transform.rotation, RotationTarget, Time.deltaTime * RotationSpeed);
+        addativeOffset = Vector3.Lerp(AddativeOffset, AddativeOffsetTarget, Time.deltaTime * OffsetLerpSpeed);
+        addativeFOV = Mathf.Lerp(AddativeFOV, AddativeFOVTarget, Time.deltaTime * FOVLerpSpeed);
 	}
 
 	void LateUpdate()
