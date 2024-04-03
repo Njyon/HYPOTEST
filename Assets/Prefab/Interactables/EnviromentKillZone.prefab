@@ -32,7 +32,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 10, y: 4, z: 8}
+  m_LocalScale: {x: 2.3382, y: 15.0456, z: 8}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -138,6 +138,8 @@ MonoBehaviour:
     _PersistentCalls: []
   collider: {fileID: 9209010041567646119}
   DetectedTargets: []
+  drawGizmo: 1
+  gizmoColor: {r: 1, g: 0, b: 0, a: 0.6156863}
 --- !u!114 &3680802750224978293
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -164,4 +166,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageAmount: 10
+  damageToEnemyAmount: 100
   resetGameCharacterToSpawnPoint: 0

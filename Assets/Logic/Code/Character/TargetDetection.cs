@@ -1,3 +1,4 @@
+using MyBox;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,9 +14,26 @@ public class TargetDetection<T> : MonoBehaviour
 	public UltEvents.UltEvent<T> onOverlapExitEvent;
 
 	[SerializeField] Collider collider;
-	public Collider Collider { get { return collider; } }
+	public Collider Collider { 
+		get 
+		{ 
+			if (collider == null)
+			{
+				collider = GetComponent<Collider>();
+				if (collider == null)
+				{
+					Ultra.Utilities.Instance.DebugErrorString("TargetDetection", "Collider", "Collider was not attached to a TargetDetection Object!");
+				}
+			}
+			return collider; 
+		} 
+	}
 
 	public List<T> DetectedTargets = new List<T>();
+
+	[Header("Gizmo")]
+	[SerializeField] bool drawGizmo = true;
+	[ConditionalField("drawGizmo")] [SerializeField] Color gizmoColor;
 
 	public void Awake()
 	{
@@ -54,6 +72,15 @@ public class TargetDetection<T> : MonoBehaviour
 			if (onOverlapExit != null) onOverlapExit(template);
 			if (onOverlapExitEvent != null) onOverlapExitEvent.Invoke(template);
 		}
+	}
+
+	private void OnDrawGizmos()
+	{
+		if (!drawGizmo) return;
+
+		Gizmos.color = gizmoColor;
+		Gizmos.DrawCube(transform.position, collider.bounds.size);
+		
 	}
 
 	protected virtual void OnTriggerEnterCall(T collider)
