@@ -9,6 +9,9 @@ public class TargetDetection<T> : MonoBehaviour
 	public delegate void OnOverlapExit(T other);
 	public OnOverlapExit onOverlapExit;
 
+	public UltEvents.UltEvent<T> onOverlapEnterEvent;
+	public UltEvents.UltEvent<T> onOverlapExitEvent;
+
 	[SerializeField] Collider collider;
 	public Collider Collider { get { return collider; } }
 
@@ -31,9 +34,9 @@ public class TargetDetection<T> : MonoBehaviour
 		T template = other.gameObject.GetComponent<T>();
 		if (template != null && !DetectedTargets.Contains(template))
 		{
-		
 			OnTriggerEnterCall(template);
 			if (onOverlapEnter != null) onOverlapEnter(template);
+			if (onOverlapEnterEvent != null) onOverlapEnterEvent.Invoke(template);
 		}
 	}
 
@@ -47,9 +50,9 @@ public class TargetDetection<T> : MonoBehaviour
 		T template = other.gameObject.GetComponent<T>();
 		if (template != null)
 		{
-			
 			OnTriggerExitCall(template);
 			if (onOverlapExit != null) onOverlapExit(template);
+			if (onOverlapExitEvent != null) onOverlapExitEvent.Invoke(template);
 		}
 	}
 

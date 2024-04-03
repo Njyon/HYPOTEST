@@ -46,10 +46,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71e9cc6299c093e449366fdded05fd21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  modification: []
+  modification:
+  - instance:
+      rid: 590780847928377381
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 590780847928377381
+      type: {class: RotationCameraModification, ns: , asm: Assembly-CSharp}
+      data:
+        rotation: {x: 0, y: 20, z: 0}
 --- !u!114 &2865611710898213166
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -127,8 +133,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4544094773583281612, guid: ab268788f591bb14eafc889667f5423a,
         type: 3}
+      propertyPath: onOverlapEnterEvent._PersistentCalls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4544094773583281612, guid: ab268788f591bb14eafc889667f5423a,
+        type: 3}
       propertyPath: onPlayerEnterEvent.m_PersistentCalls.m_Calls.Array.size
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4544094773583281612, guid: ab268788f591bb14eafc889667f5423a,
+        type: 3}
+      propertyPath: onOverlapEnterEvent._PersistentCalls.Array.data[0]._Target
+      value: 
+      objectReference: {fileID: 5160555740007470420}
+    - target: {fileID: 4544094773583281612, guid: ab268788f591bb14eafc889667f5423a,
+        type: 3}
+      propertyPath: onOverlapEnterEvent._PersistentCalls.Array.data[0]._MemberName
+      value: ApplyModifications
       objectReference: {fileID: 0}
     - target: {fileID: 4544094773583281612, guid: ab268788f591bb14eafc889667f5423a,
         type: 3}
@@ -154,6 +175,22 @@ PrefabInstance:
         type: 3}
       propertyPath: onPlayerEnterEventWithPlayer.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: ApplyModifications
+      objectReference: {fileID: 0}
+    - target: {fileID: 4544094773583281612, guid: ab268788f591bb14eafc889667f5423a,
+        type: 3}
+      propertyPath: onOverlapEnterEvent._PersistentCalls.Array.data[0]._PersistentArguments.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4544094773583281612, guid: ab268788f591bb14eafc889667f5423a,
+        type: 3}
+      propertyPath: onOverlapEnterEvent._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[0]._Type
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 4544094773583281612, guid: ab268788f591bb14eafc889667f5423a,
+        type: 3}
+      propertyPath: onOverlapEnterEvent._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[0]._String
+      value: PlayerGameCharacter, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
       objectReference: {fileID: 0}
     - target: {fileID: 4544094773583281612, guid: ab268788f591bb14eafc889667f5423a,
         type: 3}

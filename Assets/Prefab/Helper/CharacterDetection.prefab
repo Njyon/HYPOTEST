@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7474091353433867958}
   - component: {fileID: 4629497430102566131}
   - component: {fileID: 6207150083279374621}
-  - component: {fileID: 6102493462312869952}
+  - component: {fileID: 5784642627666815180}
   m_Layer: 10
   m_Name: CharacterDetection
   m_TagString: Untagged
@@ -82,7 +82,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
---- !u!114 &6102493462312869952
+--- !u!114 &5784642627666815180
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -91,8 +91,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 7474091353433867959}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f21126f6b97d1144b3676a5b923a787, type: 3}
+  m_Script: {fileID: 11500000, guid: 00be9478e06f298489bcefad369efd14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onOverlapEnterEvent:
+    _PersistentCalls: []
+  onOverlapExitEvent:
+    _PersistentCalls: []
   collider: {fileID: 4629497430102566131}
-  OverlappingGameCharacter: []
+  TargetGameCharacters: []
