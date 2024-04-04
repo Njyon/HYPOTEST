@@ -1652,37 +1652,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   toggable: 1
   switchable: 0
-  toggleTime: 1
+  toggleTime: 2
   onGotDamagedEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8559780546951789386}
-        m_TargetAssemblyTypeName: MoreMountains.Feedbacks.MMF_Player, MoreMountains.Feedbacks
-        m_MethodName: PlayFeedbacks
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+    _PersistentCalls:
+    - _Target: {fileID: 8559780546951789386}
+      _MemberName: PlayFeedbacks
+      _PersistentArguments: []
   onSwitchOffEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
   onAfterToggleTime:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1269582995832298125}
-        m_TargetAssemblyTypeName: MoreMountains.Feedbacks.MMF_Player, MoreMountains.Feedbacks
-        m_MethodName: PlayFeedbacks
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+    _PersistentCalls:
+    - _Target: {fileID: 1269582995832298125}
+      _MemberName: PlayFeedbacks
+      _PersistentArguments: []

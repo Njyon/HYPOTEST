@@ -120,6 +120,18 @@ public class ForceFieldComponent : MonoBehaviour
 		}
 	}
 
+	public async void StartForcefieldDelayed(float time)
+	{
+		await new WaitForSeconds(time);
+		StartForceField();
+	}
+
+	public async void EndForcefieldDelayed(float time)
+	{
+		await new WaitForSeconds(time);
+		EndForceField();
+	}
+
 	[ButtonMethod()]
 	public void StartForceField()
 	{
@@ -131,7 +143,6 @@ public class ForceFieldComponent : MonoBehaviour
 			col.enabled = true;
 			forceFieldIsOn = true;
 		}
-
 	}
 
 	[ButtonMethod()]

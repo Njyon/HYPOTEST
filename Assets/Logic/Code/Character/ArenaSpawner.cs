@@ -38,6 +38,9 @@ public class SpawnData
 public class SpecificSpawnPoints 
 {
 	public List<GameObject> spawnPoints;
+
+	int lastSpawnPointIndex;
+	public int LastSPawnPointIndex { get { return lastSpawnPointIndex; } set { lastSpawnPointIndex = value; } }
 }
 
 public class ArenaSpawner : MonoBehaviour
@@ -173,10 +176,11 @@ public class ArenaSpawner : MonoBehaviour
 	{
 		if (characterSpecificSpawnPoints.ContainsKey(data.character.name))
 		{
-			var SpecificSpawnPointData = characterSpecificSpawnPoints[data.character.name];
-			int index = UnityEngine.Random.Range(0, SpecificSpawnPointData.spawnPoints.Count);
+			SpecificSpawnPoints SpecificSpawnPointData = characterSpecificSpawnPoints[data.character.name];
+			int index = SpecificSpawnPointData.LastSPawnPointIndex;
 			spawnLocation = SpecificSpawnPointData.spawnPoints[index].transform.position;
 			spawnRotation = SpecificSpawnPointData.spawnPoints[index].transform.rotation;
+			SpecificSpawnPointData.LastSPawnPointIndex = (SpecificSpawnPointData.LastSPawnPointIndex + 1) % SpecificSpawnPointData.spawnPoints.Count;
 		}
 		else if (randomSpawnLocations.Count > 0)
 		{
