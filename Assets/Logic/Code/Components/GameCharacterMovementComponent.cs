@@ -147,6 +147,16 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	}
 	static float minDistance = 0.001f;
 
+	void OnEnable()
+	{
+		unityMovementController.enabled = true;
+	}
+
+	void OnDisable()
+	{
+		unityMovementController.enabled = false;
+	}
+
 	void Awake()
 	{
 		capsuleCollider = GetComponent<CapsuleCollider>();

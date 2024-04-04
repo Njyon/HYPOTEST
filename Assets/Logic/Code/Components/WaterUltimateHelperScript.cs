@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class WaterUltimateHelperScript : MonoBehaviour
 {
-    public GameCharacterDetection gameCharacterDetection;
+    public DamagableDetection gameCharacterDetection;
     public BoxCollider boxCollider;
 	public CharacterController characterController;
 
@@ -16,7 +16,7 @@ public class WaterUltimateHelperScript : MonoBehaviour
 
 	public void Awake()
 	{
-		if (gameCharacterDetection == null) gameCharacterDetection = GetComponent<GameCharacterDetection>();
+		if (gameCharacterDetection == null) gameCharacterDetection = GetComponent<DamagableDetection>();
 		if (boxCollider == null) boxCollider = GetComponent<BoxCollider>();
 		if (characterController == null) characterController = GetComponent<CharacterController>();
 	}

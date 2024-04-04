@@ -12,11 +12,11 @@ public class DamagableObject : MonoBehaviour, IDamage
 	[ConditionalField(new[] { nameof(toggable), nameof(switchable) }, new[] { false, true })]
 	public float toggleTime = 1f;
 
-	public UnityEvent onGotDamagedEvent;
+	public UltEvents.UltEvent onGotDamagedEvent;
 	[ConditionalField("switchable")]
-	public UnityEvent onSwitchOffEvent;
+	public UltEvents.UltEvent onSwitchOffEvent;
 	[ConditionalField(new[] { nameof(toggable), nameof(switchable) }, new[] { false, true })]
-	public UnityEvent onAfterToggleTime;
+	public UltEvents.UltEvent onAfterToggleTime;
 
 	Ultra.Timer toggleTimer;
 	bool isSwitchedOn = false;

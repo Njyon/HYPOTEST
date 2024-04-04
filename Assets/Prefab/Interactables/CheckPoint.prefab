@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 3354965980079647925}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.547058, y: -4.314286, z: 0}
+  m_LocalPosition: {x: -3.1800003, y: -3.2686903, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -48,7 +48,7 @@ MonoBehaviour:
   spawnableCharacterData: {fileID: 11400000, guid: 3adcee7d8722e6c40b1466bf4fce76fd,
     type: 2}
   index: 9
-  autoSpawn: 1
+  autoSpawn: 0
 --- !u!1 &8405286512958682125
 GameObject:
   m_ObjectHideFlags: 0
@@ -232,6 +232,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4544094773583281612, guid: ab268788f591bb14eafc889667f5423a,
+        type: 3}
+      propertyPath: gizmoColor.b
+      value: 0.08972359
+      objectReference: {fileID: 0}
+    - target: {fileID: 4544094773583281612, guid: ab268788f591bb14eafc889667f5423a,
+        type: 3}
+      propertyPath: gizmoColor.g
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4544094773583281612, guid: ab268788f591bb14eafc889667f5423a,
         type: 3}

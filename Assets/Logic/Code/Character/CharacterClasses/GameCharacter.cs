@@ -53,7 +53,7 @@ public class GameCharacter : MonoBehaviour, IDamage
 	float freezTimeOverride = 0f;
 	float characterRadiusTarget;
 	float characterHeightTarget;
-	GameCharacterDetection characterDetection;
+	DamagableDetection characterDetection;
 	bool isGameCharacterDead = false;
 	HyppoliteTeam team;
 	Quaternion rotationTarget;
@@ -90,7 +90,7 @@ public class GameCharacter : MonoBehaviour, IDamage
 	public Ultra.Timer FreezTimer { get { return freezTimer; } }
 	public float FreezTime { get { return freezTime; } }
 	public float FreezTimeOverride { get { return freezTimeOverride; } set { freezTimeOverride = value; } }
-	public GameCharacterDetection CharacterDetection { get { return characterDetection; } }
+	public DamagableDetection CharacterDetection { get { return characterDetection; } }
 	public RigDataComponent RigDataComponent { get { return rigDataComponent; } }
 	public Quaternion RotationTarget { get { return rotationTarget; } set { rotationTarget = value; } }
 	public Vector3 LastDir { get { return lastDir; } set { lastDir = value; } }
@@ -218,7 +218,7 @@ public class GameCharacter : MonoBehaviour, IDamage
 		AnimController.ResetAnimIK_HARD();
 
 		GameObject characterDetectionObject = GameObject.Instantiate(GameAssets.Instance.characterDetection, transform);
-		characterDetection = characterDetectionObject.GetComponent<GameCharacterDetection>();
+		characterDetection = characterDetectionObject.GetComponent<DamagableDetection>();
 		characterDetection.onOverlapEnter += OnTargetDetectionOverlapEnter;
 		SphereCollider sphereCollider = characterDetection.Collider as SphereCollider;
 		if (sphereCollider != null) sphereCollider.radius = GameCharacterData.CharacterDetectionRange;
@@ -306,11 +306,15 @@ public class GameCharacter : MonoBehaviour, IDamage
 		freezTimer.Update(deltaTime);
 		//movementInput.x = 1;
 		EventComponent.Update(deltaTime);
-		MovementComponent.CalculateVelocity();
-		MovementComponent.AddGravityOnMovementVelocity();
-		MovementComponent.CheckIfCharacterIsGrounded();
+		if (MovementComponent.enabled)
+		{
+			MovementComponent.CalculateVelocity();
+			MovementComponent.AddGravityOnMovementVelocity();
+			MovementComponent.CheckIfCharacterIsGrounded();
+		}
+		
 		CombatComponent?.UpdateComponent(deltaTime);
-		MovementComponent.MoveCharacter();
+		if (MovementComponent.enabled) MovementComponent.MoveCharacter();
 		buffComponent.Update(deltaTime);
 
 		animController.Update(deltaTime);
@@ -452,7 +456,8 @@ public class GameCharacter : MonoBehaviour, IDamage
 			Health.AddCurrentValue(-damage);
 
 		StaggerComponent.AddCurrentValue(-damage);
-		Ultra.Utilities.Instance.DebugLogOnScreen(name + " got Damaged by: " + damageInitiator.name + ", Damage = " + damage, 2f, StringColor.Red, 200, DebugAreas.Combat);
+		string damageInitiatorName = damageInitiator != null ? damageInitiator.name : "Enviroment";
+		Ultra.Utilities.Instance.DebugLogOnScreen(name + " got Damaged by: " + damageInitiatorName + ", Damage = " + damage, 2f, StringColor.Red, 200, DebugAreas.Combat);
 
 		if (damage > 0)
 		{

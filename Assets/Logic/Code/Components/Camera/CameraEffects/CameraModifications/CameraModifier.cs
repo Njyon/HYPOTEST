@@ -14,4 +14,12 @@ public class CameraModifier : MonoBehaviour
             mod.instance.DoOperation();
         }
     }
+	public void ApplyModifications()
+	{
+		foreach (var mod in modification)
+		{
+			mod.instance.Init(Ultra.HypoUttilies.GetPlayerGameCharacter(), CameraController.Instance);
+			mod.instance.DoOperation();
+		}
+	}
 }
