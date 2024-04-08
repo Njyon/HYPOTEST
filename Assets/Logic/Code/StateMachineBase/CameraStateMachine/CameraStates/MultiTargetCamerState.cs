@@ -44,7 +44,7 @@ public class MultiTargetCamerState : ACameraState
 
 		float fovTarget = Mathf.Lerp(CameraController.MinFOV, CameraController.MaxFoV, longerBoundsSide / CameraController.ZoomLimiter);
 		CameraController.FinalFoV = Mathf.Lerp(CameraController.FinalFoV, fovTarget, Time.deltaTime * CameraController.MultiZoomSpeed);
-		CameraController.FinalCameraPosition = Vector3.Lerp(CameraController.FinalCameraPosition, characterBounds.center + CameraController.MultiOffset, Time.deltaTime * CameraController.MultiInterpSpeed);
+		CameraController.FinalCameraPosition = Vector3.Lerp(CameraController.FinalCameraPosition, characterBounds.center + CameraController.MultiOffset + CameraController.Offset, Time.deltaTime * CameraController.MultiInterpSpeed);
 	}
 
 	Bounds GetCharacterBounds()

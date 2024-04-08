@@ -5,7 +5,7 @@ using UnityEngine;
 public class FireCrackerProjectile : WeaponProjectile
 {
 	[SerializeField] ParticleSystem explosionEffect;
-	[SerializeField] float downForce = 5f;
+	[SerializeField] float force = 5f;
 	[SerializeField] int cameraShakeIndex = 0;
 	[SerializeField] float afterTimeExplosionRadius = 1f;
 
@@ -21,7 +21,7 @@ public class FireCrackerProjectile : WeaponProjectile
 		if (gc.CombatComponent.CanRequestFlyAway())
 		{
 			gc.CombatComponent.RequestFlyAway(1f);
-			gc.MovementComponent.MovementVelocity = Vector3.down * downForce;
+			gc.MovementComponent.MovementVelocity = Vector3.up * force;
 			//gc.BuffComponent.AddBuff(new HoldInAirAfterStartFallingBuff(gc, 5f));
 		}
 

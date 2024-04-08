@@ -47,7 +47,7 @@ public class DefaultCameraState : ACameraState
 		Vector3 targetDirection = CameraController.Targets[0].MovementComponent.Velocity * (CameraController.LookAhead * CameraController.Speed);
 		//Ultra.Utilities.DrawArrow(target, targetDirection, 1f, Color.blue);
 
-		Vector3 newTargetLocation = new Vector3(target.x, target.y, CameraController.Offset.z);
+		Vector3 newTargetLocation = new Vector3(target.x + CameraController.Offset.x, target.y + CameraController.Offset.y, CameraController.Offset.z);
 
 		// Move the camera towards the target position and direction
 		Vector3 targetPosition = newTargetLocation + targetDirection;   // Vector3.SmoothDamp(CameraController.FinalCameraPosition, newTargetLocation + targetDirection, ref camerVel, CameraController.Damping, Mathf.Infinity, Time.deltaTime);
