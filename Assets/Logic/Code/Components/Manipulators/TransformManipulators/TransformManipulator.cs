@@ -5,6 +5,8 @@ using UnityEngine;
 public class TransformManipulator : MonoBehaviour
 {
 	public List<ClassInstance<ATransformManipulator>> transformModifiers = new List<ClassInstance<ATransformManipulator>>();
+	bool isPaused = false;
+	public bool IsPaused {  get { return isPaused; } set { isPaused = value; } }
 
 	public void Awake()
 	{
@@ -17,6 +19,8 @@ public class TransformManipulator : MonoBehaviour
 
 	public void Update()
 	{
+		if (IsPaused) return;
+
 		foreach(var mod in transformModifiers)
 		{
 			if (mod.instance.DidStart && mod.instance.updateBehaviour)

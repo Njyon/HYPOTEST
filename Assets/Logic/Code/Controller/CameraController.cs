@@ -120,7 +120,7 @@ public class CameraController : Singelton<CameraController>
         gameCharacter.onGameCharacterStoppedBeingArroged += RemoveGameCharacterFromTargets;
 
 		targets.Add(gameCharacter);
-        transform.position = newTarget.transform.position + offset;
+        transform.position = newTarget.transform.position + Offset;
 
         stateMachine = gameObject.AddComponent<CameraStateMachine>();
         cameraTargetPosition = transform.position; 
