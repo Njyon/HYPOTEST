@@ -41,7 +41,7 @@ namespace Ultra {
 		void Awake()
 		{
 			style.fontSize = 30;
-			style.wordWrap = true;
+			style.wordWrap = false;
 		}
 
 		void Update()

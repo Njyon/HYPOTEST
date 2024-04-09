@@ -97,7 +97,10 @@ public class CombatRatingComponent : RecourceBase
 		AttackAnimationData newestAttack = gameCharacter.CombatComponent.PreviousAttacks[0];
 		int numberOfLastAttackInList = gameCharacter.CombatComponent.PreviousAttacks.ContainedItemNum(newestAttack);
 		//float rating = newestAttack.extraData.Rating / numberOfLastAttackInList;
-		float rating = Mathf.Clamp(((gameCharacter.CombatComponent.CurrentWeapon.CurrentAction.Action.GetActionRanting() * gameCharacter.CombatComponent.ComboCount) / numberOfLastAttackInList) / 5, 10, int.MaxValue);
+		float actionRating = gameCharacter.CombatComponent.CurrentWeapon.CurrentAction.Action.GetActionRanting();
+		float rating = Mathf.Clamp(((actionRating * gameCharacter.CombatComponent.ComboCount) / numberOfLastAttackInList) / 10, 1, int.MaxValue);
+
+		//Ultra.Utilities.Instance.DebugLogOnScreen("ActionRanting => " + actionRating + " ComboCount => " + gameCharacter.CombatComponent.ComboCount + " AttacksInLastAttacks => " + numberOfLastAttackInList + " Rating => " + rating, 20f, StringColor.Black);
 
 		gameCharacter.CombatComponent.CurrentWeapon.Charge -= newestAttack.Action.GetActionDischarge();
 		AddCurrentValue(rating);
@@ -117,10 +120,11 @@ public class CombatRatingComponent : RecourceBase
 			if (weapon == null || weapon.Weapon == null) continue;
 			if (weapon.Weapon == gameCharacter.CombatComponent.CurrentWeapon) continue;
 			// was X in drawing, limits the Value of craking up to hard, Clamp tries to cap low and highs
-			float chargeDelta = Mathf.Clamp((CurrentValue * limiter) / (gameCharacter.CombatComponent.EquipedWeapons - 1), 50, 200);
-			//Ultra.Utilities.Instance.DebugLogOnScreen("ChargeDelta => " + chargeDelta, 1f, StringColor.Random());
+			float chargeDelta = Mathf.Clamp((CurrentValue * limiter) / (gameCharacter.CombatComponent.EquipedWeapons - 1), 20, 200);
+			//Ultra.Utilities.Instance.DebugLogOnScreen("ChargeDelta => " + chargeDelta + " CurrentValue => " + CurrentValue, 20f, StringColor.Black);
 			weapon.Weapon.Charge += chargeDelta;
 			weapon.Weapon.UltCharge += (chargeDelta /10);
+			//Ultra.Utilities.Instance.DebugLogOnScreen("UltCharge => " + weapon.Weapon.UltCharge, 20f, StringColor.Black);
 		}
 	}
 

@@ -42,10 +42,10 @@ MonoBehaviour:
       showProperties: 1
       hitDetectionType: 2
       mesh: {fileID: 0}
-      offset: {x: 2.5, y: 0, z: 0}
+      offset: {x: 3.5, y: 0, z: 0}
       scale: {x: 0, y: 0, z: 0}
       radius: 0
-      boxDimensions: {x: 4, y: 3, z: 1}
+      boxDimensions: {x: 7, y: 3, z: 1}
       capsulHeight: 0
     combatBranches:
       keys: 
@@ -65,10 +65,10 @@ MonoBehaviour:
       showProperties: 1
       hitDetectionType: 2
       mesh: {fileID: 0}
-      offset: {x: 1.5, y: 0, z: 0}
+      offset: {x: 4, y: 0, z: 0}
       scale: {x: 0, y: 0, z: 0}
       radius: 0
-      boxDimensions: {x: 5, y: 3, z: 3}
+      boxDimensions: {x: 8, y: 4, z: 4}
       capsulHeight: 0
     combatBranches:
       keys: 
@@ -120,7 +120,7 @@ MonoBehaviour:
           freezBetweenAttacks: 0
           kickDirection: {x: 0, y: 0, z: 10}
           stunTime: 0.6
-          kickStrengh: 20
+          kickStrengh: 30
     - rid: 5432272946576228357
       type: {class: ShootAttackProjectile, ns: , asm: Assembly-CSharp}
       data:
@@ -144,4 +144,4 @@ MonoBehaviour:
             type: 2}
           forceAimDuration: 5
           stunTime: 1
-          kickAwayStrenght: 20
+          kickAwayStrenght: 30
