@@ -87,6 +87,8 @@ public class BazookaMissileProjectile : WeaponProjectile
 
 	private void FixedUpdate()
 	{
+		if (rigidBody == null) OnTimerFinished();
+
 		rigidBody.velocity = transform.forward * _speed;
 
 		if (target == null || target.MovementComponent == null) return;
