@@ -54,7 +54,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DiffuseTexture:
-        m_Texture: {fileID: 2800000, guid: ef2416086869e4875839ade8989c5016, type: 3}
+        m_Texture: {fileID: 2800000, guid: 532ffea3ecde67d4c9c03e56ca976275, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
@@ -111,18 +111,24 @@ Material:
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
+    - _DissolveBlend: 1
+    - _DissolveBorderThickness: 1.1
+    - _DissolveIntensity: 2
+    - _DissolveTilling: 10
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _ENABLELIGHTMAP: 1
     - _ENABLESMOOTHLIGHT: 1
     - _EnvironmentReflections: 1
+    - _Float: 1
     - _Fresnel: 3.54
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _HitIntensity: 0
-    - _LightContribution: 0.713
-    - _LightRange: 7.91
+    - _LightContribution: 1
+    - _LightRadius: 20.1
+    - _LightRange: 5.13
     - _MAIN_LIGHT_SHADOWS: 1
     - _MAIN_LIGHT_SHADOWS_CASCADE: 1
     - _Metallic: 0
@@ -133,7 +139,7 @@ Material:
     - _ReceiveShadows: 1
     - _SHADOWS_SOFT: 1
     - _ShadowRange: 0.545
-    - _Smoothness: 0.721
+    - _Smoothness: 1
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -141,6 +147,7 @@ Material:
     - _Surface: 0
     - _ToonRamp_Offset: 0.504
     - _ToonRamp_Smoothness: 0
+    - _USECUSTOMSHADOWMAP: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
     - _intesity: 0.07
@@ -148,6 +155,7 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DiffuseTexture: {r: 1, g: 1, b: 1, a: 0}
+    - _DissolveColor: {r: 0.8862745, g: 0.7058823, b: 0.39607838, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _HitColor: {r: 1, g: 1, b: 1, a: 0}
     - _MixShadowColor: {r: 0.4245283, g: 0.4245283, b: 0.4245283, a: 0}
