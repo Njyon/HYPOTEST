@@ -33,7 +33,7 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 1994
+  m_CustomRenderQueue: 1990
   stringTagMap: {}
   disabledShaderPasses:
   - SRPDEFAULTUNLIT
@@ -201,8 +201,8 @@ Material:
     - _CelPrimaryMode: 0
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
-    - _Column: 2
-    - _ColumnBlend: 2
+    - _Column: 1
+    - _ColumnBlend: 1
     - _Cull: 2
     - _Cutoff: 0.5
     - _DEBUG: 0
@@ -221,8 +221,9 @@ Material:
     - _Flatness: 0.458
     - _FlatnessExtra: 1
     - _FlattenNormal: 0
-    - _FramePick: 4.6
-    - _FramePickBlend: 1
+    - _FlattenOcclusion: 0
+    - _FramePick: 9.6
+    - _FramePickBlend: 2.5
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
@@ -243,8 +244,8 @@ Material:
     - _Metallic3: 0
     - _Mode: 0
     - _NumLayersCount: 1
-    - _OccAmplitude: 0.51
-    - _OccSteps: 3
+    - _OccAmplitude: 0.41
+    - _OccSteps: 2.37
     - _OcclusionStrength: 1
     - _OutlineDepthOffset: 0
     - _OutlineEnabled: 0
@@ -253,11 +254,11 @@ Material:
     - _OverrideLightmapDir: 0
     - _Parallax: 0.005
     - _QueueControl: 0
-    - _QueueOffset: -6
+    - _QueueOffset: -10
     - _ReceiveShadows: 1
     - _RimEnabled: 0
     - _Row: 1
-    - _RowBlend: 1.96
+    - _RowBlend: 1
     - _SampleGI: 0
     - _SelfShadingSize: 0.439
     - _SelfShadingSizeExtra: 0.6
@@ -286,6 +287,8 @@ Material:
     - _UnityShadowOcclusion: 1
     - _UnityShadowPower: 0.998
     - _UnityShadowSharpness: 1
+    - _VPRange: 5
+    - _VPSharpness: 2
     - _VertexColorsEnabled: 0
     - _WorkflowMode: 0
     - _ZWrite: 1
@@ -301,9 +304,9 @@ Material:
     - _FlatRimColor: {r: 1, g: 1, b: 1, a: 1}
     - _FlatSpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _LightmapDirection: {r: 0, g: 1, b: 0, a: 0}
-    - _Offset: {r: 0, g: 0, b: 0, a: 0}
+    - _Offset: {r: 0.15, g: 0.5, b: 0, a: 0}
     - _OutlineColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 1}
-    - _Tiling: {r: 6, g: 7, b: 0, a: 0}
+    - _Tiling: {r: 3, g: 4, b: 0, a: 0}
     - _UnityShadowColor: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
   m_BuildTextureStacks: []
