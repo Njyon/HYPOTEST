@@ -117,6 +117,9 @@ public class AnimationController
 	float forcePositionFootIKRTargetInterpSpeed;
 	float forcePositionFootIKLTargetInterpSpeed;
 
+	Vector3 relativeAcceleration;
+	Vector3 RelativeAcceleration { get {  return relativeAcceleration; } }
+
 	int holdStateHash;
 	public int HoldStateHash
 	{
@@ -805,9 +808,11 @@ public class AnimationController
 			RotationLayer(deltaTime);
 		}
 
+		CalculateRelativeAcceleration();
+
 		SpineLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(spineLayerIndex), gameCharacter.spineLayerDebugFloat.useDebugValue ? gameCharacter.spineLayerDebugFloat.debugFloat : spineLayerInterpTarget, deltaTime * spineLayerInterpSpeed);
 		LegLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(legLayerIndex), gameCharacter.legLayerDebugFloat.useDebugValue ? gameCharacter.legLayerDebugFloat.debugFloat : legLayerInterpTarget, deltaTime * legLayerInterpSpeed);
-		HeadLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(headLayerIndex), gameCharacter.headLayerDebugFloat.useDebugValue ? gameCharacter.headLayerDebugFloat.debugFloat :  headLayerInterpTarget, deltaTime * headLayerInterpSpeed);
+		HeadLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(headLayerIndex), gameCharacter.headLayerDebugFloat.useDebugValue ? gameCharacter.headLayerDebugFloat.debugFloat : headLayerInterpTarget, deltaTime * headLayerInterpSpeed);
 		ArmRLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(armRLayerIndex), gameCharacter.armRLayerDebugFloat.useDebugValue ? gameCharacter.armRLayerDebugFloat.debugFloat : armRLayerInterpTarget, deltaTime * armRLayerInterpSpeed);
 		ArmLLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(armLLayerIndex), gameCharacter.armLLayerDebugFloat.useDebugValue ? gameCharacter.armLLayerDebugFloat.debugFloat : armLLayerInterpTarget, deltaTime * armLLayerInterpSpeed);
 		SecondaryMotionLayerWeight = Mathf.Lerp(gameCharacter.Animator.GetLayerWeight(secondaryMotionLayerIndex), gameCharacter.secondaryLayerDebugFloat.useDebugValue ? gameCharacter.secondaryLayerDebugFloat.debugFloat : secondaryMotionLayerInterpTarget, deltaTime * secondaryMotionLayerInterpSpeed);
@@ -816,6 +821,31 @@ public class AnimationController
 		ChestCorrectionIK = Mathf.Lerp(ChestCorrectionIK, gameCharacter.chestCorrectionDebugFloat.useDebugValue ? gameCharacter.chestCorrectionDebugFloat.debugFloat : ChestCorrectionIKTarget, deltaTime * chestCorrectionTargetInterpSpeed);
 		ForcePositionFootIKR = Mathf.Lerp(ForcePositionFootIKR, gameCharacter.footIKRCorrectionDebugFloat.useDebugValue ? gameCharacter.footIKRCorrectionDebugFloat.debugFloat : ForcePositionFootIKRTarget, deltaTime * forcePositionFootIKRTargetInterpSpeed);
 		ForcePositionFootIKL = Mathf.Lerp(ForcePositionFootIKL, gameCharacter.footIKLCorrectionDebugFloat.useDebugValue ? gameCharacter.footIKLCorrectionDebugFloat.debugFloat : ForcePositionFootIKLTarget, deltaTime * forcePositionFootIKLTargetInterpSpeed);
+	}
+
+	private void CalculateRelativeAcceleration()
+	{
+		float dot = Vector3.Dot(gameCharacter.MovementComponent.Velocity, gameCharacter.MovementComponent.AccelerationVec);
+		if (dot > 0)
+		{
+			relativeAcceleration = CalculateAcceleration(gameCharacter.GameCharacterData.Acceleration);
+		}
+		else
+		{
+			relativeAcceleration = CalculateAcceleration(gameCharacter.GameCharacterData.Drag);
+		}
+
+		relativeAcceleration.z = 0;
+		Ultra.Utilities.DrawArrow(gameCharacter.MovementComponent.CharacterCenter, RelativeAcceleration, RelativeAcceleration.magnitude * 5f, Color.black, 0f, 200, DebugAreas.Movement);
+		Ultra.Utilities.Instance.DebugLogOnScreen("RelativeAcceleration: " + RelativeAcceleration, 0f, StringColor.Blue, 200, DebugAreas.Movement);
+	}
+
+	private Vector3 CalculateAcceleration(float acceleration)
+	{
+		Vector3 clampedVec = Vector3.ClampMagnitude(gameCharacter.MovementComponent.AccelerationVec, acceleration);
+		Vector3 value = clampedVec / gameCharacter.GameCharacterData.Acceleration;
+		Matrix4x4 matrix = Matrix4x4.Rotate(gameCharacter.transform.rotation);
+		return Matrix4x4.Inverse(matrix) * value;
 	}
 
 	private void RotationLayer(float deltaTime)

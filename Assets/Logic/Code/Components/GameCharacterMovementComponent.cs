@@ -35,6 +35,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	Vector3 postionLastFrame;
 	Vector3 fixedPostionLastFrame;
 	Vector3 veloctiy;
+	Vector3 lastVeloctiy;
 	Vector3 fixedVeloctiy;
 	Vector3 movementVelocity;
 	GameCharacter gameCharacter;
@@ -71,6 +72,8 @@ public class GameCharacterMovementComponent : MonoBehaviour
 		set { movementVelocity = value; } 
 	}
 	public Vector3 Velocity { get { return veloctiy; } }
+	public Vector3 LastVelocity { get { return lastVeloctiy; } }
+	public Vector3 AccelerationVec { get { return (Velocity - LastVelocity) / Time.deltaTime; } }
 	public Vector3 FixedVelocity { get { return fixedVeloctiy; } }
 	public float MovementSpeed { get { return Velocity.magnitude; } }
 	public float MaxWalkableSlopAngle { get { return maxWalkableSlopAngle; } }
@@ -540,6 +543,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 
 	public void CalculateVelocity()
 	{
+		lastVeloctiy = veloctiy;
 		Vector3 currentPosition = transform.position;
 		veloctiy = (currentPosition - postionLastFrame) / Time.deltaTime;
 		postionLastFrame = currentPosition;
