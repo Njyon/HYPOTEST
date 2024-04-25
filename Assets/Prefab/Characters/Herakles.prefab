@@ -532,6 +532,12 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 1a2edcf3882e55e4e944c18641c10d43,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 22100000, guid: bae16e92f0e38ab4884b6732f887026e,
+        type: 2}
     - target: {fileID: 6018818593283950386, guid: 1a2edcf3882e55e4e944c18641c10d43,
         type: 3}
       propertyPath: m_Layer
@@ -887,7 +893,9 @@ MonoBehaviour:
   playbackInterp: 5
   roationBlendInterp: 10
   maxFallingVelocityAnim: 200
-  weapons: []
+  weapons:
+  - {fileID: 11400000, guid: 61f4aa4a4373daa4794ddaf6c053ae53, type: 2}
+  - {fileID: 11400000, guid: e8167e3c8e92a7547ae7ca11ebb45755, type: 2}
   handRObjectPoint: {fileID: 669405874673213855}
   handLObjectPoint: {fileID: 6652537676311726307}
   airToZeroVelYInAttackSpeed: 1

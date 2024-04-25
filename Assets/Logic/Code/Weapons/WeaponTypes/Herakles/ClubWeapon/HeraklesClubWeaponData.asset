@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 195a2d880f624c94da0b98858da2e759, type: 3}
+  m_Name: HeraklesClubWeaponData
+  m_EditorClassIdentifier: 
+  WeaponName: HeraklesClub
+  WeaponBase:
+    instance:
+      rid: 590781346614870018
+  AnimationData:
+    keys:
+    - Herakles
+    values:
+    - {fileID: 11400000, guid: aed101dbc9b9e244bac667a79d15a432, type: 2}
+  WeaponMeshData: {fileID: 11400000, guid: 16b596785f2486d4198e18f7b4913e85, type: 2}
+  WeaponType: 0
+  MaxChargeAmount: 1000
+  DefaultChargeAmount: 700
+  TimeAfterEqupingMaxChargedWeapon: 3
+  MaxUltChargeAmount: 100
+  UIElement: {fileID: 0}
+  WeaponImage: {fileID: 0}
+  DefaultAttackSounds: []
+  DefaultHitSounds: []
+  DefaultAttackVFX: {fileID: 0}
+  DefaultHitVFX: {fileID: 0}
+  UltimateParticleSystems: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 590781346614870018
+      type: {class: ClubWeapon, ns: , asm: Assembly-CSharp}
+      data: 

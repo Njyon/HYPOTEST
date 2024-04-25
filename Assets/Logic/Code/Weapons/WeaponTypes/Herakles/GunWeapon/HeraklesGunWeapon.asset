@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 195a2d880f624c94da0b98858da2e759, type: 3}
+  m_Name: HeraklesGunWeapon
+  m_EditorClassIdentifier: 
+  WeaponName: HeraklesGun
+  WeaponBase:
+    instance:
+      rid: 590781346614870019
+  AnimationData:
+    keys:
+    - Herakles
+    values:
+    - {fileID: 11400000, guid: 43b0d8dbedd93764ca13167cde77c877, type: 2}
+  WeaponMeshData: {fileID: 11400000, guid: 47da938aeec16f141a2cdf829868efdc, type: 2}
+  WeaponType: 1
+  MaxChargeAmount: 1000
+  DefaultChargeAmount: 700
+  TimeAfterEqupingMaxChargedWeapon: 3
+  MaxUltChargeAmount: 100
+  UIElement: {fileID: 0}
+  WeaponImage: {fileID: 0}
+  DefaultAttackSounds: []
+  DefaultHitSounds: []
+  DefaultAttackVFX: {fileID: 0}
+  DefaultHitVFX: {fileID: 0}
+  UltimateParticleSystems: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 590781346614870019
+      type: {class: HeraklesGun, ns: , asm: Assembly-CSharp}
+      data: 
