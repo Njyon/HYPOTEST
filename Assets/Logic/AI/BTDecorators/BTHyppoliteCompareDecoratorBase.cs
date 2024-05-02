@@ -15,7 +15,7 @@ public abstract class BTHyppoliteCompareDecoratorBase<T> : CompareDecorator<T> w
 		{
 			if (gameCharacter == null)
 			{
-				if (Tree.Variable.TryGetParam<GameCharacter>("Self", out var gc))
+				if (Tree.RootTree.Variable.TryGetParam<GameCharacter>("Self", out var gc))
 				{
 					gameCharacter = gc.Value;
 				}
@@ -35,7 +35,7 @@ public abstract class BTHyppoliteCompareDecoratorBase<T> : CompareDecorator<T> w
 		{
 			if (targetGameCharacter == null)
 			{
-				if (Tree.Variable.TryGetParam<GameCharacter>("Target", out var gc))
+				if (Tree.RootTree.Variable.TryGetParam<GameCharacter>("Target", out var gc))
 				{
 					targetGameCharacter = gc.Value;
 				}

@@ -266,6 +266,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 				if (gc.MovementComponent.onMoveCollisionFlag != null && collisionFlag != CollisionFlags.None) gc.MovementComponent.onMoveCollisionFlag(collisionFlag);
 			}
 		}
+		if (IgnoreDeltaTime) IgnoreDeltaTime = false;
 
 		MovementVelocity = new Vector3(MovementVelocity.x, MovementVelocity.y, 0);
 

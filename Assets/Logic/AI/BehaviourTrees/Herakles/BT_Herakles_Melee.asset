@@ -55,6 +55,183 @@ MonoBehaviour:
     - Name: GUID
       Type: System.String
       Value: 21b43c59-8921-4b11-aad2-af2cedfe3f54
+  - Name: 2ccf914c-aae9-4def-b78a-149476709980
+    Type: BTFollowPlayerActionNode
+    Member:
+    - Name: minDistanceToTarget
+      Type: System.Single
+      Value: 2
+    - Name: Meta
+      Type: $ref
+      Value: 2ccf914c-aae9-4def-b78a-149476709980.Meta
+    - Name: Decorators
+      Type: $ref
+      Value: 2ccf914c-aae9-4def-b78a-149476709980.Decorators
+    - Name: GUID
+      Type: System.String
+      Value: 2ccf914c-aae9-4def-b78a-149476709980
+  - Name: 4085baf7-45c5-44b8-8257-2dadebb09346
+    Type: Megumin.GameFramework.AI.BehaviorTree.Sequence
+    Member:
+    - Name: Meta
+      Type: $ref
+      Value: 4085baf7-45c5-44b8-8257-2dadebb09346.Meta
+    - Name: Decorators
+      Type: $ref
+      Value: 4085baf7-45c5-44b8-8257-2dadebb09346.Decorators
+    - Name: Children
+      Type: $ref
+      Value: 4085baf7-45c5-44b8-8257-2dadebb09346.Children
+    - Name: GUID
+      Type: System.String
+      Value: 4085baf7-45c5-44b8-8257-2dadebb09346
+  - Name: 46e1d0b2-585b-486d-8132-2520a55c2b9f
+    Type: Megumin.GameFramework.AI.BehaviorTree.Selector
+    Member:
+    - Name: Meta
+      Type: $ref
+      Value: 46e1d0b2-585b-486d-8132-2520a55c2b9f.Meta
+    - Name: Decorators
+      Type: $ref
+      Value: 46e1d0b2-585b-486d-8132-2520a55c2b9f.Decorators
+    - Name: Children
+      Type: $ref
+      Value: 46e1d0b2-585b-486d-8132-2520a55c2b9f.Children
+    - Name: GUID
+      Type: System.String
+      Value: 46e1d0b2-585b-486d-8132-2520a55c2b9f
+  - Name: 940d59e8-23ab-4c5e-8929-f537d085b2f1
+    Type: BTFollowPlayerActionNode
+    Member:
+    - Name: Meta
+      Type: $ref
+      Value: 940d59e8-23ab-4c5e-8929-f537d085b2f1.Meta
+    - Name: Decorators
+      Type: $ref
+      Value: 940d59e8-23ab-4c5e-8929-f537d085b2f1.Decorators
+    - Name: GUID
+      Type: System.String
+      Value: 940d59e8-23ab-4c5e-8929-f537d085b2f1
+  - Name: ab12b530-d488-483f-b9a4-759d31e1022b
+    Type: BTLookAtTargetService
+    Member:
+    - Name: Meta
+      Type: $ref
+      Value: ab12b530-d488-483f-b9a4-759d31e1022b.Meta
+    - Name: Decorators
+      Type: $ref
+      Value: ab12b530-d488-483f-b9a4-759d31e1022b.Decorators
+    - Name: Children
+      Type: $ref
+      Value: ab12b530-d488-483f-b9a4-759d31e1022b.Children
+    - Name: GUID
+      Type: System.String
+      Value: ab12b530-d488-483f-b9a4-759d31e1022b
+  - Name: afeba04e-3d09-496c-a550-5b0d172424f3
+    Type: BTRandomWait
+    Member:
+    - Name: maxWaitTime
+      Type: System.Single
+      Value: 1
+    - Name: minWaitTime
+      Type: System.Single
+      Value: 0.3
+    - Name: Meta
+      Type: $ref
+      Value: afeba04e-3d09-496c-a550-5b0d172424f3.Meta
+    - Name: Decorators
+      Type: $ref
+      Value: afeba04e-3d09-496c-a550-5b0d172424f3.Decorators
+    - Name: GUID
+      Type: System.String
+      Value: afeba04e-3d09-496c-a550-5b0d172424f3
+  - Name: bed666e8-bf90-4117-8674-be0e55f4408e
+    Type: Megumin.GameFramework.AI.BehaviorTree.Parallel
+    Member:
+    - Name: Meta
+      Type: $ref
+      Value: bed666e8-bf90-4117-8674-be0e55f4408e.Meta
+    - Name: Decorators
+      Type: $ref
+      Value: bed666e8-bf90-4117-8674-be0e55f4408e.Decorators
+    - Name: Children
+      Type: $ref
+      Value: bed666e8-bf90-4117-8674-be0e55f4408e.Children
+    - Name: FinishMode
+      Type: Megumin.GameFramework.AI.BehaviorTree.FinishMode
+      Value: Megumin.GameFramework.AI.BehaviorTree.FinishMode:AnyCompleted
+    - Name: GUID
+      Type: System.String
+      Value: bed666e8-bf90-4117-8674-be0e55f4408e
+  - Name: ccb57f4c-0351-4ed0-89e5-07fcf37ee6f9
+    Type: Megumin.GameFramework.AI.BehaviorTree.Parallel
+    Member:
+    - Name: Meta
+      Type: $ref
+      Value: ccb57f4c-0351-4ed0-89e5-07fcf37ee6f9.Meta
+    - Name: Decorators
+      Type: $ref
+      Value: ccb57f4c-0351-4ed0-89e5-07fcf37ee6f9.Decorators
+    - Name: Children
+      Type: $ref
+      Value: ccb57f4c-0351-4ed0-89e5-07fcf37ee6f9.Children
+    - Name: FinishMode
+      Type: Megumin.GameFramework.AI.BehaviorTree.FinishMode
+      Value: Megumin.GameFramework.AI.BehaviorTree.FinishMode:AnyCompleted
+    - Name: GUID
+      Type: System.String
+      Value: ccb57f4c-0351-4ed0-89e5-07fcf37ee6f9
+  - Name: cf12f972-e595-49cc-bf32-86dfa485792a
+    Type: BTRandomWait
+    Member:
+    - Name: maxWaitTime
+      Type: System.Single
+      Value: 1.5
+    - Name: minWaitTime
+      Type: System.Single
+      Value: 0.5
+    - Name: Meta
+      Type: $ref
+      Value: cf12f972-e595-49cc-bf32-86dfa485792a.Meta
+    - Name: Decorators
+      Type: $ref
+      Value: cf12f972-e595-49cc-bf32-86dfa485792a.Decorators
+    - Name: GUID
+      Type: System.String
+      Value: cf12f972-e595-49cc-bf32-86dfa485792a
+  - Name: de390ce3-5cb0-4522-8608-599abfecec92
+    Type: BTAttack
+    Member:
+    - Name: AttackType
+      Type: EAttackType
+      Value: EAttackType:AttackDown
+    - Name: Meta
+      Type: $ref
+      Value: de390ce3-5cb0-4522-8608-599abfecec92.Meta
+    - Name: Decorators
+      Type: $ref
+      Value: de390ce3-5cb0-4522-8608-599abfecec92.Decorators
+    - Name: GUID
+      Type: System.String
+      Value: de390ce3-5cb0-4522-8608-599abfecec92
+  - Name: e0691f79-8e4d-4081-aa5f-251ea804508b
+    Type: BTRandomNode
+    Member:
+    - Name: weightList
+      Type: $ref
+      Value: e0691f79-8e4d-4081-aa5f-251ea804508b.weightList
+    - Name: Meta
+      Type: $ref
+      Value: e0691f79-8e4d-4081-aa5f-251ea804508b.Meta
+    - Name: Decorators
+      Type: $ref
+      Value: e0691f79-8e4d-4081-aa5f-251ea804508b.Decorators
+    - Name: Children
+      Type: $ref
+      Value: e0691f79-8e4d-4081-aa5f-251ea804508b.Children
+    - Name: GUID
+      Type: System.String
+      Value: e0691f79-8e4d-4081-aa5f-251ea804508b
   - Name: f7dc52c0-cf59-447c-916b-a71a3d31517b
     Type: Megumin.GameFramework.AI.BehaviorTree.Selector
     Member:
@@ -70,7 +247,34 @@ MonoBehaviour:
     - Name: GUID
       Type: System.String
       Value: f7dc52c0-cf59-447c-916b-a71a3d31517b
-  decorators: []
+  decorators:
+  - Name: 192bb788-642c-4180-ab17-ac71f11bcae3
+    Type: BTCharacterNotStaggered
+    Member:
+    - Name: GUID
+      Type: System.String
+      Value: 192bb788-642c-4180-ab17-ac71f11bcae3
+    - Name: AbortType
+      Type: Megumin.GameFramework.AI.BehaviorTree.AbortType
+      Value: Megumin.GameFramework.AI.BehaviorTree.AbortType:-1
+  - Name: 4a7c1836-0fee-4cb2-8066-9d32c230f943
+    Type: BTTargetDistanceCondition
+    Member:
+    - Name: conditions
+      Type: $ref
+      Value: 4a7c1836-0fee-4cb2-8066-9d32c230f943.conditions
+    - Name: GUID
+      Type: System.String
+      Value: 4a7c1836-0fee-4cb2-8066-9d32c230f943
+  - Name: f8185203-980b-4cd7-be04-9845441db2f5
+    Type: BTTargetIsSetCondition
+    Member:
+    - Name: GUID
+      Type: System.String
+      Value: f8185203-980b-4cd7-be04-9845441db2f5
+    - Name: AbortType
+      Type: Megumin.GameFramework.AI.BehaviorTree.AbortType
+      Value: Megumin.GameFramework.AI.BehaviorTree.AbortType:-1
   refObjs:
   - Name: 1d3f6b1f-cacb-4cf0-83cb-9a4923a6d47f.Decorators
     Type: System.Collections.Generic.List`1[[Megumin.GameFramework.AI.BehaviorTree.IDecorator,
@@ -135,11 +339,380 @@ MonoBehaviour:
     - Name: Comment
       Type: System.String
       Value: 
+  - Name: 2ccf914c-aae9-4def-b78a-149476709980.Decorators
+    Type: System.Collections.Generic.List`1[[Megumin.GameFramework.AI.BehaviorTree.IDecorator,
+      Megumin.GameFramework.AI]]
+    Member: []
+  - Name: 2ccf914c-aae9-4def-b78a-149476709980.Meta
+    Type: Megumin.GameFramework.AI.BehaviorTree.NodeMeta
+    Member:
+    - Name: x
+      Type: System.Single
+      Value: 16.04939
+    - Name: y
+      Type: System.Single
+      Value: 1408
+    - Name: Name
+      Type: System.String
+      Value: 
+    - Name: FriendlyName
+      Type: System.String
+      Value: 
+    - Name: Description
+      Type: System.String
+      Value: 
+    - Name: FriendlyDescription
+      Type: System.String
+      Value: 
+    - Name: Comment
+      Type: System.String
+      Value: 
+  - Name: 4085baf7-45c5-44b8-8257-2dadebb09346.Children
+    Type: System.Collections.Generic.List`1[[Megumin.GameFramework.AI.BehaviorTree.BTNode,
+      Megumin.GameFramework.AI]]
+    Member:
+    - Name: 0
+      Type: $ref
+      Value: de390ce3-5cb0-4522-8608-599abfecec92
+    - Name: 1
+      Type: $ref
+      Value: afeba04e-3d09-496c-a550-5b0d172424f3
+  - Name: 4085baf7-45c5-44b8-8257-2dadebb09346.Decorators
+    Type: System.Collections.Generic.List`1[[Megumin.GameFramework.AI.BehaviorTree.IDecorator,
+      Megumin.GameFramework.AI]]
+    Member: []
+  - Name: 4085baf7-45c5-44b8-8257-2dadebb09346.Meta
+    Type: Megumin.GameFramework.AI.BehaviorTree.NodeMeta
+    Member:
+    - Name: x
+      Type: System.Single
+      Value: -316
+    - Name: y
+      Type: System.Single
+      Value: 1390
+    - Name: Name
+      Type: System.String
+      Value: 
+    - Name: FriendlyName
+      Type: System.String
+      Value: 
+    - Name: Description
+      Type: System.String
+      Value: 
+    - Name: FriendlyDescription
+      Type: System.String
+      Value: 
+    - Name: Comment
+      Type: System.String
+      Value: 
+  - Name: 46e1d0b2-585b-486d-8132-2520a55c2b9f.Children
+    Type: System.Collections.Generic.List`1[[Megumin.GameFramework.AI.BehaviorTree.BTNode,
+      Megumin.GameFramework.AI]]
+    Member:
+    - Name: 0
+      Type: $ref
+      Value: e0691f79-8e4d-4081-aa5f-251ea804508b
+    - Name: 1
+      Type: $ref
+      Value: ccb57f4c-0351-4ed0-89e5-07fcf37ee6f9
+  - Name: 46e1d0b2-585b-486d-8132-2520a55c2b9f.Decorators
+    Type: System.Collections.Generic.List`1[[Megumin.GameFramework.AI.BehaviorTree.IDecorator,
+      Megumin.GameFramework.AI]]
+    Member: []
+  - Name: 46e1d0b2-585b-486d-8132-2520a55c2b9f.Meta
+    Type: Megumin.GameFramework.AI.BehaviorTree.NodeMeta
+    Member:
+    - Name: x
+      Type: System.Single
+      Value: 168.3055
+    - Name: y
+      Type: System.Single
+      Value: 862.9691
+  - Name: 4a7c1836-0fee-4cb2-8066-9d32c230f943.conditions
+    Type: System.Collections.Generic.List`1[[ClassInstance`1[[ConditionOperation,
+      Assembly-CSharp]], Assembly-CSharp]]
+    Member:
+    - Name: 0
+      Type: $ref
+      Value: 4a7c1836-0fee-4cb2-8066-9d32c230f943.conditions.0
+  - Name: 4a7c1836-0fee-4cb2-8066-9d32c230f943.conditions.0
+    Type: ClassInstance`1[[ConditionOperation, Assembly-CSharp]]
+    Member:
+    - Name: instance
+      Type: $ref
+      Value: 4a7c1836-0fee-4cb2-8066-9d32c230f943.conditions.0.instance
+  - Name: 4a7c1836-0fee-4cb2-8066-9d32c230f943.conditions.0.instance
+    Type: ConditionEqualOperation
+    Member:
+    - Name: treshhold
+      Type: System.Single
+      Value: 3
+  - Name: 940d59e8-23ab-4c5e-8929-f537d085b2f1.Decorators
+    Type: System.Collections.Generic.List`1[[Megumin.GameFramework.AI.BehaviorTree.IDecorator,
+      Megumin.GameFramework.AI]]
+    Member: []
+  - Name: 940d59e8-23ab-4c5e-8929-f537d085b2f1.Meta
+    Type: Megumin.GameFramework.AI.BehaviorTree.NodeMeta
+    Member:
+    - Name: x
+      Type: System.Single
+      Value: 634.9193
+    - Name: y
+      Type: System.Single
+      Value: 1234
+    - Name: Name
+      Type: System.String
+      Value: 
+    - Name: FriendlyName
+      Type: System.String
+      Value: 
+    - Name: Description
+      Type: System.String
+      Value: 
+    - Name: FriendlyDescription
+      Type: System.String
+      Value: 
+    - Name: Comment
+      Type: System.String
+      Value: 
+  - Name: ab12b530-d488-483f-b9a4-759d31e1022b.Children
+    Type: System.Collections.Generic.List`1[[Megumin.GameFramework.AI.BehaviorTree.BTNode,
+      Megumin.GameFramework.AI]]
+    Member:
+    - Name: 0
+      Type: $ref
+      Value: 46e1d0b2-585b-486d-8132-2520a55c2b9f
+  - Name: ab12b530-d488-483f-b9a4-759d31e1022b.Decorators
+    Type: System.Collections.Generic.List`1[[Megumin.GameFramework.AI.BehaviorTree.IDecorator,
+      Megumin.GameFramework.AI]]
+    Member:
+    - Name: 0
+      Type: $ref
+      Value: f8185203-980b-4cd7-be04-9845441db2f5
+    - Name: 1
+      Type: $ref
+      Value: 192bb788-642c-4180-ab17-ac71f11bcae3
+  - Name: ab12b530-d488-483f-b9a4-759d31e1022b.Meta
+    Type: Megumin.GameFramework.AI.BehaviorTree.NodeMeta
+    Member:
+    - Name: x
+      Type: System.Single
+      Value: 99.89887
+    - Name: y
+      Type: System.Single
+      Value: 679.3887
+  - Name: afeba04e-3d09-496c-a550-5b0d172424f3.Decorators
+    Type: System.Collections.Generic.List`1[[Megumin.GameFramework.AI.BehaviorTree.IDecorator,
+      Megumin.GameFramework.AI]]
+    Member: []
+  - Name: afeba04e-3d09-496c-a550-5b0d172424f3.Meta
+    Type: Megumin.GameFramework.AI.BehaviorTree.NodeMeta
+    Member:
+    - Name: x
+      Type: System.Single
+      Value: -225
+    - Name: y
+      Type: System.Single
+      Value: 1534
+    - Name: Name
+      Type: System.String
+      Value: 
+    - Name: FriendlyName
+      Type: System.String
+      Value: 
+    - Name: Description
+      Type: System.String
+      Value: 
+    - Name: FriendlyDescription
+      Type: System.String
+      Value: 
+    - Name: Comment
+      Type: System.String
+      Value: 
+  - Name: bed666e8-bf90-4117-8674-be0e55f4408e.Children
+    Type: System.Collections.Generic.List`1[[Megumin.GameFramework.AI.BehaviorTree.BTNode,
+      Megumin.GameFramework.AI]]
+    Member:
+    - Name: 0
+      Type: $ref
+      Value: 4085baf7-45c5-44b8-8257-2dadebb09346
+    - Name: 1
+      Type: $ref
+      Value: 2ccf914c-aae9-4def-b78a-149476709980
+  - Name: bed666e8-bf90-4117-8674-be0e55f4408e.Decorators
+    Type: System.Collections.Generic.List`1[[Megumin.GameFramework.AI.BehaviorTree.IDecorator,
+      Megumin.GameFramework.AI]]
+    Member: []
+  - Name: bed666e8-bf90-4117-8674-be0e55f4408e.Meta
+    Type: Megumin.GameFramework.AI.BehaviorTree.NodeMeta
+    Member:
+    - Name: x
+      Type: System.Single
+      Value: -164
+    - Name: y
+      Type: System.Single
+      Value: 1249
+    - Name: Name
+      Type: System.String
+      Value: 
+    - Name: FriendlyName
+      Type: System.String
+      Value: 
+    - Name: Description
+      Type: System.String
+      Value: 
+    - Name: FriendlyDescription
+      Type: System.String
+      Value: 
+    - Name: Comment
+      Type: System.String
+      Value: 
+  - Name: ccb57f4c-0351-4ed0-89e5-07fcf37ee6f9.Children
+    Type: System.Collections.Generic.List`1[[Megumin.GameFramework.AI.BehaviorTree.BTNode,
+      Megumin.GameFramework.AI]]
+    Member:
+    - Name: 0
+      Type: $ref
+      Value: cf12f972-e595-49cc-bf32-86dfa485792a
+    - Name: 1
+      Type: $ref
+      Value: 940d59e8-23ab-4c5e-8929-f537d085b2f1
+  - Name: ccb57f4c-0351-4ed0-89e5-07fcf37ee6f9.Decorators
+    Type: System.Collections.Generic.List`1[[Megumin.GameFramework.AI.BehaviorTree.IDecorator,
+      Megumin.GameFramework.AI]]
+    Member: []
+  - Name: ccb57f4c-0351-4ed0-89e5-07fcf37ee6f9.Meta
+    Type: Megumin.GameFramework.AI.BehaviorTree.NodeMeta
+    Member:
+    - Name: x
+      Type: System.Single
+      Value: 555.7076
+    - Name: y
+      Type: System.Single
+      Value: 1070.87
+    - Name: Name
+      Type: System.String
+      Value: 
+    - Name: FriendlyName
+      Type: System.String
+      Value: 
+    - Name: Description
+      Type: System.String
+      Value: 
+    - Name: FriendlyDescription
+      Type: System.String
+      Value: 
+    - Name: Comment
+      Type: System.String
+      Value: 
+  - Name: cf12f972-e595-49cc-bf32-86dfa485792a.Decorators
+    Type: System.Collections.Generic.List`1[[Megumin.GameFramework.AI.BehaviorTree.IDecorator,
+      Megumin.GameFramework.AI]]
+    Member: []
+  - Name: cf12f972-e595-49cc-bf32-86dfa485792a.Meta
+    Type: Megumin.GameFramework.AI.BehaviorTree.NodeMeta
+    Member:
+    - Name: x
+      Type: System.Single
+      Value: 415.6511
+    - Name: y
+      Type: System.Single
+      Value: 1234.385
+    - Name: Name
+      Type: System.String
+      Value: 
+    - Name: FriendlyName
+      Type: System.String
+      Value: 
+    - Name: Description
+      Type: System.String
+      Value: 
+    - Name: FriendlyDescription
+      Type: System.String
+      Value: 
+    - Name: Comment
+      Type: System.String
+      Value: 
+  - Name: de390ce3-5cb0-4522-8608-599abfecec92.Decorators
+    Type: System.Collections.Generic.List`1[[Megumin.GameFramework.AI.BehaviorTree.IDecorator,
+      Megumin.GameFramework.AI]]
+    Member: []
+  - Name: de390ce3-5cb0-4522-8608-599abfecec92.Meta
+    Type: Megumin.GameFramework.AI.BehaviorTree.NodeMeta
+    Member:
+    - Name: x
+      Type: System.Single
+      Value: -442.3087
+    - Name: y
+      Type: System.Single
+      Value: 1548.574
+    - Name: Name
+      Type: System.String
+      Value: 
+    - Name: FriendlyName
+      Type: System.String
+      Value: 
+    - Name: Description
+      Type: System.String
+      Value: 
+    - Name: FriendlyDescription
+      Type: System.String
+      Value: 
+    - Name: Comment
+      Type: System.String
+      Value: 
+  - Name: e0691f79-8e4d-4081-aa5f-251ea804508b.Children
+    Type: System.Collections.Generic.List`1[[Megumin.GameFramework.AI.BehaviorTree.BTNode,
+      Megumin.GameFramework.AI]]
+    Member:
+    - Name: 0
+      Type: $ref
+      Value: bed666e8-bf90-4117-8674-be0e55f4408e
+  - Name: e0691f79-8e4d-4081-aa5f-251ea804508b.Decorators
+    Type: System.Collections.Generic.List`1[[Megumin.GameFramework.AI.BehaviorTree.IDecorator,
+      Megumin.GameFramework.AI]]
+    Member:
+    - Name: 0
+      Type: $ref
+      Value: 4a7c1836-0fee-4cb2-8066-9d32c230f943
+  - Name: e0691f79-8e4d-4081-aa5f-251ea804508b.Meta
+    Type: Megumin.GameFramework.AI.BehaviorTree.NodeMeta
+    Member:
+    - Name: x
+      Type: System.Single
+      Value: -239.5464
+    - Name: y
+      Type: System.Single
+      Value: 1071
+    - Name: Name
+      Type: System.String
+      Value: 
+    - Name: FriendlyName
+      Type: System.String
+      Value: 
+    - Name: Description
+      Type: System.String
+      Value: 
+    - Name: FriendlyDescription
+      Type: System.String
+      Value: 
+    - Name: Comment
+      Type: System.String
+      Value: 
+  - Name: e0691f79-8e4d-4081-aa5f-251ea804508b.weightList
+    Type: System.Collections.Generic.List`1[[System.Single]]
+    Member:
+    - Name: 0
+      Type: System.Single
+      Value: 1
   - Name: f7dc52c0-cf59-447c-916b-a71a3d31517b.Children
     Type: System.Collections.Generic.List`1[[Megumin.GameFramework.AI.BehaviorTree.BTNode,
       Megumin.GameFramework.AI]]
     Member:
     - Name: 0
+      Type: $ref
+      Value: ab12b530-d488-483f-b9a4-759d31e1022b
+    - Name: 1
       Type: $ref
       Value: 1d3f6b1f-cacb-4cf0-83cb-9a4923a6d47f
   - Name: f7dc52c0-cf59-447c-916b-a71a3d31517b.Decorators
