@@ -100,7 +100,7 @@ public class TeleportDefensiveAction : ActionBase
 		}
 		else
 		{
-			targetPosition = GameCharacter.MovementComponent.CharacterCenter + (GameCharacter.MovementInput.normalized.magnitude > 0 ? new Vector3(GameCharacter.MovementInput.x, 0f, 0f) : GameCharacter.transform.forward) * (attackData.teleportRange / 2);
+			targetPosition = GameCharacter.MovementComponent.CharacterCenter + (GameCharacter.MovementInput.normalized.magnitude > 0 ? new Vector3(GameCharacter.MovementInput.x, 0f, 0f).normalized : GameCharacter.transform.forward.normalized) * (attackData.teleportRange / 2);
 		}
 		defensiveMovePostion = targetPosition;
 		defensiveShouldMove = true;
