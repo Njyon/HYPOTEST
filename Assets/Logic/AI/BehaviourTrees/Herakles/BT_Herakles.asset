@@ -96,12 +96,18 @@ MonoBehaviour:
     - Name: GUID
       Type: System.String
       Value: 03a5afb3-efd1-4d66-a367-38315008e601
+    - Name: AbortType
+      Type: Megumin.GameFramework.AI.BehaviorTree.AbortType
+      Value: Megumin.GameFramework.AI.BehaviorTree.AbortType:-1
   - Name: 96a9397b-32e1-49f6-b53c-aa96b7d0bc8c
     Type: BTHasWeaponTypeEquiped
     Member:
     - Name: GUID
       Type: System.String
       Value: 96a9397b-32e1-49f6-b53c-aa96b7d0bc8c
+    - Name: AbortType
+      Type: Megumin.GameFramework.AI.BehaviorTree.AbortType
+      Value: Megumin.GameFramework.AI.BehaviorTree.AbortType:-1
   refObjs:
   - Name: 5833e73d-8a09-42de-830e-78f46495e11c.Decorators
     Type: System.Collections.Generic.List`1[[Megumin.GameFramework.AI.BehaviorTree.IDecorator,
