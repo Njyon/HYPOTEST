@@ -20,19 +20,24 @@ public class TeleportAttack : AttackBase
 	}
 
 	public override void TriggerAnimationEvent()
-	{ 
-		foreach (GameCharacter gc in GameCharacter.CharacterDetection.TargetGameCharacters)
-		{
-			if (GameCharacter.CheckForSameTeam(gc.Team)) continue;
-			Vector3 dir = gc.MovementComponent.CharacterCenter - GameCharacter.MovementComponent.CharacterCenter;
-			dir = dir.IgnoreAxis(EAxis.YZ);
-			Vector3 pos = gc.MovementComponent.CharacterCenter + dir.normalized * GameCharacter.GameCharacterData.MinCharacterDistance;
-			GameCharacter.MovementComponent.MovementVelocity = GameCharacter.MovementComponent.CharacterCenter - pos;
-			GameCharacter.MovementComponent.IgnoreDeltaTime = true;
+	{
+		GameCharacter gc = GameCharacter.CharacterDetection.TargetGameCharacters[0];
 
-			GameCharacter.RotateToDir((pos - gc.MovementComponent.CharacterCenter).normalized);
-			break;
-		}		
+		if (gc == null || GameCharacter.CheckForSameTeam(gc.Team)) return;
+
+		Vector3 dir = gc.MovementComponent.CharacterCenter - GameCharacter.MovementComponent.CharacterCenter;
+		dir = dir.IgnoreAxis(EAxis.YZ);
+		Vector3 pos = new Vector3(gc.MovementComponent.CharacterCenter.x, GameCharacter.MovementComponent.CharacterCenter.y, GameCharacter.MovementComponent.CharacterCenter.z) + dir.normalized * (GameCharacter.GameCharacterData.MinCharacterDistance * 2);
+		GameCharacter.MovementComponent.MovementVelocity = pos - GameCharacter.MovementComponent.CharacterCenter;
+		GameCharacter.MovementComponent.IgnoreDeltaTime = true;
+
+		//Ultra.Utilities.DrawArrow(gc.MovementComponent.CharacterCenter, dir.normalized, 5f, Color.cyan, 5f);
+		//Ultra.Utilities.DrawWireSphere(pos, 1, Color.red, 5f);
+
+		Vector3 rotDir = (gc.MovementComponent.CharacterCenter - pos).IgnoreAxis(EAxis.YZ).normalized;
+		GameCharacter.RotateToDir(rotDir);
+		GameCharacter.RotationTarget = GameCharacter.transform.rotation;
+		//Ultra.Utilities.DrawArrow(GameCharacter.MovementComponent.CharacterCenter, rotDir, 3f, Color.red, 5f);
 	}
 
 	public override ActionBase CreateCopy()
