@@ -9,12 +9,16 @@ using UnityEngine;
 public class BTShoot : BTHyppoliteActionNodeBase
 {
 	[Header("ShootData")]
+	public int shootAmount = 1;
+	public float timeBetweenShots = 1f;
 	public EAttackType AttackType;
 	public bool showFeedback = true;
 	public bool canAttackInAir = false;
 
 	bool attackStartet = false;
 	bool cantAttack = false;
+	int currentShotAmount = 0;
+	Ultra.Timer timerBetweenShots = new Ultra.Timer();
 
 	protected override void OnEnter(object options = null)
 	{
@@ -29,11 +33,8 @@ public class BTShoot : BTHyppoliteActionNodeBase
 
 		if (GameCharacter.MovementComponent.IsGrounded || (canAttackInAir && !GameCharacter.MovementComponent.IsGrounded))
 		{
-			GameCharacter.CombatComponent.Attack(AttackType);
-			if (showFeedback)
-				GameCharacter.ShowAttackFeedback();
-
 			attackStartet = true;
+			currentShotAmount = 0;
 		}
 		else
 		{
@@ -46,8 +47,25 @@ public class BTShoot : BTHyppoliteActionNodeBase
 		if (cantAttack && !attackStartet) return Status.Failed;
 		if (GameCharacter == null || GameCharacter.IsGameCharacterDead) return Status.Failed;
 
+		timerBetweenShots.Update(Time.deltaTime);
+
 		if (attackStartet)
 		{
+			if (currentShotAmount < shootAmount)
+			{
+				if (timerBetweenShots.IsRunning) return Status.Running;
+				currentShotAmount++;
+
+				GameCharacter.CombatComponent.Attack(AttackType);
+				if (showFeedback)
+					GameCharacter.ShowAttackFeedback();
+
+				timerBetweenShots.Start(timeBetweenShots);
+			}
+			else
+			{
+				return Status.Succeeded;
+			}
 			if (!GameCharacter.PluginStateMachine.ContainsPluginState(EPluginCharacterState.Shoot))
 				return Status.Succeeded;
 		}
