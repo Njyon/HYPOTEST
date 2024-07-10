@@ -33,7 +33,26 @@ MonoBehaviour:
       values: 
     particleList: []
   GroundUpAttacks: []
-  GroundDownAttacks: []
+  GroundDownAttacks:
+  - action:
+      instance:
+        rid: -2
+    data:
+      showProperties: 0
+      hitDetectionType: 0
+      mesh: {fileID: 0}
+      offset: {x: 0, y: 0, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 0
+      boxDimensions: {x: 0, y: 0, z: 0}
+      capsulHeight: 0
+    combatBranches:
+      keys: 
+      values: 
+    timedCombatBrenches:
+      keys: 
+      values: 
+    particleList: []
   GroundDirectionAttacks: []
   AirAttacks: []
   AirUpAttacks: []
@@ -69,6 +88,8 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
     - rid: 2224301106525897023
       type: {class: ShootAttack, ns: , asm: Assembly-CSharp}
       data:

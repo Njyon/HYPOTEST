@@ -13,6 +13,7 @@ public enum EBuff
 	HoldInAirAfterStartFalling,
     LivingBomb,
     BazookaUlt,
+    BulletRain,
 }
 
 public class BuffComponent
