@@ -58,6 +58,12 @@ MonoBehaviour:
   - Name: 17166188-0871-41c4-9939-b14cfe26c1dd
     Type: BTShoot
     Member:
+    - Name: shootAmount
+      Type: System.Int32
+      Value: 5
+    - Name: timeBetweenShots
+      Type: System.Single
+      Value: 0.1
     - Name: Meta
       Type: $ref
       Value: 17166188-0871-41c4-9939-b14cfe26c1dd.Meta
@@ -136,18 +142,6 @@ MonoBehaviour:
     - Name: GUID
       Type: System.String
       Value: 3d66b8c5-1272-448c-bdf6-652f7f220fbb
-  - Name: 52e02d96-0b38-421a-adb9-83582f0a72a4
-    Type: BTShoot
-    Member:
-    - Name: Meta
-      Type: $ref
-      Value: 52e02d96-0b38-421a-adb9-83582f0a72a4.Meta
-    - Name: Decorators
-      Type: $ref
-      Value: 52e02d96-0b38-421a-adb9-83582f0a72a4.Decorators
-    - Name: GUID
-      Type: System.String
-      Value: 52e02d96-0b38-421a-adb9-83582f0a72a4
   - Name: 7a21d54f-35eb-440c-b4e9-28bac8150ff9
     Type: BTRandomWait
     Member:
@@ -451,10 +445,25 @@ MonoBehaviour:
     Member:
     - Name: x
       Type: System.Single
-      Value: 146
+      Value: -6
     - Name: y
       Type: System.Single
       Value: 1743
+    - Name: Name
+      Type: System.String
+      Value: 
+    - Name: FriendlyName
+      Type: System.String
+      Value: 
+    - Name: Description
+      Type: System.String
+      Value: 
+    - Name: FriendlyDescription
+      Type: System.String
+      Value: 
+    - Name: Comment
+      Type: System.String
+      Value: 
   - Name: 18ba41bc-1c2f-492a-8aea-2887de58c30d.Decorators
     Type: System.Collections.Generic.List`1[[Megumin.GameFramework.AI.BehaviorTree.IDecorator,
       Megumin.GameFramework.AI]]
@@ -582,20 +591,7 @@ MonoBehaviour:
     Member:
     - Name: x
       Type: System.Single
-      Value: 291
-    - Name: y
-      Type: System.Single
-      Value: 1743
-  - Name: 52e02d96-0b38-421a-adb9-83582f0a72a4.Decorators
-    Type: System.Collections.Generic.List`1[[Megumin.GameFramework.AI.BehaviorTree.IDecorator,
-      Megumin.GameFramework.AI]]
-    Member: []
-  - Name: 52e02d96-0b38-421a-adb9-83582f0a72a4.Meta
-    Type: Megumin.GameFramework.AI.BehaviorTree.NodeMeta
-    Member:
-    - Name: x
-      Type: System.Single
-      Value: -6
+      Value: 139
     - Name: y
       Type: System.Single
       Value: 1743
@@ -639,11 +635,8 @@ MonoBehaviour:
       Value: 18ba41bc-1c2f-492a-8aea-2887de58c30d
     - Name: 2
       Type: $ref
-      Value: 52e02d96-0b38-421a-adb9-83582f0a72a4
-    - Name: 3
-      Type: $ref
       Value: 17166188-0871-41c4-9939-b14cfe26c1dd
-    - Name: 4
+    - Name: 3
       Type: $ref
       Value: 3d66b8c5-1272-448c-bdf6-652f7f220fbb
   - Name: 7accd1ba-f363-4e98-be33-2997fec399c8.Decorators
