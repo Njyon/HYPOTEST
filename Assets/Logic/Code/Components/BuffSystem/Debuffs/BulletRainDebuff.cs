@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class BulletRainDebuff : ABuff
@@ -10,8 +11,13 @@ public class BulletRainDebuff : ABuff
 	int waveSize;
 	float bulletToBulletDistance;
 	float spawnHightOverCharacter;
+	float bulletSpeed;
+	float damage;
 
-	public BulletRainDebuff(GameCharacter gameCharacter, float duration, ProjectilePool projectilePool, float timeBetweenWaves, int wavesSize, float initialDelay, float bulletToBulletDistance, float spawnHightOverCharacter) : base(gameCharacter, duration)
+	WeaponProjectile.OnProjectileHit onHit;
+	WeaponProjectile.OnProjectileLifeTimeEnd onProjectileLifetimeEnded;
+
+	public BulletRainDebuff(GameCharacter gameCharacter, float duration, ProjectilePool projectilePool, float timeBetweenWaves, int wavesSize, float initialDelay, float bulletToBulletDistance, float spawnHightOverCharacter, float bulletSpeed, float damage, WeaponProjectile.OnProjectileHit onHit, WeaponProjectile.OnProjectileLifeTimeEnd onProjectileLifetimeEnded) : base(gameCharacter, duration)
 	{
 		this.projectilePool = projectilePool;
 		waveTimer = new Ultra.Timer(timeBetweenWaves);
@@ -19,6 +25,10 @@ public class BulletRainDebuff : ABuff
 		waveSize = wavesSize;
 		this.bulletToBulletDistance = bulletToBulletDistance;
 		this.spawnHightOverCharacter = spawnHightOverCharacter;
+		this.bulletSpeed = bulletSpeed;
+		this.damage = damage;
+		this.onHit = onHit;
+		this.onProjectileLifetimeEnded = onProjectileLifetimeEnded;
 
 		initialDelayTimer.onTimerFinished += OnInitialDelayTimerFinished;
 		waveTimer.onTimerFinished += OnWaveTimerFinished;
@@ -55,7 +65,9 @@ public class BulletRainDebuff : ABuff
 		{
 			WeaponProjectile projectile = projectilePool.GetValue();
 			projectile.transform.position = startPos;
-			startPos.x += bulletToBulletDistance;									// add range on position
+			startPos.x += bulletToBulletDistance;                                   // add range on position
+
+			projectile.Init(GameCharacter, Vector3.down, bulletSpeed, damage, onHit, onProjectileLifetimeEnded);
 		}
 	}
 

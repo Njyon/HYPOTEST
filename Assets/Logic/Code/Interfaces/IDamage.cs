@@ -5,6 +5,7 @@ using UnityEngine;
 public interface IDamage 
 {
 	public abstract void DoDamage(GameCharacter damageInitiator, float damage, bool shouldStagger = true, bool removeCharge = true, bool shouldFreezGame = true);
+	public abstract bool CanBeDamaged();
 	public abstract HyppoliteTeam GetTeam();
 	public abstract bool IsGameCharacter();
 	public abstract GameCharacter GetGameCharacter();

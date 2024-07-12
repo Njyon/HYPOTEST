@@ -9,7 +9,7 @@ public class BTCanMeleeAttackCondition : BTHyppoliteConditionDecoratorBase
 
 	protected override bool OnCheckCondition(object options = null)
 	{
-		if (Tree.Variable.TryGetParam<bool>("CanMeleeAttack", out var canMeleeAttack))
+		if (Tree.RootTree.Variable.TryGetParam<bool>("CanMeleeAttack", out var canMeleeAttack))
 		{
 			return canMeleeAttack.Value;
 		}

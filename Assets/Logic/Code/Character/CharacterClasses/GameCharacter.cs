@@ -424,6 +424,11 @@ public class GameCharacter : MonoBehaviour, IDamage
 
 	#endregion
 
+	public bool CanBeDamaged()
+	{
+		return !PluginStateMachine.ContainsPluginState(EPluginCharacterState.IFrame);
+	}
+
 	public void DoDamage(GameCharacter damageInitiator, float damage, bool shouldStagger = true, bool removeCharge = true, bool shouldFreezGame = true)
 	{
 		if (damageInitiator != null)
