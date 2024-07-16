@@ -72,7 +72,26 @@ MonoBehaviour:
       keys: 
       values: 
     particleList: []
-  GroundDirectionAttacks: []
+  GroundDirectionAttacks:
+  - action:
+      instance:
+        rid: 2224301401857064961
+    data:
+      showProperties: 0
+      hitDetectionType: 0
+      mesh: {fileID: 0}
+      offset: {x: 0, y: 0, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 0
+      boxDimensions: {x: 0, y: 0, z: 0}
+      capsulHeight: 0
+    combatBranches:
+      keys: 
+      values: 
+    timedCombatBrenches:
+      keys: 
+      values: 
+    particleList: []
   AirAttacks: []
   AirUpAttacks: []
   AirDownAttacks: []
@@ -135,3 +154,20 @@ MonoBehaviour:
           Discharge: 100
           attackAnim: {fileID: 7196588737682118280, guid: 2283b0431bd3d234b90f561c1daad615,
             type: 3}
+    - rid: 2224301401857064961
+      type: {class: ChargeAttack, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          startChargeAnim: {fileID: 369678931809043897, guid: 82d85f924da72b94fb63280dae6166a0,
+            type: 3}
+          holdChargeAnim: {fileID: -7662445598780812140, guid: aa5b904a7edbd6c45bf9b8ccfe93bfd2,
+            type: 3}
+          hitTargetAnim: {fileID: 0}
+          hitWallAnim: {fileID: 0}
+          chargeSpeed: 5
+          kickAwayStrenght: 20
+          kickAwayStunTime: 1
+          maxChargeTime: 1
