@@ -12,12 +12,25 @@ public class BTAttack : BTHyppoliteActionNodeBase
 	public EAttackType AttackType;
 	public bool showFeedback = true;
 	public bool canAttackInAir = false;
-	public bool updateMovementInput = true;
+	public bool updateMovementInput = true; 
+	public float holdAttackTime = 0;
 
 	bool attackDone = false;
 	bool attackStartet = false;
 	bool cantAttack = false;
+	Ultra.Timer holdAttackTimer;
 
+	Ultra.Timer HoldAttackTimer
+	{
+		get 
+		{
+			if (holdAttackTimer == null)
+			{
+				holdAttackTimer = new Ultra.Timer(holdAttackTime);	
+			}
+			return holdAttackTimer; 
+		}
+	}
 
 	protected override void OnEnter(object options = null)
 	{
@@ -50,6 +63,13 @@ public class BTAttack : BTHyppoliteActionNodeBase
 		}
 
 		GameCharacter.StateMachine.onStateChanged += OnStateChanged;
+
+		if (holdAttackTime > 0)
+		{
+			HoldAttackTimer.onTimerFinished += OnHoldAttackTimerFinished;
+			HoldAttackTimer.Start();
+			GameCharacter.PluginStateMachine.AddPluginState(EPluginCharacterState.HoldAttack);
+		}
 	}
 
 	protected override Status OnTick(BTNode from, object options = null)
@@ -57,6 +77,7 @@ public class BTAttack : BTHyppoliteActionNodeBase
 		if (attackDone) return Status.Succeeded;
 		if (cantAttack && !attackStartet) return Status.Failed;
 		if (GameCharacter == null || GameCharacter.IsGameCharacterDead) return Status.Failed;
+		if (HoldAttackTimer.IsRunning) HoldAttackTimer.Update(Time.deltaTime);
 
 		if (updateMovementInput)
 		{
@@ -82,6 +103,10 @@ public class BTAttack : BTHyppoliteActionNodeBase
 		GameCharacter.HorizontalMovementInput(0);
 		GameCharacter.VerticalMovmentInput(0);
 
+		HoldAttackTimer.onTimerFinished -= OnHoldAttackTimerFinished;
+		HoldAttackTimer.Stop();
+		OnHoldAttackTimerFinished();
+
 		switch (result) 
 		{ 
 			case Status.Succeeded:
@@ -105,5 +130,9 @@ public class BTAttack : BTHyppoliteActionNodeBase
 		}
 	}
 
+	void OnHoldAttackTimerFinished()
+	{
+		GameCharacter.PluginStateMachine.RemovePluginState(EPluginCharacterState.HoldAttack);
+	}
 
 }

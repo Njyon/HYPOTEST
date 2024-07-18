@@ -8,6 +8,9 @@ public class HoldAttackWithKickAwayData : AttackData
 {
 	public AnimationClip attackAnimation;
 	public AnimationClip holdAttackAnimation;
+	public float moveSpeed = 5f;
+	public float stunTime = 0.2f;
+	public float kickAwayStrenght = 20f;
 }
 
 public class HoldAttackWithKickAway : AttackBase
@@ -30,11 +33,34 @@ public class HoldAttackWithKickAway : AttackBase
 	{
 		if (GameCharacter.PluginStateMachine.ContainsPluginState(EPluginCharacterState.HoldAttack))
 		{
-			// TODO Move to Enemy
+			//GameCharacter target = Ultra.HypoUttilies.FindCharactereNearestToDirection(GameCharacter.MovementComponent.CharacterCenter, 
+			//	GameCharacter.MovementInput.magnitude > 0 ? GameCharacter.MovementInput : GameCharacter.transform.forward,
+			//	ref GameCharacter.CharacterDetection.TargetGameCharacters);
+
+			Vector3 moveDir = GameCharacter.MovementInput.normalized; //(target.MovementComponent.CharacterCenter - GameCharacter.MovementComponent.CharacterCenter).normalized;
+			GameCharacter.MovementComponent.MovementVelocity = moveDir * attackData.moveSpeed;
 		}else
 		{
 			ActionInterupted();
 			return;
+		}
+	}
+
+	public override void OnHit(GameObject hitObj)
+	{
+		if (hitObj == GameCharacter.gameObject) return;
+
+		GameCharacter gc = hitObj.GetComponent<GameCharacter>();
+		if (gc != null)
+		{
+			DoDamage(hitObj, attackData.Damage);
+			// Kickaway needs to happen after damage
+			GameCharacter.CombatComponent.KickAway(gc, attackData.stunTime, (gc.MovementComponent.CharacterCenter - GameCharacter.MovementComponent.CharacterCenter).normalized, attackData.kickAwayStrenght, true);
+			Weapon.SpawnDamageHitEffect(gc);
+		}
+		else
+		{
+			DoDamage(hitObj, attackData.Damage);
 		}
 	}
 
