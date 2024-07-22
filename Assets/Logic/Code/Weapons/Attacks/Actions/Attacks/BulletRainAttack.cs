@@ -9,12 +9,13 @@ using UnityEngine;
 public class BulletRainAttackData : AttackData
 {
 	public AnimationClip attackAnim;
-	public float bulletRainDebuffDuration;
-	public float bulletRainTimeBetweenWaves;
-	public int waveSize;
-	public float bulletRainInitailDelay;
-	public float bulletToBulletDistance;
-	public float hightForBullets;
+	public float bulletRainDebuffDuration = 5f;
+	public float bulletRainTimeBetweenWaves = 1f;
+	public int waveSize = 20;
+	public float bulletRainInitailDelay = 0.5f;
+	public float bulletToBulletDistance = 0.5f;
+	public float hightForBullets = 10;
+	public float bulletSpeed = 5f;
 	public WeaponProjectile weaponProjectile;
 }
 
@@ -38,8 +39,37 @@ public class BulletRainAttack : AttackBase
 	public override void TriggerAnimationEvent()
 	{
 		GameCharacter target = GameCharacter.CharacterDetection.TargetGameCharacters[0];
-		target.BuffComponent.AddBuff(new BulletRainDebuff(target, attackData.bulletRainDebuffDuration, projectilePool, attackData.bulletRainTimeBetweenWaves, attackData.waveSize, attackData.bulletRainInitailDelay, attackData.bulletToBulletDistance, attackData.hightForBullets));
+		target.BuffComponent.AddBuff(new BulletRainDebuff(target, attackData.bulletRainDebuffDuration, projectilePool, attackData.bulletRainTimeBetweenWaves, attackData.waveSize, attackData.bulletRainInitailDelay, attackData.bulletToBulletDistance, attackData.hightForBullets, attackData.bulletSpeed, attackData.Damage, OnProjectileHit, OnProjectileLifeTimeEnd));
 
+	}
+
+	void OnProjectileHit(WeaponProjectile projectile, Collider other)
+	{
+		IDamage iDamage = other.GetComponent<IDamage>();
+		if (iDamage != null)
+		{
+			DoDamage(other.gameObject, attackData.Damage);
+		}
+		else
+		{
+			var parent = other.transform;
+			while (parent.parent != null)
+			{
+				parent = parent.parent;
+			}
+			iDamage = parent.GetComponent<IDamage>();
+			if (parent != null)
+			{
+				DoDamage(other.gameObject, attackData.Damage);
+			}
+		}
+		if (iDamage.CanBeDamaged())
+			projectilePool.ReturnValue(projectile);
+	}
+
+	void OnProjectileLifeTimeEnd(WeaponProjectile projectile)
+	{
+		projectilePool.ReturnValue(projectile);
 	}
 
 	public override ActionBase CreateCopy()

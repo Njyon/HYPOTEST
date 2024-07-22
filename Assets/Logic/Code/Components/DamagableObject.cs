@@ -81,4 +81,9 @@ public class DamagableObject : MonoBehaviour, IDamage
 	{
 		return transform.position;
 	}
+
+	public bool CanBeDamaged()
+	{
+		return true;
+	}
 }
