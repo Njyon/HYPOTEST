@@ -17,11 +17,57 @@ MonoBehaviour:
   <StartNodeGUID>k__BackingField: dc046221-0c11-4212-850c-2744c881f8b6
   UseSerializeReferenceGeneric: 0
   UnityObjectRef:
+  - Name: Self.value
+    Ref: {fileID: 0}
+  - Name: Target.value
+    Ref: {fileID: 0}
   - Name: 5833e73d-8a09-42de-830e-78f46495e11c.BehaviorTreeAsset
     Ref: {fileID: 11400000, guid: 33c9747c82738a042aa970464e726cff, type: 2}
   - Name: b5206420-9aef-4bd2-a7a6-152e7f35bf80.BehaviorTreeAsset
     Ref: {fileID: 11400000, guid: 63c368ea37fdf344e923652daa0fcd80, type: 2}
-  variables: []
+  variables:
+  - Name: Self
+    Type: RefVar_GameCharacter
+    Member:
+    - Name: refName
+      Type: System.String
+      Value: Self
+    - Name: value
+      Type: $ref
+      Value: Self.value
+  - Name: Target
+    Type: RefVar_GameCharacter
+    Member:
+    - Name: refName
+      Type: System.String
+      Value: Target
+    - Name: value
+      Type: $ref
+      Value: Target.value
+  - Name: CanMeleeAttack
+    Type: Megumin.Binding.RefVar_Bool
+    Member:
+    - Name: refName
+      Type: System.String
+      Value: CanMeleeAttack
+    - Name: value
+      Type: System.Boolean
+      Value: True
+  - Name: MovementTarget
+    Type: Megumin.Binding.RefVar_Vector3
+    Member:
+    - Name: refName
+      Type: System.String
+      Value: MovementTarget
+    - Name: value
+      Type: UnityEngine.Vector3
+      Value: '{"x":-2.8681886196136476,"y":0.0,"z":0.0}'
+  - Name: TeleportAttackForce
+    Type: Megumin.Binding.RefVar`1[[System.Boolean]]
+    Member:
+    - Name: refName
+      Type: System.String
+      Value: TeleportAttackForce
   nodes:
   - Name: 5833e73d-8a09-42de-830e-78f46495e11c
     Type: Megumin.GameFramework.AI.BehaviorTree.SubTree

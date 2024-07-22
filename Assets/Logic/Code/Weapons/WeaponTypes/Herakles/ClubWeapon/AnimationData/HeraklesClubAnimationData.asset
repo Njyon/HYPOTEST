@@ -18,12 +18,12 @@ MonoBehaviour:
         rid: 590781390794260537
     data:
       showProperties: 1
-      hitDetectionType: 1
+      hitDetectionType: 2
       mesh: {fileID: 0}
-      offset: {x: 1, y: 0, z: 0}
+      offset: {x: 3, y: 0, z: 0}
       scale: {x: 0, y: 0, z: 0}
       radius: 2
-      boxDimensions: {x: 0, y: 0, z: 0}
+      boxDimensions: {x: 5, y: 4, z: 2}
       capsulHeight: 0
     combatBranches:
       keys: 
@@ -37,12 +37,12 @@ MonoBehaviour:
         rid: 590781390794260538
     data:
       showProperties: 1
-      hitDetectionType: 1
+      hitDetectionType: 2
       mesh: {fileID: 0}
-      offset: {x: 1, y: 0, z: 0}
+      offset: {x: 3, y: 0, z: 0}
       scale: {x: 0, y: 0, z: 0}
       radius: 2
-      boxDimensions: {x: 0, y: 0, z: 0}
+      boxDimensions: {x: 5, y: 4, z: 2}
       capsulHeight: 0
     combatBranches:
       keys: 
@@ -51,19 +51,57 @@ MonoBehaviour:
       keys: 
       values: 
     particleList: []
-  GroundUpAttacks: []
+  GroundUpAttacks:
+  - action:
+      instance:
+        rid: 2224301467055423490
+    data:
+      showProperties: 1
+      hitDetectionType: 2
+      mesh: {fileID: 0}
+      offset: {x: 3, y: 0, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 2
+      boxDimensions: {x: 5, y: 4, z: 2}
+      capsulHeight: 0
+    combatBranches:
+      keys: 
+      values: 
+    timedCombatBrenches:
+      keys: 
+      values: 
+    particleList: []
+  - action:
+      instance:
+        rid: 2224301536024985686
+    data:
+      showProperties: 1
+      hitDetectionType: 2
+      mesh: {fileID: 0}
+      offset: {x: 3, y: 0, z: 0}
+      scale: {x: 0, y: 0, z: 0}
+      radius: 2
+      boxDimensions: {x: 5, y: 4, z: 2}
+      capsulHeight: 0
+    combatBranches:
+      keys: 
+      values: 
+    timedCombatBrenches:
+      keys: 
+      values: 
+    particleList: []
   GroundDownAttacks:
   - action:
       instance:
         rid: 590781457676632066
     data:
-      showProperties: 0
-      hitDetectionType: 0
+      showProperties: 1
+      hitDetectionType: 2
       mesh: {fileID: 0}
-      offset: {x: 0, y: 0, z: 0}
+      offset: {x: 3, y: 0, z: 0}
       scale: {x: 0, y: 0, z: 0}
-      radius: 0
-      boxDimensions: {x: 0, y: 0, z: 0}
+      radius: 2
+      boxDimensions: {x: 5, y: 4, z: 2}
       capsulHeight: 0
     combatBranches:
       keys: 
@@ -75,15 +113,15 @@ MonoBehaviour:
   GroundDirectionAttacks:
   - action:
       instance:
-        rid: 2224301401857064961
+        rid: 2224301467055423489
     data:
-      showProperties: 0
-      hitDetectionType: 0
+      showProperties: 1
+      hitDetectionType: 1
       mesh: {fileID: 0}
       offset: {x: 0, y: 0, z: 0}
       scale: {x: 0, y: 0, z: 0}
-      radius: 0
-      boxDimensions: {x: 0, y: 0, z: 0}
+      radius: 4
+      boxDimensions: {x: 5, y: 2, z: 2}
       capsulHeight: 0
     combatBranches:
       keys: 
@@ -154,20 +192,40 @@ MonoBehaviour:
           Discharge: 100
           attackAnim: {fileID: 7196588737682118280, guid: 2283b0431bd3d234b90f561c1daad615,
             type: 3}
-    - rid: 2224301401857064961
-      type: {class: ChargeAttack, ns: , asm: Assembly-CSharp}
+    - rid: 2224301467055423489
+      type: {class: HoldAttackWithKickAway, ns: , asm: Assembly-CSharp}
       data:
         attackData:
           Damage: 10
           Rating: 100
           Discharge: 100
-          startChargeAnim: {fileID: 369678931809043897, guid: 82d85f924da72b94fb63280dae6166a0,
+          attackAnimation: {fileID: 369678931809043897, guid: 82d85f924da72b94fb63280dae6166a0,
             type: 3}
-          holdChargeAnim: {fileID: -7662445598780812140, guid: aa5b904a7edbd6c45bf9b8ccfe93bfd2,
+          holdAttackAnimation: {fileID: -7662445598780812140, guid: aa5b904a7edbd6c45bf9b8ccfe93bfd2,
             type: 3}
-          hitTargetAnim: {fileID: 0}
-          hitWallAnim: {fileID: 0}
-          chargeSpeed: 5
+          moveSpeed: 5
+          stunTime: 0.2
           kickAwayStrenght: 20
-          kickAwayStunTime: 1
-          maxChargeTime: 1
+    - rid: 2224301467055423490
+      type: {class: DefaultAttack, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          attackAnimation: {fileID: 459400977430598321, guid: a9fd4597d6830e84e8bb9d8c9df441cd,
+            type: 3}
+    - rid: 2224301536024985686
+      type: {class: KickAwayAttack, ns: , asm: Assembly-CSharp}
+      data:
+        attackData:
+          Damage: 10
+          Rating: 100
+          Discharge: 100
+          attackAnimation: {fileID: 2800297045566321231, guid: f79fb2b640b58ba428c326727560aad3,
+            type: 3}
+          attackTriggerAmount: 0
+          freezBetweenAttacks: 0
+          kickDirection: {x: 0, y: 0, z: 90}
+          stunTime: 1
+          kickStrengh: 15
