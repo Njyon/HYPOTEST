@@ -19,7 +19,7 @@ public class SceneLoaderManager : Singelton<SceneLoaderManager>
 	{
 		CreateStoryGameMode();
 
-		LoadScene("StoryLevelArt");
+		LoadScene("TestLevelMain01");
 	}
 
 	public void LoadTrainingsMap()
