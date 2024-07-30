@@ -38,6 +38,7 @@ public class BulletRainAttack : AttackBase
 	public override void TriggerAnimationEvent()
 	{
 		GameCharacter target = GameCharacter.CharacterDetection.TargetGameCharacters[0];
+		if (target == null) return;
 		target.BuffComponent.AddBuff(new BulletRainDebuff(target, attackData.bulletRainDebuffDuration, projectilePool, attackData.bulletRainTimeBetweenWaves, attackData.waveSize, attackData.bulletRainInitailDelay, attackData.bulletToBulletDistance, attackData.hightForBullets, attackData.bulletSpeed, attackData.Damage, OnProjectileHit, OnProjectileLifeTimeEnd));
 
 	}
