@@ -100,6 +100,9 @@ public class GameCharacterData : MonoBehaviour
 	[SerializeField] float dodgeSpeed = 10f;
 	[SerializeField] float dodgeRecoveryTime = 1f;
 
+	[Header("SoundEffects")]
+	public List<SoundEffect> FootSoundEffects;
+
 	public float MaxMovementSpeed { get { return maxMovementSpeed; } }
 	public float MovmentGravity { get { return movmentGravity; } }
 	public float Acceleration { get { return acceleration; } }

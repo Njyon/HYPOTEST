@@ -34,7 +34,7 @@ public class Blend3DAimKickAwayAttack : AttackBase
 		GameCharacter.CombatComponent.AttackTimer.Start(attackData.shootAddativeAnimation.length);
 		GameCharacter.PluginStateMachine.AddPluginState(EPluginCharacterState.Shoot);
 		GameCharacter.AnimController.ApplyBlendTree(GameCharacter.CombatComponent.CurrentWeapon.WeaponData.AnimationData[GameCharacter.CharacterData.Name].AimAnimations);
-		Weapon.PlayAttackSound(0);
+		Weapon.PlayDefaultAttackSound(0);
 		Weapon.SpawnWeaponFlash(weaponObjData);
 
 		GameCharacter target = Ultra.HypoUttilies.FindCharactereNearestToDirection(GameCharacter.MovementComponent.CharacterCenter, GameCharacter.MovementInput.magnitude > 0 ? GameCharacter.MovementInput : GameCharacter.transform.forward, ref GameCharacter.CharacterDetection.TargetGameCharacters);

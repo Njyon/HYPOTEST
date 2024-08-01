@@ -64,7 +64,7 @@ public class TeleportToEnemyUlt : AttackBase
 			teleportVector = moveDir;
 			shouldMove = true;
 
-			GameCharacter.CombatComponent.CurrentWeapon.PlayAttackSound();
+			GameCharacter.CombatComponent.CurrentWeapon.PlayDefaultAttackSound();
 			DoDamage(target.gameObject, attackData.Damage);
 
 			await new WaitForSeconds(attackData.timebetweenHits);

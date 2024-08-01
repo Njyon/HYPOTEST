@@ -28,6 +28,7 @@ public class ScriptableWeapon : ScriptableObject
 	public GameObject UIElement;
 	public Sprite WeaponImage;
 	public List<SoundEffect> DefaultAttackSounds;
+	public List<SoundEffect> SpecialAttackSounds;
 	public List<SoundEffect> DefaultHitSounds;
 
 	[ConditionalField("WeaponType", false, EWeaponType.Ranged)] public ParticleSystem DefaultAttackVFX;
@@ -62,6 +63,7 @@ public class ScriptableWeapon : ScriptableObject
 		instance.UIElement = UIElement;
 		instance.WeaponImage = WeaponImage;
 		instance.DefaultAttackSounds = DefaultAttackSounds;
+		instance.SpecialAttackSounds = SpecialAttackSounds;
 		instance.DefaultHitSounds = DefaultHitSounds;
 		instance.DefaultAttackVFX = DefaultAttackVFX;
 		instance.DefaultHitVFX = DefaultHitVFX;
@@ -80,6 +82,7 @@ public class ScriptableWeapon : ScriptableObject
 		instance.UIElement = UIElement;
 		instance.WeaponImage = WeaponImage;
 		instance.DefaultAttackSounds = DefaultAttackSounds;
+		instance.SpecialAttackSounds = SpecialAttackSounds;
 		instance.DefaultHitSounds = DefaultHitSounds;
 		instance.DefaultAttackVFX = DefaultAttackVFX;
 		instance.DefaultHitVFX = DefaultHitVFX;

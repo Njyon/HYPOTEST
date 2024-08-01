@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Accessibility;
 using UnityEngine.UIElements;
 
 public enum EExplicitAttackType
@@ -1130,26 +1131,36 @@ public abstract class WeaponBase
 		gameCharacter.AnimController.InAttack = false;
 	}
 
-	public virtual void PlayAttackSound(int index = -1)
+	public virtual void PlayDefaultAttackSound(int index = -1)
 	{
-		if (WeaponData.DefaultAttackSounds.Count <= 0) return;
+		PlayAttackSound(index, ref weaponData.DefaultAttackSounds);
+	}
+
+	public virtual void PlaySpecialAttackSound(int index = -1)
+	{
+		PlayAttackSound(index, ref weaponData.SpecialAttackSounds);
+	}
+
+	protected virtual void PlayAttackSound(int index, ref List<SoundEffect> sounds)
+	{
+		if (sounds.Count <= 0) return;
 
 		index--;
 		if (index < 0)
 		{
-			int randIndex = UnityEngine.Random.Range(0, WeaponData.DefaultAttackSounds.Count);
+			int randIndex = UnityEngine.Random.Range(0, sounds.Count);
 			if (randIndex == lastAttackSoundIndex)
 			{
 				randIndex++;
-				randIndex %= WeaponData.DefaultAttackSounds.Count;
+				randIndex %= sounds.Count;
 			}
-			var soundClip = WeaponData.DefaultAttackSounds[randIndex];
+			var soundClip = sounds[randIndex];
 			SoundManager.Instance.PlaySound(soundClip);
 			lastAttackSoundIndex = randIndex;
 		}
 		else
 		{
-			var soundClip = WeaponData.DefaultAttackSounds[index];
+			var soundClip = sounds[index];
 			SoundManager.Instance.PlaySound(soundClip);
 			lastAttackSoundIndex = index;
 		}

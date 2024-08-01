@@ -325,10 +325,10 @@ public class HyppoliteWeaponWrapper : WeaponBase
 		return CurrentUsedWeapon.GetDamage(damage);
 	}
 
-	public override void PlayAttackSound(int index = -1)
+	public override void PlayDefaultAttackSound(int index = -1)
 	{
 		if (CurrentUsedWeapon == null) return;
-		CurrentUsedWeapon.PlayAttackSound(index);
+		CurrentUsedWeapon.PlayDefaultAttackSound(index);
 	}
 
 	public override void PlayHitSound()

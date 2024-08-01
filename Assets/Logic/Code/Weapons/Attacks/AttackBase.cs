@@ -18,6 +18,7 @@ public abstract class AttackBase : ActionBase
 		GameCharacter?.StateMachine?.RequestStateChange(EGameCharacterState.Attack);
 		Weapon.AttackAnimType = EAttackAnimType.Default;
 		GameCharacter?.CombatComponent?.AttackTimer.Start(clip.length);
+		Weapon.PlayDefaultAttackSound();
 	}
 
 	public IDamage DoDamage(GameObject hitObject, float damage)

@@ -38,7 +38,7 @@ public class ShootAttack : AttackBase
 		GameCharacter.CombatComponent.AttackTimer.onTimerFinished += OnTimerFinished;
 		GameCharacter.CombatComponent.AttackTimer.Start(attackData.shootAddativeAnimation.length);
 		GameCharacter.PluginStateMachine.AddPluginState(EPluginCharacterState.Shoot);
-		Weapon.PlayAttackSound(0);
+		Weapon.PlayDefaultAttackSound(0);
 
 		if (weaponObjData != null)
 		{

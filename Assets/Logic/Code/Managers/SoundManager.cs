@@ -37,6 +37,7 @@ public class SoundManager : Singelton<SoundManager>
 
 	public void PlaySound(SoundEffect soundEffect)
 	{
+		if (soundEffect == null) return;
 		if (audioSourcePool.Parent == null) audioSourcePool.SetParent(CreateHolder());
 		AudioComponent ac = audioSourcePool.GetValue();
 		ac.Play(soundEffect);
