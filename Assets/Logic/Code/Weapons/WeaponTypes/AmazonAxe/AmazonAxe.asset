@@ -32,8 +32,37 @@ MonoBehaviour:
   UIElement: {fileID: 2407642077447747131, guid: 543551c3f1b4ea34697fd6e5e0b10751,
     type: 3}
   WeaponImage: {fileID: 21300000, guid: 8ea1d5932768f5441bb90be27b0154c0, type: 3}
-  DefaultAttackSounds: []
-  DefaultHitSounds: []
+  DefaultAttackSounds:
+  - audioClip: {fileID: 8300000, guid: d2eea6aed0c405e428933f456be25a92, type: 3}
+    volume: 1
+    pitch: 1
+    randomPitch: 1
+    randPitch: 0.1
+    randomValue: 1
+    randVolume: 0.1
+  - audioClip: {fileID: 8300000, guid: 3fec8d705e174604b8a8e89e9380f6b9, type: 3}
+    volume: 1
+    pitch: 1
+    randomPitch: 1
+    randPitch: 0.1
+    randomValue: 1
+    randVolume: 0.1
+  - audioClip: {fileID: 8300000, guid: 21d638f96a813d54e9d1302504d7ae05, type: 3}
+    volume: 1
+    pitch: 1
+    randomPitch: 1
+    randPitch: 0.1
+    randomValue: 1
+    randVolume: 0.1
+  SpecialAttackSounds: []
+  DefaultHitSounds:
+  - audioClip: {fileID: 8300000, guid: c17aee639667b26489b28de94868708e, type: 3}
+    volume: 1
+    pitch: 1
+    randomPitch: 1
+    randPitch: 0.1
+    randomValue: 1
+    randVolume: 0.1
   DefaultAttackVFX: {fileID: 0}
   DefaultHitVFX: {fileID: 0}
   UltimateParticleSystems:

@@ -69,6 +69,7 @@ public class GameCharacter : MonoBehaviour, IDamage
 	int materialHitColorIndex;
 	int materialHitIntensityIndex;
 	GameObject respawnObj;
+	int lastFootStepSoundEffect;
 
 	bool isInitialized = false;
 	public bool IsInitialized { get { return isInitialized; } }
@@ -409,7 +410,12 @@ public class GameCharacter : MonoBehaviour, IDamage
 
 	public void PlayAttackSound(AnimationEvent evt)
 	{
-		CombatComponent?.CurrentWeapon?.PlayAttackSound(evt.intParameter);
+		CombatComponent?.CurrentWeapon?.PlayDefaultAttackSound(evt.intParameter);
+	}
+
+	public void PlaySpecialAttackSound(AnimationEvent evt)
+	{
+		CombatComponent?.CurrentWeapon?.PlaySpecialAttackSound(evt.intParameter);
 	}
 
 	public void SwitchAttackAnimEvent(AnimationEvent evt)
@@ -422,7 +428,40 @@ public class GameCharacter : MonoBehaviour, IDamage
 		CombatComponent?.CurrentWeapon?.CurrentAction?.Action?.TriggerAnimationEvent();
 	}
 
+	public void FootStepTriggerEvent(AnimationEvent evt)
+	{
+		if (evt.animationState.weight >= 0.5f)
+		{
+			PlayFootStepSound(-1, ref GameCharacterData.FootSoundEffects); 
+		}
+	}
+
 	#endregion
+
+	public virtual void PlayFootStepSound(int index, ref List<SoundEffect> sounds)
+	{
+		if (sounds.Count <= 0) return;
+
+		index--;
+		if (index < 0)
+		{
+			int randIndex = UnityEngine.Random.Range(0, sounds.Count);
+			if (randIndex == lastFootStepSoundEffect)
+			{
+				randIndex++;
+				randIndex %= sounds.Count;
+			}
+			var soundClip = sounds[randIndex];
+			SoundManager.Instance.PlaySound(soundClip);
+			lastFootStepSoundEffect = randIndex;
+		}
+		else
+		{
+			var soundClip = sounds[index];
+			SoundManager.Instance.PlaySound(soundClip);
+			lastFootStepSoundEffect = index;
+		}
+	}
 
 	public bool CanBeDamaged()
 	{

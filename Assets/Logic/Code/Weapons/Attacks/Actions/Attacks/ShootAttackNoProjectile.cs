@@ -39,7 +39,7 @@ public class ShootAttackNoProjectile : AttackBase
 		GameCharacter.CombatComponent.AttackTimer.Start(attackData.shootAddativeAnimation.length);
 		GameCharacter.PluginStateMachine.AddPluginState(EPluginCharacterState.Shoot);
 		GameCharacter.AnimController.ApplyBlendTree(GameCharacter.CombatComponent.CurrentWeapon.WeaponData.AnimationData[GameCharacter.CharacterData.Name].AimAnimations);
-		Weapon.PlayAttackSound(0);
+		Weapon.PlayDefaultAttackSound(0);
 		Weapon.SpawnWeaponFlash(weaponObjData);
 
 		IDamage target = Ultra.HypoUttilies.FindTargetNearestToDirectionIgnoreNonGameCharacterAfter90Grad(GameCharacter.MovementComponent.CharacterCenter, GameCharacter.MovementInput.magnitude > 0 ? GameCharacter.MovementInput : GameCharacter.transform.forward, ref GameCharacter.CharacterDetection.DetectedTargets);

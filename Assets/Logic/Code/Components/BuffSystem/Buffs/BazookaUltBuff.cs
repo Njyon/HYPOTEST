@@ -58,7 +58,7 @@ public class BazookaUltBuff : ABuff
 		GameCharacter.CombatComponent.AttackTimer.Start(bazookaData.addativeShootAnimation.length);
 		GameCharacter.PluginStateMachine.AddPluginState(EPluginCharacterState.Shoot);
 		GameCharacter.AnimController.ApplyBlendTree(GameCharacter.CombatComponent.CurrentWeapon.WeaponData.AnimationData[GameCharacter.CharacterData.Name].AimAnimations);
-		bazookaData.weapon.PlayAttackSound(0);
+		bazookaData.weapon.PlayDefaultAttackSound(0);
 		bazookaData.weapon.SpawnWeaponFlash(bazookaData.bazookaData);
 
 		CameraController.Instance.ShakeCamerea(bazookaData.cameraShakeIndex);
