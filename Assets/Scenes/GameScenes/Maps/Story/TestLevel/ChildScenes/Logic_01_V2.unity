@@ -2012,6 +2012,7 @@ GameObject:
   - component: {fileID: 173065878}
   - component: {fileID: 173065876}
   - component: {fileID: 173065877}
+  - component: {fileID: 173065879}
   m_Layer: 0
   m_Name: ArenaSpawner
   m_TagString: Untagged
@@ -2132,6 +2133,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 173065879}
+        m_TargetAssemblyTypeName: EndbossDeadVisuallHack, Assembly-CSharp
+        m_MethodName: OnEndbossDead
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onPlayerDiedAndRespawnedEvent:
     m_PersistentCalls:
       m_Calls:
@@ -2189,6 +2202,18 @@ Transform:
   - {fileID: 1097825258}
   m_Father: {fileID: 807937663}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &173065879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 173065875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e544024b2f1499e4bb49ab50ff90ea65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &183256605
 PrefabInstance:
   m_ObjectHideFlags: 0
