@@ -56,5 +56,12 @@ public class JumpEvent : CharacterEvent
 		gameCharacter.AnimController.SetChestCorrectionWeight(0);
 		gameCharacter.AnimController.SetFPFootIKLWeight(0);
 		gameCharacter.AnimController.SetFPFootIKRWeight(0);
+
+		if (gameCharacter.GameCharacterData.JumpSoundEffects != null && gameCharacter.GameCharacterData.JumpSoundEffects.Count > 0)
+		{
+			SoundEffect dodgeSound = gameCharacter.GameCharacterData.JumpSoundEffects[Random.Range(0, gameCharacter.GameCharacterData.JumpSoundEffects.Count)];
+			if (dodgeSound != null)
+				SoundManager.Instance.PlaySound(dodgeSound);
+		}
 	}
 }

@@ -10,6 +10,8 @@ public class PlayerUI : UIBase
 	[Header("Healthbar")]
 	[SerializeField] Image healthbar;
 	[SerializeField] Image healthbarBackGround;
+	[SerializeField] Image healthbarBackGroundBackGroundInside;  // leon added a border
+	[SerializeField] Image healthbarBackGroundBackGroundOutSide;  // leon added a border
 	float healthbarFillTarget;
 	float healthbarBackGroundFillTarget;
 	[SerializeField] float healthbarSpeed = 2f;
@@ -131,6 +133,8 @@ public class PlayerUI : UIBase
 	{
 		healthbar.rectTransform.sizeDelta = new Vector2(value, healthbar.rectTransform.sizeDelta.y);
 		healthbarBackGround.rectTransform.sizeDelta = new Vector2(value, healthbar.rectTransform.sizeDelta.y);
+		healthbarBackGroundBackGroundInside.rectTransform.sizeDelta = new Vector2(value, healthbar.rectTransform.sizeDelta.y);
+		healthbarBackGroundBackGroundOutSide.rectTransform.sizeDelta = new Vector2(value + 6, healthbar.rectTransform.sizeDelta.y + 4);
 	}
 
 	void Update()

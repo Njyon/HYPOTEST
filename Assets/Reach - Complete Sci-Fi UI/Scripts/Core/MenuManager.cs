@@ -73,7 +73,7 @@ namespace Michsky.UI.Reach
 
                 splashScreen.enabled = true;
                 splashScreen.gameObject.SetActive(true);
-                StartCoroutine("DisableSplashScreenAnimator");
+                //StartCoroutine("DisableSplashScreenAnimator");
 
                 if (UIManagerAsset.showSplashScreenOnce)
                 {

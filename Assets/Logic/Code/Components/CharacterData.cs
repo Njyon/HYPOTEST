@@ -108,6 +108,7 @@ public class GameCharacterData : MonoBehaviour
 	[Header("SoundEffects")]
 	public BetterSerializableDictionary<EPhysicsMaterial, SoundEffectWrapper> FootSoundEffects = new();
 	public List<SoundEffect> DodgeSoundEffects = new List<SoundEffect>();
+	public List<SoundEffect> JumpSoundEffects = new List<SoundEffect>();
 
 	public float MaxMovementSpeed { get { return maxMovementSpeed; } }
 	public float MovmentGravity { get { return movmentGravity; } }
