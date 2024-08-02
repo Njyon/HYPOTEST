@@ -51,6 +51,9 @@ public class PlayerUI : UIBase
 	[SerializeField] MMF_Player showDeathPanel;
 	[SerializeField] MMF_Player hideDeathPanel;
 
+	[Header("EndbossKill")]
+	public MMF_Player showThxForPlayingPanel;
+
 	PlayerGameCharacter gameCharacter;
 
 	void Awake()

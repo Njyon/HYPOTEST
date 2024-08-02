@@ -433,7 +433,6 @@ public class GameCharacter : MonoBehaviour, IDamage
 		SoundEffectWrapper soundEffectWrapper;
 		if (evt.animatorClipInfo.weight >= 0.5f)
 		{
-			Ultra.Utilities.Instance.DebugLogOnScreen(MovementComponent.CapsulCastGroundHit?.hit.collider?.material?.name, 1f, StringColor.Red);
 			switch (MovementComponent.CapsulCastGroundHit?.hit.collider?.material?.name)
 			{
 				case "PM_Metal (Instance)":

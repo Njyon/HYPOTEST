@@ -484,7 +484,6 @@ public class GameCharacterMovementComponent : MonoBehaviour
 			}
 
 			Vector3 castOrigin = new Vector3(groundHitCapsul.point.x, groundHitCapsul.point.y + 1f, groundHitCapsul.point.z);
-			Ultra.Utilities.DrawArrow(castOrigin, groundHitCapsul.point - castOrigin, Vector3.Distance(castOrigin, groundHitCapsul.point) + 0.3f, Color.red, 5f);
 			if (Physics.Raycast(castOrigin, groundHitCapsul.point - castOrigin, out groundHitRayCast, Vector3.Distance(castOrigin, groundHitCapsul.point) + 0.3f, gameCharacter.IgnoreCharacterLayer, QueryTriggerInteraction.UseGlobal))
 				RayCastGroundHit = new NullableHit(groundHitRayCast);
 			else
