@@ -30,6 +30,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	[SerializeField] float capsulInterpolationSpeed = 5f;
 	NullableHit predictedLandingPoint;
 	NullableHit rayCastGroundHit;
+	NullableHit capsulCastGroundHit;
 	CharacterController unityMovementController;
 	bool isGrounded = false;
 	Vector3 postionLastFrame;
@@ -65,6 +66,7 @@ public class GameCharacterMovementComponent : MonoBehaviour
 	public Vector3 CharacterCenter { get { return transform.position + (capsuleCollider != null ? capsuleCollider.center : Vector3.zero); } }
 	public NullableHit PossibleGround { get { return predictedLandingPoint; } set { predictedLandingPoint = value; } }
 	public NullableHit RayCastGroundHit { get { return rayCastGroundHit; } set { rayCastGroundHit = value; } }
+	public NullableHit CapsulCastGroundHit { get { return capsulCastGroundHit; } set { capsulCastGroundHit = value; } }
 	public bool IsGrounded { get { return isGrounded && !IsInJump; } }
 	public Vector3 MovementVelocity 
 	{ 
@@ -482,7 +484,8 @@ public class GameCharacterMovementComponent : MonoBehaviour
 			}
 
 			Vector3 castOrigin = new Vector3(groundHitCapsul.point.x, groundHitCapsul.point.y + 1f, groundHitCapsul.point.z);
-			if (Physics.Raycast(castOrigin, groundHitCapsul.point - castOrigin, out groundHitRayCast, Vector3.Distance(castOrigin, groundHitCapsul.point) + 0.1f, gameCharacter.IgnoreCharacterLayer, QueryTriggerInteraction.UseGlobal))
+			Ultra.Utilities.DrawArrow(castOrigin, groundHitCapsul.point - castOrigin, Vector3.Distance(castOrigin, groundHitCapsul.point) + 0.3f, Color.red, 5f);
+			if (Physics.Raycast(castOrigin, groundHitCapsul.point - castOrigin, out groundHitRayCast, Vector3.Distance(castOrigin, groundHitCapsul.point) + 0.3f, gameCharacter.IgnoreCharacterLayer, QueryTriggerInteraction.UseGlobal))
 				RayCastGroundHit = new NullableHit(groundHitRayCast);
 			else
 				RayCastGroundHit = null;
@@ -502,7 +505,12 @@ public class GameCharacterMovementComponent : MonoBehaviour
 
 	public bool IsGroundedCheck(Vector3 center, out RaycastHit newHit)
 	{
-		return Ultra.Utilities.CapsulCast(center, capsuleCollider.height, capsuleCollider.radius, Vector3.down * (0.1f + minDistance), out newHit, Color.cyan.WithAlpha(0.35f), 100, DebugAreas.Movement, gameCharacter.DefaultLayer, QueryTriggerInteraction.Ignore);
+		bool isGrounded = Ultra.Utilities.CapsulCast(center, capsuleCollider.height, capsuleCollider.radius, Vector3.down * (0.1f + minDistance), out newHit, Color.cyan.WithAlpha(0.35f), 100, DebugAreas.Movement, gameCharacter.DefaultLayer, QueryTriggerInteraction.Ignore);
+		if (isGrounded)
+			CapsulCastGroundHit = new NullableHit(newHit);
+        else
+			CapsulCastGroundHit = null;
+        return isGrounded;
 	}
 
 	public bool CheckCharacterCapsulInDirection(Vector3 center ,Vector3 direction, out RaycastHit newHit)

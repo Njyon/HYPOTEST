@@ -1,15 +1,20 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
-using UnityEngine.UIElements;
 
 public enum RigType
 {
 	Unknown,
 	Dummy,
+}
+
+public enum EPhysicsMaterial
+{
+	Unknown,
+	Metal,
+	Stone,
 }
 
 public class GameCharacterData : MonoBehaviour
@@ -101,7 +106,7 @@ public class GameCharacterData : MonoBehaviour
 	[SerializeField] float dodgeRecoveryTime = 1f;
 
 	[Header("SoundEffects")]
-	public List<SoundEffect> FootSoundEffects;
+	public BetterSerializableDictionary<EPhysicsMaterial, SoundEffectWrapper> FootSoundEffects = new();
 
 	public float MaxMovementSpeed { get { return maxMovementSpeed; } }
 	public float MovmentGravity { get { return movmentGravity; } }
@@ -175,4 +180,10 @@ public class GameCharacterData : MonoBehaviour
 	public float DodgeDistance { get { return dodgeDistance; } }
 	public float DodgeSpeed { get { return dodgeSpeed; } }
 	public float DodgeRecoveryTime { get { return dodgeRecoveryTime; } }
+}
+
+[Serializable]
+public class SoundEffectWrapper
+{
+	public List<SoundEffect> SoundEffects = new();
 }

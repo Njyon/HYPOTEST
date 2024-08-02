@@ -50,7 +50,7 @@ public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, IS
 }
 
 [Serializable]
-public class BetterSerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>
+public class BetterSerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, ISerializationCallbackReceiver
 {
 	[SerializeField]
 	private List<TKey> keys = new List<TKey>();
