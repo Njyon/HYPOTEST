@@ -36,6 +36,13 @@ public class GameCharacterDodgeState : AGameCharacterState
 		ps.transform.position = GameCharacter.MovementComponent.CharacterCenter;
 		ps.transform.rotation = Quaternion.LookRotation(dir.IgnoreAxis(EAxis.YZ).normalized, Vector3.up);
 		GameCharacter.AnimController.InterpSecondaryMotionLayerWeight(0, 10f);
+
+		if (GameCharacter.GameCharacterData.DodgeSoundEffects.Count > 0)
+		{
+			SoundEffect dodgeSound = GameCharacter.GameCharacterData.DodgeSoundEffects[Random.Range(0, GameCharacter.GameCharacterData.DodgeSoundEffects.Count)];
+			if (dodgeSound != null) 
+				SoundManager.Instance.PlaySound(dodgeSound);
+		}
 	}
 
 	public override EGameCharacterState GetStateType()

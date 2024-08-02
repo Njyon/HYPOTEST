@@ -666,6 +666,7 @@ public class GameCharacter : MonoBehaviour, IDamage
 		MovementComponent.UnityMovementController.enabled = false;
 		// Request a dead state so unsubsribing from specific state delegates is easier by just calling CurrentState.End(NewState Dead)
 		StateMachine.RequestStateChange(EGameCharacterState.Dead, true);
+		CombatComponent.CurrentWeapon?.UnEquipWeapon();
 
 		if (!IsPlayerCharacter)
 			GameObject.Destroy(gameObject, 3f);

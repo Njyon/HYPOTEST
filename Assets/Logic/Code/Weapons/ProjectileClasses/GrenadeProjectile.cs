@@ -32,6 +32,13 @@ public class GrenadeProjectile : WeaponProjectile
 		}
 		Ultra.Utilities.DrawWireSphere(transform.position, explosionRadius, Color.red, 1f, 100);
 
+		if (hitEffects != null && hitEffects.Count > 0)
+		{
+			SoundEffect exposionEffect = hitEffects[UnityEngine.Random.Range(0, hitEffects.Count)];
+			if (exposionEffect != null)
+				SoundManager.Instance.PlaySound(exposionEffect);
+		}
+
 		GameObject.Instantiate(explosionEffect.gameObject, transform.position, transform.rotation);
 		OnTimerFinished();
 		CameraController.Instance?.ShakeCamerea(cameraShakeIndex);
