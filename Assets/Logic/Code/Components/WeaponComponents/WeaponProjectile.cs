@@ -23,6 +23,9 @@ public class WeaponProjectile : MonoBehaviour
 
 	public float gravity = 0.0f;
 
+	[Header("SoundEffects")]
+	public List<SoundEffect> hitEffects = new();
+
 	public void Init(GameCharacter owner, Vector3 direction, float speed, float damage, OnProjectileHit onHit, OnProjectileLifeTimeEnd onProjectileLifeTimeEnd, float lifeTime = 5f)
 	{
 		gameCharacterOwner = owner;

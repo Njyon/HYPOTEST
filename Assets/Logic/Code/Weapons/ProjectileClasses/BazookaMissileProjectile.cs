@@ -75,6 +75,13 @@ public class BazookaMissileProjectile : WeaponProjectile
 			}
 		}
 
+		if (hitEffects != null && hitEffects.Count > 0)
+		{
+			SoundEffect exposionEffect = hitEffects[Random.Range(0, hitEffects.Count)];
+			if (exposionEffect != null)
+				SoundManager.Instance.PlaySound(exposionEffect);
+		}
+
 		GameObject.Instantiate(explosionEffect.gameObject, transform.position, transform.rotation);
 		CameraController.Instance?.ShakeCamerea(cameraShakeIndex);
 		base.OnTimerFinished();

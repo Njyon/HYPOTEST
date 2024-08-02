@@ -98,8 +98,9 @@ public class ForceFieldComponent : MonoBehaviour
 
 	public void HARDReset()
 	{
-		SetMaterialValues(0);
-		col.enabled = false;
+		EndForceField();
+		//SetMaterialValues(0);
+		//col.enabled = false;
 	}
 
 	private void SetMaterialValues(float value)
