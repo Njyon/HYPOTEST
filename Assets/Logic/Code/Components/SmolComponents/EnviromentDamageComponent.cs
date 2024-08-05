@@ -8,8 +8,18 @@ public class EnviromentDamageComponent : MonoBehaviour
 	[SerializeField] float damageToEnemyAmount = 100f;
 	[SerializeField] bool resetGameCharacterToSpawnPoint = false;
 
+	[Header("SoundEffect")]
+	public List<SoundEffect> soundEffects = new List<SoundEffect>();
+
 	public async void DoDamage(GameCharacter gameCharacter)
 	{
+		if (soundEffects != null && soundEffects.Count > 0)
+		{
+			SoundEffect dodgeSound = soundEffects[Random.Range(0, soundEffects.Count)];
+			if (dodgeSound != null)
+				SoundManager.Instance.PlaySound(dodgeSound);
+		}
+
 		if (resetGameCharacterToSpawnPoint)
 		{
  			gameCharacter.StateMachine.ForceStateChange(EGameCharacterState.Standing, true);
