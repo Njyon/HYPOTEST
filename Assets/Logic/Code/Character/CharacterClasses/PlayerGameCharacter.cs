@@ -103,7 +103,7 @@ public class PlayerGameCharacter : GameCharacter
 		if (CharacterHasAggro)
 		{
 			MusicManager.Instance.Play();
-			MusicManager.Instance.SetVolumeTarget(combatRatingComponent.StyleRanks[combatRatingComponent.CurrentStyleRankIndex].musicVolumeTarget);
+			MusicManager.Instance.SetVolumeTarget(Mathf.Clamp(combatRatingComponent.StyleRanks[combatRatingComponent.CurrentStyleRankIndex].musicVolumeTarget, 0, 1));
 		}
 		else
 		{

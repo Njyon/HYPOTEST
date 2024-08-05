@@ -30,11 +30,13 @@ public class MusicManager : Singelton<MusicManager>
         {
 			if (MusicSource != null && MusicSource.volume != volumeTarget)
 			{
-				MusicSource.volume = Mathf.Lerp(MusicSource.volume, volumeTarget, Time.deltaTime * volumeTarget > MusicSource.volume ? lerpSpeedUp : lerpSpeedDown);
+                MusicSource.volume = Mathf.Clamp01(Mathf.Lerp(MusicSource.volume, volumeTarget, Time.deltaTime * volumeTarget > MusicSource.volume ? lerpSpeedUp : lerpSpeedDown));
 			}
-            if (MusicSource.volume == 0)
+            if (Ultra.Utilities.IsNearlyEqual(MusicSource.volume, 0, 0.01f))
             {
-                Stop();
+                MusicSource.volume = 0;
+
+				Stop();
 				MusicSource.Stop();
 			}
 		}
